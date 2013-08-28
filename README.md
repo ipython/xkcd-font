@@ -11,3 +11,8 @@ The original font file comes from @randallmunroe, the original font author and x
 
 This work is licensed under a Creative Commons Attribution-NonCommercial 3.0 License.
 
+Editing
+-------
+
+Please edit the xkcd.sfd file, which can be opened with [FontForge](http://fontforge.org/), an open-source font editor. We'll periodically regenerate the OTF file from this, to
+avoid editing conflicts.
