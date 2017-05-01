@@ -1,0 +1,14 @@
+sudo: required
+services:
+  - docker
+language: python
+python:
+  - 3.6
+
+env:
+  global:
+    - secure: "Co6RCJN/wr//nrHoN9j5VZfOSp5aKHMSutYv2bljN9C6zgE7jWdywaXeMTT8McXHWyjpwUDNrBcJ3VGm8XkPrC45Lpy0A7WLa9qcIBsxp00LnyHTtBRduMQs9GVGdvJxZN1k+46X34id4/+/EszSWK8BGxd5hLtx+WjY8PvOC/V6oTpnvgqDpfcOlErM73X93AFGnPyvATwCfWQ22hgEawvCmifSD6lxhA4dmrC4mnX0L3mobibWVbBqRQgBCdQN4sezDdqI9YHrJdiVvK7VrnOf02tG/Wct+4Z8+RwzonHyAryU3PJClZ1fikBq1NFA8tJOcfX/p05+A02MgAdVEjfzv4YYXJPTT548qOGfsKw7NLCh/wKudRrFp+iaw5Y9KGCkkUP9lrT3VUBAGNMDcIuvKZ8EbrAe3jkNNi5Rv+mn92rgNasEtyN3TLAtXLxhq1Jbpob/P7osPtJpGPvYIs5zqAkAKj28YRojC5NAkOTa6skMpBVBEP+wkpbASSlrT/4559qtmTNVJzkKvfu1xExJyMWfLCUZlC/gnJGjYD7ln39M+bplZzuxv6sCxb0aR1zicI3UraI/iv7QSl2mXjPdvWE9tH2Qq6CVRDbQhac2BUWodph+Jc3RTMe8EyEOEGNIN4xWK3MIaDlATt7hz8G5LZtXl1XGCnyUBNh5CLs="
+
+script:
+    # Run the script if the last commit wasn't automated.
+    - if [[ "$(git --no-pager show -s --format='%cn' HEAD)" != "Doctr (Travis CI)" ]] ; then .github/travis-script.sh; fi
