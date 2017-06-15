@@ -1,1 +1,7 @@
 *~
+.DS_store
+.font-cache
+xkcd-script/generated
+*.afm
+fonts.conf
+
