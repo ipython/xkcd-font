@@ -23,9 +23,9 @@ It is far less uniform than ``xkcd``, and we think it is therefore more like a t
 The ``xkcd`` font was originally created by Randall, and was used in [xkcd "The Pace of Modern Life" (April 1st, 2013)](https://xkcd.com/1227/).
 It is considerably more uniform than ``xkcd Script``, which can result in more legibility at the cost being slightly less like the actual xkcd comic.
 
+![Sample of xkcd](xkcd/samples/ipsum.png)
 
 [Read more...](xkcd/README.md)
-
 
 ## License
 
