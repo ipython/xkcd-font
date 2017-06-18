@@ -28,6 +28,13 @@ def basic_font():
     font.fontname = 'xkcdScript'
     font.familyname = 'xkcd Script'
     font.fullname = 'xkcd-Script-Regular'
+    # Fontforge includes the date of building the font if we don't specify a TTF uniqueid,
+    # which makes the font non-reproducible.
+    font.sfnt_names = (('English (US)', 'UniqueID', 'xkcd Script'), )
+    font.copyright = 'Copyright (c) ipython/xkcd-font contributors, Creative Commons Attribution-NonCommercial 3.0 License'
+    # As per guidelines in https://fontforge.github.io/fontinfo.html, xuid is no longer needed.
+    font.uniqueid = -1
+
     font.em = 1024;
     font.ascent = 768;
     font.descent = 256;
@@ -272,7 +279,7 @@ c = font.createMappedChar(32)
 c.width = 256
 
 autokern(font)
-font_fname = '../font/xkcd-script.ttf'
+font_fname = '../font/xkcd-script.sfd'
 
 if not os.path.exists(os.path.dirname(font_fname)):
     os.makedirs(os.path.dirname(font_fname))
