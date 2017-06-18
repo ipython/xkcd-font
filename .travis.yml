@@ -7,6 +7,9 @@ python:
 
 env:
   global:
+    # ipython/xkcd-font's deploy key decryption key
+    - secure: "Vtrs5c3icHI44fiUHXsA6LzOSqrY0twujBoKfkaop9++NWg2EC2yEKqQ8qOHV/8Fq5Kp0NqT6oAMTnhseNlfeDR9d3yiTjEKRGimK86c2PsIQ7ZOd9f+Wfw3S55S9/rw2/lB7OqHjye1txq47O5w6NZVXcACKyRkiYqi1vYtwmQ="
+    # pelson/xkcd-font's deploy key decryption key
     - secure: "Co6RCJN/wr//nrHoN9j5VZfOSp5aKHMSutYv2bljN9C6zgE7jWdywaXeMTT8McXHWyjpwUDNrBcJ3VGm8XkPrC45Lpy0A7WLa9qcIBsxp00LnyHTtBRduMQs9GVGdvJxZN1k+46X34id4/+/EszSWK8BGxd5hLtx+WjY8PvOC/V6oTpnvgqDpfcOlErM73X93AFGnPyvATwCfWQ22hgEawvCmifSD6lxhA4dmrC4mnX0L3mobibWVbBqRQgBCdQN4sezDdqI9YHrJdiVvK7VrnOf02tG/Wct+4Z8+RwzonHyAryU3PJClZ1fikBq1NFA8tJOcfX/p05+A02MgAdVEjfzv4YYXJPTT548qOGfsKw7NLCh/wKudRrFp+iaw5Y9KGCkkUP9lrT3VUBAGNMDcIuvKZ8EbrAe3jkNNi5Rv+mn92rgNasEtyN3TLAtXLxhq1Jbpob/P7osPtJpGPvYIs5zqAkAKj28YRojC5NAkOTa6skMpBVBEP+wkpbASSlrT/4559qtmTNVJzkKvfu1xExJyMWfLCUZlC/gnJGjYD7ln39M+bplZzuxv6sCxb0aR1zicI3UraI/iv7QSl2mXjPdvWE9tH2Qq6CVRDbQhac2BUWodph+Jc3RTMe8EyEOEGNIN4xWK3MIaDlATt7hz8G5LZtXl1XGCnyUBNh5CLs="
 
 script:
