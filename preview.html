@@ -1,0 +1,197 @@
+<html>
+<head>
+
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<style>
+@font-face {
+	font-family: xkcd-script;
+	src: url('xkcd-script/font/xkcd-script.woff') format('woff');
+}
+
+.xkcd-script {
+	font-family: xkcd-script;
+	color: black;
+	line-height: 150%;
+}
+
+.container {
+	margins: 0px;
+	padding: 0px;
+}
+
+h3, .summary {
+	padding: 15px 0 0 15;
+	margin: 0;
+	font-size: 2em;
+	font-weight: bold;
+}
+
+.summary {
+	padding: 0 0 0 15;
+	font-size: 1.5em;
+    max-width: calc(100% - 150px);
+}
+
+.header {
+	width: 100%;
+	min-height: 10%;
+	background-color: #96A8C8;
+	display: inline-block;
+	padding-bottom: 1em;
+	overflow: hidden;
+}
+
+.font-input-container {
+	text-align: center;
+	width: 100%;
+	display: block;
+	flex-direction: column; 
+	display: flex;
+	background-color: yellow;
+}
+
+.font-input-container > #font-input {
+	resize: none;
+	white-space: pre;
+	font-size: 1.25em;
+	min-height: 65vh;
+	padding: 15px;
+	width: 100%;
+}
+
+.footer {
+	padding-top: 1em; 
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="container" class="container">
+
+
+	<a href="https://github.com/ipython/xkcd-font">
+		<img id="forkme-ribbon" style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+	<div>
+  <div class="header">
+	<h3 class="xkcd-script">The xkcd font</h3>
+	<p class="summary xkcd-script">brought to you by the <a href="https://github.com/ipython/xkcd-font">ipython/xkcd-font</a> team</p>
+  </div>
+  <div class="font-input-container">
+	<textarea id="font-input" class="xkcd-script" oninput="UpdateQuerystringFromInput();" spellcheck="false" autofocus>
+a b c d e f g h i j k l m n o p q r s t u v w x y z
+unauthoritativeness leatherbark intracolic microcheilia offsider
+glassweed rottolo albertite hermatorrhachis organometallic
+segregationist unevangelic campstool
+A B C D E F G H I J K L M N O P Q R S T U V W X Y Z I-pronoun
+UNAUTHORITATIVENESS LEATHERBARK INTRACOLIC MICROCHELIA
+OFFSIDER GLASSWEED ROTTOLO ALBERTITE HERMATORRHACHIS
+ORGANOMETALLIC SEGREGATIONIST UNEVANGELIC CAMPSTOOL
++ - x * ! ? # @ $ % ¦ & ^ _ - - - ( ) [ ] { } / \ < > ÷ ± √ Σ
+1 2 3 4 5 6 7 8 9 0 ∫ = ≈ ≠ ~ ≤ ≥ |> <| 🎂 . , ; : “HI” ’ ‘ CAN'T ' "
+É Ò Å Ü ≪ ≫ ‽ Ē Ő “ ”
+
+
+
+This is a live preview of xkcd-script - type whatever you like!
+	</textarea>
+  </div>
+  <div class="footer">
+	<form action="javascript: null">
+	<div class="form-group row">
+      <label for="share-url-input" class="col-xs-3 col-sm-2 col-form-label" style="padding-top: 5px;"><a href="#">Share URL:</a></label>
+      <div class="col-xs-9 col-sm-10">
+        <input type="text" class="form-control" id="share-url-input" readonly>
+      </div>
+    </div>
+	</form>
+  </div>
+
+
+
+</div>
+
+
+
+<script>
+var urlParams;
+
+function fetchUrlParams() {
+    var match,
+        pl     = /\+/g,  // Regex for replacing addition symbol with a space
+        search = /([^&=]+)=?([^&]*)/g,
+        decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+        query  = window.location.search.substring(1);
+
+    urlParams = {};
+    while (match = search.exec(query))
+       urlParams[decode(match[1])] = decode(match[2]);
+};
+
+
+function UpdateQueryString(key, value, url) {
+    if (!url) url = window.location.href;
+    var re = new RegExp("([?&])" + key + "=.*?(&|#|$)(.*)", "gi"),
+        hash;
+
+    if (re.test(url)) {
+        if (typeof value !== 'undefined' && value !== null)
+            return url.replace(re, '$1' + key + "=" + value + '$2$3');
+        else {
+            hash = url.split('#');
+            url = hash[0].replace(re, '$1$3').replace(/(&|\?)$/, '');
+            if (typeof hash[1] !== 'undefined' && hash[1] !== null) 
+                url += '#' + hash[1];
+            return url;
+        }
+    }
+    else {
+        if (typeof value !== 'undefined' && value !== null) {
+            var separator = url.indexOf('?') !== -1 ? '&' : '?';
+            hash = url.split('#');
+            url = hash[0] + separator + key + '=' + value;
+            if (typeof hash[1] !== 'undefined' && hash[1] !== null) 
+                url += '#' + hash[1];
+            return url;
+        }
+        else
+            return url;
+    }
+}
+
+function UpdateQuerystringFromInput() {
+	url = UpdateQueryString("text", encodeURIComponent(document.getElementById("font-input").value));
+	history.pushState({}, null, url);
+    document.getElementById("share-url-input").value = url
+}
+document.getElementById("share-url-input").value = window.location.href
+
+function renderText(content) {
+	if (typeof content !== "undefined" && content != "")
+	{
+		document.getElementById("font-input").value = content;
+	};
+}
+
+(window.onpopstate = function () {
+	fetchUrlParams();
+	renderText(urlParams["text"]);
+	move_ribbon();
+})();
+
+
+function move_ribbon () {
+	container = document.getElementById("container");
+	var rect = container.getBoundingClientRect();
+	ribbon = document.getElementById("forkme-ribbon");
+	ribbon.style.left = rect.right - 149;
+	ribbon.style.right = null;
+};
+window.onresize = move_ribbon;
+
+</script>
+</body>
+</html>
