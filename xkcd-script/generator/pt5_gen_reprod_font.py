@@ -49,5 +49,11 @@ then = time.mktime(then.timetuple())
 os.utime(sfd, (then, then))
 
 font = fontforge.open(sfd)
+
+# Fontforge includes the date of building the font if we don't specify a TTF uniqueid,
+# which makes the font non-reproducible.
+font.sfnt_names = (('English (US)', 'UniqueID', 'xkcd Script'), )
+font.xuid = "-1"
+
 font.generate(woff)
 font.generate(ttf)
