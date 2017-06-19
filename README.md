@@ -10,7 +10,7 @@ This repository contains two fonts, ``xkcd Script`` and ``xkcd``, each with thei
 
 ### Font: ``xkcd Script``
 
-``xkcd Script`` is a font derrived from a [handwriting sample](xkcd-script/generator/handwriting_minimal.png) provided by Randall.
+``xkcd Script`` is a font derived from a [handwriting sample](xkcd-script/generator/handwriting_minimal.png) provided by Randall.
 It is far less uniform than ``xkcd``, and we think it is therefore more like a true script font.
 
 ![Sample of xkcd-script](xkcd-script/samples/ipsum.png)
