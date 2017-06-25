@@ -15,7 +15,8 @@ It is far less uniform than ``xkcd``, and we think it is therefore more like a t
 
 ![Sample of xkcd-script](xkcd-script/samples/ipsum.png)
 
-[Read more...](xkcd-script/README.md)
+You can see the font as a [live preview](https://cdn.rawgit.com/ipython/xkcd-font/master/preview.html), or 
+for more information about the font and how it is constructed see the [xkcd-script/README](xkcd-script/README.md).
 
 
 ### Font: ``xkcd``
