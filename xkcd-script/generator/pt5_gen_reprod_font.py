@@ -17,6 +17,10 @@ otf = os.path.join(base, 'xkcd-script.otf')
 ttf = os.path.join(base, 'xkcd-script.ttf')
 woff = os.path.join(base, 'xkcd-script.woff')
 
+then_utc = datetime.datetime(2000, 1, 1, 0, 0)
+then_str = 'Sat Jan 1 00:00:00 2000'
+then_unix = calendar.timegm(then_utc.timetuple())
+
 if True:
     content = []
     with open(sfd, 'rb') as fh_in:
@@ -28,13 +32,13 @@ if True:
                 continue
 
             if line.startswith('%%CreationDate'):
-                line = '%%CreationDate: Sat Jan 1 00:00:00 2000\n'
+                line = '%%CreationDate: ' + then_str + '\n'
 
             if line.startswith('CreationTime:'):
-                line = 'CreationTime: 946684800\n'
+                line = 'CreationTime: ' + str(then_unix) + '\n'
 
             if line.startswith('ModificationTime:'):
-                line = 'ModificationTime: 946684800\n'
+                line = 'ModificationTime: ' + str(then_unix) + '\n'
 
             if 'Created with FontForge (http://fontforge.org)' in line:
                 if line.startswith('UComments:'):
@@ -54,9 +58,7 @@ if True:
 os.remove(sfd)
 shutil.move(newsfd, sfd)
 
-then = datetime.datetime(2000, 1, 1, 0, 0)
-then = calendar.timegm(then.timetuple())
-os.utime(sfd, (then, then))
+os.utime(sfd, (then_unix, then_unix))
 
 font = fontforge.open(sfd)
 
