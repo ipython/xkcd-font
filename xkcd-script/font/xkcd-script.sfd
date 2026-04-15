@@ -1369,7 +1369,7 @@ SplineSet
  85 527 109 534 111 532 c 0
  112 532 125 533 141 536 c 0
 EndSplineSet
-Kerns2: 117 -197 "kern" 80 -49 "kern" 79 -19 "kern" 78 -59 "kern" 77 -85 "kern" 76 -15 "kern" 75 -54 "kern" 74 -12 "kern" 73 15 "kern" 72 -38 "kern" 71 -41 "kern" 69 -104 "kern" 68 -127 "kern" 67 -97 "kern" 66 -31 "kern" 65 -59 "kern" 63 20 "kern" 62 -113 "kern" 61 11 "kern" 60 22 "kern" 58 -93 "kern" 56 11 "kern" 55 -38 "kern" 54 14 "kern" 53 -33 "kern" 52 -119 "kern" 51 -40 "kern" 50 -22 "kern" 49 -50 "kern" 48 -82 "kern" 47 18 "kern" 46 -115 "kern" 45 -16 "kern" 44 -81 "kern" 43 -12 "kern" 41 -16 "kern" 40 -18 "kern" 39 13 "kern" 38 -69 "kern" 37 -74 "kern" 35 -90 "kern" 34 22 "kern" 30 -48 "kern" 29 22 "kern" 28 -68 "kern" 26 18 "kern" 25 -277 "kern" 24 -69 "kern" 23 -22 "kern" 22 -240 "kern" 21 -152 "kern" 20 -68 "kern" 19 -91 "kern" 18 -68 "kern" 17 14 "kern" 16 -100 "kern" 15 16 "kern" 14 -63 "kern" 13 -114 "kern" 12 -44 "kern" 11 -31 "kern" 10 -139 "kern" 9 -69 "kern" 7 -32 "kern" 6 14 "kern" 5 -16 "kern" 4 19 "kern" 3 14 "kern" 2 -10 "kern" 1 23 "kern" 0 -38 "kern"
+Kerns2: 117 -197 "kern" 80 -49 "kern" 79 -19 "kern" 78 -59 "kern" 77 -85 "kern" 76 -15 "kern" 75 -54 "kern" 74 -12 "kern" 73 15 "kern" 72 -38 "kern" 71 -41 "kern" 69 -104 "kern" 68 -127 "kern" 67 -97 "kern" 66 -31 "kern" 65 -59 "kern" 63 20 "kern" 62 -113 "kern" 61 11 "kern" 60 22 "kern" 58 -93 "kern" 57 21 "kern" 56 11 "kern" 55 -38 "kern" 54 14 "kern" 53 -33 "kern" 52 -119 "kern" 51 -40 "kern" 50 -22 "kern" 49 -50 "kern" 48 -82 "kern" 47 18 "kern" 46 -115 "kern" 45 -16 "kern" 44 -81 "kern" 43 -12 "kern" 41 -16 "kern" 40 -18 "kern" 39 13 "kern" 38 -69 "kern" 37 -74 "kern" 35 -90 "kern" 34 22 "kern" 30 -48 "kern" 29 22 "kern" 28 -68 "kern" 26 18 "kern" 25 -277 "kern" 24 -69 "kern" 23 -22 "kern" 22 -240 "kern" 21 -152 "kern" 20 -68 "kern" 19 -91 "kern" 18 -68 "kern" 17 14 "kern" 16 -100 "kern" 15 16 "kern" 14 -63 "kern" 13 -114 "kern" 12 -44 "kern" 11 -31 "kern" 10 -139 "kern" 9 -69 "kern" 7 -32 "kern" 6 14 "kern" 5 -16 "kern" 4 19 "kern" 3 14 "kern" 2 -10 "kern" 1 23 "kern" 0 -38 "kern"
 EndChar
 
 StartChar: quotedblright
@@ -1480,7 +1480,7 @@ SplineSet
  367 277 362 345 348 393 c 0
  339 422 333 429 314 431 c 0
 EndSplineSet
-Kerns2: 25 -83 "kern" 22 -119 "kern"
+Kerns2: 117 -21 "kern" 116 -13 "kern" 80 -105 "kern" 79 -39 "kern" 78 -10 "kern" 74 -22 "kern" 73 -25 "kern" 71 -127 "kern" 70 -23 "kern" 69 -11 "kern" 68 -11 "kern" 66 -46 "kern" 65 -34 "kern" 64 -13 "kern" 63 -23 "kern" 62 -11 "kern" 61 -27 "kern" 60 -30 "kern" 59 -15 "kern" 58 -10 "kern" 57 -73 "kern" 56 -48 "kern" 55 -109 "kern" 54 -60 "kern" 53 -36 "kern" 52 -46 "kern" 50 -32 "kern" 49 -140 "kern" 48 -21 "kern" 47 -16 "kern" 46 -10 "kern" 45 -29 "kern" 44 -10 "kern" 43 -11 "kern" 42 -10 "kern" 41 -10 "kern" 40 -30 "kern" 39 -20 "kern" 38 -14 "kern" 37 -14 "kern" 35 -12 "kern" 34 -10 "kern" 30 -11 "kern" 29 -43 "kern" 28 -13 "kern" 26 -11 "kern" 25 -243 "kern" 24 -37 "kern" 23 -11 "kern" 22 -134 "kern" 21 -27 "kern" 20 -15 "kern" 19 -16 "kern" 18 -15 "kern" 17 -23 "kern" 16 -59 "kern" 15 -58 "kern" 13 -20 "kern" 12 -11 "kern" 11 -18 "kern" 10 -35 "kern" 9 -13 "kern" 7 -20 "kern" 6 -26 "kern" 5 -15 "kern" 3 -14 "kern" 2 -10 "kern" 1 -21 "kern" 0 -16 "kern"
 EndChar
 
 StartChar: Aring
@@ -1864,7 +1864,7 @@ SplineSet
  117 589 135 590 295 597 c 0
  345 599 388 601 390 601 c 0
 EndSplineSet
-Kerns2: 117 -236 "kern" 116 -39 "kern" 80 -150 "kern" 79 -54 "kern" 78 -78 "kern" 77 -129 "kern" 76 -37 "kern" 75 -110 "kern" 74 -39 "kern" 72 -91 "kern" 71 -92 "kern" 70 -12 "kern" 69 -154 "kern" 68 -194 "kern" 67 -148 "kern" 66 -78 "kern" 65 -100 "kern" 64 -18 "kern" 63 18 "kern" 62 -170 "kern" 60 26 "kern" 59 -18 "kern" 58 -126 "kern" 55 -96 "kern" 53 -87 "kern" 52 -220 "kern" 51 -66 "kern" 50 -57 "kern" 49 -79 "kern" 48 -137 "kern" 47 13 "kern" 46 -164 "kern" 45 -41 "kern" 44 -110 "kern" 43 -41 "kern" 41 -34 "kern" 40 -58 "kern" 38 -95 "kern" 37 -100 "kern" 35 -111 "kern" 34 23 "kern" 30 -78 "kern" 29 26 "kern" 28 -81 "kern" 26 23 "kern" 25 -315 "kern" 24 -117 "kern" 23 -65 "kern" 22 -268 "kern" 21 -176 "kern" 20 -98 "kern" 19 -136 "kern" 18 -98 "kern" 17 10 "kern" 16 -121 "kern" 14 -93 "kern" 13 -124 "kern" 12 -66 "kern" 11 -74 "kern" 10 -167 "kern" 9 -95 "kern" 7 -55 "kern" 6 16 "kern" 5 -32 "kern" 4 15 "kern" 2 -21 "kern" 1 23 "kern" 0 -60 "kern"
+Kerns2: 117 -236 "kern" 116 -39 "kern" 80 -150 "kern" 79 -54 "kern" 78 -78 "kern" 77 -129 "kern" 76 -37 "kern" 75 -110 "kern" 74 -39 "kern" 72 -91 "kern" 71 -92 "kern" 70 -12 "kern" 69 -154 "kern" 68 -194 "kern" 67 -148 "kern" 66 -78 "kern" 65 -100 "kern" 64 -18 "kern" 63 18 "kern" 62 -170 "kern" 60 26 "kern" 59 -18 "kern" 58 -126 "kern" 57 13 "kern" 55 -96 "kern" 53 -87 "kern" 52 -220 "kern" 51 -66 "kern" 50 -57 "kern" 49 -79 "kern" 48 -137 "kern" 47 13 "kern" 46 -164 "kern" 45 -41 "kern" 44 -110 "kern" 43 -41 "kern" 41 -34 "kern" 40 -58 "kern" 38 -95 "kern" 37 -100 "kern" 35 -111 "kern" 34 23 "kern" 30 -78 "kern" 29 26 "kern" 28 -81 "kern" 26 23 "kern" 25 -315 "kern" 24 -117 "kern" 23 -65 "kern" 22 -268 "kern" 21 -176 "kern" 20 -98 "kern" 19 -136 "kern" 18 -98 "kern" 17 10 "kern" 16 -121 "kern" 14 -93 "kern" 13 -124 "kern" 12 -66 "kern" 11 -74 "kern" 10 -167 "kern" 9 -95 "kern" 7 -55 "kern" 6 16 "kern" 5 -32 "kern" 4 15 "kern" 2 -21 "kern" 1 23 "kern" 0 -60 "kern"
 EndChar
 
 StartChar: Ohungarumlaut
@@ -1943,7 +1943,7 @@ SplineSet
  417 311 400 418 383 457 c 0
  377 470 359 488 349 492 c 0
 EndSplineSet
-Kerns2: 25 -85 "kern" 22 -121 "kern"
+Kerns2: 117 -22 "kern" 116 -15 "kern" 80 -96 "kern" 79 -43 "kern" 78 -11 "kern" 76 -11 "kern" 74 -25 "kern" 73 -31 "kern" 71 -109 "kern" 70 -28 "kern" 69 -11 "kern" 68 -12 "kern" 67 -10 "kern" 66 -48 "kern" 65 -63 "kern" 64 -15 "kern" 63 -28 "kern" 62 -12 "kern" 61 -34 "kern" 60 -35 "kern" 59 -18 "kern" 58 -11 "kern" 57 -125 "kern" 56 -72 "kern" 55 -93 "kern" 54 -87 "kern" 53 -38 "kern" 52 -49 "kern" 50 -34 "kern" 49 -116 "kern" 48 -27 "kern" 47 -19 "kern" 46 -12 "kern" 45 -33 "kern" 44 -10 "kern" 43 -13 "kern" 42 -12 "kern" 41 -12 "kern" 40 -33 "kern" 39 -27 "kern" 38 -14 "kern" 37 -15 "kern" 35 -13 "kern" 34 -13 "kern" 30 -14 "kern" 29 -56 "kern" 28 -14 "kern" 26 -13 "kern" 25 -245 "kern" 24 -39 "kern" 23 -13 "kern" 22 -136 "kern" 21 -37 "kern" 20 -17 "kern" 19 -19 "kern" 18 -17 "kern" 17 -33 "kern" 16 -60 "kern" 15 -85 "kern" 13 -25 "kern" 12 -12 "kern" 11 -23 "kern" 10 -45 "kern" 9 -16 "kern" 7 -24 "kern" 6 -28 "kern" 5 -16 "kern" 3 -16 "kern" 2 -11 "kern" 1 -25 "kern" 0 -19 "kern"
 EndChar
 
 StartChar: quotedblleft
@@ -2414,7 +2414,7 @@ SplineSet
  360 409 317 472 270 487 c 0
  253 492 246 493 239 488 c 0
 EndSplineSet
-Kerns2: 25 -93 "kern" 22 -135 "kern"
+Kerns2: 117 -22 "kern" 116 -17 "kern" 80 -105 "kern" 79 -46 "kern" 78 -18 "kern" 77 -15 "kern" 76 -15 "kern" 75 -13 "kern" 74 -25 "kern" 73 -37 "kern" 71 -132 "kern" 70 -38 "kern" 69 -19 "kern" 68 -16 "kern" 67 -12 "kern" 66 -48 "kern" 65 -134 "kern" 64 -12 "kern" 63 -36 "kern" 62 -12 "kern" 61 -44 "kern" 60 -40 "kern" 59 -23 "kern" 58 -19 "kern" 57 -158 "kern" 56 -110 "kern" 55 -102 "kern" 54 -112 "kern" 53 -36 "kern" 52 -38 "kern" 51 -11 "kern" 50 -31 "kern" 49 -140 "kern" 48 -16 "kern" 47 -22 "kern" 46 -11 "kern" 45 -36 "kern" 44 -13 "kern" 41 -15 "kern" 40 -30 "kern" 39 -44 "kern" 38 -32 "kern" 37 -34 "kern" 35 -19 "kern" 34 -10 "kern" 29 -71 "kern" 28 -21 "kern" 26 -14 "kern" 25 -253 "kern" 24 -39 "kern" 23 -16 "kern" 22 -150 "kern" 21 -18 "kern" 20 -37 "kern" 19 -42 "kern" 18 -38 "kern" 17 -14 "kern" 16 -71 "kern" 15 -95 "kern" 13 -13 "kern" 12 -24 "kern" 11 -27 "kern" 10 -21 "kern" 9 -13 "kern" 8 -17 "kern" 7 -52 "kern" 6 -34 "kern" 5 -39 "kern" 3 -28 "kern" 2 -14 "kern" 1 -31 "kern" 0 -44 "kern"
 EndChar
 
 StartChar: P
@@ -2681,7 +2681,7 @@ SplineSet
  23 563 29 570 54 572 c 0
  91 574 249 620 397 622 c 2
 EndSplineSet
-Kerns2: 117 -178 "kern" 116 45 "kern" 80 -163 "kern" 79 -33 "kern" 78 -119 "kern" 77 -120 "kern" 76 -111 "kern" 75 -74 "kern" 73 -77 "kern" 72 -14 "kern" 71 -16 "kern" 70 -86 "kern" 69 -128 "kern" 68 -142 "kern" 67 -110 "kern" 66 -35 "kern" 65 -201 "kern" 63 -124 "kern" 62 -125 "kern" 61 -112 "kern" 60 -137 "kern" 59 -17 "kern" 58 -122 "kern" 56 -141 "kern" 55 -14 "kern" 54 22 "kern" 53 -146 "kern" 52 -178 "kern" 51 -79 "kern" 50 -86 "kern" 49 54 "kern" 48 -120 "kern" 47 -34 "kern" 46 -121 "kern" 45 -46 "kern" 44 -97 "kern" 43 48 "kern" 42 -128 "kern" 41 -67 "kern" 40 23 "kern" 39 -130 "kern" 38 -143 "kern" 37 -147 "kern" 35 -127 "kern" 34 45 "kern" 30 -48 "kern" 29 -137 "kern" 28 -143 "kern" 26 -106 "kern" 25 -336 "kern" 24 -150 "kern" 23 41 "kern" 22 -245 "kern" 21 -175 "kern" 20 -148 "kern" 19 -172 "kern" 18 -149 "kern" 17 -176 "kern" 16 -170 "kern" 15 -189 "kern" 14 -137 "kern" 13 -154 "kern" 12 -135 "kern" 11 12 "kern" 10 -126 "kern" 9 -149 "kern" 8 -133 "kern" 7 -148 "kern" 6 -144 "kern" 5 -141 "kern" 4 -129 "kern" 3 -136 "kern" 2 31 "kern" 1 -133 "kern" 0 -145 "kern"
+Kerns2: 117 -178 "kern" 116 45 "kern" 80 -163 "kern" 79 -33 "kern" 78 -119 "kern" 77 -120 "kern" 76 -111 "kern" 75 -74 "kern" 73 -77 "kern" 72 -14 "kern" 71 -16 "kern" 70 -86 "kern" 69 -128 "kern" 68 -142 "kern" 67 -110 "kern" 66 -35 "kern" 65 -201 "kern" 63 -124 "kern" 62 -125 "kern" 61 -112 "kern" 60 -137 "kern" 59 -17 "kern" 58 -122 "kern" 57 -28 "kern" 56 -141 "kern" 55 -14 "kern" 54 22 "kern" 53 -146 "kern" 52 -178 "kern" 51 -79 "kern" 50 -86 "kern" 49 54 "kern" 48 -120 "kern" 47 -34 "kern" 46 -121 "kern" 45 -46 "kern" 44 -97 "kern" 43 48 "kern" 42 -128 "kern" 41 -67 "kern" 40 23 "kern" 39 -130 "kern" 38 -143 "kern" 37 -147 "kern" 35 -127 "kern" 34 45 "kern" 30 -48 "kern" 29 -137 "kern" 28 -143 "kern" 26 -106 "kern" 25 -336 "kern" 24 -150 "kern" 23 41 "kern" 22 -245 "kern" 21 -175 "kern" 20 -148 "kern" 19 -172 "kern" 18 -149 "kern" 17 -176 "kern" 16 -170 "kern" 15 -189 "kern" 14 -137 "kern" 13 -154 "kern" 12 -135 "kern" 11 12 "kern" 10 -126 "kern" 9 -149 "kern" 8 -133 "kern" 7 -148 "kern" 6 -144 "kern" 5 -141 "kern" 4 -129 "kern" 3 -136 "kern" 2 31 "kern" 1 -133 "kern" 0 -145 "kern"
 EndChar
 
 StartChar: B
@@ -3061,6 +3061,7 @@ SplineSet
  133 10 143 18 125 14 c 0
  119 13 113 12 112 12 c 0
 EndSplineSet
+Kerns2: 25 -168 "kern" 22 -224 "kern"
 Ligature2: "liga" I hyphen p r o n o u n
 EndChar
 
@@ -3101,7 +3102,7 @@ SplineSet
  30 139 17 162 20 229 c 0
  20 231 21 242 21 252 c 0
 EndSplineSet
-Kerns2: 117 -221 "kern" 116 -16 "kern" 80 -119 "kern" 79 -55 "kern" 78 -25 "kern" 77 -25 "kern" 76 -13 "kern" 75 -22 "kern" 74 -38 "kern" 73 -27 "kern" 72 -25 "kern" 71 -90 "kern" 70 -20 "kern" 69 -31 "kern" 68 -62 "kern" 67 -58 "kern" 66 -67 "kern" 65 -14 "kern" 64 -28 "kern" 63 -24 "kern" 62 -71 "kern" 61 -27 "kern" 60 -36 "kern" 59 -16 "kern" 58 -30 "kern" 56 -50 "kern" 55 -91 "kern" 54 -67 "kern" 53 -65 "kern" 52 -170 "kern" 51 -29 "kern" 50 -55 "kern" 49 -92 "kern" 48 -38 "kern" 47 -18 "kern" 46 -82 "kern" 45 -45 "kern" 44 -43 "kern" 43 -29 "kern" 42 -29 "kern" 41 -13 "kern" 40 -50 "kern" 39 -14 "kern" 38 -13 "kern" 37 -14 "kern" 35 -32 "kern" 34 -15 "kern" 30 -42 "kern" 29 -40 "kern" 28 -17 "kern" 26 -13 "kern" 25 -319 "kern" 24 -61 "kern" 23 -12 "kern" 22 -182 "kern" 21 -186 "kern" 20 -11 "kern" 18 -10 "kern" 17 -84 "kern" 16 -79 "kern" 15 -74 "kern" 14 -22 "kern" 13 -101 "kern" 12 -13 "kern" 11 -16 "kern" 10 -133 "kern" 9 -22 "kern" 8 -14 "kern" 6 -31 "kern" 2 -26 "kern" 1 -20 "kern"
+Kerns2: 117 -221 "kern" 116 -16 "kern" 80 -119 "kern" 79 -55 "kern" 78 -25 "kern" 77 -25 "kern" 76 -13 "kern" 75 -22 "kern" 74 -38 "kern" 73 -27 "kern" 72 -25 "kern" 71 -90 "kern" 70 -20 "kern" 69 -31 "kern" 68 -62 "kern" 67 -58 "kern" 66 -67 "kern" 65 -14 "kern" 64 -28 "kern" 63 -24 "kern" 62 -71 "kern" 61 -27 "kern" 60 -36 "kern" 59 -16 "kern" 58 -30 "kern" 57 -109 "kern" 56 -50 "kern" 55 -91 "kern" 54 -67 "kern" 53 -65 "kern" 52 -170 "kern" 51 -29 "kern" 50 -55 "kern" 49 -92 "kern" 48 -38 "kern" 47 -18 "kern" 46 -82 "kern" 45 -45 "kern" 44 -43 "kern" 43 -29 "kern" 42 -29 "kern" 41 -13 "kern" 40 -50 "kern" 39 -14 "kern" 38 -13 "kern" 37 -14 "kern" 35 -32 "kern" 34 -15 "kern" 30 -42 "kern" 29 -40 "kern" 28 -17 "kern" 26 -13 "kern" 25 -319 "kern" 24 -61 "kern" 23 -12 "kern" 22 -182 "kern" 21 -186 "kern" 20 -11 "kern" 18 -10 "kern" 17 -84 "kern" 16 -79 "kern" 15 -74 "kern" 14 -22 "kern" 13 -101 "kern" 12 -13 "kern" 11 -16 "kern" 10 -133 "kern" 9 -22 "kern" 8 -14 "kern" 6 -31 "kern" 2 -26 "kern" 1 -20 "kern"
 EndChar
 
 StartChar: D
@@ -3211,7 +3212,7 @@ SplineSet
  428 54 429 35 387 32 c 0
  301 26 158 -26 107 -26 c 0
 EndSplineSet
-Kerns2: 117 -170 "kern" 116 17 "kern" 80 -22 "kern" 79 10 "kern" 78 -43 "kern" 77 -55 "kern" 76 10 "kern" 75 -19 "kern" 74 20 "kern" 73 11 "kern" 71 24 "kern" 70 10 "kern" 69 -68 "kern" 68 -93 "kern" 67 -48 "kern" 66 15 "kern" 65 -18 "kern" 64 20 "kern" 63 12 "kern" 62 -88 "kern" 61 12 "kern" 59 15 "kern" 58 -65 "kern" 56 15 "kern" 55 23 "kern" 54 10 "kern" 53 11 "kern" 52 -167 "kern" 51 -21 "kern" 50 13 "kern" 49 25 "kern" 48 -58 "kern" 47 19 "kern" 46 -89 "kern" 45 11 "kern" 44 -61 "kern" 43 23 "kern" 42 10 "kern" 40 21 "kern" 39 12 "kern" 38 -38 "kern" 37 -41 "kern" 35 -59 "kern" 34 26 "kern" 28 -40 "kern" 26 12 "kern" 25 -285 "kern" 24 -57 "kern" 23 15 "kern" 22 -209 "kern" 21 -136 "kern" 20 -32 "kern" 19 -35 "kern" 18 -32 "kern" 16 -82 "kern" 15 12 "kern" 14 -34 "kern" 13 -103 "kern" 12 -24 "kern" 10 -112 "kern" 9 -36 "kern" 7 -11 "kern" 4 14 "kern" 3 12 "kern" 1 13 "kern" 0 -16 "kern"
+Kerns2: 117 -170 "kern" 116 17 "kern" 80 -22 "kern" 79 10 "kern" 78 -43 "kern" 77 -55 "kern" 76 10 "kern" 75 -19 "kern" 74 20 "kern" 73 11 "kern" 71 24 "kern" 70 10 "kern" 69 -68 "kern" 68 -93 "kern" 67 -48 "kern" 66 15 "kern" 65 -18 "kern" 64 20 "kern" 63 12 "kern" 62 -88 "kern" 61 12 "kern" 59 15 "kern" 58 -65 "kern" 57 11 "kern" 56 15 "kern" 55 23 "kern" 54 10 "kern" 53 11 "kern" 52 -167 "kern" 51 -21 "kern" 50 13 "kern" 49 25 "kern" 48 -58 "kern" 47 19 "kern" 46 -89 "kern" 45 11 "kern" 44 -61 "kern" 43 23 "kern" 42 10 "kern" 40 21 "kern" 39 12 "kern" 38 -38 "kern" 37 -41 "kern" 35 -59 "kern" 34 26 "kern" 28 -40 "kern" 26 12 "kern" 25 -285 "kern" 24 -57 "kern" 23 15 "kern" 22 -209 "kern" 21 -136 "kern" 20 -32 "kern" 19 -35 "kern" 18 -32 "kern" 16 -82 "kern" 15 12 "kern" 14 -34 "kern" 13 -103 "kern" 12 -24 "kern" 10 -112 "kern" 9 -36 "kern" 7 -11 "kern" 4 14 "kern" 3 12 "kern" 1 13 "kern" 0 -16 "kern"
 EndChar
 
 StartChar: F
@@ -3250,7 +3251,7 @@ SplineSet
  76 491 87 511 102 542 c 0
  108 556 137 575 158 579 c 0
 EndSplineSet
-Kerns2: 117 -158 "kern" 116 37 "kern" 80 28 "kern" 79 46 "kern" 78 -100 "kern" 77 -86 "kern" 76 41 "kern" 74 55 "kern" 73 -10 "kern" 72 40 "kern" 71 59 "kern" 69 -105 "kern" 68 -86 "kern" 67 -16 "kern" 66 52 "kern" 65 -138 "kern" 64 54 "kern" 62 -79 "kern" 61 -75 "kern" 60 -14 "kern" 59 26 "kern" 58 -106 "kern" 56 16 "kern" 55 57 "kern" 53 50 "kern" 52 -194 "kern" 50 50 "kern" 49 57 "kern" 48 -39 "kern" 47 40 "kern" 46 -85 "kern" 45 47 "kern" 44 -82 "kern" 43 57 "kern" 42 44 "kern" 41 23 "kern" 40 56 "kern" 39 -124 "kern" 38 -181 "kern" 37 -185 "kern" 35 -97 "kern" 34 57 "kern" 30 28 "kern" 29 -176 "kern" 28 -126 "kern" 25 -296 "kern" 24 -154 "kern" 23 43 "kern" 22 -302 "kern" 21 -163 "kern" 20 -190 "kern" 19 -211 "kern" 18 -194 "kern" 17 -297 "kern" 16 -211 "kern" 15 -293 "kern" 14 -169 "kern" 13 -189 "kern" 12 -171 "kern" 11 19 "kern" 10 -127 "kern" 9 -178 "kern" 8 -165 "kern" 7 -203 "kern" 6 -185 "kern" 5 -187 "kern" 4 -163 "kern" 3 -182 "kern" 2 29 "kern" 1 -13 "kern" 0 -194 "kern"
+Kerns2: 117 -158 "kern" 116 37 "kern" 80 28 "kern" 79 46 "kern" 78 -100 "kern" 77 -86 "kern" 76 41 "kern" 74 55 "kern" 73 -10 "kern" 72 40 "kern" 71 59 "kern" 69 -105 "kern" 68 -86 "kern" 67 -16 "kern" 66 52 "kern" 65 -138 "kern" 64 54 "kern" 62 -79 "kern" 61 -75 "kern" 60 -14 "kern" 59 26 "kern" 58 -106 "kern" 57 -29 "kern" 56 16 "kern" 55 57 "kern" 53 50 "kern" 52 -194 "kern" 50 50 "kern" 49 57 "kern" 48 -39 "kern" 47 40 "kern" 46 -85 "kern" 45 47 "kern" 44 -82 "kern" 43 57 "kern" 42 44 "kern" 41 23 "kern" 40 56 "kern" 39 -124 "kern" 38 -181 "kern" 37 -185 "kern" 35 -97 "kern" 34 57 "kern" 30 28 "kern" 29 -176 "kern" 28 -126 "kern" 25 -296 "kern" 24 -154 "kern" 23 43 "kern" 22 -302 "kern" 21 -163 "kern" 20 -190 "kern" 19 -211 "kern" 18 -194 "kern" 17 -297 "kern" 16 -211 "kern" 15 -293 "kern" 14 -169 "kern" 13 -189 "kern" 12 -171 "kern" 11 19 "kern" 10 -127 "kern" 9 -178 "kern" 8 -165 "kern" 7 -203 "kern" 6 -185 "kern" 5 -187 "kern" 4 -163 "kern" 3 -182 "kern" 2 29 "kern" 1 -13 "kern" 0 -194 "kern"
 EndChar
 
 StartChar: G
@@ -3602,7 +3603,7 @@ SplineSet
  551 463 548 467 547 467 c 0
  546 467 543 466 541 465 c 0
 EndSplineSet
-Kerns2: 25 -98 "kern" 22 -133 "kern"
+Kerns2: 117 -18 "kern" 116 -18 "kern" 80 -121 "kern" 79 -48 "kern" 78 -15 "kern" 77 -13 "kern" 76 -15 "kern" 75 -12 "kern" 74 -27 "kern" 73 -38 "kern" 72 -10 "kern" 71 -133 "kern" 70 -38 "kern" 69 -17 "kern" 68 -14 "kern" 67 -11 "kern" 66 -52 "kern" 65 -170 "kern" 64 -15 "kern" 63 -36 "kern" 62 -11 "kern" 61 -45 "kern" 60 -41 "kern" 59 -24 "kern" 58 -17 "kern" 57 -176 "kern" 56 -125 "kern" 55 -110 "kern" 54 -123 "kern" 53 -39 "kern" 52 -49 "kern" 51 -11 "kern" 50 -35 "kern" 49 -139 "kern" 48 -26 "kern" 47 -24 "kern" 46 -11 "kern" 45 -37 "kern" 44 -12 "kern" 43 -12 "kern" 42 -11 "kern" 41 -15 "kern" 40 -35 "kern" 39 -43 "kern" 38 -29 "kern" 37 -31 "kern" 35 -16 "kern" 34 -12 "kern" 30 -11 "kern" 29 -71 "kern" 28 -19 "kern" 26 -15 "kern" 25 -258 "kern" 24 -48 "kern" 23 -17 "kern" 22 -148 "kern" 21 -23 "kern" 20 -34 "kern" 19 -41 "kern" 18 -35 "kern" 17 -20 "kern" 16 -69 "kern" 15 -110 "kern" 13 -19 "kern" 12 -21 "kern" 11 -28 "kern" 10 -35 "kern" 9 -12 "kern" 8 -13 "kern" 7 -51 "kern" 6 -31 "kern" 5 -36 "kern" 3 -26 "kern" 2 -13 "kern" 1 -31 "kern" 0 -42 "kern"
 Ligature2: "liga" C O
 EndChar
 
@@ -3925,7 +3926,7 @@ SplineSet
  323 317 321 314 317 309 c 0
  311 302 310 302 296 302 c 0
 EndSplineSet
-Kerns2: 25 -188 "kern" 22 -229 "kern"
+Kerns2: 117 -167 "kern" 116 11 "kern" 80 -80 "kern" 78 -49 "kern" 77 -59 "kern" 75 -28 "kern" 71 17 "kern" 69 -70 "kern" 68 -101 "kern" 67 -51 "kern" 65 -24 "kern" 64 12 "kern" 62 -93 "kern" 60 -22 "kern" 58 -68 "kern" 55 15 "kern" 53 -23 "kern" 52 -158 "kern" 51 -31 "kern" 50 -13 "kern" 49 21 "kern" 48 -67 "kern" 46 -94 "kern" 44 -64 "kern" 43 18 "kern" 40 13 "kern" 38 -42 "kern" 37 -45 "kern" 35 -63 "kern" 34 22 "kern" 30 -20 "kern" 29 -12 "kern" 28 -43 "kern" 25 -308 "kern" 24 -63 "kern" 23 11 "kern" 22 -204 "kern" 21 -129 "kern" 20 -36 "kern" 19 -39 "kern" 18 -36 "kern" 17 -18 "kern" 16 -84 "kern" 14 -38 "kern" 13 -96 "kern" 12 -29 "kern" 10 -111 "kern" 9 -38 "kern" 8 -17 "kern" 7 -17 "kern" 6 -16 "kern" 0 -22 "kern"
 Ligature2: "liga" E E
 EndChar
 
@@ -3983,7 +3984,7 @@ SplineSet
  442 588 626 596 654 601 c 0
  689 607 808 620 817 620 c 0
 EndSplineSet
-Kerns2: 117 -245 "kern" 116 43 "kern" 80 -200 "kern" 79 -43 "kern" 78 -171 "kern" 77 -175 "kern" 76 -161 "kern" 75 -118 "kern" 73 -99 "kern" 72 -33 "kern" 71 -39 "kern" 70 -119 "kern" 69 -187 "kern" 68 -211 "kern" 67 -150 "kern" 66 -41 "kern" 65 -268 "kern" 64 -11 "kern" 63 -179 "kern" 62 -179 "kern" 61 -156 "kern" 60 -211 "kern" 59 -25 "kern" 58 -172 "kern" 56 -179 "kern" 55 -32 "kern" 54 18 "kern" 53 -211 "kern" 52 -270 "kern" 51 -113 "kern" 50 -114 "kern" 49 46 "kern" 48 -161 "kern" 47 -50 "kern" 46 -169 "kern" 45 -59 "kern" 44 -148 "kern" 43 42 "kern" 42 -200 "kern" 41 -101 "kern" 39 -184 "kern" 38 -254 "kern" 37 -258 "kern" 35 -184 "kern" 34 30 "kern" 30 -77 "kern" 29 -186 "kern" 28 -230 "kern" 26 -158 "kern" 25 -428 "kern" 24 -248 "kern" 23 39 "kern" 22 -356 "kern" 21 -230 "kern" 20 -258 "kern" 19 -268 "kern" 18 -256 "kern" 17 -283 "kern" 16 -281 "kern" 15 -292 "kern" 14 -250 "kern" 13 -259 "kern" 12 -241 "kern" 11 12 "kern" 10 -159 "kern" 9 -255 "kern" 8 -239 "kern" 7 -262 "kern" 6 -247 "kern" 5 -252 "kern" 4 -234 "kern" 3 -241 "kern" 2 30 "kern" 1 -215 "kern" 0 -258 "kern"
+Kerns2: 117 -245 "kern" 116 43 "kern" 80 -200 "kern" 79 -43 "kern" 78 -171 "kern" 77 -175 "kern" 76 -161 "kern" 75 -118 "kern" 73 -99 "kern" 72 -33 "kern" 71 -39 "kern" 70 -119 "kern" 69 -187 "kern" 68 -211 "kern" 67 -150 "kern" 66 -41 "kern" 65 -268 "kern" 64 -11 "kern" 63 -179 "kern" 62 -179 "kern" 61 -156 "kern" 60 -211 "kern" 59 -25 "kern" 58 -172 "kern" 57 -35 "kern" 56 -179 "kern" 55 -32 "kern" 54 18 "kern" 53 -211 "kern" 52 -270 "kern" 51 -113 "kern" 50 -114 "kern" 49 46 "kern" 48 -161 "kern" 47 -50 "kern" 46 -169 "kern" 45 -59 "kern" 44 -148 "kern" 43 42 "kern" 42 -200 "kern" 41 -101 "kern" 39 -184 "kern" 38 -254 "kern" 37 -258 "kern" 35 -184 "kern" 34 30 "kern" 30 -77 "kern" 29 -186 "kern" 28 -230 "kern" 26 -158 "kern" 25 -428 "kern" 24 -248 "kern" 23 39 "kern" 22 -356 "kern" 21 -230 "kern" 20 -258 "kern" 19 -268 "kern" 18 -256 "kern" 17 -283 "kern" 16 -281 "kern" 15 -292 "kern" 14 -250 "kern" 13 -259 "kern" 12 -241 "kern" 11 12 "kern" 10 -159 "kern" 9 -255 "kern" 8 -239 "kern" 7 -262 "kern" 6 -247 "kern" 5 -252 "kern" 4 -234 "kern" 3 -241 "kern" 2 30 "kern" 1 -215 "kern" 0 -258 "kern"
 Ligature2: "liga" T T
 EndChar
 
@@ -4715,7 +4716,7 @@ SplineSet
  464 409 462 415 460 420 c 0
  457 428 456 429 451 429 c 0
 EndSplineSet
-Kerns2: 117 71 "kern" 116 73 "kern" 80 -60 "kern" 79 40 "kern" 78 76 "kern" 77 79 "kern" 76 77 "kern" 75 79 "kern" 74 62 "kern" 73 54 "kern" 72 81 "kern" 71 -71 "kern" 70 55 "kern" 69 76 "kern" 68 77 "kern" 67 80 "kern" 66 35 "kern" 65 -29 "kern" 64 74 "kern" 63 56 "kern" 62 79 "kern" 61 49 "kern" 60 49 "kern" 59 67 "kern" 58 76 "kern" 56 -20 "kern" 55 -59 "kern" 54 -26 "kern" 53 48 "kern" 52 28 "kern" 51 80 "kern" 50 51 "kern" 49 -79 "kern" 48 56 "kern" 47 66 "kern" 46 79 "kern" 45 53 "kern" 44 79 "kern" 43 77 "kern" 42 78 "kern" 41 76 "kern" 40 52 "kern" 39 54 "kern" 38 66 "kern" 37 66 "kern" 35 76 "kern" 34 77 "kern" 30 79 "kern" 29 26 "kern" 28 73 "kern" 26 76 "kern" 25 -175 "kern" 24 38 "kern" 23 74 "kern" 22 -54 "kern" 21 61 "kern" 20 62 "kern" 19 59 "kern" 18 62 "kern" 17 62 "kern" 16 24 "kern" 15 -20 "kern" 14 82 "kern" 13 66 "kern" 12 72 "kern" 11 63 "kern" 10 41 "kern" 9 77 "kern" 8 78 "kern" 7 50 "kern" 6 59 "kern" 5 61 "kern" 4 82 "kern" 3 66 "kern" 2 78 "kern" 1 60 "kern" 0 57 "kern"
+Kerns2: 117 -19 "kern" 116 -17 "kern" 80 -150 "kern" 79 -50 "kern" 78 -14 "kern" 77 -11 "kern" 76 -13 "kern" 75 -11 "kern" 74 -28 "kern" 73 -36 "kern" 71 -161 "kern" 70 -35 "kern" 69 -14 "kern" 68 -13 "kern" 67 -10 "kern" 66 -55 "kern" 65 -119 "kern" 64 -16 "kern" 63 -34 "kern" 62 -11 "kern" 61 -41 "kern" 60 -41 "kern" 59 -23 "kern" 58 -14 "kern" 57 -165 "kern" 56 -110 "kern" 55 -149 "kern" 54 -116 "kern" 53 -42 "kern" 52 -62 "kern" 51 -10 "kern" 50 -39 "kern" 49 -169 "kern" 48 -34 "kern" 47 -24 "kern" 46 -11 "kern" 45 -37 "kern" 44 -11 "kern" 43 -13 "kern" 42 -12 "kern" 41 -14 "kern" 40 -38 "kern" 39 -36 "kern" 38 -24 "kern" 37 -24 "kern" 35 -14 "kern" 34 -13 "kern" 30 -11 "kern" 29 -64 "kern" 28 -17 "kern" 26 -14 "kern" 25 -265 "kern" 24 -52 "kern" 23 -16 "kern" 22 -144 "kern" 21 -29 "kern" 20 -28 "kern" 19 -31 "kern" 18 -28 "kern" 17 -28 "kern" 16 -66 "kern" 15 -110 "kern" 13 -24 "kern" 12 -18 "kern" 11 -27 "kern" 10 -49 "kern" 9 -13 "kern" 8 -12 "kern" 7 -40 "kern" 6 -31 "kern" 5 -29 "kern" 3 -24 "kern" 2 -12 "kern" 1 -30 "kern" 0 -33 "kern"
 Ligature2: "liga" T O
 EndChar
 

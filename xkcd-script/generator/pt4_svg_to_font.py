@@ -247,11 +247,23 @@ def autokern(font):
     font.addLookupSubtable('kerning', 'kern')
 
     def kern(sep, left, right, **kwargs):
-        """Wraps font.autoKern: binds the subtable and expands accented variants."""
-        font.autoKern('kern', sep,
-                      _expand_with_variants(font, left),
-                      _expand_with_variants(font, right),
-                      **kwargs)
+        """Wraps font.autoKern: expands accented variants and leading/trailing ligatures."""
+        def expand(chars, left_side):
+            expanded = _expand_with_variants(font, chars)
+            seen = set(expanded)
+            for glyph in font.glyphs():
+                name = glyph.glyphname
+                if '_' not in name:
+                    continue
+                parts = name.split('_')
+                # Left side: ligature's right edge (last component) determines spacing.
+                # Right side: ligature's left edge (first component) determines spacing.
+                anchor = parts[-1] if left_side else parts[0]
+                if anchor in seen and name not in seen:
+                    expanded.append(name)
+                    seen.add(name)
+            return expanded
+        font.autoKern('kern', sep, expand(left, left_side=True), expand(right, left_side=False), **kwargs)
 
     kern(150, ['/', '\\'], ['/', '\\'])
 
@@ -274,10 +286,13 @@ def autokern(font):
     kern(220, all_chars, ['j'], minKern=35)
     # F/E are separated from T/J so they can use a tighter target gap.
     kern(130, ['F'], all_chars)
+    kern(140, ['E'], ['V', 'W', 'Y'])
     kern(100, ['E'], all_chars)
-    kern(150, ['T', 'J', 'T_T', 'T_O'], all_chars)
+    kern(120, ['T', 'J'], ['R'])
+    kern(150, ['T', 'J'], all_chars)
     # C: loosen from the default (was too tight for Ct/Cf/Cj).
     kern(65, ['C'], all_chars)
+    kern(60, ['O'], all_chars)
 
 
 font = basic_font()
