@@ -3,7 +3,7 @@
 IMAGE=pelson/fontbuilder
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd ${DIR}
-RUN_CTXT="docker run -u $(id -u) -v $(pwd)/../:$(pwd)/../ -w $(pwd) -e LC_ALL:en_US.UTF-8 ${IMAGE}"
+RUN_CTXT="docker run --rm -u $(id -u) -v $(pwd)/../:$(pwd)/../ -w $(pwd) -e LC_ALL=en_US.UTF-8 ${IMAGE}"
 
 set -x
 
