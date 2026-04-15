@@ -417,6 +417,141 @@ for codepoint, source_name in ref_aliases:
     c.addReference(source_name)
     c.width = font[source_name].width
 
+# --- Combining diacritics and Czech accented characters ---
+
+# Build weight-corrected mark glyphs for acute and caron.
+# Scaling thins strokes; changeWeight restores them to match the font's pen weight.
+_mark_scale = 0.65
+_stroke = int(round(0.12 * font.ascent))
+_weight_delta = 0
+
+def _make_weighted_mark(font, src_name, scale, weight_delta, mark_glyph_name, flip_y=False):
+    """
+    Standalone mark glyph: outlines copied from src_name, scaled, centered at x=0,
+    then weight-corrected so strokes match the rest of the font.
+    flip_y=True mirrors vertically (e.g. ^ → ˇ for the caron).
+    """
+    src = font[src_name]
+    src_bb = src.boundingBox()
+    src_cx = (src_bb[0] + src_bb[2]) / 2
+    mark = font.createChar(-1, mark_glyph_name)
+    mark.clear()
+    _layer = fontforge.layer()
+    for _c in src.foreground:
+        _layer += _c
+    mark.foreground = _layer
+    sy = -scale if flip_y else scale
+    mark.transform(psMat.compose(psMat.scale(scale, sy), psMat.translate(-src_cx * scale, 0)))
+    mark.width = 0
+    mark.correctDirection()  # flip reverses winding order; restore before changeWeight
+    mark.removeOverlap()
+    if weight_delta:
+        mark.changeWeight(weight_delta)
+    mark.simplify()
+    return mark
+
+_acute_mark = _make_weighted_mark(font, 'quoteright', _mark_scale, _weight_delta, '_acute_mark')
+_caron_mark = _make_weighted_mark(font, 'asciicircum', _mark_scale, _weight_delta, '_caron_mark', flip_y=True)
+
+# Register as combining diacritics at their Unicode codepoints.
+for _cp, _mark in [(0x0301, _acute_mark), (0x030C, _caron_mark)]:
+    _c = font.createMappedChar(_cp)
+    _c.addReference(_mark.glyphname)
+    _c.width = 0
+
+# Combining ring above (U+030A): extract ring contours from Å.
+# Å is a single drawn glyph; the ring sits above y=580, clear of the A body.
+# The ring keeps its original stroke weight — it was drawn with the same pen.
+_ring_xs = []
+_ring_indices = []
+for _i, _contour in enumerate(font['Aring'].foreground):
+    if min(p.y for p in _contour) > 580:
+        _ring_indices.append(_i)
+        _ring_xs.extend(p.x for p in _contour)
+_ring_cx = (min(_ring_xs) + max(_ring_xs)) / 2
+
+_ring_glyph = font.createMappedChar(0x030A)
+_ring_layer = fontforge.layer()
+for _i, _contour in enumerate(font['Aring'].foreground):
+    if _i in _ring_indices:
+        _ring_layer += _contour
+_ring_glyph.foreground = _ring_layer
+_ring_glyph.transform(psMat.translate(-_ring_cx, 0))
+_ring_glyph.width = 0
+_ring_name = _ring_glyph.glyphname
+
+# dotlessi (U+0131): i without the dot, so í etc. don't stack dot + acute.
+# The dot is the topmost contour of i (highest ymin); all others form the stem.
+_i_layer = font['i'].foreground
+_dot_ymin = max(min(p.y for p in _c) for _c in _i_layer)
+_dotless_layer = fontforge.layer()
+for _contour in _i_layer:
+    if min(p.y for p in _contour) < _dot_ymin:
+        _dotless_layer += _contour
+_dotlessi_glyph = font.createMappedChar(0x0131)
+_dotlessi_glyph.foreground = _dotless_layer
+_dotlessi_glyph.width = font['i'].width
+
+def _place_above(font, base_name, mark_name, gap=20, x_adj=0):
+    """Compute translation to place a pre-sized mark centered above base by bounding box."""
+    base_bb = font[base_name].boundingBox()
+    mark_bb = font[mark_name].boundingBox()
+    base_cx = (base_bb[0] + base_bb[2]) / 2
+    mark_cx = (mark_bb[0] + mark_bb[2]) / 2
+    dx = base_cx - mark_cx + x_adj
+    dy = base_bb[3] + gap - mark_bb[1]
+    return psMat.translate(dx, dy)
+
+def _make_accented(font, cp, base_name, mark_name, gap=20, x_adj=0):
+    """Accented glyph: base reference + pre-sized mark placed above by bounding-box centering."""
+    c = font.createMappedChar(cp)
+    c.clear()
+    c.addReference(base_name)
+    c.width = font[base_name].width
+    c.addReference(mark_name, _place_above(font, base_name, mark_name, gap, x_adj))
+    return c
+
+def _make_dstroke(font, cp, base_name, gap=5):
+    """Czech ď/ť form: base + quoteright at natural size to the upper right (not caron above)."""
+    c = font.createMappedChar(cp)
+    c.clear()
+    c.addReference(base_name)
+    base_width = font[base_name].width
+    base_bb = font[base_name].boundingBox()
+    apos_bb = font['quoteright'].boundingBox()
+    dx = base_width + gap - apos_bb[0]
+    dy = base_bb[3] - apos_bb[3]
+    c.addReference('quoteright', psMat.translate(dx, dy))
+    c.width = int(round(base_width + gap + (apos_bb[2] - apos_bb[0]) + 15))
+    return c
+
+# Acute: Á É Í Ó Ú Ý / á é í ó ú ý  (í uses dotlessi to avoid dot+acute stack)
+# É is regenerated for consistency — the hand-drawn original has a different stroke length.
+for _cp, _base in [
+    (0x00C1, 'A'), (0x00C9, 'E'), (0x00CD, 'I'), (0x00D3, 'O'), (0x00DA, 'U'), (0x00DD, 'Y'),
+    (0x00E1, 'a'), (0x00E9, 'e'), (0x00ED, 'dotlessi'), (0x00F3, 'o'), (0x00FA, 'u'), (0x00FD, 'y'),
+]:
+    _make_accented(font, _cp, _base, _acute_mark.glyphname)
+
+# Caron: Č Ě Ň Ř Š Ž / č ě ň ř š ž  (ď/ť handled separately below)
+for _cp, _base in [
+    (0x010C, 'C'), (0x011A, 'E'), (0x0147, 'N'), (0x0158, 'R'), (0x0160, 'S'), (0x017D, 'Z'),
+    (0x010D, 'c'), (0x011B, 'e'), (0x0148, 'n'), (0x0159, 'r'), (0x0161, 's'), (0x017E, 'z'),
+]:
+    _make_accented(font, _cp, _base, _caron_mark.glyphname)
+
+# Ring above: Ů / ů  (ring weight matches Å — drawn with the same pen)
+for _cp, _base in [(0x016E, 'U'), (0x016F, 'u')]:
+    _make_accented(font, _cp, _base, _ring_name)
+
+# Ď Ť (uppercase): caron above, like other uppercase caron letters
+for _cp, _base in [(0x010E, 'D'), (0x0164, 'T')]:
+    _make_accented(font, _cp, _base, _caron_mark.glyphname)
+
+# ď ť (lowercase): raised apostrophe to the right — tall descenders leave no room above
+for _cp, _base in [(0x010F, 'd'), (0x0165, 't')]:
+    _make_dstroke(font, _cp, _base)
+
 autokern(font)
 
 font_fname = '../font/xkcd-script.sfd'
