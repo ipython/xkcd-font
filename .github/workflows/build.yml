@@ -54,10 +54,11 @@ jobs:
             xkcd-script/font/xkcd-script.sfd
             xkcd-script/samples/ipsum.png
             xkcd-script/samples/handwriting.png
+            xkcd-script/samples/kerning.png
 
       - name: Check generated files match committed files
         run: |
-          git diff --exit-code xkcd-script/font/xkcd-script.otf xkcd-script/font/xkcd-script.ttf xkcd-script/font/xkcd-script.woff xkcd-script/samples/ || {
+          git diff --exit-code xkcd-script/font/ xkcd-script/samples/ || {
             echo ""
             echo "Generated files differ from committed files."
             echo "Download the 'xkcd-script-font' artifact from this run and commit the updated files."
