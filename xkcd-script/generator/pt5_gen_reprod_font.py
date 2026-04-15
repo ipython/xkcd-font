@@ -7,7 +7,89 @@ import os
 import shutil
 import time
 
+import unicodedata
+
 import fontforge
+
+
+def _base_char(c):
+    """Return the base letter for an accented character (e.g. É → E)."""
+    decomp = unicodedata.decomposition(c)
+    if decomp and not decomp.startswith('<'):
+        return chr(int(decomp.split()[0], 16))
+    return c
+
+
+def _expand_with_variants(font, chars):
+    """Expand a list of base chars/glyph-names to include accented variants in the font.
+
+    Multi-character glyph names (ligatures) are passed through unchanged — only
+    single-character entries are eligible for variant expansion.
+    """
+    single_chars = set(c for c in chars if len(c) == 1)
+    # Convert single chars to FontForge glyph names (e.g. '/' → 'slash').
+    result = [fontforge.nameFromUnicode(ord(c)) if len(c) == 1 else c for c in chars]
+    seen = set(result)
+    for glyph in font.glyphs():
+        if glyph.unicode < 0:
+            continue
+        c = chr(glyph.unicode)
+        if _base_char(c) in single_chars and c not in single_chars:
+            name = glyph.glyphname
+            if name not in seen:
+                result.append(name)
+                seen.add(name)
+    return result
+
+
+def autokern(font):
+    all_glyphs = [glyph.glyphname for glyph in font.glyphs()
+                  if not glyph.glyphname.startswith(' ')]
+    ligatures = [name for name in all_glyphs if '_' in name]
+    upper_ligatures = [ligature for ligature in ligatures if ligature.upper() == ligature]
+    lower_ligatures = [ligature for ligature in ligatures if ligature.lower() == ligature]
+
+    # Expand the broad letter lists to include accented variants, so every rule
+    # that references `caps`, `lower`, or `all_chars` covers them consistently.
+    caps = _expand_with_variants(font, list('ABCDEFGHIJKLMNOPQRSTUVWXYZ') + upper_ligatures)
+    lower = _expand_with_variants(font, list('abcdefghijklmnopqrstuvwxyz') + lower_ligatures)
+    all_chars = caps + lower
+
+    font.addLookup('kerning', 'gpos_pair', (), [['kern', [['latn', ['dflt']]]]])
+    font.addLookupSubtable('kerning', 'kern')
+
+    def kern(sep, left, right, **kwargs):
+        """Wraps font.autoKern: binds the subtable and expands accented variants."""
+        font.autoKern('kern', sep,
+                      _expand_with_variants(font, left),
+                      _expand_with_variants(font, right),
+                      **kwargs)
+
+    kern(150, ['/', '\\'], ['/', '\\'])
+
+    kern(175, ['r'], ['i'], minKern=35)
+    kern(180, ['r'], ['g', 'x'], minKern=35)
+    kern(100, ['r'], lower, minKern=50)
+    kern(60, ['s'], lower, minKern=50)
+    # f has a long right-arm; kern slightly tighter than default but don't overdo it.
+    kern(75, ['f'], lower, minKern=40)
+    # g has a round left side; nudge preceding glyphs in a little.
+    # Letters with open/diagonal right sides need a looser target before g.
+    kern(115, list('EKLPRYkz'), ['g'], minKern=30)
+    kern(75, lower, ['g'], minKern=30)
+    kern(75, caps, ['g'], minKern=30)
+    # x has diagonal strokes that leave visual space on its left side.
+    kern(90, lower, ['x'], minKern=40)
+    # H has tall verticals that sit naturally close to j's descender.
+    kern(150, ['H'], ['j'], minKern=35)
+    # Raise separation so Jj doesn't get pulled too close.
+    kern(220, all_chars, ['j'], minKern=35)
+    # F/E are separated from T/J so they can use a tighter target gap.
+    kern(130, ['F'], all_chars)
+    kern(100, ['E'], all_chars)
+    kern(150, ['T', 'J'], all_chars)
+    # C: loosen from the default (was too tight for Ct/Cf/Cj).
+    kern(65, ['C'], all_chars)
 
 
 base = '../font/'
@@ -65,6 +147,7 @@ font.hhea_ascent         = 855;  font.hhea_ascent_add     = False
 font.hhea_descent        = -270; font.hhea_descent_add    = False
 font.hhea_linegap        = 77
 
+autokern(font)
 font.generate(otf)
 font.generate(ttf)
 font.generate(woff)

@@ -276,7 +276,6 @@ for line, position, bbox, fname, chars in characters:
 c = font.createMappedChar(32)
 c.width = 256
 
-autokern(font)
 font_fname = '../font/xkcd-script.sfd'
 
 if not os.path.exists(os.path.dirname(font_fname)):

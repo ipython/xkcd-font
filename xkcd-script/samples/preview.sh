@@ -34,6 +34,13 @@ ${RUN_CTXT} convert -strip ${NAME}.pgm ${NAME}.png
 ${RUN_CTXT} rm ${NAME}.pgm
 
 
+NAME=kerning
+CONTENT=$(cat ${NAME}.txt)
+${SIMPLE_CTXT} -o ${NAME}.pgm --text "${CONTENT}"
+${RUN_CTXT} convert -strip ${NAME}.pgm ${NAME}.png
+${RUN_CTXT} rm ${NAME}.pgm
+
+
 if [ "$?" == "141" ] ; then
     # Unexplained exit code from the handwriting sample.
     exit 0
