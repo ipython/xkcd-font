@@ -18,6 +18,9 @@ It is far less uniform than ``xkcd``, and we think it is therefore more like a t
 You can see the font as a [live preview](https://ipython.github.io/xkcd-font/preview.html), or 
 for more information about the font and how it is constructed see the [xkcd-script/README](xkcd-script/README.md).
 
+Pre-built font files are available directly in this repository:
+[xkcd-script.ttf](xkcd-script/font/xkcd-script.ttf) | [xkcd-script.woff](xkcd-script/font/xkcd-script.woff)
+
 
 ### Font: ``xkcd``
 
@@ -25,6 +28,8 @@ The ``xkcd`` font was originally created by Randall, and was used in [xkcd "The 
 It is considerably more uniform than ``xkcd Script``, which can result in more legibility at the cost of being slightly less like the actual xkcd comic.
 
 ![Sample of xkcd](xkcd/samples/ipsum.png)
+
+The pre-built font file is available directly in this repository: [xkcd.otf](xkcd/build/xkcd.otf)
 
 [Read more...](xkcd/README.md)
 
