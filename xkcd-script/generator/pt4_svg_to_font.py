@@ -231,7 +231,7 @@ def autokern(font):
 
 
 font = basic_font()
-font.ascent = 600;
+font.ascent = 600
 
 # Pick out particular glyphs that are more pleasant than their latter alternatives.
 special_choices = {('C', ): dict(line=4),

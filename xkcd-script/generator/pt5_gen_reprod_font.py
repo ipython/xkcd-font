@@ -51,10 +51,19 @@ os.utime(sfd, (then, then))
 
 font = fontforge.open(sfd)
 
-# Fontforge includes the date of building the font if we don't specify a TTF uniqueid,
-# which makes the font non-reproducible.
+# Pin the UniqueID so FontForge doesn't embed a build date (breaks reproducibility).
 font.sfnt_names = (('English (US)', 'UniqueID', 'xkcd Script'), )
 font.xuid = "-1"
+
+# Pin line metrics: generate() recomputes hhea/win from glyph bounding boxes unless _add=False.
+font.os2_typoascent      = font.ascent;  font.os2_typoascent_add  = False
+font.os2_typodescent     = -font.descent; font.os2_typodescent_add = False
+font.os2_typolinegap     = 77
+font.os2_winascent       = 855;  font.os2_winascent_add   = False
+font.os2_windescent      = 270;  font.os2_windescent_add  = False
+font.hhea_ascent         = 855;  font.hhea_ascent_add     = False
+font.hhea_descent        = -270; font.hhea_descent_add    = False
+font.hhea_linegap        = 77
 
 font.generate(otf)
 font.generate(ttf)
