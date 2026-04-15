@@ -51,12 +51,12 @@ def merge_images(img1, img1_bbox, img2, img2_bbox):
     merged_image.fill(255)
     
     # Use all of image 1 and just drop it into the correct location within the new image.
-    merged_image[img1_slice] = img1
-    
+    merged_image[tuple(img1_slice)] = img1
+
     # We can't use the same approach for image 2, as it potentially overlaps with image 1.
-    # Instead we use the parts of image 2 that aren't at the maximum of each color channel. 
-    merged_image[img2_slice] = np.where(img2 != 255, img2,
-                                        merged_image[img2_slice])
+    # Instead we use the parts of image 2 that aren't at the maximum of each color channel.
+    merged_image[tuple(img2_slice)] = np.where(img2 != 255, img2,
+                                               merged_image[tuple(img2_slice)])
     
     return merged_image, bbox
 
@@ -140,11 +140,11 @@ for stroke in stroke_locations:
     
     # Pick out the sub-image, and take a copy so that we can modify it without
     # modifying the original.
-    stroke_img = handwriting_img[full_index + [Ellipsis]].copy()
+    stroke_img = handwriting_img[tuple(full_index + [Ellipsis])].copy()
     
     # Using the "labels" array, produce a binary mask that is True for every
     # pixel that is marked as this label, and False otherwise. 
-    stroke_mask = labels[full_index] == stroke.label
+    stroke_mask = labels[tuple(full_index)] == stroke.label
 
     # For each color channel, use the mask to maintain the full image pixels that
     # are part of this stroke. Where a pixel remains that is not part of this stroke,

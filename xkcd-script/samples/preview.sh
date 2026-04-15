@@ -14,7 +14,7 @@ cat <<EOF > fonts.conf
 EOF
 
 
-RUN_CTXT="docker run -u $(id -u) -v $(pwd)/../:$(pwd)/../ -w $(pwd) -e FONTCONFIG_FILE=$(pwd)/fonts.conf pelson/fontbuilder"
+RUN_CTXT="docker run -u $(id -u) -v $(pwd)/../:$(pwd)/../ -w $(pwd) -e FONTCONFIG_FILE=$(pwd)/fonts.conf -e LC_ALL=C.UTF-8 ${FONTBUILDER_IMAGE:-ghcr.io/ipython/xkcd-font:fontbuilder}"
 
 ${RUN_CTXT} fc-list | grep -i xkcd
 
@@ -23,14 +23,14 @@ SIMPLE_CTXT="${RUN_CTXT} pango-view --backend=ft2 --font \"xkcdScript\" --dpi 15
 NAME=ipsum
 CONTENT=$(cat ${NAME}.txt)
 ${SIMPLE_CTXT} -o ${NAME}.pgm --wrap=word --width=400 --text "${CONTENT}"
-${RUN_CTXT} python -c "import skimage.io; skimage.io.imsave('${NAME}.png', skimage.io.imread('${NAME}.pgm'))"
+${RUN_CTXT} convert -strip ${NAME}.pgm ${NAME}.png
 ${RUN_CTXT} rm ${NAME}.pgm
 
 
 NAME=handwriting
 CONTENT=$(cat ${NAME}.txt)
 ${SIMPLE_CTXT} -o ${NAME}.pgm --text "${CONTENT}"
-${RUN_CTXT} python -c "import skimage.io; skimage.io.imsave('${NAME}.png', skimage.io.imread('${NAME}.pgm'))"
+${RUN_CTXT} convert -strip ${NAME}.pgm ${NAME}.png
 ${RUN_CTXT} rm ${NAME}.pgm
 
 

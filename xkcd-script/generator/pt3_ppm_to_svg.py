@@ -2,7 +2,6 @@
 
 from __future__ import division
 import subprocess
-import fontforge
 
 def potrace(input_fname, output_fname):
     subprocess.check_call(['potrace', '-s', input_fname, '-o', output_fname])

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import division
+import base64
 import fontforge
 import os
 import glob
@@ -13,7 +14,7 @@ for fname in fnames:
     
     pattern = 'char_L{line:d}_P{position:d}_x{x0:d}_y{y0:d}_x{x1:d}_y{y1:d}_{b64_str}.svg'
     result = parse.parse(pattern, os.path.basename(fname))
-    chars = tuple(result['b64_str'].decode('base64').decode('utf-8'))
+    chars = tuple(base64.b64decode(result['b64_str']).decode('utf-8'))
     bbox = (result['x0'], result['y0'], result['x1'], result['y1'])
     characters.append([result['line'], result['position'], bbox, fname, chars])
 
@@ -37,9 +38,9 @@ def basic_font():
     font.descent = 256;
 
     # We create a ligature lookup table.
-    font.addLookup('ligatures', 'gsub_ligature', (), [[b'liga',
-                                                       [[b'latn',
-                                                         [b'dflt']]]]])
+    font.addLookup('ligatures', 'gsub_ligature', (), [['liga',
+                                                       [['latn',
+                                                         ['dflt']]]]])
     font.addLookupSubtable('ligatures', 'liga')
    
     return font
@@ -188,7 +189,7 @@ def translate_glyph(c, char_bbox, cap_height, baseline):
     # and calculating how much space there should be).
     space = 20
     scaled_width = glyph_bbox[2] - glyph_bbox[0] 
-    c.width = scaled_width + 2 * space
+    c.width = int(round(scaled_width + 2 * space))
     t = psMat.translate(space, 0)
     c.transform(t)
 
@@ -214,7 +215,7 @@ def autokern(font):
     all_chars = caps + lower
 
     # Add a kerning lookup table.
-    font.addLookup('kerning', 'gpos_pair', (), [[b'kern', [[b'latn', [b'dflt']]]]])
+    font.addLookup('kerning', 'gpos_pair', (), [['kern', [['latn', ['dflt']]]]])
     font.addLookupSubtable('kerning', 'kern')
     
     # Everyone knows that two slashes together need kerning... (even if they didn't realise it)
@@ -230,7 +231,7 @@ def autokern(font):
 
 
 font = basic_font()
-font.ascent = 600;
+font.ascent = 600
 
 # Pick out particular glyphs that are more pleasant than their latter alternatives.
 special_choices = {('C', ): dict(line=4),
