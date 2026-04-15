@@ -28,6 +28,7 @@ xs, ys = zip(*[[bbox[0], bbox[3]]
 xs = np.array(xs, dtype=np.float)
 ys = np.array(ys, dtype=np.float)
 
+np.random.seed(0)  # Ensure deterministic k-means initialisation for reproducible font output.
 lines, _ = scipy.cluster.vq.kmeans(ys, n_lines, iter=1000)
 lines = np.array(sorted(lines))
 
