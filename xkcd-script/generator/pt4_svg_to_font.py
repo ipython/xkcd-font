@@ -402,6 +402,21 @@ for line, position, bbox, fname, chars in characters:
 c = font.createMappedChar(32)
 c.width = 256
 
+# Add reference glyphs for quote-like characters that share the same visual shape.
+ref_aliases = [
+    (0x0060, 'quoteleft'),    # grave/backtick
+    (0x00B4, 'quoteright'),   # acute accent
+    (0x201B, 'quoteleft'),    # quotereversed
+    (0x201F, 'quotedblleft'), # quotedblreversed
+    (0x2032, 'quoteright'),   # prime
+    (0x2033, 'quotedbl'),     # doubleprime
+    (0x2035, 'quoteleft'),    # backprime
+]
+for codepoint, source_name in ref_aliases:
+    c = font.createMappedChar(codepoint)
+    c.addReference(source_name)
+    c.width = font[source_name].width
+
 autokern(font)
 
 font_fname = '../font/xkcd-script.sfd'

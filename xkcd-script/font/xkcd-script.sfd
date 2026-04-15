@@ -62,8 +62,7 @@ NameList: AGL For New Fonts
 DisplaySize: -48
 AntiAlias: 1
 FitToEm: 0
-OnlyBitmaps: 1
-BeginChars: 1114132 138
+BeginChars: 1114132 145
 
 StartChar: a
 Encoding: 97 97 0
@@ -7505,6 +7504,69 @@ Encoding: 32 32 137
 Width: 256
 Flags: HW
 LayerCount: 2
+EndChar
+
+StartChar: grave
+Encoding: 96 96 138
+Width: 202
+Flags: HW
+LayerCount: 2
+Fore
+Refer: 125 8216 N 1 0 0 1 0 0 2
+EndChar
+
+StartChar: acute
+Encoding: 180 180 139
+Width: 205
+Flags: HW
+LayerCount: 2
+Fore
+Refer: 124 8217 N 1 0 0 1 0 0 2
+EndChar
+
+StartChar: quotereversed
+Encoding: 8219 8219 140
+Width: 202
+Flags: HW
+LayerCount: 2
+Fore
+Refer: 125 8216 N 1 0 0 1 0 0 2
+EndChar
+
+StartChar: uni201F
+Encoding: 8223 8223 141
+Width: 329
+Flags: HW
+LayerCount: 2
+Fore
+Refer: 36 8220 N 1 0 0 1 0 0 2
+EndChar
+
+StartChar: minute
+Encoding: 8242 8242 142
+Width: 205
+Flags: HW
+LayerCount: 2
+Fore
+Refer: 124 8217 N 1 0 0 1 0 0 2
+EndChar
+
+StartChar: second
+Encoding: 8243 8243 143
+Width: 263
+Flags: HW
+LayerCount: 2
+Fore
+Refer: 128 34 N 1 0 0 1 0 0 2
+EndChar
+
+StartChar: uni2035
+Encoding: 8245 8245 144
+Width: 202
+Flags: HW
+LayerCount: 2
+Fore
+Refer: 125 8216 N 1 0 0 1 0 0 2
 EndChar
 EndChars
 EndSplineFont
