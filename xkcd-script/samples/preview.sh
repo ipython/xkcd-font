@@ -22,12 +22,19 @@ SIMPLE_CTXT="${RUN_CTXT} pango-view --backend=ft2 --font \"xkcdScript\" --dpi 15
 
 NAME=ipsum
 CONTENT=$(cat ${NAME}.txt)
-${SIMPLE_CTXT} -o ${NAME}.pgm --wrap=word --width=400 --text "${CONTENT}"
+${SIMPLE_CTXT} -o ${NAME}.pgm --text "${CONTENT}"
 ${RUN_CTXT} convert -strip ${NAME}.pgm ${NAME}.png
 ${RUN_CTXT} rm ${NAME}.pgm
 
 
 NAME=handwriting
+CONTENT=$(cat ${NAME}.txt)
+${SIMPLE_CTXT} -o ${NAME}.pgm --text "${CONTENT}"
+${RUN_CTXT} convert -strip ${NAME}.pgm ${NAME}.png
+${RUN_CTXT} rm ${NAME}.pgm
+
+
+NAME=kerning
 CONTENT=$(cat ${NAME}.txt)
 ${SIMPLE_CTXT} -o ${NAME}.pgm --text "${CONTENT}"
 ${RUN_CTXT} convert -strip ${NAME}.pgm ${NAME}.png

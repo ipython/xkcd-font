@@ -5,6 +5,7 @@ import fontforge
 import os
 import glob
 import parse
+import unicodedata
 
 fnames = sorted(glob.glob('../generated/characters/char_*.svg'))
 
@@ -199,39 +200,113 @@ def charname(char):
     return fontforge.nameFromUnicode(ord(char))
 
 
+def _base_char(c):
+    """Return the base letter for an accented character (e.g. É → E)."""
+    decomp = unicodedata.decomposition(c)
+    if decomp and not decomp.startswith('<'):
+        return chr(int(decomp.split()[0], 16))
+    return c
+
+
+def _expand_with_variants(font, chars):
+    """Expand a list of base chars/glyph-names to include accented variants in the font.
+
+    Multi-character glyph names (ligatures) are passed through unchanged — only
+    single-character entries are eligible for variant expansion.
+    """
+    single_chars = set(c for c in chars if len(c) == 1)
+    # Convert single chars to FontForge glyph names (e.g. '/' → 'slash').
+    result = [fontforge.nameFromUnicode(ord(c)) if len(c) == 1 else c for c in chars]
+    seen = set(result)
+    for glyph in font.glyphs():
+        if glyph.unicode < 0:
+            continue
+        c = chr(glyph.unicode)
+        if _base_char(c) in single_chars and c not in single_chars:
+            name = glyph.glyphname
+            if name not in seen:
+                result.append(name)
+                seen.add(name)
+    return result
+
+
 def autokern(font):
-    # Let fontforge do some magic and figure out automatic kerning for groups of glyphs.
-
     all_glyphs = [glyph.glyphname for glyph in font.glyphs()
-                  if not glyph.glyphname.startswith(' ')]    
-
-    #print('\n'.join(sorted(all_glyphs)))
+                  if not glyph.glyphname.startswith(' ')]
     ligatures = [name for name in all_glyphs if '_' in name]
     upper_ligatures = [ligature for ligature in ligatures if ligature.upper() == ligature]
     lower_ligatures = [ligature for ligature in ligatures if ligature.lower() == ligature]
-    
-    caps = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ') + upper_ligatures
-    lower = list('abcdefghijklmnopqrstuvwxyz') + lower_ligatures
+
+    # Expand the broad letter lists to include accented variants from the outset,
+    # so every rule that references `caps`, `lower`, or `all_chars` covers them too.
+    caps = _expand_with_variants(font, list('ABCDEFGHIJKLMNOPQRSTUVWXYZ') + upper_ligatures)
+    lower = _expand_with_variants(font, list('abcdefghijklmnopqrstuvwxyz') + lower_ligatures)
     all_chars = caps + lower
 
-    # Add a kerning lookup table.
     font.addLookup('kerning', 'gpos_pair', (), [['kern', [['latn', ['dflt']]]]])
     font.addLookupSubtable('kerning', 'kern')
-    
-    # Everyone knows that two slashes together need kerning... (even if they didn't realise it)
-    font.autoKern('kern', 150, [charname('/'), charname('\\')], [charname('/'), charname('\\')])
 
-    font.autoKern('kern', 60, ['r', 's'], lower, minKern=50)
-    font.autoKern('kern', 100, ['f'], lower, minKern=50)
-    font.autoKern('kern', 60, lower, ['g'], minKern=50)
-    font.autoKern('kern', 180, all_chars, ['j'], minKern=35)
-    
-    font.autoKern('kern', 150, ['T', 'F', 'J'], all_chars)
-    font.autoKern('kern', 30, ['C'], all_chars)
+    def kern(sep, left, right, **kwargs):
+        """Wraps font.autoKern: expands accented variants and leading/trailing ligatures."""
+        def expand(chars, left_side):
+            expanded = _expand_with_variants(font, chars)
+            seen = set(expanded)
+            for glyph in font.glyphs():
+                name = glyph.glyphname
+                if '_' not in name:
+                    continue
+                parts = name.split('_')
+                # Left side: ligature's right edge (last component) determines spacing.
+                # Right side: ligature's left edge (first component) determines spacing.
+                anchor = parts[-1] if left_side else parts[0]
+                if anchor in seen and name not in seen:
+                    expanded.append(name)
+                    seen.add(name)
+            return expanded
+        font.autoKern('kern', sep, expand(left, left_side=True), expand(right, left_side=False), **kwargs)
+
+    kern(150, ['/', '\\'], ['/', '\\'])
+
+    kern(175, ['r'], ['i'], minKern=35)
+    kern(180, ['r'], ['g', 'x'], minKern=35)
+    kern(100, ['r'], lower, minKern=50)
+    kern(60, ['s'], lower, minKern=50)
+    # f has a long right-arm; kern slightly tighter than default but don't overdo it.
+    kern(75, ['f'], lower, minKern=40)
+    # g has a round left side; nudge preceding glyphs in a little.
+    # Letters with open/diagonal right sides need a looser target before g.
+    kern(115, list('EKLPRYkz'), ['g'], minKern=30)
+    kern(75, lower, ['g'], minKern=30)
+    kern(75, caps, ['g'], minKern=30)
+    # x has diagonal strokes that leave visual space on its left side.
+    kern(90, lower, ['x'], minKern=40)
+    # H has tall verticals that sit naturally close to j's descender.
+    kern(150, ['H'], ['j'], minKern=35)
+    # Raise separation so Jj doesn't get pulled too close.
+    kern(220, all_chars, ['j'], minKern=35)
+    # F/E are separated from T/J so they can use a tighter target gap.
+    kern(130, ['F'], all_chars)
+    kern(140, ['E'], ['V', 'W', 'Y'])
+    kern(100, ['E'], all_chars)
+    kern(120, ['T', 'J'], ['R'])
+    kern(150, ['T', 'J'], all_chars)
+    # C: loosen from the default (was too tight for Ct/Cf/Cj).
+    kern(65, ['C'], all_chars)
+    kern(60, ['O'], all_chars)
 
 
 font = basic_font()
 font.ascent = 600
+
+# Pin line metrics so FontForge doesn't recompute them from bounding boxes during generate().
+font.os2_typoascent = 855; font.os2_typoascent_add = False
+font.os2_typodescent = -270; font.os2_typodescent_add = False
+font.os2_typolinegap = 77
+font.os2_winascent = 855; font.os2_winascent_add = False
+font.os2_windescent = 270; font.os2_windescent_add = False
+font.hhea_ascent = 855; font.hhea_ascent_add = False
+font.hhea_descent = -270; font.hhea_descent_add = False
+font.hhea_linegap = 77
 
 # Pick out particular glyphs that are more pleasant than their latter alternatives.
 special_choices = {('C', ): dict(line=4),
@@ -277,11 +352,12 @@ c = font.createMappedChar(32)
 c.width = 256
 
 autokern(font)
+
 font_fname = '../font/xkcd-script.sfd'
 
 if not os.path.exists(os.path.dirname(font_fname)):
     os.makedirs(os.path.dirname(font_fname))
 if os.path.exists(font_fname):
     os.remove(font_fname)
-font.generate(font_fname)
+font.save(font_fname)
 
