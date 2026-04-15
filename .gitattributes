@@ -1,3 +1,4 @@
+xkcd-script/font/*.otf    linguist-generated=true
 xkcd-script/font/*.ttf    linguist-generated=true
 xkcd-script/font/*.woff   linguist-generated=true
 xkcd-script/font/*.sfd    linguist-generated=true -diff

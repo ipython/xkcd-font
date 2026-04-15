@@ -13,6 +13,7 @@ import fontforge
 base = '../font/'
 sfd = os.path.join(base, 'xkcd-script.sfd')
 newsfd = os.path.join(base, 'new-xkcd-script.sfd')
+otf = os.path.join(base, 'xkcd-script.otf')
 ttf = os.path.join(base, 'xkcd-script.ttf')
 woff = os.path.join(base, 'xkcd-script.woff')
 
@@ -55,5 +56,6 @@ font = fontforge.open(sfd)
 font.sfnt_names = (('English (US)', 'UniqueID', 'xkcd Script'), )
 font.xuid = "-1"
 
-font.generate(woff)
+font.generate(otf)
 font.generate(ttf)
+font.generate(woff)
