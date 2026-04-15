@@ -1,0 +1,47 @@
+name: Build font
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Pull Docker image (pinned)
+        run: |
+          docker pull pelson/fontbuilder@sha256:fed1cdfc3068fa7a51b906046e37252233f5f72d681bd70aa9690177f02ea39c
+          # Tag the pinned digest so run.sh / preview.sh can reference it by name.
+          docker tag pelson/fontbuilder@sha256:fed1cdfc3068fa7a51b906046e37252233f5f72d681bd70aa9690177f02ea39c pelson/fontbuilder
+
+      - name: Generate font
+        run: xkcd-script/generator/run.sh
+
+      - name: Generate samples
+        run: xkcd-script/samples/preview.sh
+
+      - name: Upload generated artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: xkcd-script-font
+          path: |
+            xkcd-script/font/xkcd-script.ttf
+            xkcd-script/font/xkcd-script.woff
+            xkcd-script/font/xkcd-script.sfd
+            xkcd-script/samples/ipsum.png
+            xkcd-script/samples/handwriting.png
+
+      - name: Check generated files match committed files
+        run: |
+          git diff --exit-code xkcd-script/font/ xkcd-script/samples/ || {
+            echo ""
+            echo "Generated files differ from committed files."
+            echo "Download the 'xkcd-script-font' artifact from this run and commit the updated files."
+            exit 1
+          }
