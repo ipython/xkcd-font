@@ -3983,7 +3983,7 @@ SplineSet
  442 588 626 596 654 601 c 0
  689 607 808 620 817 620 c 0
 EndSplineSet
-Kerns2: 25 -358 "kern" 22 -431 "kern"
+Kerns2: 117 -245 "kern" 116 43 "kern" 80 -200 "kern" 79 -43 "kern" 78 -171 "kern" 77 -175 "kern" 76 -161 "kern" 75 -118 "kern" 73 -99 "kern" 72 -33 "kern" 71 -39 "kern" 70 -119 "kern" 69 -187 "kern" 68 -211 "kern" 67 -150 "kern" 66 -41 "kern" 65 -268 "kern" 64 -11 "kern" 63 -179 "kern" 62 -179 "kern" 61 -156 "kern" 60 -211 "kern" 59 -25 "kern" 58 -172 "kern" 56 -179 "kern" 55 -32 "kern" 54 18 "kern" 53 -211 "kern" 52 -270 "kern" 51 -113 "kern" 50 -114 "kern" 49 46 "kern" 48 -161 "kern" 47 -50 "kern" 46 -169 "kern" 45 -59 "kern" 44 -148 "kern" 43 42 "kern" 42 -200 "kern" 41 -101 "kern" 39 -184 "kern" 38 -254 "kern" 37 -258 "kern" 35 -184 "kern" 34 30 "kern" 30 -77 "kern" 29 -186 "kern" 28 -230 "kern" 26 -158 "kern" 25 -428 "kern" 24 -248 "kern" 23 39 "kern" 22 -356 "kern" 21 -230 "kern" 20 -258 "kern" 19 -268 "kern" 18 -256 "kern" 17 -283 "kern" 16 -281 "kern" 15 -292 "kern" 14 -250 "kern" 13 -259 "kern" 12 -241 "kern" 11 12 "kern" 10 -159 "kern" 9 -255 "kern" 8 -239 "kern" 7 -262 "kern" 6 -247 "kern" 5 -252 "kern" 4 -234 "kern" 3 -241 "kern" 2 30 "kern" 1 -215 "kern" 0 -258 "kern"
 Ligature2: "liga" T T
 EndChar
 
@@ -4715,7 +4715,7 @@ SplineSet
  464 409 462 415 460 420 c 0
  457 428 456 429 451 429 c 0
 EndSplineSet
-Kerns2: 25 -105 "kern" 22 -129 "kern"
+Kerns2: 117 71 "kern" 116 73 "kern" 80 -60 "kern" 79 40 "kern" 78 76 "kern" 77 79 "kern" 76 77 "kern" 75 79 "kern" 74 62 "kern" 73 54 "kern" 72 81 "kern" 71 -71 "kern" 70 55 "kern" 69 76 "kern" 68 77 "kern" 67 80 "kern" 66 35 "kern" 65 -29 "kern" 64 74 "kern" 63 56 "kern" 62 79 "kern" 61 49 "kern" 60 49 "kern" 59 67 "kern" 58 76 "kern" 56 -20 "kern" 55 -59 "kern" 54 -26 "kern" 53 48 "kern" 52 28 "kern" 51 80 "kern" 50 51 "kern" 49 -79 "kern" 48 56 "kern" 47 66 "kern" 46 79 "kern" 45 53 "kern" 44 79 "kern" 43 77 "kern" 42 78 "kern" 41 76 "kern" 40 52 "kern" 39 54 "kern" 38 66 "kern" 37 66 "kern" 35 76 "kern" 34 77 "kern" 30 79 "kern" 29 26 "kern" 28 73 "kern" 26 76 "kern" 25 -175 "kern" 24 38 "kern" 23 74 "kern" 22 -54 "kern" 21 61 "kern" 20 62 "kern" 19 59 "kern" 18 62 "kern" 17 62 "kern" 16 24 "kern" 15 -20 "kern" 14 82 "kern" 13 66 "kern" 12 72 "kern" 11 63 "kern" 10 41 "kern" 9 77 "kern" 8 78 "kern" 7 50 "kern" 6 59 "kern" 5 61 "kern" 4 82 "kern" 3 66 "kern" 2 78 "kern" 1 60 "kern" 0 57 "kern"
 Ligature2: "liga" T O
 EndChar
 

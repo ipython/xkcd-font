@@ -275,7 +275,7 @@ def autokern(font):
     # F/E are separated from T/J so they can use a tighter target gap.
     kern(130, ['F'], all_chars)
     kern(100, ['E'], all_chars)
-    kern(150, ['T', 'J'], all_chars)
+    kern(150, ['T', 'J', 'T_T', 'T_O'], all_chars)
     # C: loosen from the default (was too tight for Ct/Cf/Cj).
     kern(65, ['C'], all_chars)
 
