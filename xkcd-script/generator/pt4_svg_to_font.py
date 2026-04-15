@@ -121,6 +121,16 @@ for line, position, bbox, fname, chars in characters:
 import numpy as np
 import psMat
 
+# Normalise each line's cap-height/baseline span to the median across all lines.
+# This corrects for lines where the writing was larger or smaller than average,
+# so glyphs from all lines get the same scale treatment.
+_spans = {line: np.mean(s['baseline']) - np.mean(s['cap-height'])
+          for line, s in line_stats.items()
+          if 'baseline' in s and 'cap-height' in s}
+_top_ratio = 600 / (600 + 256)
+_full_glyph_sizes = {line: span / _top_ratio for line, span in _spans.items()}
+_median_full_glyph_size = np.median(list(_full_glyph_sizes.values()))
+
 def scale_glyph(char, char_bbox, baseline, cap_height):
     # TODO: The code in this function is convoluted - it can be hugely simplified.
     # Essentially, all this function does is figure out how much
@@ -308,6 +318,13 @@ font.hhea_ascent = 855; font.hhea_ascent_add = False
 font.hhea_descent = -270; font.hhea_descent_add = False
 font.hhea_linegap = 77
 
+# Per-character size scaling applied after changeWeight, to fine-tune individual glyphs
+# that end up slightly too large despite correct stroke weight.
+_per_char_size = {
+    ('q',): 0.92,
+    ('x',): 0.83,
+}
+
 # Pick out particular glyphs that are more pleasant than their latter alternatives.
 special_choices = {('C', ): dict(line=4),
                    ('G',): dict(line=4),
@@ -343,6 +360,40 @@ for line, position, bbox, fname, chars in characters:
         c, bbox,
         baseline=np.mean(line_features['baseline']),
         cap_height=np.mean(line_features['cap-height']))
+
+    # Correct for lines written at a significantly different scale than the median.
+    # - Too large (fgs high): chars scaled down → thin strokes → fatten with changeWeight.
+    # - Too small (fgs low): chars scaled up → thick/large glyphs → shrink with scale().
+    _line_fgs = _full_glyph_sizes.get(line)
+    if _line_fgs:
+        if _line_fgs > _median_full_glyph_size * 1.10:
+            _scale_correction = _line_fgs / _median_full_glyph_size
+            _estimated_stroke = 0.12 * font.ascent
+            _delta = int(round(_estimated_stroke * (_scale_correction - 1)))
+            c.removeOverlap()
+            c.changeWeight(_delta)
+        elif _line_fgs < _median_full_glyph_size * 0.90:
+            _scale_correction = _line_fgs / _median_full_glyph_size
+            _estimated_stroke = 0.12 * font.ascent
+            # Scale by 1.4 to compensate for the restore-scale partially undoing the thinning.
+            _delta = int(round(_estimated_stroke * (_scale_correction - 1) * 1.4))
+            _bb_before = c.boundingBox()
+            _h_before = _bb_before[3] - _bb_before[1]
+            c.removeOverlap()
+            c.changeWeight(_delta)
+            _bb_after = c.boundingBox()
+            _h_after = _bb_after[3] - _bb_after[1]
+            if _h_after > 0:
+                _restore = _h_before / _h_after
+                c.transform(psMat.scale(_restore))
+                c.width = int(round(c.width * _restore))
+
+    # Per-character size adjustments: scale about the baseline (origin) to reduce
+    # overall size while preserving stroke weight gained from changeWeight above.
+    _size_scale = _per_char_size.get(chars)
+    if _size_scale is not None:
+        c.transform(psMat.scale(_size_scale))
+        c.width = int(round(c.width * _size_scale))
 
     # Simplify, then put the vertices on rounded coordinate positions.
     c.simplify()
