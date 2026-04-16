@@ -450,7 +450,20 @@ def _make_weighted_mark(font, src_name, scale, weight_delta, mark_glyph_name, fl
     mark.simplify()
     return mark
 
-_acute_mark = _make_weighted_mark(font, 'quoteright', _mark_scale, _weight_delta, '_acute_mark')
+# Acute mark: source one stroke from hand-drawn Ő — steepness and weight match the font.
+# The two acute strokes are the topmost contours of Ő; take the rightmost (higher center x).
+_oo_layer = font[0x0150].foreground
+_oo_ymins = sorted((min(p.y for p in _c) for _c in _oo_layer), reverse=True)
+_oo_acute_thresh = (_oo_ymins[1] + _oo_ymins[2]) / 2
+_oo_acute_strokes = [_c for _c in _oo_layer if min(p.y for p in _c) > _oo_acute_thresh]
+_oo_acute_strokes.sort(key=lambda _c: sum(p.x for p in _c) / len(_c), reverse=True)
+_acute_mark = font.createChar(-1, '_acute_mark')
+_acute_mark.clear()
+_acute_src_layer = fontforge.layer()
+_acute_src_layer += _oo_acute_strokes[0]
+_acute_mark.foreground = _acute_src_layer
+_acute_mark.transform(psMat.translate(-((_acute_mark.boundingBox()[0] + _acute_mark.boundingBox()[2]) / 2), 0))
+_acute_mark.width = 0
 _caron_mark = _make_weighted_mark(font, 'asciicircum', _mark_scale, _weight_delta, '_caron_mark', flip_y=True)
 
 # Register as combining diacritics at their Unicode codepoints.
@@ -551,6 +564,179 @@ for _cp, _base in [(0x010E, 'D'), (0x0164, 'T')]:
 # ď ť (lowercase): raised apostrophe to the right — tall descenders leave no room above
 for _cp, _base in [(0x010F, 'd'), (0x0165, 't')]:
     _make_dstroke(font, _cp, _base)
+
+# --- Extended European diacriticals ---
+
+# Guard set: codepoints that already exist as hand-drawn glyphs; skip to avoid overwriting.
+_SKIP_CPS = frozenset({
+    0x00DC,  # Ü — hand-drawn
+    0x0150,  # Ő — hand-drawn
+    0x0112,  # Ē — hand-drawn
+})
+
+def _accented(cp, base_name, mark_name, gap=20, x_adj=0):
+    if cp not in _SKIP_CPS:
+        _make_accented(font, cp, base_name, mark_name, gap, x_adj)
+
+# Grave: mirror of the Ő-sourced acute mark.
+_grave_mark = font.createChar(-1, '_grave_mark')
+_grave_mark.clear()
+_grave_src_layer = fontforge.layer()
+for _c in _acute_mark.foreground:
+    _grave_src_layer += _c
+_grave_mark.foreground = _grave_src_layer
+_grave_mark.transform(psMat.scale(-1, 1))
+_grave_mark.width = 0
+
+# Circumflex: asciicircum unflipped (caron is the flipped version).
+_circumflex_mark = _make_weighted_mark(font, 'asciicircum', _mark_scale, _weight_delta, '_circumflex_mark')
+
+# Tilde (PostScript name: asciitilde).
+_tilde_mark = _make_weighted_mark(font, 'asciitilde', _mark_scale, _weight_delta, '_tilde_mark')
+
+# Dot above and diaeresis: sourced from the hand-drawn Ü, which has the correct pen weight.
+# The two dots are the topmost contours; the U body sits well below them.
+_uu_layer = font[0x00DC].foreground
+_uu_ymins = sorted((min(p.y for p in _c) for _c in _uu_layer), reverse=True)
+# Gap between 2nd and 3rd highest ymin separates dots from body.
+_uu_dot_thresh = (_uu_ymins[1] + _uu_ymins[2]) / 2
+
+# Diaeresis mark: both dots from Ü, translated so their pair is centered at x=0.
+_diaeresis_full_layer = fontforge.layer()
+for _c in _uu_layer:
+    if min(p.y for p in _c) > _uu_dot_thresh:
+        _diaeresis_full_layer += _c
+_diaeresis_mark = font.createChar(-1, '_diaeresis_mark')
+_diaeresis_mark.foreground = _diaeresis_full_layer
+_diabb = _diaeresis_mark.boundingBox()
+_diaeresis_mark.transform(psMat.translate(-((_diabb[0] + _diabb[2]) / 2), 0))
+_diaeresis_mark.width = 0
+
+# Single dot above: one dot from Ü, centered at x=0.
+_dot_above_mark = font.createChar(-1, '_dot_above_mark')
+_single_dot_layer = fontforge.layer()
+for _c in _uu_layer:
+    if min(p.y for p in _c) > _uu_dot_thresh:
+        _single_dot_layer += _c
+        break  # take just one dot
+_dot_above_mark.foreground = _single_dot_layer
+_dab_bb = _dot_above_mark.boundingBox()
+_dot_above_mark.transform(psMat.translate(-((_dab_bb[0] + _dab_bb[2]) / 2), 0))
+_dot_above_mark.width = 0
+
+# Double acute: two acute-mark references shifted apart.
+_double_acute_mark = font.createChar(-1, '_double_acute_mark')
+_double_acute_mark.clear()
+_abb = _acute_mark.boundingBox()
+_acute_w = _abb[2] - _abb[0]
+_acute_gap = _acute_w * 0.2
+_double_acute_mark.addReference(_acute_mark.glyphname, psMat.translate(-(_acute_w / 2 + _acute_gap / 2), 0))
+_double_acute_mark.addReference(_acute_mark.glyphname, psMat.translate(_acute_w / 2 + _acute_gap / 2, 0))
+_double_acute_mark.width = 0
+
+# Macron: sourced from the hand-drawn Ē, which has the correct pen weight.
+# The macron stroke is the topmost contour of Ē; the E body sits well below it.
+_ee_layer = font[0x0112].foreground
+_ee_ymins = sorted((min(p.y for p in _c) for _c in _ee_layer), reverse=True)
+_ee_macron_thresh = (_ee_ymins[0] + _ee_ymins[1]) / 2
+_macron_mark = font.createChar(-1, '_macron_mark')
+_macron_layer = fontforge.layer()
+for _c in _ee_layer:
+    if min(p.y for p in _c) > _ee_macron_thresh:
+        _macron_layer += _c
+_macron_mark.foreground = _macron_layer
+_mbb = _macron_mark.boundingBox()
+_macron_mark.transform(psMat.translate(-((_mbb[0] + _mbb[2]) / 2), 0))
+_macron_mark.width = 0
+
+# Register new combining codepoints.
+for _cp, _mark in [
+    (0x0300, _grave_mark),
+    (0x0302, _circumflex_mark),
+    (0x0303, _tilde_mark),
+    (0x0307, _dot_above_mark),
+    (0x0308, _diaeresis_mark),
+    (0x030B, _double_acute_mark),
+    (0x0304, _macron_mark),
+]:
+    _c = font.createMappedChar(_cp)
+    _c.addReference(_mark.glyphname)
+    _c.width = 0
+
+def _place_below(font, base_name, mark_name, gap=10):
+    """Compute translation to place mark centered below base."""
+    base_bb = font[base_name].boundingBox()
+    mark_bb = font[mark_name].boundingBox()
+    base_cx = (base_bb[0] + base_bb[2]) / 2
+    mark_cx = (mark_bb[0] + mark_bb[2]) / 2
+    dx = base_cx - mark_cx
+    dy = base_bb[1] - gap - mark_bb[3]
+    return psMat.translate(dx, dy)
+
+def _make_cedilla(font, cp, base_name, gap=8):
+    if cp in _SKIP_CPS:
+        return
+    c = font.createMappedChar(cp)
+    c.clear()
+    c.addReference(base_name)
+    c.width = font[base_name].width
+    c.addReference('comma', _place_below(font, base_name, 'comma', gap))
+
+# Circumflex: Â Ê Î Ô Û / â ê î ô û
+for _cp, _base in [
+    (0x00C2, 'A'), (0x00CA, 'E'), (0x00CE, 'I'), (0x00D4, 'O'), (0x00DB, 'U'),
+    (0x00E2, 'a'), (0x00EA, 'e'), (0x00EE, 'dotlessi'), (0x00F4, 'o'), (0x00FB, 'u'),
+]:
+    _accented(_cp, _base, _circumflex_mark.glyphname)
+
+# Grave: À È Ì Ò Ù Ỳ / à è ì ò ù ỳ
+for _cp, _base in [
+    (0x00C0, 'A'), (0x00C8, 'E'), (0x00CC, 'I'), (0x00D2, 'O'), (0x00D9, 'U'), (0x1EF2, 'Y'),
+    (0x00E0, 'a'), (0x00E8, 'e'), (0x00EC, 'dotlessi'), (0x00F2, 'o'), (0x00F9, 'u'), (0x1EF3, 'y'),
+]:
+    _accented(_cp, _base, _grave_mark.glyphname)
+
+# Tilde: Ã Ñ Õ / ã ñ õ
+for _cp, _base in [
+    (0x00C3, 'A'), (0x00D1, 'N'), (0x00D5, 'O'),
+    (0x00E3, 'a'), (0x00F1, 'n'), (0x00F5, 'o'),
+]:
+    _accented(_cp, _base, _tilde_mark.glyphname)
+
+# Dot above: Ċ Ė Ġ İ Ż / ċ ė ġ ż
+for _cp, _base in [
+    (0x010A, 'C'), (0x0116, 'E'), (0x0120, 'G'), (0x0130, 'I'), (0x017B, 'Z'),
+    (0x010B, 'c'), (0x0117, 'e'), (0x0121, 'g'), (0x017C, 'z'),
+]:
+    _accented(_cp, _base, '_dot_above_mark')
+
+# Diaeresis: Ä Ë Ï Ö Ÿ / ä ë ï ö ü ÿ  (Ü skipped — hand-drawn)
+for _cp, _base in [
+    (0x00C4, 'A'), (0x00CB, 'E'), (0x00CF, 'I'), (0x00D6, 'O'), (0x0178, 'Y'),
+    (0x00E4, 'a'), (0x00EB, 'e'), (0x00EF, 'dotlessi'), (0x00F6, 'o'), (0x00FC, 'u'), (0x00FF, 'y'),
+]:
+    _accented(_cp, _base, '_diaeresis_mark')
+
+# Double acute: Ő Ű / ő ű  (Ő skipped — hand-drawn)
+for _cp, _base in [
+    (0x0150, 'O'), (0x0170, 'U'),
+    (0x0151, 'o'), (0x0171, 'u'),
+]:
+    _accented(_cp, _base, '_double_acute_mark')
+
+# Cedilla: Ç Ş Ţ Ģ Ķ Ļ Ņ Ŗ / ç ş ţ ģ ķ ļ ņ ŗ
+for _cp, _base in [
+    (0x00C7, 'C'), (0x015E, 'S'), (0x0162, 'T'), (0x0122, 'G'), (0x0136, 'K'), (0x013B, 'L'), (0x0145, 'N'), (0x0156, 'R'),
+    (0x00E7, 'c'), (0x015F, 's'), (0x0163, 't'), (0x0123, 'g'), (0x0137, 'k'), (0x013C, 'l'), (0x0146, 'n'), (0x0157, 'r'),
+]:
+    _make_cedilla(font, _cp, _base)
+
+# Macron: Ā Ī Ō Ū / ā ī ō ū ē  (Ē skipped — hand-drawn)
+for _cp, _base in [
+    (0x0100, 'A'), (0x012A, 'I'), (0x014C, 'O'), (0x016A, 'U'), (0x0112, 'E'),
+    (0x0101, 'a'), (0x012B, 'dotlessi'), (0x014D, 'o'), (0x016B, 'u'), (0x0113, 'e'),
+]:
+    _accented(_cp, _base, '_macron_mark')
 
 autokern(font)
 
