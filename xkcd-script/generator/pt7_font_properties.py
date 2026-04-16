@@ -2,7 +2,7 @@
 """
 Apply font-wide properties: kerning, spacing, and any other metric tweaks.
 
-Reads the SFD produced by pt5_derived_chars.py (which has all glyphs),
+Reads the SFD produced by pt6_derived_chars.py (which has all glyphs),
 applies properties, saves.
 """
 import fontforge

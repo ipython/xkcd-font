@@ -5,6 +5,7 @@ and all accented Latin letters for European languages.
 
 Reads the base SFD produced by pt4_svg_to_font.py, adds derived glyphs, saves.
 """
+import os
 import fontforge
 import psMat
 
@@ -349,6 +350,101 @@ for cp, base in [
     (0x0101, 'a'), (0x012B, 'dotlessi'), (0x014D, 'o'), (0x016B, 'u'), (0x0113, 'e'),
 ]:
     _accented(cp, base, '_macron_mark')
+
+
+# ---------------------------------------------------------------------------
+# Glyphs imported from xkcd comic images
+# ---------------------------------------------------------------------------
+
+_COMIC_CHARS_DIR = os.path.join(os.path.dirname(__file__), '../generated/additional_chars')
+
+
+def _import_comic_glyph(font, name, svg_path, target_top, weight_delta=0, y_clip=None):
+    """Import a pre-cleaned SVG (from pt5_additional_sources.py) and scale it
+    so the top of the ink reaches target_top in font units, preserving the
+    aspect ratio so any descender falls naturally below baseline.
+
+    weight_delta: passed to changeWeight() after scaling (positive = thicker).
+    y_clip: if given, clip the glyph at this y-coordinate using FontForge's
+    intersect() against a background rectangle, removing everything below y_clip.
+    Use y_clip=0 to clip at the baseline (removes descenders, seats the glyph
+    on the baseline with a natural edge rather than a raw image crop).
+    """
+    g = font.createChar(-1, f'_comic_{name}')
+    g.clear()
+    g.importOutlines(svg_path)
+
+    # Scale uniformly so the top of the ink reaches target_top
+    bb = g.boundingBox()
+    scale = target_top / bb[3]
+    g.transform(psMat.scale(scale))
+
+    # Translate to add left margin; vertical position follows naturally from scale
+    bb = g.boundingBox()
+    g.transform(psMat.translate(-bb[0] + 20, 0))
+
+    if weight_delta:
+        g.removeOverlap()
+        g.changeWeight(weight_delta)
+
+    if y_clip is not None:
+        # Clip at y_clip: keep only ink above y_clip.
+        # Place a filled rectangle covering [y_clip, +∞] in the background layer,
+        # then intersect() keeps only the foreground that overlaps that rectangle.
+        # FontForge uses clockwise winding for filled (outer) contours.
+        g.removeOverlap()
+        g.correctDirection()
+        clip_rect = fontforge.contour()
+        clip_rect += fontforge.point(-10000, 10000, True)   # top-left
+        clip_rect += fontforge.point(10000, 10000, True)    # top-right
+        clip_rect += fontforge.point(10000, y_clip, True)   # bottom-right
+        clip_rect += fontforge.point(-10000, y_clip, True)  # bottom-left
+        clip_rect.closed = True
+        bg = fontforge.layer()
+        bg += clip_rect
+        g.background = bg
+        g.intersect()
+
+    g.correctDirection()
+    g.removeOverlap()
+    g.addExtrema()
+
+    bb = g.boundingBox()
+    g.width = int(round(bb[2] + 20))
+    return g
+
+
+# ß/ẞ source: hand-drawn glyph from extras/eszett.png, vectorised by pt0.
+_eszett_svg = os.path.join(_COMIC_CHARS_DIR, 'eszett.svg')
+if os.path.exists(_eszett_svg):
+    # ß  U+00DF  Latin Small Letter Sharp S — scaled to ascender height (like 'b')
+    _eszett_glyph = _import_comic_glyph(
+        font, 'eszett', _eszett_svg,
+        target_top=font['b'].boundingBox()[3] * 0.59,
+        weight_delta=23)
+    # Snap bottom to baseline so ß sits like a/e
+    _bb = _eszett_glyph.boundingBox()
+    if _bb[1] < 0:
+        _eszett_glyph.transform(psMat.translate(0, -_bb[1]))
+    _eszett = font.createMappedChar(0x00DF)
+    _eszett.clear()
+    for c in _eszett_glyph.foreground:
+        _eszett.foreground += c
+    _eszett.width = _eszett_glyph.width
+
+    # ẞ  U+1E9E  Latin Capital Letter Sharp S — scaled to capital height (like 'B')
+    _cap_eszett_glyph = _import_comic_glyph(
+        font, 'eszett_cap', _eszett_svg,
+        target_top=font['B'].boundingBox()[3] * 0.72,
+        weight_delta=19)
+    _bb = _cap_eszett_glyph.boundingBox()
+    if _bb[1] < 0:
+        _cap_eszett_glyph.transform(psMat.translate(0, -_bb[1]))
+    _cap_glyph = font.createMappedChar(0x1E9E)
+    _cap_glyph.clear()
+    for c in _cap_eszett_glyph.foreground:
+        _cap_glyph.foreground += c
+    _cap_glyph.width = _cap_eszett_glyph.width
 
 
 # ---------------------------------------------------------------------------
