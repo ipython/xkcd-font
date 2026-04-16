@@ -45,3 +45,5 @@ if [ "$?" == "141" ] ; then
     # Unexplained exit code from the handwriting sample.
     exit 0
 fi
+
+${RUN_CTXT} python3 gen_charmap.py
