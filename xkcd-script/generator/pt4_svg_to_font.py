@@ -1,4 +1,14 @@
 # -*- coding: utf-8 -*-
+"""
+Convert hand-drawn SVG glyphs into the base xkcd-script SFD font file.
+
+Reads per-character SVG files produced by pt3_ppm_to_svg.py, scales and
+positions each glyph to fit the EM, applies per-line scale corrections, and
+saves the result as xkcd-script.sfd.
+
+Derived characters (diacriticals, aliases) are added in pt5_derived_chars.py.
+Font-wide properties (kerning) are applied in pt6_font_properties.py.
+"""
 from __future__ import division
 import base64
 import fontforge
@@ -12,7 +22,7 @@ fnames = sorted(glob.glob('../generated/characters/char_*.svg'))
 characters = []
 for fname in fnames:
     # Sample filename: char_L2_P2_x378_y1471_x766_y1734_RQ==?.svg
-    
+
     pattern = 'char_L{line:d}_P{position:d}_x{x0:d}_y{y0:d}_x{x1:d}_y{y1:d}_{b64_str}.svg'
     result = parse.parse(pattern, os.path.basename(fname))
     chars = tuple(base64.b64decode(result['b64_str']).decode('utf-8'))
@@ -43,9 +53,8 @@ def basic_font():
                                                        [['latn',
                                                          ['dflt']]]]])
     font.addLookupSubtable('ligatures', 'liga')
-   
-    return font
 
+    return font
 
 
 from contextlib import contextmanager
@@ -59,7 +68,7 @@ def tmp_symlink(fname):
     """
     Create a temporary symlink to a file, so that applications that can't handle
     unicode filenames don't barf (I'm looking at you font-forge)
-    
+
     """
     target = tempfile.mktemp(suffix=os.path.splitext(fname)[1])
     fname = os.path.normpath(os.path.abspath(fname))
@@ -76,7 +85,7 @@ def create_char(font, chars, fname):
         # A single unicode character, so I create a character in the font for it.
 
         # Because I'm using an old & narrow python (<3.5) I need to handle the unicode
-        # characters that couldn't be converted to ordinals (so I kept them as integers). 
+        # characters that couldn't be converted to ordinals (so I kept them as integers).
         if isinstance(chars[0], int):
             c = font.createMappedChar(chars[0])
         else:
@@ -89,13 +98,13 @@ def create_char(font, chars, fname):
         ligature_name = '_'.join(char_names)
         ligature_tuple = tuple([character.encode('ascii') for character in chars])
         ligature_tuple = tuple([character for character in char_names])
-        
+
         c = font.createChar(-1, ligature_name)
 
         c.addPosSub('liga', ligature_tuple)
 
     c.clear()
-        
+
     # Use the workaround to have non-unicode filenames.
     with tmp_symlink(fname) as tmp_fname:
         # At last, bring in the SVG image as an outline for this glyph.
@@ -121,6 +130,17 @@ for line, position, bbox, fname, chars in characters:
 import numpy as np
 import psMat
 
+# Normalise each line's cap-height/baseline span to the median across all lines.
+# This corrects for lines where the writing was larger or smaller than average,
+# so glyphs from all lines get the same scale treatment.
+_spans = {line: np.mean(s['baseline']) - np.mean(s['cap-height'])
+          for line, s in line_stats.items()
+          if 'baseline' in s and 'cap-height' in s}
+_top_ratio = 600 / (600 + 256)
+_full_glyph_sizes = {line: span / _top_ratio for line, span in _spans.items()}
+_median_full_glyph_size = np.median(list(_full_glyph_sizes.values()))
+
+
 def scale_glyph(char, char_bbox, baseline, cap_height):
     # TODO: The code in this function is convoluted - it can be hugely simplified.
     # Essentially, all this function does is figure out how much
@@ -128,41 +148,41 @@ def scale_glyph(char, char_bbox, baseline, cap_height):
     # With that magic ratio in hand, I now look at how much space the glyph *currently*
     # takes, and scale it to the full EM. On second thoughts, this function really does
     # need to be convoluted, so maybe the code isn't *that* bad...
-    
+
     font = char.font
-    
+
     # Get hold of the bounding box information for the imported glyph.
     import_bbox = c.boundingBox()
     import_width, import_height = import_bbox[2] - import_bbox[0], import_bbox[3] - import_bbox[1]
-    
+
     # Note that timportOutlines doesn't guarantee glyphs will be put in any particular location,
     # so translate to the bottom and middle.
-    
+
     target_baseline = char.font.descent
     top = char.font.ascent
     top_ratio = top / (top + target_baseline)
-    
+
     y_base_delta_baseline = char_bbox[3] - baseline
-    
+
     width, height = char_bbox[2] - char_bbox[0], char_bbox[3] - char_bbox[1]
 
     # This is the scale factor that font forge will have used for normal glyphs...
     scale_factor = (top + target_baseline) / (cap_height - baseline)
     glyph_ratio = (cap_height - baseline) / height
-    
+
     # A nice glyph size, in pixels. NOTE: In pixel space, cap_height is smaller than baseline, so make it positive.
     full_glyph_size = -(cap_height - baseline) / top_ratio
-    
+
     to_canvas_coord_from_px = full_glyph_size / font.em
-    
+
     anchor_ratio = (top + target_baseline) / height
-    
+
     # pixel scale factor
     px_sf = (top + target_baseline) / font.em
-    
+
     frac_of_full_size = (height / full_glyph_size)
     import_frac_1000 = font.em / import_height
-    
+
     t = psMat.scale(frac_of_full_size * import_frac_1000)
     c.transform(t)
 
@@ -172,11 +192,11 @@ def translate_glyph(c, char_bbox, cap_height, baseline):
 
     # Compute the proportion of the full EM that cap_height - baseline should consume.
     top_ratio = c.font.ascent / (c.font.ascent + c.font.descent)
-    
+
     # In the original pixel coordinate space, compute how big a nice full sized glyph
     # should be.
     full_glyph_size = -(cap_height - baseline) / top_ratio
-    
+
     # We know that the scale of the glyph is now good. But it is probably way off in terms of x & y, so we
     # need to fix up its position.
     glyph_bbox = c.boundingBox()
@@ -189,7 +209,7 @@ def translate_glyph(c, char_bbox, cap_height, baseline):
     # there are far more sophisticated means of doing this (like looking at the original image,
     # and calculating how much space there should be).
     space = 20
-    scaled_width = glyph_bbox[2] - glyph_bbox[0] 
+    scaled_width = glyph_bbox[2] - glyph_bbox[0]
     c.width = int(round(scaled_width + 2 * space))
     t = psMat.translate(space, 0)
     c.transform(t)
@@ -200,100 +220,9 @@ def charname(char):
     return fontforge.nameFromUnicode(ord(char))
 
 
-def _base_char(c):
-    """Return the base letter for an accented character (e.g. É → E)."""
-    decomp = unicodedata.decomposition(c)
-    if decomp and not decomp.startswith('<'):
-        return chr(int(decomp.split()[0], 16))
-    return c
-
-
-def _expand_with_variants(font, chars):
-    """Expand a list of base chars/glyph-names to include accented variants in the font.
-
-    Multi-character glyph names (ligatures) are passed through unchanged — only
-    single-character entries are eligible for variant expansion.
-    """
-    single_chars = set(c for c in chars if len(c) == 1)
-    # Convert single chars to FontForge glyph names (e.g. '/' → 'slash').
-    result = [fontforge.nameFromUnicode(ord(c)) if len(c) == 1 else c for c in chars]
-    seen = set(result)
-    for glyph in font.glyphs():
-        if glyph.unicode < 0:
-            continue
-        c = chr(glyph.unicode)
-        if _base_char(c) in single_chars and c not in single_chars:
-            name = glyph.glyphname
-            if name not in seen:
-                result.append(name)
-                seen.add(name)
-    return result
-
-
-def autokern(font):
-    all_glyphs = [glyph.glyphname for glyph in font.glyphs()
-                  if not glyph.glyphname.startswith(' ')]
-    ligatures = [name for name in all_glyphs if '_' in name]
-    upper_ligatures = [ligature for ligature in ligatures if ligature.upper() == ligature]
-    lower_ligatures = [ligature for ligature in ligatures if ligature.lower() == ligature]
-
-    # Expand the broad letter lists to include accented variants from the outset,
-    # so every rule that references `caps`, `lower`, or `all_chars` covers them too.
-    caps = _expand_with_variants(font, list('ABCDEFGHIJKLMNOPQRSTUVWXYZ') + upper_ligatures)
-    lower = _expand_with_variants(font, list('abcdefghijklmnopqrstuvwxyz') + lower_ligatures)
-    all_chars = caps + lower
-
-    font.addLookup('kerning', 'gpos_pair', (), [['kern', [['latn', ['dflt']]]]])
-    font.addLookupSubtable('kerning', 'kern')
-
-    def kern(sep, left, right, **kwargs):
-        """Wraps font.autoKern: expands accented variants and leading/trailing ligatures."""
-        def expand(chars, left_side):
-            expanded = _expand_with_variants(font, chars)
-            seen = set(expanded)
-            for glyph in font.glyphs():
-                name = glyph.glyphname
-                if '_' not in name:
-                    continue
-                parts = name.split('_')
-                # Left side: ligature's right edge (last component) determines spacing.
-                # Right side: ligature's left edge (first component) determines spacing.
-                anchor = parts[-1] if left_side else parts[0]
-                if anchor in seen and name not in seen:
-                    expanded.append(name)
-                    seen.add(name)
-            return expanded
-        font.autoKern('kern', sep, expand(left, left_side=True), expand(right, left_side=False), **kwargs)
-
-    kern(150, ['/', '\\'], ['/', '\\'])
-
-    kern(175, ['r'], ['i'], minKern=35)
-    kern(180, ['r'], ['g', 'x'], minKern=35)
-    kern(100, ['r'], lower, minKern=50)
-    kern(60, ['s'], lower, minKern=50)
-    # f has a long right-arm; kern slightly tighter than default but don't overdo it.
-    kern(75, ['f'], lower, minKern=40)
-    # g has a round left side; nudge preceding glyphs in a little.
-    # Letters with open/diagonal right sides need a looser target before g.
-    kern(115, list('EKLPRYkz'), ['g'], minKern=30)
-    kern(75, lower, ['g'], minKern=30)
-    kern(75, caps, ['g'], minKern=30)
-    # x has diagonal strokes that leave visual space on its left side.
-    kern(90, lower, ['x'], minKern=40)
-    # H has tall verticals that sit naturally close to j's descender.
-    kern(150, ['H'], ['j'], minKern=35)
-    # Raise separation so Jj doesn't get pulled too close.
-    kern(220, all_chars, ['j'], minKern=35)
-    # F/E are separated from T/J so they can use a tighter target gap.
-    kern(130, ['F'], all_chars)
-    kern(140, ['E'], ['V', 'W', 'Y'])
-    kern(100, ['E'], all_chars)
-    kern(120, ['T', 'J'], ['R'])
-    kern(150, ['T', 'J'], all_chars)
-    # C: loosen from the default (was too tight for Ct/Cf/Cj).
-    kern(65, ['C'], all_chars)
-    kern(60, ['O'], all_chars)
-
+# ---------------------------------------------------------------------------
+# Font creation and base glyph processing
+# ---------------------------------------------------------------------------
 
 font = basic_font()
 font.ascent = 600
@@ -308,6 +237,13 @@ font.hhea_ascent = 855; font.hhea_ascent_add = False
 font.hhea_descent = -270; font.hhea_descent_add = False
 font.hhea_linegap = 77
 
+# Per-character size scaling applied after changeWeight, to fine-tune individual glyphs
+# that end up slightly too large despite correct stroke weight.
+_per_char_size = {
+    ('q',): 0.92,
+    ('x',): 0.83,
+}
+
 # Pick out particular glyphs that are more pleasant than their latter alternatives.
 special_choices = {('C', ): dict(line=4),
                    ('G',): dict(line=4),
@@ -317,18 +253,13 @@ special_choices = {('C', ): dict(line=4),
                    ('I', ): dict(line=4),
                    }
 
-# Special case - add a vertial pipe by re-using an I, and stretching it a bit.
-for line, position, bbox, fname, chars in characters:
-    if chars == (u'I',) and line == 4:
-        characters.append([4, None, bbox, fname, ('|',)])
-
 for line, position, bbox, fname, chars in characters:
     if chars in special_choices:
         spec = special_choices[chars]
         spec_line = spec.get('line', any)
         if spec_line is not any and spec_line != line:
             continue
-        
+
     c = create_char(font, chars, fname)
 
     # Get the linestats for this character.
@@ -338,11 +269,45 @@ for line, position, bbox, fname, chars in characters:
         c, bbox,
         baseline=np.mean(line_features['baseline']),
         cap_height=np.mean(line_features['cap-height']))
-    
+
     translate_glyph(
         c, bbox,
         baseline=np.mean(line_features['baseline']),
         cap_height=np.mean(line_features['cap-height']))
+
+    # Correct for lines written at a significantly different scale than the median.
+    # - Too large (fgs high): chars scaled down → thin strokes → fatten with changeWeight.
+    # - Too small (fgs low): chars scaled up → thick/large glyphs → shrink with scale().
+    _line_fgs = _full_glyph_sizes.get(line)
+    if _line_fgs:
+        if _line_fgs > _median_full_glyph_size * 1.10:
+            _scale_correction = _line_fgs / _median_full_glyph_size
+            _estimated_stroke = 0.12 * font.ascent
+            _delta = int(round(_estimated_stroke * (_scale_correction - 1)))
+            c.removeOverlap()
+            c.changeWeight(_delta)
+        elif _line_fgs < _median_full_glyph_size * 0.90:
+            _scale_correction = _line_fgs / _median_full_glyph_size
+            _estimated_stroke = 0.12 * font.ascent
+            # Scale by 1.4 to compensate for the restore-scale partially undoing the thinning.
+            _delta = int(round(_estimated_stroke * (_scale_correction - 1) * 1.4))
+            _bb_before = c.boundingBox()
+            _h_before = _bb_before[3] - _bb_before[1]
+            c.removeOverlap()
+            c.changeWeight(_delta)
+            _bb_after = c.boundingBox()
+            _h_after = _bb_after[3] - _bb_after[1]
+            if _h_after > 0:
+                _restore = _h_before / _h_after
+                c.transform(psMat.scale(_restore))
+                c.width = int(round(c.width * _restore))
+
+    # Per-character size adjustments: scale about the baseline (origin) to reduce
+    # overall size while preserving stroke weight gained from changeWeight above.
+    _size_scale = _per_char_size.get(chars)
+    if _size_scale is not None:
+        c.transform(psMat.scale(_size_scale))
+        c.width = int(round(c.width * _size_scale))
 
     # Simplify, then put the vertices on rounded coordinate positions.
     c.simplify()
@@ -351,7 +316,10 @@ for line, position, bbox, fname, chars in characters:
 c = font.createMappedChar(32)
 c.width = 256
 
-autokern(font)
+
+# ---------------------------------------------------------------------------
+# Save
+# ---------------------------------------------------------------------------
 
 font_fname = '../font/xkcd-script.sfd'
 
@@ -360,4 +328,3 @@ if not os.path.exists(os.path.dirname(font_fname)):
 if os.path.exists(font_fname):
     os.remove(font_fname)
 font.save(font_fname)
-

@@ -1,0 +1,124 @@
+# -*- coding: utf-8 -*-
+"""
+Apply font-wide properties: kerning, spacing, and any other metric tweaks.
+
+Reads the SFD produced by pt5_derived_chars.py (which has all glyphs),
+applies properties, saves.
+"""
+import fontforge
+import unicodedata
+
+font_fname = '../font/xkcd-script.sfd'
+font = fontforge.open(font_fname)
+
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+def _base_char(c):
+    """Return the base letter for an accented character (e.g. É → E)."""
+    decomp = unicodedata.decomposition(c)
+    if decomp and not decomp.startswith('<'):
+        return chr(int(decomp.split()[0], 16))
+    return c
+
+
+def _expand_with_variants(font, chars):
+    """Expand a list of base chars/glyph-names to include accented variants in the font.
+
+    Multi-character glyph names (ligatures) are passed through unchanged — only
+    single-character entries are eligible for variant expansion.
+    """
+    single_chars = set(c for c in chars if len(c) == 1)
+    result = [fontforge.nameFromUnicode(ord(c)) if len(c) == 1 else c for c in chars]
+    seen = set(result)
+    for glyph in font.glyphs():
+        if glyph.unicode < 0:
+            continue
+        c = chr(glyph.unicode)
+        if _base_char(c) in single_chars and c not in single_chars:
+            name = glyph.glyphname
+            if name not in seen:
+                result.append(name)
+                seen.add(name)
+    return result
+
+
+# ---------------------------------------------------------------------------
+# Kerning
+# ---------------------------------------------------------------------------
+
+def autokern(font):
+    all_glyphs = [glyph.glyphname for glyph in font.glyphs()
+                  if not glyph.glyphname.startswith(' ')]
+    ligatures = [name for name in all_glyphs if '_' in name]
+    upper_ligatures = [ligature for ligature in ligatures if ligature.upper() == ligature]
+    lower_ligatures = [ligature for ligature in ligatures if ligature.lower() == ligature]
+
+    # Expand the broad letter lists to include accented variants from the outset,
+    # so every rule that references `caps`, `lower`, or `all_chars` covers them too.
+    caps = _expand_with_variants(font, list('ABCDEFGHIJKLMNOPQRSTUVWXYZ') + upper_ligatures)
+    lower = _expand_with_variants(font, list('abcdefghijklmnopqrstuvwxyz') + lower_ligatures)
+    all_chars = caps + lower
+
+    font.addLookup('kerning', 'gpos_pair', (), [['kern', [['latn', ['dflt']]]]])
+    font.addLookupSubtable('kerning', 'kern')
+
+    def kern(sep, left, right, **kwargs):
+        """Wraps font.autoKern: expands accented variants and leading/trailing ligatures."""
+        def expand(chars, left_side):
+            expanded = _expand_with_variants(font, chars)
+            seen = set(expanded)
+            for glyph in font.glyphs():
+                name = glyph.glyphname
+                if '_' not in name:
+                    continue
+                parts = name.split('_')
+                # Left side: ligature's right edge (last component) determines spacing.
+                # Right side: ligature's left edge (first component) determines spacing.
+                anchor = parts[-1] if left_side else parts[0]
+                if anchor in seen and name not in seen:
+                    expanded.append(name)
+                    seen.add(name)
+            return expanded
+        font.autoKern('kern', sep, expand(left, left_side=True), expand(right, left_side=False), **kwargs)
+
+    kern(150, ['/', '\\'], ['/', '\\'])
+
+    kern(175, ['r'], ['i'], minKern=35)
+    kern(180, ['r'], ['g', 'x'], minKern=35)
+    kern(100, ['r'], lower, minKern=50)
+    kern(60, ['s'], lower, minKern=50)
+    # f has a long right-arm; kern slightly tighter than default but don't overdo it.
+    kern(75, ['f'], lower, minKern=40)
+    # g has a round left side; nudge preceding glyphs in a little.
+    # Letters with open/diagonal right sides need a looser target before g.
+    kern(115, list('EKLPRYkz'), ['g'], minKern=30)
+    kern(75, lower, ['g'], minKern=30)
+    kern(75, caps, ['g'], minKern=30)
+    # x has diagonal strokes that leave visual space on its left side.
+    kern(90, lower, ['x'], minKern=40)
+    # H has tall verticals that sit naturally close to j's descender.
+    kern(150, ['H'], ['j'], minKern=35)
+    # Raise separation so Jj doesn't get pulled too close.
+    kern(220, all_chars, ['j'], minKern=35)
+    # F/E are separated from T/J so they can use a tighter target gap.
+    kern(130, ['F'], all_chars)
+    kern(140, ['E'], ['V', 'W', 'Y'])
+    kern(100, ['E'], all_chars)
+    kern(120, ['T', 'J'], ['R'])
+    kern(150, ['T', 'J'], all_chars)
+    # C: loosen from the default (was too tight for Ct/Cf/Cj).
+    kern(65, ['C'], all_chars)
+    kern(60, ['O'], all_chars)
+
+
+autokern(font)
+
+
+# ---------------------------------------------------------------------------
+# Save
+# ---------------------------------------------------------------------------
+
+font.save(font_fname)

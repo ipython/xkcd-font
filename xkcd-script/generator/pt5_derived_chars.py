@@ -1,0 +1,358 @@
+# -*- coding: utf-8 -*-
+"""
+Generate derived/composed characters: quote aliases, combining diacritical marks,
+and all accented Latin letters for European languages.
+
+Reads the base SFD produced by pt4_svg_to_font.py, adds derived glyphs, saves.
+"""
+import fontforge
+import psMat
+
+font_fname = '../font/xkcd-script.sfd'
+font = fontforge.open(font_fname)
+
+
+# ---------------------------------------------------------------------------
+# Helper functions
+# ---------------------------------------------------------------------------
+
+def extract_top_contours(font, source_cp, n):
+    """Return the n topmost contours (by ymin) from a glyph.
+
+    Used to pull hand-drawn marks from composite glyphs (e.g. dots from Ü,
+    ring from Å, macron stroke from Ē, acute strokes from Ő).
+    source_cp may be an integer codepoint or a glyph name string.
+    """
+    layer = font[source_cp].foreground
+    contours = sorted(layer, key=lambda c: min(p.y for p in c), reverse=True)
+    ymins = [min(p.y for p in c) for c in contours]
+    thresh = (ymins[n - 1] + ymins[n]) / 2
+    return [c for c in contours if min(p.y for p in c) > thresh]
+
+
+def make_mark(font, name, contours):
+    """Create a zero-width mark glyph from contours, centered at x=0."""
+    glyph = font.createChar(-1, name)
+    glyph.clear()
+    layer = fontforge.layer()
+    for c in contours:
+        layer += c
+    glyph.foreground = layer
+    bb = glyph.boundingBox()
+    glyph.transform(psMat.translate(-((bb[0] + bb[2]) / 2), 0))
+    glyph.width = 0
+    return glyph
+
+
+def make_mark_flipped_x(font, name, source_mark_name):
+    """Zero-width mark: horizontal mirror of an existing centered mark."""
+    glyph = font.createChar(-1, name)
+    glyph.clear()
+    layer = fontforge.layer()
+    for c in font[source_mark_name].foreground:
+        layer += c
+    glyph.foreground = layer
+    glyph.transform(psMat.scale(-1, 1))
+    glyph.width = 0
+    return glyph
+
+
+def _make_weighted_mark(font, src_name, scale, weight_delta, mark_glyph_name, flip_y=False):
+    """Standalone mark glyph: outlines copied from src_name, scaled, centered at x=0.
+
+    flip_y=True mirrors vertically (e.g. ^ → ˇ for the caron).
+    weight_delta adjusts stroke weight after scaling (0 = no adjustment).
+    """
+    src = font[src_name]
+    src_bb = src.boundingBox()
+    src_cx = (src_bb[0] + src_bb[2]) / 2
+    mark = font.createChar(-1, mark_glyph_name)
+    mark.clear()
+    layer = fontforge.layer()
+    for c in src.foreground:
+        layer += c
+    mark.foreground = layer
+    sy = -scale if flip_y else scale
+    mark.transform(psMat.compose(psMat.scale(scale, sy), psMat.translate(-src_cx * scale, 0)))
+    mark.width = 0
+    mark.correctDirection()  # flip reverses winding order; restore before changeWeight
+    mark.removeOverlap()
+    if weight_delta:
+        mark.changeWeight(weight_delta)
+    mark.simplify()
+    return mark
+
+
+def _place_above(font, base_name, mark_name, gap=20, x_adj=0):
+    """Compute translation to place a pre-sized mark centered above base by bounding box."""
+    base_bb = font[base_name].boundingBox()
+    mark_bb = font[mark_name].boundingBox()
+    base_cx = (base_bb[0] + base_bb[2]) / 2
+    mark_cx = (mark_bb[0] + mark_bb[2]) / 2
+    dx = base_cx - mark_cx + x_adj
+    dy = base_bb[3] + gap - mark_bb[1]
+    return psMat.translate(dx, dy)
+
+
+def _make_accented(font, cp, base_name, mark_name, gap=20, x_adj=0):
+    """Accented glyph: base reference + pre-sized mark placed above by bounding-box centering."""
+    c = font.createMappedChar(cp)
+    c.clear()
+    c.addReference(base_name)
+    c.width = font[base_name].width
+    c.addReference(mark_name, _place_above(font, base_name, mark_name, gap, x_adj))
+    return c
+
+
+def _make_dstroke(font, cp, base_name, gap=5):
+    """Czech ď/ť form: base + quoteright at natural size to the upper right (not caron above)."""
+    c = font.createMappedChar(cp)
+    c.clear()
+    c.addReference(base_name)
+    base_width = font[base_name].width
+    base_bb = font[base_name].boundingBox()
+    apos_bb = font['quoteright'].boundingBox()
+    dx = base_width + gap - apos_bb[0]
+    dy = base_bb[3] - apos_bb[3]
+    c.addReference('quoteright', psMat.translate(dx, dy))
+    c.width = int(round(base_width + gap + (apos_bb[2] - apos_bb[0]) + 15))
+    return c
+
+
+def _place_below(font, base_name, mark_name, gap=10):
+    """Compute translation to place mark centered below base."""
+    base_bb = font[base_name].boundingBox()
+    mark_bb = font[mark_name].boundingBox()
+    base_cx = (base_bb[0] + base_bb[2]) / 2
+    mark_cx = (mark_bb[0] + mark_bb[2]) / 2
+    dx = base_cx - mark_cx
+    dy = base_bb[1] - gap - mark_bb[3]
+    return psMat.translate(dx, dy)
+
+
+def _make_cedilla(font, cp, base_name, gap=8):
+    if cp in _SKIP_CPS:
+        return
+    c = font.createMappedChar(cp)
+    c.clear()
+    c.addReference(base_name)
+    c.width = font[base_name].width
+    c.addReference('comma', _place_below(font, base_name, 'comma', gap))
+
+
+# Codepoints that already exist as hand-drawn glyphs; skip to avoid overwriting.
+_SKIP_CPS = frozenset({
+    0x00DC,  # Ü — hand-drawn
+    0x0150,  # Ő — hand-drawn
+    0x0112,  # Ē — hand-drawn
+})
+
+
+def _accented(cp, base_name, mark_name, gap=20, x_adj=0):
+    if cp not in _SKIP_CPS:
+        _make_accented(font, cp, base_name, mark_name, gap, x_adj)
+
+
+# ---------------------------------------------------------------------------
+# Glyph aliases and re-uses
+# ---------------------------------------------------------------------------
+
+# Vertical pipe: re-use the I glyph (same stroke, same weight).
+pipe = font.createMappedChar(ord('|'))
+pipe.clear()
+pipe.addReference('I')
+pipe.width = font['I'].width
+
+
+
+ref_aliases = [
+    (0x0060, 'quoteleft'),    # grave/backtick
+    (0x00B4, 'quoteright'),   # acute accent
+    (0x201B, 'quoteleft'),    # quotereversed
+    (0x201F, 'quotedblleft'), # quotedblreversed
+    (0x2032, 'quoteright'),   # prime
+    (0x2033, 'quotedbl'),     # doubleprime
+    (0x2035, 'quoteleft'),    # backprime
+]
+for codepoint, source_name in ref_aliases:
+    c = font.createMappedChar(codepoint)
+    c.addReference(source_name)
+    c.width = font[source_name].width
+
+
+# ---------------------------------------------------------------------------
+# Combining mark glyphs
+# ---------------------------------------------------------------------------
+
+# --- Marks sourced from hand-drawn glyphs (correct pen weight by construction) ---
+
+# Acute: rightmost of the two strokes in Ő.
+_acute_mark = make_mark(font, '_acute_mark',
+    sorted(extract_top_contours(font, 0x0150, 2),
+           key=lambda c: sum(p.x for p in c) / len(c), reverse=True)[:1])
+
+# Grave: horizontal mirror of the acute.
+_grave_mark = make_mark_flipped_x(font, '_grave_mark', '_acute_mark')
+
+# Ring above: both ring contours (inner + outer circle) from Å.
+_ring_mark = make_mark(font, '_ring_above_mark', extract_top_contours(font, 0x00C5, 2))
+
+# Diaeresis: both dots from Ü.
+_diaeresis_mark = make_mark(font, '_diaeresis_mark', extract_top_contours(font, 0x00DC, 2))
+
+# Single dot above: one dot from Ü.
+_dot_above_mark = make_mark(font, '_dot_above_mark', extract_top_contours(font, 0x00DC, 2)[:1])
+
+# Macron: topmost stroke from Ē.
+_macron_mark = make_mark(font, '_macron_mark', extract_top_contours(font, 0x0112, 1))
+
+# --- Marks sourced from ASCII glyphs (scaled + weight-corrected) ---
+
+_mark_scale = 0.65
+
+# Caron: asciicircum flipped vertically (^ → ˇ).
+_caron_mark = _make_weighted_mark(font, 'asciicircum', _mark_scale, 0, '_caron_mark', flip_y=True)
+
+# Circumflex: asciicircum unflipped.
+_circumflex_mark = _make_weighted_mark(font, 'asciicircum', _mark_scale, 0, '_circumflex_mark')
+
+# Tilde.
+_tilde_mark = _make_weighted_mark(font, 'asciitilde', _mark_scale, 0, '_tilde_mark')
+
+# --- Marks composed from existing mark glyphs ---
+
+# dotlessi (U+0131): i without the dot, so í etc. don't stack dot + acute.
+_i_layer = font['i'].foreground
+_dot_ymin = max(min(p.y for p in c) for c in _i_layer)
+_dotlessi_glyph = font.createMappedChar(0x0131)
+_dotless_layer = fontforge.layer()
+for c in _i_layer:
+    if min(p.y for p in c) < _dot_ymin:
+        _dotless_layer += c
+_dotlessi_glyph.foreground = _dotless_layer
+_dotlessi_glyph.width = font['i'].width
+
+# Double acute: two acute-mark references shifted apart.
+_double_acute_mark = font.createChar(-1, '_double_acute_mark')
+_double_acute_mark.clear()
+_abb = _acute_mark.boundingBox()
+_half = (_abb[2] - _abb[0]) / 2 * 1.2
+_double_acute_mark.addReference('_acute_mark', psMat.translate(-_half, 0))
+_double_acute_mark.addReference('_acute_mark', psMat.translate(_half, 0))
+_double_acute_mark.width = 0
+
+# ---------------------------------------------------------------------------
+# Register combining Unicode codepoints
+# ---------------------------------------------------------------------------
+
+for cp, mark in [
+    (0x0300, _grave_mark),
+    (0x0301, _acute_mark),
+    (0x0302, _circumflex_mark),
+    (0x0303, _tilde_mark),
+    (0x0304, _macron_mark),
+    (0x0307, _dot_above_mark),
+    (0x0308, _diaeresis_mark),
+    (0x030A, _ring_mark),
+    (0x030B, _double_acute_mark),
+    (0x030C, _caron_mark),
+]:
+    c = font.createMappedChar(cp)
+    c.clear()
+    c.addReference(mark.glyphname)
+    c.width = 0
+
+
+# ---------------------------------------------------------------------------
+# Accented character tables
+# ---------------------------------------------------------------------------
+
+# Acute: Á É Í Ó Ú Ý / á é í ó ú ý  (í uses dotlessi to avoid dot+acute stack)
+# É is regenerated for consistency — the hand-drawn original has a different stroke length.
+for cp, base in [
+    (0x00C1, 'A'), (0x00C9, 'E'), (0x00CD, 'I'), (0x00D3, 'O'), (0x00DA, 'U'), (0x00DD, 'Y'),
+    (0x00E1, 'a'), (0x00E9, 'e'), (0x00ED, 'dotlessi'), (0x00F3, 'o'), (0x00FA, 'u'), (0x00FD, 'y'),
+]:
+    _make_accented(font, cp, base, '_acute_mark')
+
+# Caron: Č Ě Ň Ř Š Ž / č ě ň ř š ž  (ď/ť handled separately below)
+for cp, base in [
+    (0x010C, 'C'), (0x011A, 'E'), (0x0147, 'N'), (0x0158, 'R'), (0x0160, 'S'), (0x017D, 'Z'),
+    (0x010D, 'c'), (0x011B, 'e'), (0x0148, 'n'), (0x0159, 'r'), (0x0161, 's'), (0x017E, 'z'),
+]:
+    _make_accented(font, cp, base, '_caron_mark')
+
+# Ring above: Ů / ů
+for cp, base in [(0x016E, 'U'), (0x016F, 'u')]:
+    _make_accented(font, cp, base, '_ring_above_mark')
+
+# Ď Ť (uppercase): caron above, like other uppercase caron letters.
+for cp, base in [(0x010E, 'D'), (0x0164, 'T')]:
+    _make_accented(font, cp, base, '_caron_mark')
+
+# ď ť (lowercase): raised apostrophe to the right — tall descenders leave no room above.
+for cp, base in [(0x010F, 'd'), (0x0165, 't')]:
+    _make_dstroke(font, cp, base)
+
+# Circumflex: Â Ê Î Ô Û / â ê î ô û
+for cp, base in [
+    (0x00C2, 'A'), (0x00CA, 'E'), (0x00CE, 'I'), (0x00D4, 'O'), (0x00DB, 'U'),
+    (0x00E2, 'a'), (0x00EA, 'e'), (0x00EE, 'dotlessi'), (0x00F4, 'o'), (0x00FB, 'u'),
+]:
+    _accented(cp, base, '_circumflex_mark')
+
+# Grave: À È Ì Ò Ù Ỳ / à è ì ò ù ỳ
+for cp, base in [
+    (0x00C0, 'A'), (0x00C8, 'E'), (0x00CC, 'I'), (0x00D2, 'O'), (0x00D9, 'U'), (0x1EF2, 'Y'),
+    (0x00E0, 'a'), (0x00E8, 'e'), (0x00EC, 'dotlessi'), (0x00F2, 'o'), (0x00F9, 'u'), (0x1EF3, 'y'),
+]:
+    _accented(cp, base, '_grave_mark')
+
+# Tilde: Ã Ñ Õ / ã ñ õ
+for cp, base in [
+    (0x00C3, 'A'), (0x00D1, 'N'), (0x00D5, 'O'),
+    (0x00E3, 'a'), (0x00F1, 'n'), (0x00F5, 'o'),
+]:
+    _accented(cp, base, '_tilde_mark')
+
+# Dot above: Ċ Ė Ġ İ Ż / ċ ė ġ ż
+for cp, base in [
+    (0x010A, 'C'), (0x0116, 'E'), (0x0120, 'G'), (0x0130, 'I'), (0x017B, 'Z'),
+    (0x010B, 'c'), (0x0117, 'e'), (0x0121, 'g'), (0x017C, 'z'),
+]:
+    _accented(cp, base, '_dot_above_mark')
+
+# Diaeresis: Ä Ë Ï Ö Ÿ / ä ë ï ö ü ÿ  (Ü skipped — hand-drawn)
+for cp, base in [
+    (0x00C4, 'A'), (0x00CB, 'E'), (0x00CF, 'I'), (0x00D6, 'O'), (0x0178, 'Y'),
+    (0x00E4, 'a'), (0x00EB, 'e'), (0x00EF, 'dotlessi'), (0x00F6, 'o'), (0x00FC, 'u'), (0x00FF, 'y'),
+]:
+    _accented(cp, base, '_diaeresis_mark')
+
+# Double acute: Ő Ű / ő ű  (Ő skipped — hand-drawn)
+for cp, base in [
+    (0x0150, 'O'), (0x0170, 'U'),
+    (0x0151, 'o'), (0x0171, 'u'),
+]:
+    _accented(cp, base, '_double_acute_mark')
+
+# Cedilla: Ç Ş Ţ Ģ Ķ Ļ Ņ Ŗ / ç ş ţ ģ ķ ļ ņ ŗ
+for cp, base in [
+    (0x00C7, 'C'), (0x015E, 'S'), (0x0162, 'T'), (0x0122, 'G'), (0x0136, 'K'), (0x013B, 'L'), (0x0145, 'N'), (0x0156, 'R'),
+    (0x00E7, 'c'), (0x015F, 's'), (0x0163, 't'), (0x0123, 'g'), (0x0137, 'k'), (0x013C, 'l'), (0x0146, 'n'), (0x0157, 'r'),
+]:
+    _make_cedilla(font, cp, base)
+
+# Macron: Ā Ī Ō Ū / ā ī ō ū ē  (Ē skipped — hand-drawn)
+for cp, base in [
+    (0x0100, 'A'), (0x012A, 'I'), (0x014C, 'O'), (0x016A, 'U'), (0x0112, 'E'),
+    (0x0101, 'a'), (0x012B, 'dotlessi'), (0x014D, 'o'), (0x016B, 'u'), (0x0113, 'e'),
+]:
+    _accented(cp, base, '_macron_mark')
+
+
+# ---------------------------------------------------------------------------
+# Save
+# ---------------------------------------------------------------------------
+
+font.save(font_fname)
