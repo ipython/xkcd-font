@@ -5,7 +5,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd ${DIR}
 RUN_CTXT="docker run --rm -u $(id -u) -v $(pwd)/../:$(pwd)/../ -w $(pwd) -e LC_ALL=en_US.UTF-8 ${IMAGE}"
 
-set -x
+set -ex
 
 # Following @pelson's field notes at https://pelson.github.io/2017/xkcd_font/
 $RUN_CTXT python3 pt1_character_extraction.py

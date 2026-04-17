@@ -75,6 +75,10 @@ def _make_weighted_mark(font, src_name, scale, weight_delta, mark_glyph_name, fl
     mark.foreground = layer
     sy = -scale if flip_y else scale
     mark.transform(psMat.compose(psMat.scale(scale, sy), psMat.translate(-src_cx * scale, 0)))
+    if flip_y:
+        # Vertical flip negates y, putting the mark below the baseline.
+        # Translate back to the original y range so combining characters render above the base.
+        mark.transform(psMat.translate(0, scale * (src_bb[1] + src_bb[3])))
     mark.width = 0
     mark.correctDirection()  # flip reverses winding order; restore before changeWeight
     mark.removeOverlap()
@@ -105,8 +109,14 @@ def _make_accented(font, cp, base_name, mark_name, gap=20, x_adj=0):
     return c
 
 
-def _make_dstroke(font, cp, base_name, gap=5):
-    """Czech ď/ť form: base + quoteright at natural size to the upper right (not caron above)."""
+def _make_dstroke(font, cp, base_name, gap=5, dy_offset=0, width_extra=0):
+    """Czech ď/ť form: base + quoteright at natural size to the upper right (not caron above).
+
+    The apostrophe overhangs the advance width (like italic f in many fonts); the
+    advance width is kept close to the base glyph so following letters sit naturally.
+    dy_offset shifts the apostrophe vertically (positive = up).
+    width_extra adds to the advance width for narrow bases like l/L.
+    """
     c = font.createMappedChar(cp)
     c.clear()
     c.addReference(base_name)
@@ -114,9 +124,9 @@ def _make_dstroke(font, cp, base_name, gap=5):
     base_bb = font[base_name].boundingBox()
     apos_bb = font['quoteright'].boundingBox()
     dx = base_width + gap - apos_bb[0]
-    dy = base_bb[3] - apos_bb[3]
+    dy = base_bb[3] - apos_bb[3] + dy_offset
     c.addReference('quoteright', psMat.translate(dx, dy))
-    c.width = int(round(base_width + gap + (apos_bb[2] - apos_bb[0]) + 15))
+    c.width = base_width + 20 + width_extra
     return c
 
 
@@ -139,6 +149,36 @@ def _make_cedilla(font, cp, base_name, gap=8):
     c.addReference(base_name)
     c.width = font[base_name].width
     c.addReference('comma', _place_below(font, base_name, 'comma', gap))
+
+
+def _make_dot_below(font, cp, base_name, gap=15):
+    if cp in _SKIP_CPS:
+        return
+    c = font.createMappedChar(cp)
+    c.clear()
+    c.addReference(base_name)
+    c.width = font[base_name].width
+    c.addReference('_dot_below_mark', _place_below(font, base_name, '_dot_below_mark', gap))
+
+
+def _make_ogonek(font, cp, base_name):
+    if cp in _SKIP_CPS:
+        return
+    c = font.createMappedChar(cp)
+    c.clear()
+    c.addReference(base_name)
+    c.width = font[base_name].width
+    comma_bb = font['comma'].boundingBox()
+    base_bb = font[base_name].boundingBox()
+    # Rotate comma 180° and position so the tail tip sits at the baseline (y=0)
+    # and the right edge of the rotated shape attaches at the base ink right edge.
+    # After scale(-1,-1): original left edge → right side, original bottom → top.
+    # dx: -comma_bb[0] + dx = base_bb[2]  →  dx = base_bb[2] + comma_bb[0]
+    # dy: -comma_bb[1] + dy = 0           →  dy = comma_bb[1]
+    # +80 shifts the whole ogonek up so it overlaps the base letter bottom.
+    dx = base_bb[2] + comma_bb[0]
+    dy = comma_bb[1] + 80
+    c.addReference('comma', psMat.compose(psMat.scale(-1, -1), psMat.translate(dx, dy)))
 
 
 # Codepoints that already exist as hand-drawn glyphs; skip to avoid overwriting.
@@ -204,21 +244,26 @@ _diaeresis_mark = make_mark(font, '_diaeresis_mark', extract_top_contours(font, 
 # Single dot above: one dot from Ü.
 _dot_above_mark = make_mark(font, '_dot_above_mark', extract_top_contours(font, 0x00DC, 2)[:1])
 
-# Macron: topmost stroke from Ē.
+# Single dot below: same dot shape, used for Vietnamese dot-below characters.
+_dot_below_mark = make_mark(font, '_dot_below_mark', extract_top_contours(font, 0x00DC, 2)[:1])
+
+
+# Macron: topmost stroke from Ē, with weight correction.
 _macron_mark = make_mark(font, '_macron_mark', extract_top_contours(font, 0x0112, 1))
+_macron_mark.changeWeight(20)
 
 # --- Marks sourced from ASCII glyphs (scaled + weight-corrected) ---
 
 _mark_scale = 0.65
 
 # Caron: asciicircum flipped vertically (^ → ˇ).
-_caron_mark = _make_weighted_mark(font, 'asciicircum', _mark_scale, 0, '_caron_mark', flip_y=True)
+_caron_mark = _make_weighted_mark(font, 'asciicircum', _mark_scale, 35, '_caron_mark', flip_y=True)
 
 # Circumflex: asciicircum unflipped.
-_circumflex_mark = _make_weighted_mark(font, 'asciicircum', _mark_scale, 0, '_circumflex_mark')
+_circumflex_mark = _make_weighted_mark(font, 'asciicircum', _mark_scale, 35, '_circumflex_mark')
 
 # Tilde.
-_tilde_mark = _make_weighted_mark(font, 'asciitilde', _mark_scale, 0, '_tilde_mark')
+_tilde_mark = _make_weighted_mark(font, 'asciitilde', _mark_scale, 35, '_tilde_mark')
 
 # --- Marks composed from existing mark glyphs ---
 
@@ -246,6 +291,13 @@ _double_acute_mark.width = 0
 # Register combining Unicode codepoints
 # ---------------------------------------------------------------------------
 
+# Position each combining mark so its bottom sits just above the ascender.
+# Without GPOS anchors the renderer places marks at their native coordinates,
+# so we translate here to ensure they appear above even tall letters like l/L/b/h.
+# (Pre-composed glyphs are unaffected — _place_above computes its own dy.)
+_ascender_top = font['l'].boundingBox()[3]
+_combining_gap = 20
+
 for cp, mark in [
     (0x0300, _grave_mark),
     (0x0301, _acute_mark),
@@ -260,7 +312,9 @@ for cp, mark in [
 ]:
     c = font.createMappedChar(cp)
     c.clear()
-    c.addReference(mark.glyphname)
+    mark_bb = font[mark.glyphname].boundingBox()
+    dy = _ascender_top + _combining_gap - mark_bb[1]
+    c.addReference(mark.glyphname, psMat.translate(0, dy))
     c.width = 0
 
 
@@ -276,12 +330,22 @@ for cp, base in [
 ]:
     _make_accented(font, cp, base, '_acute_mark')
 
-# Caron: Č Ě Ň Ř Š Ž / č ě ň ř š ž  (ď/ť handled separately below)
+# Caron: uppercase consonants + vowels (gap=20); U slightly tighter (gap=15).
 for cp, base in [
-    (0x010C, 'C'), (0x011A, 'E'), (0x0147, 'N'), (0x0158, 'R'), (0x0160, 'S'), (0x017D, 'Z'),
-    (0x010D, 'c'), (0x011B, 'e'), (0x0148, 'n'), (0x0159, 'r'), (0x0161, 's'), (0x017E, 'z'),
+    (0x010C, 'C'), (0x011A, 'E'), (0x01CF, 'I'), (0x0147, 'N'), (0x0158, 'R'), (0x0160, 'S'), (0x017D, 'Z'),
+    (0x01CD, 'A'), (0x01D1, 'O'),
 ]:
     _make_accented(font, cp, base, '_caron_mark')
+_make_accented(font, 0x01D3, 'U', '_caron_mark', gap=15)
+
+# Caron: lowercase consonants + vowels (gap=8 — lowercase sits lower than caps).
+# ǐ keeps gap=40 since dotlessi is short.
+for cp, base in [
+    (0x010D, 'c'), (0x011B, 'e'), (0x0148, 'n'), (0x0159, 'r'), (0x0161, 's'), (0x017E, 'z'),
+    (0x01CE, 'a'), (0x01D2, 'o'), (0x01D4, 'u'),
+]:
+    _make_accented(font, cp, base, '_caron_mark', gap=8)
+_make_accented(font, 0x01D0, 'dotlessi', '_caron_mark', gap=40)
 
 # Ring above: Ů / ů
 for cp, base in [(0x016E, 'U'), (0x016F, 'u')]:
@@ -291,14 +355,18 @@ for cp, base in [(0x016E, 'U'), (0x016F, 'u')]:
 for cp, base in [(0x010E, 'D'), (0x0164, 'T')]:
     _make_accented(font, cp, base, '_caron_mark')
 
-# ď ť (lowercase): raised apostrophe to the right — tall descenders leave no room above.
-for cp, base in [(0x010F, 'd'), (0x0165, 't')]:
-    _make_dstroke(font, cp, base)
+# ď ť ľ (lowercase) / Ľ (uppercase): raised apostrophe to the right.
+_make_dstroke(font, 0x010F, 'd', gap=-30)
+_make_dstroke(font, 0x0165, 't', gap=-50)
+_make_dstroke(font, 0x013E, 'l', gap=-50, width_extra=80)
+_make_dstroke(font, 0x013D, 'L', gap=-50, dy_offset=100, width_extra=80)
 
-# Circumflex: Â Ê Î Ô Û / â ê î ô û
+# Circumflex: Â Ê Î Ô Û / â ê î ô û  +  Esperanto Ĉ Ĝ Ĥ Ĵ Ŝ  +  Welsh Ŵ Ŷ
 for cp, base in [
     (0x00C2, 'A'), (0x00CA, 'E'), (0x00CE, 'I'), (0x00D4, 'O'), (0x00DB, 'U'),
+    (0x0108, 'C'), (0x011C, 'G'), (0x0124, 'H'), (0x0134, 'J'), (0x015C, 'S'), (0x0174, 'W'), (0x0176, 'Y'),
     (0x00E2, 'a'), (0x00EA, 'e'), (0x00EE, 'dotlessi'), (0x00F4, 'o'), (0x00FB, 'u'),
+    (0x0109, 'c'), (0x011D, 'g'), (0x0125, 'h'), (0x0135, 'j'), (0x015D, 's'), (0x0175, 'w'), (0x0177, 'y'),
 ]:
     _accented(cp, base, '_circumflex_mark')
 
@@ -350,6 +418,32 @@ for cp, base in [
     (0x0101, 'a'), (0x012B, 'dotlessi'), (0x014D, 'o'), (0x016B, 'u'), (0x0113, 'e'),
 ]:
     _accented(cp, base, '_macron_mark')
+
+
+# Ogonek: Ą Ę Į Ų / ą ę į ų
+for cp, base in [
+    (0x0104, 'A'), (0x0118, 'E'), (0x012E, 'I'), (0x0172, 'U'),
+    (0x0105, 'a'), (0x0119, 'e'), (0x012F, 'i'), (0x0173, 'u'),
+]:
+    _make_ogonek(font, cp, base)
+
+# Dot below: Ạ Ẹ Ị Ọ Ụ Ỵ / ạ ẹ ị ọ ụ ỵ
+for cp, base in [
+    (0x1EA0, 'A'), (0x1EB8, 'E'), (0x1ECA, 'I'), (0x1ECC, 'O'), (0x1EE4, 'U'), (0x1EF4, 'Y'),
+    (0x1EA1, 'a'), (0x1EB9, 'e'), (0x1ECB, 'i'), (0x1ECD, 'o'), (0x1EE5, 'u'), (0x1EF5, 'y'),
+]:
+    _make_dot_below(font, cp, base)
+
+# ĳ U+0133 / Ĳ U+0132: Dutch IJ digraph ligatures.
+# Position so the ink edges have the same gap as adjacent letters would after kerning (~40 units).
+for cp, left, right in [(0x0133, 'i', 'j'), (0x0132, 'I', 'J')]:
+    _ij = font.createMappedChar(cp)
+    _ij.clear()
+    _ij.addReference(left)
+    _ink_gap = 0
+    _dx = int(round(font[left].boundingBox()[2] + _ink_gap - font[right].boundingBox()[0]))
+    _ij.addReference(right, psMat.translate(_dx, 0))
+    _ij.width = _dx + font[right].width
 
 
 # ---------------------------------------------------------------------------
