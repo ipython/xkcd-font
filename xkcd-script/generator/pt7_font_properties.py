@@ -2,7 +2,7 @@
 """
 Apply font-wide properties: kerning, spacing, and any other metric tweaks.
 
-Reads the SFD produced by pt5_derived_chars.py (which has all glyphs),
+Reads the SFD produced by pt6_derived_chars.py (which has all glyphs),
 applies properties, saves.
 """
 import fontforge
@@ -115,6 +115,52 @@ def autokern(font):
 
 
 autokern(font)
+
+
+# ---------------------------------------------------------------------------
+# Mark-to-base GPOS: position combining diacritical marks above base glyphs
+# ---------------------------------------------------------------------------
+
+font.addLookup('above', 'gpos_mark2base', (), [['mark', [['latn', ['dflt']]]]])
+font.addLookupSubtable('above', 'above_sub')
+font.addAnchorClass('above_sub', 'above')
+
+# Combining mark codepoints registered in pt6, paired with their private glyph names.
+# The anchor sits at the bottom-centre of each combining mark glyph, adjusted by
+# a per-mark y offset: positive = mark sits lower (less gap), negative = higher (more gap).
+_COMBINING = [
+    (0x0300, '_grave_mark', 0),
+    (0x0301, '_acute_mark', 0),
+    (0x0302, '_circumflex_mark', 300),  # was too high
+    (0x0303, '_tilde_mark', 270),  # was too high
+    (0x0304, '_macron_mark', -90),  # was too low
+    (0x0307, '_dot_above_mark', -30),  # too low → raise
+    (0x0308, '_diaeresis_mark', 0),
+    (0x030A, '_ring_above_mark', 45),  # could be a little closer
+    (0x030B, '_double_acute_mark', 0),
+    (0x030C, '_caron_mark', 280),  # was too high
+]
+
+for cp, private_name, y_offset in _COMBINING:
+    mark_glyph = font[cp]
+    # Use the private mark glyph's bbox (the encoded glyph is a composite whose
+    # bbox FontForge may not resolve; the private mark is a plain outline).
+    bb = font[private_name].boundingBox()
+    cx = (bb[0] + bb[2]) / 2
+    mark_glyph.addAnchorPoint('above', 'mark', cx, bb[1] + y_offset)
+
+# Base anchors at top-centre + gap for every letter in the font.
+_BASE_GAP = 20
+for glyph in font.glyphs():
+    if glyph.unicode < 0:
+        continue
+    if unicodedata.category(chr(glyph.unicode))[0] != 'L':
+        continue
+    bb = glyph.boundingBox()
+    if bb[2] <= bb[0]:  # empty / unresolved composite
+        continue
+    cx = (bb[0] + bb[2]) / 2
+    glyph.addAnchorPoint('above', 'base', cx, bb[3] + _BASE_GAP)
 
 
 # ---------------------------------------------------------------------------
