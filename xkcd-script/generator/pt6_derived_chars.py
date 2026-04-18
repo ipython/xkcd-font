@@ -214,6 +214,12 @@ ref_aliases = [
     (0x2032, 'quoteright'),   # prime
     (0x2033, 'quotedbl'),     # doubleprime
     (0x2035, 'quoteleft'),    # backprime
+    # Dash aliases
+    (0x2011, 'hyphen'),       # non-breaking hyphen
+    (0x00AD, 'hyphen'),       # soft hyphen
+    (0x2212, 'endash'),       # minus sign
+    (0x2012, 'endash'),       # figure dash
+    (0x2015, 'emdash'),       # horizontal bar
 ]
 for codepoint, source_name in ref_aliases:
     c = font.createMappedChar(codepoint)
