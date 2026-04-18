@@ -5,6 +5,7 @@ and all accented Latin letters for European languages.
 
 Reads the base SFD produced by pt4_svg_to_font.py, adds derived glyphs, saves.
 """
+import math
 import os
 import fontforge
 import psMat
@@ -366,6 +367,111 @@ _make_dstroke(font, 0x010F, 'd', gap=-30)
 _make_dstroke(font, 0x0165, 't', gap=-50)
 _make_dstroke(font, 0x013E, 'l', gap=-50, width_extra=80)
 _make_dstroke(font, 0x013D, 'L', gap=-50, dy_offset=100, width_extra=80)
+
+# ---------------------------------------------------------------------------
+# L with stroke: Ł U+0141 / ł U+0142
+# ---------------------------------------------------------------------------
+
+def _make_l_crossbar_mark(font, name, bar_width, rotation=0):
+    """Scaled hyphen stroke centered at origin (x=0, y=0), zero-width mark.
+
+    rotation: counter-clockwise angle in degrees.
+    """
+    hyp_bb = font['hyphen'].boundingBox()
+    hyp_cx = (hyp_bb[0] + hyp_bb[2]) / 2
+    hyp_cy = (hyp_bb[1] + hyp_bb[3]) / 2
+    sx = bar_width / (hyp_bb[2] - hyp_bb[0])
+    mark = font.createChar(-1, name)
+    mark.clear()
+    layer = fontforge.layer()
+    for c in font['hyphen'].foreground:
+        layer += c
+    mark.foreground = layer
+    mark.transform(psMat.compose(
+        psMat.scale(sx, 1.0),
+        psMat.translate(-hyp_cx * sx, -hyp_cy),
+    ))
+    if rotation:
+        mark.transform(psMat.rotate(math.radians(rotation)))
+        # Re-centre after rotation: the bounding box shifts if the source shape is asymmetric.
+        bb = mark.boundingBox()
+        mark.transform(psMat.translate(-((bb[0] + bb[2]) / 2), -((bb[1] + bb[3]) / 2)))
+    mark.width = 0
+    return mark
+
+
+def _make_lslash(font, cp, base_name, crossbar_name, y_frac, x_center):
+    """L-with-stroke: base glyph + crossbar mark at (x_center, y_frac * height)."""
+    c = font.createMappedChar(cp)
+    c.clear()
+    c.addReference(base_name)
+    c.width = font[base_name].width
+    base_bb = font[base_name].boundingBox()
+    target_y = base_bb[1] + (base_bb[3] - base_bb[1]) * y_frac
+    c.addReference(crossbar_name, psMat.translate(x_center, target_y))
+    return c
+
+
+_l_crossbar = _make_l_crossbar_mark(font, '_l_crossbar', bar_width=300, rotation=40)
+
+# Ł U+0141 — crossbar at 42% of cap height, centered on the vertical stroke (x≈75)
+_make_lslash(font, 0x0141, 'L', '_l_crossbar', y_frac=0.42, x_center=75)
+# ł U+0142 — crossbar at 60% of ascender height, l's stroke is at x≈75
+_make_lslash(font, 0x0142, 'l', '_l_crossbar', y_frac=0.60, x_center=75)
+
+
+# ---------------------------------------------------------------------------
+# O with stroke: Ø U+00D8 / ø U+00F8
+# ---------------------------------------------------------------------------
+
+def _make_oslash(font, cp, base_name, crossbar_name, y_offset=0):
+    """O-with-stroke: base glyph + crossbar centered on its bounding box.
+
+    y_offset: shift the crossbar up (positive) or down (negative) from centre.
+    """
+    c = font.createMappedChar(cp)
+    c.clear()
+    c.addReference(base_name)
+    c.width = font[base_name].width
+    base_bb = font[base_name].boundingBox()
+    cx = (base_bb[0] + base_bb[2]) / 2
+    cy = (base_bb[1] + base_bb[3]) / 2
+    c.addReference(crossbar_name, psMat.translate(cx, cy + y_offset))
+    return c
+
+
+# bar_width sized to span the oval diagonal plus a small overhang on each side:
+# O: bbox ≈450×580 → diagonal ≈735; o: bbox ≈365×420 → diagonal ≈557
+_cap_o_crossbar = _make_l_crossbar_mark(font, '_cap_o_crossbar', bar_width=720, rotation=55)
+_lc_o_crossbar = _make_l_crossbar_mark(font, '_lc_o_crossbar', bar_width=558, rotation=55)
+
+_make_oslash(font, 0x00D8, 'O', '_cap_o_crossbar', y_offset=30)  # Ø
+_make_oslash(font, 0x00F8, 'o', '_lc_o_crossbar', y_offset=15)   # ø
+
+
+# ---------------------------------------------------------------------------
+# D/d/H/h/T/t with stroke (all horizontal bars, rotation=0)
+# ---------------------------------------------------------------------------
+
+_bar_300 = _make_l_crossbar_mark(font, '_bar_300', bar_width=300)  # D/d/Ð
+_bar_220 = _make_l_crossbar_mark(font, '_bar_220', bar_width=220)  # T/t/h
+_bar_480 = _make_l_crossbar_mark(font, '_bar_480', bar_width=480)  # H (spans past both uprights)
+
+# Đ U+0110 — bar through D's left vertical stem (like Ł for L)
+_make_lslash(font, 0x0110, 'D', '_bar_300', y_frac=0.50, x_center=145)
+# đ U+0111 — bar through d's right ascending stem
+_make_lslash(font, 0x0111, 'd', '_bar_300', y_frac=0.78, x_center=360)
+# Ħ U+0126 — bar spanning past both H uprights, centred on full glyph width
+_make_lslash(font, 0x0126, 'H', '_bar_480', y_frac=0.85, x_center=239)
+# ħ U+0127 — bar through h's left ascending stem
+_make_lslash(font, 0x0127, 'h', '_bar_220', y_frac=0.85, x_center=70)
+# Ŧ U+0166 — bar through T's vertical stem
+_make_lslash(font, 0x0166, 'T', '_bar_220', y_frac=0.45, x_center=194)
+# ŧ U+0167 — bar through t's stem, below t's existing crossbar
+_make_lslash(font, 0x0167, 't', '_bar_220', y_frac=0.35, x_center=148)
+# Ð U+00D0 — Eth: like Đ but slightly higher (upper curve of D)
+_make_lslash(font, 0x00D0, 'D', '_bar_300', y_frac=0.58, x_center=145)
+
 
 # Circumflex: Â Ê Î Ô Û / â ê î ô û  +  Esperanto Ĉ Ĝ Ĥ Ĵ Ŝ  +  Welsh Ŵ Ŷ
 for cp, base in [
