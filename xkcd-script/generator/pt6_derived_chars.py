@@ -334,6 +334,13 @@ for cp, mark in [
 for cp, base in [
     (0x00C1, 'A'), (0x00C9, 'E'), (0x00CD, 'I'), (0x00D3, 'O'), (0x00DA, 'U'), (0x00DD, 'Y'),
     (0x00E1, 'a'), (0x00E9, 'e'), (0x00ED, 'dotlessi'), (0x00F3, 'o'), (0x00FA, 'u'), (0x00FD, 'y'),
+    (0x0106, 'C'), (0x0107, 'c'),   # Ć ć  Polish/Croatian
+    (0x0139, 'L'), (0x013A, 'l'),   # Ĺ ĺ  Slovak
+    (0x0143, 'N'), (0x0144, 'n'),   # Ń ń  Polish
+    (0x0154, 'R'), (0x0155, 'r'),   # Ŕ ŕ  Slovak
+    (0x015A, 'S'), (0x015B, 's'),   # Ś ś  Polish
+    (0x0179, 'Z'), (0x017A, 'z'),   # Ź ź  Polish
+    (0x1E82, 'W'), (0x1E83, 'w'),   # Ẃ ẃ  Welsh
 ]:
     _make_accented(font, cp, base, '_acute_mark')
 
@@ -354,8 +361,8 @@ for cp, base in [
     _make_accented(font, cp, base, '_caron_mark', gap=8)
 _make_accented(font, 0x01D0, 'dotlessi', '_caron_mark', gap=40)
 
-# Ring above: Ů / ů
-for cp, base in [(0x016E, 'U'), (0x016F, 'u')]:
+# Ring above: å Ů / ů
+for cp, base in [(0x00E5, 'a'), (0x016E, 'U'), (0x016F, 'u')]:
     _make_accented(font, cp, base, '_ring_above_mark')
 
 # Ď Ť (uppercase): caron above, like other uppercase caron letters.
@@ -450,6 +457,38 @@ _make_oslash(font, 0x00F8, 'o', '_lc_o_crossbar', y_offset=15)   # ø
 
 
 # ---------------------------------------------------------------------------
+# L with middle dot: Ŀ U+013F / ŀ U+0140  (Catalan)
+# ---------------------------------------------------------------------------
+
+def _make_l_middot(font, cp, base_name, dot_x=None, gap=35):
+    """Catalan L-middot: base glyph + dot at mid-height.
+
+    dot_x: explicit dot-centre x coordinate.  Use for uppercase L where the ink
+           right edge (base_bb[2]) is the wide horizontal foot, far from where
+           the dot should sit.  If None, falls back to ink-right-edge + gap.
+    gap:   extra space added to the right of the dot when computing advance width,
+           and the fallback offset from ink right edge when dot_x is None.
+    """
+    c = font.createMappedChar(cp)
+    c.clear()
+    c.addReference(base_name)
+    base_bb = font[base_name].boundingBox()
+    dot_bb = font['_dot_above_mark'].boundingBox()
+    dot_cx = (dot_bb[0] + dot_bb[2]) / 2
+    dot_cy = (dot_bb[1] + dot_bb[3]) / 2
+    target_x = dot_x if dot_x is not None else base_bb[2] + gap
+    target_y = (base_bb[1] + base_bb[3]) / 2
+    c.addReference('_dot_above_mark', psMat.translate(target_x - dot_cx, target_y - dot_cy))
+    # Width: at least as wide as the base letter; wider only if the dot overhangs.
+    dot_right = target_x + (dot_bb[2] - dot_bb[0]) / 2 + gap
+    c.width = max(font[base_name].width, int(round(dot_right)))
+    return c
+
+_make_l_middot(font, 0x013F, 'L', dot_x=font['L'].boundingBox()[0] + 172)  # Ŀ
+_make_l_middot(font, 0x0140, 'l', gap=45)  # ŀ
+
+
+# ---------------------------------------------------------------------------
 # D/d/H/h/T/t with stroke (all horizontal bars, rotation=0)
 # ---------------------------------------------------------------------------
 
@@ -473,6 +512,63 @@ _make_lslash(font, 0x0167, 't', '_bar_220', y_frac=0.35, x_center=148)
 _make_lslash(font, 0x00D0, 'D', '_bar_300', y_frac=0.58, x_center=145)
 
 
+# ---------------------------------------------------------------------------
+# Eng: Ŋ U+014A / ŋ U+014B
+# N/n with a comma-shaped hook below the right stem.
+# The comma is placed so its top aligns with the baseline (y=0) and its centre
+# sits at a fraction of the base glyph's ink width (the right stem).
+# ---------------------------------------------------------------------------
+
+_comma_bb = font['comma'].boundingBox()
+_comma_cx = (_comma_bb[0] + _comma_bb[2]) / 2
+
+def _make_eng_comma(font, name, y_scale, x_scale=1.0, thin_delta=0):
+    """Elongated comma for eng glyphs: y_scale taller, anchored at the hook tip."""
+    g = font.createChar(-1, name)
+    g.clear()
+    layer = fontforge.layer()
+    for c in font['comma'].foreground:
+        layer += c
+    g.foreground = layer
+    # Scale, then translate up so the bottom stays fixed.
+    g.transform(psMat.compose(psMat.scale(x_scale, y_scale),
+                              psMat.translate(0, -(y_scale - 1) * _comma_bb[1])))
+    if thin_delta:
+        g.removeOverlap()
+        g.changeWeight(thin_delta)
+    g.width = 0
+    return g
+
+
+_eng_comma_uc = _make_eng_comma(font, '_eng_comma_uc', y_scale=1.5)
+_eng_comma_lc = _make_eng_comma(font, '_eng_comma_lc', y_scale=1.3, x_scale=0.85)
+
+_eng_stroke = int(round(0.12 * font.ascent))
+
+
+def _make_eng(font, cp, base_name, comma_name, x_frac=0.88, x_offset=0, y_offset=0):
+    """Eng: base (N/n) + comma hook hanging below the right stem.
+
+    x_frac:   fraction of base ink width for the hook centre.
+    x_offset: additional horizontal nudge in font units (negative = left).
+    y_offset: vertical nudge of the hook attachment point (positive = up).
+    """
+    base_bb = font[base_name].boundingBox()
+    target_x = base_bb[0] + (base_bb[2] - base_bb[0]) * x_frac + x_offset
+    dx = target_x - _comma_cx
+    dy = -font[comma_name].boundingBox()[3] + y_offset
+    c = font.createMappedChar(cp)
+    c.clear()
+    c.addReference(base_name)
+    c.width = font[base_name].width
+    c.addReference(comma_name, psMat.translate(dx, dy))
+    return c
+
+
+_make_eng(font, 0x014A, 'N', '_eng_comma_uc', x_offset=-_eng_stroke // 2 - 10, y_offset=3 * _eng_stroke)  # Ŋ
+_make_eng(font, 0x014B, 'n', '_eng_comma_lc', x_offset=-_eng_stroke // 2 + 15, y_offset=int(_eng_stroke * 1.5))  # ŋ
+
+
 # Circumflex: Â Ê Î Ô Û / â ê î ô û  +  Esperanto Ĉ Ĝ Ĥ Ĵ Ŝ  +  Welsh Ŵ Ŷ
 for cp, base in [
     (0x00C2, 'A'), (0x00CA, 'E'), (0x00CE, 'I'), (0x00D4, 'O'), (0x00DB, 'U'),
@@ -482,31 +578,38 @@ for cp, base in [
 ]:
     _accented(cp, base, '_circumflex_mark')
 
-# Grave: À È Ì Ò Ù Ỳ / à è ì ò ù ỳ
+# Grave: À È Ì Ò Ù Ỳ / à è ì ò ù ỳ  + Ẁ ẁ Ǹ ǹ
 for cp, base in [
     (0x00C0, 'A'), (0x00C8, 'E'), (0x00CC, 'I'), (0x00D2, 'O'), (0x00D9, 'U'), (0x1EF2, 'Y'),
     (0x00E0, 'a'), (0x00E8, 'e'), (0x00EC, 'dotlessi'), (0x00F2, 'o'), (0x00F9, 'u'), (0x1EF3, 'y'),
+    (0x1E80, 'W'), (0x1E81, 'w'),   # Ẁ ẁ  Welsh
+    (0x01F8, 'N'), (0x01F9, 'n'),   # Ǹ ǹ  Welsh/Pinyin
 ]:
     _accented(cp, base, '_grave_mark')
 
-# Tilde: Ã Ñ Õ / ã ñ õ
+# Tilde: Ã Ñ Õ / ã ñ õ  + Ĩ ĩ Ũ ũ Ẽ ẽ
 for cp, base in [
     (0x00C3, 'A'), (0x00D1, 'N'), (0x00D5, 'O'),
     (0x00E3, 'a'), (0x00F1, 'n'), (0x00F5, 'o'),
+    (0x0128, 'I'), (0x0129, 'dotlessi'),  # Ĩ ĩ  Portuguese
+    (0x0168, 'U'), (0x0169, 'u'),         # Ũ ũ  Portuguese
+    (0x1EBC, 'E'), (0x1EBD, 'e'),         # Ẽ ẽ  Portuguese
 ]:
     _accented(cp, base, '_tilde_mark')
 
-# Dot above: Ċ Ė Ġ İ Ż / ċ ė ġ ż
+# Dot above: Ċ Ė Ġ İ Ż / ċ ė ġ ż  + Ẇ ẇ
 for cp, base in [
     (0x010A, 'C'), (0x0116, 'E'), (0x0120, 'G'), (0x0130, 'I'), (0x017B, 'Z'),
     (0x010B, 'c'), (0x0117, 'e'), (0x0121, 'g'), (0x017C, 'z'),
+    (0x1E86, 'W'), (0x1E87, 'w'),   # Ẇ ẇ  Welsh
 ]:
     _accented(cp, base, '_dot_above_mark')
 
-# Diaeresis: Ä Ë Ï Ö Ÿ / ä ë ï ö ü ÿ  (Ü skipped — hand-drawn)
+# Diaeresis: Ä Ë Ï Ö Ÿ / ä ë ï ö ü ÿ  (Ü skipped — hand-drawn)  + Ẅ ẅ
 for cp, base in [
     (0x00C4, 'A'), (0x00CB, 'E'), (0x00CF, 'I'), (0x00D6, 'O'), (0x0178, 'Y'),
     (0x00E4, 'a'), (0x00EB, 'e'), (0x00EF, 'dotlessi'), (0x00F6, 'o'), (0x00FC, 'u'), (0x00FF, 'y'),
+    (0x1E84, 'W'), (0x1E85, 'w'),   # Ẅ ẅ  Welsh
 ]:
     _accented(cp, base, '_diaeresis_mark')
 
