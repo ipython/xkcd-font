@@ -272,6 +272,14 @@ _circumflex_mark = _make_weighted_mark(font, 'asciicircum', _mark_scale, 35, '_c
 # Tilde.
 _tilde_mark = _make_weighted_mark(font, 'asciitilde', _mark_scale, 35, '_tilde_mark')
 
+# Breve: parenleft rotated 90° CCW — the arc gives the right bowl shape for ˘.
+_breve_mark = _make_weighted_mark(font, 'parenleft', _mark_scale, 35, '_breve_mark')
+_breve_mark.transform(psMat.rotate(math.radians(90)))
+_bb = _breve_mark.boundingBox()
+_breve_mark.transform(psMat.translate(-(_bb[0] + _bb[2]) / 2, 0))
+_breve_mark.transform(psMat.scale(0.5, 1))
+_breve_mark.transform(psMat.translate(-220, 0))
+
 # --- Marks composed from existing mark glyphs ---
 
 # dotlessi (U+0131): i without the dot, so í etc. don't stack dot + acute.
@@ -316,6 +324,7 @@ for cp, mark in [
     (0x030A, _ring_mark),
     (0x030B, _double_acute_mark),
     (0x030C, _caron_mark),
+    (0x0306, _breve_mark),   # ̆  combining breve
 ]:
     c = font.createMappedChar(cp)
     c.clear()
@@ -364,6 +373,17 @@ _make_accented(font, 0x01D0, 'dotlessi', '_caron_mark', gap=40)
 # Ring above: å Ů / ů
 for cp, base in [(0x00E5, 'a'), (0x016E, 'U'), (0x016F, 'u')]:
     _make_accented(font, cp, base, '_ring_above_mark')
+
+# Breve: Ă Ĕ Ğ Ĭ Ŏ Ŭ / ă ĕ ğ ĭ ŏ ŭ  (Romanian, Turkish, Belarusian, Esperanto, transliteration)
+for cp, base in [
+    (0x0102, 'A'), (0x0114, 'E'), (0x011E, 'G'), (0x012C, 'I'), (0x014E, 'O'), (0x016C, 'U'),
+]:
+    _make_accented(font, cp, base, '_breve_mark', gap=20)
+for cp, base in [
+    (0x0103, 'a'), (0x0115, 'e'), (0x011F, 'g'), (0x014F, 'o'), (0x016D, 'u'),
+]:
+    _make_accented(font, cp, base, '_breve_mark', gap=8)
+_make_accented(font, 0x012D, 'dotlessi', '_breve_mark', gap=40)  # ĭ — dotless to avoid dot+breve stack
 
 # Ď Ť (uppercase): caron above, like other uppercase caron letters.
 for cp, base in [(0x010E, 'D'), (0x0164, 'T')]:
@@ -624,6 +644,14 @@ for cp, base in [
 for cp, base in [
     (0x00C7, 'C'), (0x015E, 'S'), (0x0162, 'T'), (0x0122, 'G'), (0x0136, 'K'), (0x013B, 'L'), (0x0145, 'N'), (0x0156, 'R'),
     (0x00E7, 'c'), (0x015F, 's'), (0x0163, 't'), (0x0123, 'g'), (0x0137, 'k'), (0x013C, 'l'), (0x0146, 'n'), (0x0157, 'r'),
+]:
+    _make_cedilla(font, cp, base)
+
+# Comma below: Ș ș Ț ț  (Romanian — U+0219/U+021B are the canonical forms;
+# U+015F/U+0163 cedilla variants already exist above)
+for cp, base in [
+    (0x0218, 'S'), (0x0219, 's'),
+    (0x021A, 'T'), (0x021B, 't'),
 ]:
     _make_cedilla(font, cp, base)
 
