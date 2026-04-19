@@ -152,6 +152,16 @@ def _make_cedilla(font, cp, base_name, gap=8):
     c.addReference('comma', _place_below(font, base_name, 'comma', gap))
 
 
+def _make_macron_below(font, cp, base_name, gap=15):
+    if cp in _SKIP_CPS:
+        return
+    c = font.createMappedChar(cp)
+    c.clear()
+    c.addReference(base_name)
+    c.width = font[base_name].width
+    c.addReference('_macron_below_mark', _place_below(font, base_name, '_macron_below_mark', gap))
+
+
 def _make_dot_below(font, cp, base_name, gap=15):
     if cp in _SKIP_CPS:
         return
@@ -254,6 +264,10 @@ _dot_above_mark = make_mark(font, '_dot_above_mark', extract_top_contours(font, 
 # Single dot below: same dot shape, used for Vietnamese dot-below characters.
 _dot_below_mark = make_mark(font, '_dot_below_mark', extract_top_contours(font, 0x00DC, 2)[:1])
 
+# Macron below: same stroke as the macron above, used for Semitic transliteration.
+_macron_below_mark = make_mark(font, '_macron_below_mark', extract_top_contours(font, 0x0112, 1))
+_macron_below_mark.changeWeight(20)
+
 
 # Macron: topmost stroke from Ē, with weight correction.
 _macron_mark = make_mark(font, '_macron_mark', extract_top_contours(font, 0x0112, 1))
@@ -332,6 +346,28 @@ for cp, mark in [
     dy = _ascender_top + _combining_gap - mark_bb[1]
     c.addReference(mark.glyphname, psMat.translate(0, dy))
     c.width = 0
+
+# Below combining marks share the macron-below shape at different vertical positions.
+_descender_bottom = font['p'].boundingBox()[1]
+_mb_bb = font['_macron_below_mark'].boundingBox()
+
+# U+0331 ◌̱  COMBINING MACRON BELOW — below the descender.
+_c0331 = font.createMappedChar(0x0331)
+_c0331.clear()
+_c0331.addReference('_macron_below_mark', psMat.translate(0, _descender_bottom - _combining_gap - _mb_bb[3]))
+_c0331.width = 0
+
+# U+0332 ◌̲  COMBINING LOW LINE — just below the baseline (underline position).
+_c0332 = font.createMappedChar(0x0332)
+_c0332.clear()
+_c0332.addReference('_macron_below_mark', psMat.translate(0, -_combining_gap - _mb_bb[3]))
+_c0332.width = 0
+
+# U+0320 ◌̠  COMBINING MINUS SIGN BELOW — halfway between baseline and descender.
+_c0320 = font.createMappedChar(0x0320)
+_c0320.clear()
+_c0320.addReference('_macron_below_mark', psMat.translate(0, _descender_bottom // 2 - _combining_gap - _mb_bb[3]))
+_c0320.width = 0
 
 
 # ---------------------------------------------------------------------------
@@ -676,6 +712,14 @@ for cp, base in [
     (0x1EA1, 'a'), (0x1EB9, 'e'), (0x1ECB, 'i'), (0x1ECD, 'o'), (0x1EE5, 'u'), (0x1EF5, 'y'),
 ]:
     _make_dot_below(font, cp, base)
+
+# Macron below: Ḏ Ḻ Ṉ Ṟ Ṯ Ẕ / ḏ ḻ ṉ ṟ ṯ ẕ  (Semitic transliteration)
+for cp, base in [
+    (0x1E0E, 'D'), (0x1E3A, 'L'), (0x1E48, 'N'), (0x1E5E, 'R'), (0x1E6E, 'T'), (0x1E94, 'Z'),
+    (0x1E0F, 'd'), (0x1E3B, 'l'), (0x1E49, 'n'), (0x1E6F, 't'), (0x1E95, 'z'),
+]:
+    _make_macron_below(font, cp, base)
+_make_macron_below(font, 0x1E5F, 'r', gap=45)  # ṟ — r sits low, needs extra gap
 
 # ĳ U+0133 / Ĳ U+0132: Dutch IJ digraph ligatures.
 # Position so the ink edges have the same gap as adjacent letters would after kerning (~40 units).
