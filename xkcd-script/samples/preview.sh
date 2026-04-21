@@ -18,7 +18,7 @@ RUN_CTXT="docker run -u $(id -u) -v $(pwd)/../:$(pwd)/../ -w $(pwd) -e FONTCONFI
 
 ${RUN_CTXT} fc-list | grep -i xkcd
 
-SIMPLE_CTXT="${RUN_CTXT} pango-view --backend=ft2 --font \"xkcdScript\" --dpi 150" 
+SIMPLE_CTXT="${RUN_CTXT} pango-view --backend=ft2 --font \"xkcdScript\" --dpi 150"
 
 NAME=ipsum
 CONTENT=$(cat ${NAME}.txt)

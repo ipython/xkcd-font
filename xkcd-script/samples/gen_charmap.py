@@ -42,6 +42,7 @@ BLOCKS = [
     (0x0100, 0x0180, "Latin Extended-A"),
     (0x0180, 0x0250, "Latin Extended-B"),
     (0x0300, 0x0370, "Combining Diacritical Marks"),
+    (0x0370, 0x0400, "Greek and Coptic"),
     (0x2018, 0x2040, "General Punctuation"),
     (0x2190, 0x2200, "Arrows"),
     (0x2200, 0x2300, "Mathematical Operators"),

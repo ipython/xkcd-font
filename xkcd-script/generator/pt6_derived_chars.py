@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 """
 Generate derived/composed characters: quote aliases, combining diacritical marks,
-and all accented Latin letters for European languages.
+accented Latin letters, and Greek aliases and derived glyphs.
 
-Reads the base SFD produced by pt4_svg_to_font.py, adds derived glyphs, saves.
+Reads the base SFD produced by pt5_svg_to_font.py, adds derived glyphs, saves.
 """
 import math
-import os
 import fontforge
 import psMat
 
@@ -734,98 +733,132 @@ for cp, left, right in [(0x0133, 'i', 'j'), (0x0132, 'I', 'J')]:
 
 
 # ---------------------------------------------------------------------------
-# Glyphs imported from xkcd comic images
+# Greek letter aliases and derived glyphs
 # ---------------------------------------------------------------------------
 
-_COMIC_CHARS_DIR = os.path.join(os.path.dirname(__file__), '../generated/additional_chars')
+# Uppercase Greek letters visually identical to Latin capitals.
+for _cp, _name in [
+    (0x0391, 'A'),   # Α Alpha
+    (0x0392, 'B'),   # Β Beta
+    (0x0395, 'E'),   # Ε Epsilon
+    (0x0396, 'Z'),   # Ζ Zeta
+    (0x0397, 'H'),   # Η Eta
+    (0x0399, 'I'),   # Ι Iota
+    (0x039A, 'K'),   # Κ Kappa
+    (0x039C, 'M'),   # Μ Mu
+    (0x039D, 'N'),   # Ν Nu
+    (0x039F, 'O'),   # Ο Omicron
+    (0x03A1, 'P'),   # Ρ Rho
+    (0x03A4, 'T'),   # Τ Tau
+    (0x03A5, 'Y'),   # Υ Upsilon
+    # Χ Chi handled separately below (needs weight adjustment)
+]:
+    _g = font.createMappedChar(_cp)
+    _g.clear()
+    _g.addReference(_name)
+    _g.width = font[_name].width
+
+# Χ (Chi, U+03A7): X thinned to match derived Greek uppercase weight.
+_chi_layer = fontforge.layer()
+for _c in font['X'].foreground:
+    _chi_layer += _c
+_g = font.createMappedChar(0x03A7)
+_g.clear()
+_g.foreground = _chi_layer
+_g.removeOverlap()
+_g.changeWeight(-15)
+_bb = _g.boundingBox()
+_g.width = int(round(_bb[2] + 20))
+
+# Lowercase Greek letters visually identical to Latin lowercase.
+for _cp, _name in [
+    (0x03B9, 'dotlessi'),  # ι iota  (undotted like the Greek letter)
+    (0x03BF, 'o'),          # ο omicron
+    (0x03BA, 'k'),          # κ kappa
+    (0x03C7, 'x'),          # χ chi
+]:
+    _g = font.createMappedChar(_cp)
+    _g.clear()
+    _g.addReference(_name)
+    _g.width = font[_name].width
+
+# Greek uppercase derived by scaling the corresponding lowercase to capital height.
+_cap_height = font['A'].boundingBox()[3]
 
 
-def _import_comic_glyph(font, name, svg_path, target_top, weight_delta=0, y_clip=None):
-    """Import a pre-cleaned SVG (from pt5_additional_sources.py) and scale it
-    so the top of the ink reaches target_top in font units, preserving the
-    aspect ratio so any descender falls naturally below baseline.
+def _greek_lc_to_uc(font, lc_cp, uc_cp, snap=True, weight_delta=0):
+    """Copy a Greek lowercase glyph and scale it to capital height.
 
-    weight_delta: passed to changeWeight() after scaling (positive = thicker).
-    y_clip: if given, clip the glyph at this y-coordinate using FontForge's
-    intersect() against a background rectangle, removing everything below y_clip.
-    Use y_clip=0 to clip at the baseline (removes descenders, seats the glyph
-    on the baseline with a natural edge rather than a raw image crop).
+    snap=True    → translate so bb[1]=0 then re-scale to cap height.
+    snap=False   → keep natural position (for letters like ψ with a descender).
+    weight_delta → changeWeight adjustment applied after scaling (negative = thinner).
     """
-    g = font.createChar(-1, f'_comic_{name}')
-    g.clear()
-    g.importOutlines(svg_path)
-
-    # Scale uniformly so the top of the ink reaches target_top
-    bb = g.boundingBox()
-    scale = target_top / bb[3]
-    g.transform(psMat.scale(scale))
-
-    # Translate to add left margin; vertical position follows naturally from scale
-    bb = g.boundingBox()
-    g.transform(psMat.translate(-bb[0] + 20, 0))
-
+    src = font[lc_cp]
+    src_bb = src.boundingBox()
+    if src_bb[3] <= 0:
+        return
+    uc = font.createMappedChar(uc_cp)
+    uc.clear()
+    layer = fontforge.layer()
+    for c in src.foreground:
+        layer += c
+    uc.foreground = layer
+    uc.transform(psMat.scale(_cap_height / src_bb[3]))
+    if snap:
+        _bb = uc.boundingBox()
+        if _bb[1] != 0:
+            uc.transform(psMat.translate(0, -_bb[1]))
+            _bb = uc.boundingBox()
+            if _bb[3] > 0:
+                uc.transform(psMat.scale(_cap_height / _bb[3]))
     if weight_delta:
-        g.removeOverlap()
-        g.changeWeight(weight_delta)
-
-    if y_clip is not None:
-        # Clip at y_clip: keep only ink above y_clip.
-        # Place a filled rectangle covering [y_clip, +∞] in the background layer,
-        # then intersect() keeps only the foreground that overlaps that rectangle.
-        # FontForge uses clockwise winding for filled (outer) contours.
-        g.removeOverlap()
-        g.correctDirection()
-        clip_rect = fontforge.contour()
-        clip_rect += fontforge.point(-10000, 10000, True)   # top-left
-        clip_rect += fontforge.point(10000, 10000, True)    # top-right
-        clip_rect += fontforge.point(10000, y_clip, True)   # bottom-right
-        clip_rect += fontforge.point(-10000, y_clip, True)  # bottom-left
-        clip_rect.closed = True
-        bg = fontforge.layer()
-        bg += clip_rect
-        g.background = bg
-        g.intersect()
-
-    g.correctDirection()
-    g.removeOverlap()
-    g.addExtrema()
-
-    bb = g.boundingBox()
-    g.width = int(round(bb[2] + 20))
-    return g
+        uc.correctDirection()
+        uc.addExtrema()
+        uc.removeOverlap()
+        uc.changeWeight(weight_delta)
+        _bb = uc.boundingBox()
+        if _bb[3] > 0:
+            uc.transform(psMat.scale(_cap_height / _bb[3]))
+    _bb = uc.boundingBox()
+    uc.width = int(round(_bb[2] + 20))
 
 
-# ß/ẞ source: hand-drawn glyph from extras/eszett.png, vectorised by pt0.
-_eszett_svg = os.path.join(_COMIC_CHARS_DIR, 'eszett.svg')
-if os.path.exists(_eszett_svg):
-    # ß  U+00DF  Latin Small Letter Sharp S — scaled to ascender height (like 'b')
-    _eszett_glyph = _import_comic_glyph(
-        font, 'eszett', _eszett_svg,
-        target_top=font['b'].boundingBox()[3] * 0.59,
-        weight_delta=23)
-    # Snap bottom to baseline so ß sits like a/e
-    _bb = _eszett_glyph.boundingBox()
-    if _bb[1] < 0:
-        _eszett_glyph.transform(psMat.translate(0, -_bb[1]))
-    _eszett = font.createMappedChar(0x00DF)
-    _eszett.clear()
-    for c in _eszett_glyph.foreground:
-        _eszett.foreground += c
-    _eszett.width = _eszett_glyph.width
+_greek_lc_to_uc(font, 0x03B8, 0x0398)                          # Θ from θ
+_greek_lc_to_uc(font, 0x03C6, 0x03A6, weight_delta=-25)        # Φ from φ  (circle shape is sensitive to changeWeight)
+_greek_lc_to_uc(font, 0x03C8, 0x03A8, snap=False, weight_delta=-20)  # Ψ from ψ
 
-    # ẞ  U+1E9E  Latin Capital Letter Sharp S — scaled to capital height (like 'B')
-    _cap_eszett_glyph = _import_comic_glyph(
-        font, 'eszett_cap', _eszett_svg,
-        target_top=font['B'].boundingBox()[3] * 0.72,
-        weight_delta=19)
-    _bb = _cap_eszett_glyph.boundingBox()
-    if _bb[1] < 0:
-        _cap_eszett_glyph.transform(psMat.translate(0, -_bb[1]))
-    _cap_glyph = font.createMappedChar(0x1E9E)
-    _cap_glyph.clear()
-    for c in _cap_eszett_glyph.foreground:
-        _cap_glyph.foreground += c
-    _cap_glyph.width = _cap_eszett_glyph.width
+# Γ (U+0393): L flipped vertically — vertical stroke on left, bar at top.
+_L_bb = font['L'].boundingBox()
+_g = font.createMappedChar(0x0393)
+_g.clear()
+_g.addReference('L', psMat.compose(psMat.scale(1, -1), psMat.translate(0, _L_bb[3])))
+_g.width = font['L'].width
+
+# Λ (U+039B): V flipped vertically — two diagonals meeting at the top.
+_V_bb = font['V'].boundingBox()
+_g = font.createMappedChar(0x039B)
+_g.clear()
+_g.addReference('V', psMat.compose(psMat.scale(1, -1), psMat.translate(0, _V_bb[3])))
+_g.width = font['V'].width
+
+# η (eta, U+03B7): n with a straight vertical descender on the right leg.
+# A rotated hyphen-bar gives a stroke of matching weight and shape.
+# x-scaled to 90% of original thickness so it reads slightly thinner than n's strokes.
+_p_desc = abs(font['p'].boundingBox()[1])
+_eta_bar = _make_l_crossbar_mark(font, '_eta_bar', bar_width=int(_p_desc * 1.08), rotation=90)
+_eta_bar.transform(psMat.scale(0.9, 1))
+_eta_bar_bb = _eta_bar.boundingBox()
+_n_bb = font['n'].boundingBox()
+_eta_leg_x = _n_bb[0] + (_n_bb[2] - _n_bb[0]) * 0.88
+_eta_bar_cx = (_eta_bar_bb[0] + _eta_bar_bb[2]) / 2
+_g = font.createMappedChar(0x03B7)
+_g.clear()
+_g.addReference('n')
+_g.addReference('_eta_bar', psMat.translate(
+    _eta_leg_x - _eta_bar_cx,
+    -_eta_bar_bb[3] + _eng_stroke,  # top of bar overlaps baseline by one stroke width
+))
+_g.width = font['n'].width
 
 
 # ---------------------------------------------------------------------------

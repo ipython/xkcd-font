@@ -8,6 +8,8 @@ import shutil
 import calendar
 
 import fontforge
+from fontTools.ttLib import TTFont as _TTFont
+from fontTools.pens.recordingPen import RecordingPen as _RecordingPen
 
 
 base = '../font/'
@@ -69,6 +71,66 @@ font = fontforge.open(sfd)
 font.sfnt_names = (('English (US)', 'UniqueID', 'xkcd Script'), )
 font.xuid = "-1"
 
+# Read the currently-committed OTF as a reference *before* overwriting it.
+# FontForge re-hints all glyphs at generate() time; with more glyphs present
+# it produces slightly different per-glyph hint programs for existing Latin
+# glyphs, causing sub-pixel rendering differences in unchanged text.
+# We fix this by replacing every charstring that already existed with the
+# version from the committed font (hints and all), with subr calls inlined so
+# subr-index differences between old and new fonts don't matter.
+_ref_otf = None
+if os.path.exists(otf):
+    _ref_otf = _TTFont(otf)
+
 font.generate(otf)
 font.generate(ttf)
 font.generate(woff)
+
+if _ref_otf is not None:
+    def _subr_bias(n):
+        return 107 if n < 1240 else (1131 if n < 33900 else 32768)
+
+    def _inline_subrs(program, subrs, bias):
+        """Return program with all callsubr tokens replaced by inlined subr bodies."""
+        out = []
+        for token in program:
+            if token == 'callsubr':
+                idx = out.pop() + bias
+                sub = subrs[idx]
+                sub.decompile()
+                inlined = _inline_subrs(sub.program, subrs, bias)
+                if inlined and inlined[-1] == 'return':
+                    inlined = inlined[:-1]
+                out.extend(inlined)
+            else:
+                out.append(token)
+        return out
+
+    _ref_top = _ref_otf['CFF '].cff.topDictIndex[0]
+    _ref_cs  = _ref_top.CharStrings
+    _ref_subrs = _ref_top.Private.Subrs
+    _ref_bias  = _subr_bias(len(_ref_subrs))
+
+    _new_otf = _TTFont(otf)
+    _new_cs  = _new_otf['CFF '].cff.topDictIndex[0].CharStrings
+
+    _ref_glyphs = _ref_otf.getGlyphSet()
+    _new_glyphs = _new_otf.getGlyphSet()
+
+    for _name in _ref_cs.keys():
+        if _name not in _new_cs:
+            continue
+        # Only freeze glyphs whose outlines are unchanged.  If the path
+        # differs the glyph was intentionally modified and fontforge's new
+        # hints should be kept.
+        _rp_ref = _RecordingPen(); _ref_glyphs[_name].draw(_rp_ref)
+        _rp_new = _RecordingPen(); _new_glyphs[_name].draw(_rp_new)
+        if _rp_ref.value != _rp_new.value:
+            continue
+        _cs = _ref_cs[_name]
+        _cs.decompile()
+        _inlined = _inline_subrs(_cs.program, _ref_subrs, _ref_bias)
+        _new_cs[_name].program  = _inlined
+        _new_cs[_name].bytecode = None
+
+    _new_otf.save(otf)
