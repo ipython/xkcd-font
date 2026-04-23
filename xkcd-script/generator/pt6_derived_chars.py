@@ -152,6 +152,16 @@ def _make_cedilla(font, cp, base_name, gap=8):
     c.addReference('comma', _place_below(font, base_name, 'comma', gap))
 
 
+def _make_macron_below(font, cp, base_name, gap=15):
+    if cp in _SKIP_CPS:
+        return
+    c = font.createMappedChar(cp)
+    c.clear()
+    c.addReference(base_name)
+    c.width = font[base_name].width
+    c.addReference('_macron_below_mark', _place_below(font, base_name, '_macron_below_mark', gap))
+
+
 def _make_dot_below(font, cp, base_name, gap=15):
     if cp in _SKIP_CPS:
         return
@@ -254,6 +264,10 @@ _dot_above_mark = make_mark(font, '_dot_above_mark', extract_top_contours(font, 
 # Single dot below: same dot shape, used for Vietnamese dot-below characters.
 _dot_below_mark = make_mark(font, '_dot_below_mark', extract_top_contours(font, 0x00DC, 2)[:1])
 
+# Macron below: same stroke as the macron above, used for Semitic transliteration.
+_macron_below_mark = make_mark(font, '_macron_below_mark', extract_top_contours(font, 0x0112, 1))
+_macron_below_mark.changeWeight(20)
+
 
 # Macron: topmost stroke from Ē, with weight correction.
 _macron_mark = make_mark(font, '_macron_mark', extract_top_contours(font, 0x0112, 1))
@@ -271,6 +285,14 @@ _circumflex_mark = _make_weighted_mark(font, 'asciicircum', _mark_scale, 35, '_c
 
 # Tilde.
 _tilde_mark = _make_weighted_mark(font, 'asciitilde', _mark_scale, 35, '_tilde_mark')
+
+# Breve: parenleft rotated 90° CCW — the arc gives the right bowl shape for ˘.
+_breve_mark = _make_weighted_mark(font, 'parenleft', _mark_scale, 35, '_breve_mark')
+_breve_mark.transform(psMat.rotate(math.radians(90)))
+_bb = _breve_mark.boundingBox()
+_breve_mark.transform(psMat.translate(-(_bb[0] + _bb[2]) / 2, 0))
+_breve_mark.transform(psMat.scale(0.5, 1))
+_breve_mark.transform(psMat.translate(-220, 0))
 
 # --- Marks composed from existing mark glyphs ---
 
@@ -316,6 +338,7 @@ for cp, mark in [
     (0x030A, _ring_mark),
     (0x030B, _double_acute_mark),
     (0x030C, _caron_mark),
+    (0x0306, _breve_mark),   # ̆  combining breve
 ]:
     c = font.createMappedChar(cp)
     c.clear()
@@ -323,6 +346,28 @@ for cp, mark in [
     dy = _ascender_top + _combining_gap - mark_bb[1]
     c.addReference(mark.glyphname, psMat.translate(0, dy))
     c.width = 0
+
+# Below combining marks share the macron-below shape at different vertical positions.
+_descender_bottom = font['p'].boundingBox()[1]
+_mb_bb = font['_macron_below_mark'].boundingBox()
+
+# U+0331 ◌̱  COMBINING MACRON BELOW — below the descender.
+_c0331 = font.createMappedChar(0x0331)
+_c0331.clear()
+_c0331.addReference('_macron_below_mark', psMat.translate(0, _descender_bottom - _combining_gap - _mb_bb[3]))
+_c0331.width = 0
+
+# U+0332 ◌̲  COMBINING LOW LINE — just below the baseline (underline position).
+_c0332 = font.createMappedChar(0x0332)
+_c0332.clear()
+_c0332.addReference('_macron_below_mark', psMat.translate(0, -_combining_gap - _mb_bb[3]))
+_c0332.width = 0
+
+# U+0320 ◌̠  COMBINING MINUS SIGN BELOW — halfway between baseline and descender.
+_c0320 = font.createMappedChar(0x0320)
+_c0320.clear()
+_c0320.addReference('_macron_below_mark', psMat.translate(0, _descender_bottom // 2 - _combining_gap - _mb_bb[3]))
+_c0320.width = 0
 
 
 # ---------------------------------------------------------------------------
@@ -364,6 +409,17 @@ _make_accented(font, 0x01D0, 'dotlessi', '_caron_mark', gap=40)
 # Ring above: å Ů / ů
 for cp, base in [(0x00E5, 'a'), (0x016E, 'U'), (0x016F, 'u')]:
     _make_accented(font, cp, base, '_ring_above_mark')
+
+# Breve: Ă Ĕ Ğ Ĭ Ŏ Ŭ / ă ĕ ğ ĭ ŏ ŭ  (Romanian, Turkish, Belarusian, Esperanto, transliteration)
+for cp, base in [
+    (0x0102, 'A'), (0x0114, 'E'), (0x011E, 'G'), (0x012C, 'I'), (0x014E, 'O'), (0x016C, 'U'),
+]:
+    _make_accented(font, cp, base, '_breve_mark', gap=20)
+for cp, base in [
+    (0x0103, 'a'), (0x0115, 'e'), (0x011F, 'g'), (0x014F, 'o'), (0x016D, 'u'),
+]:
+    _make_accented(font, cp, base, '_breve_mark', gap=8)
+_make_accented(font, 0x012D, 'dotlessi', '_breve_mark', gap=40)  # ĭ — dotless to avoid dot+breve stack
 
 # Ď Ť (uppercase): caron above, like other uppercase caron letters.
 for cp, base in [(0x010E, 'D'), (0x0164, 'T')]:
@@ -627,6 +683,14 @@ for cp, base in [
 ]:
     _make_cedilla(font, cp, base)
 
+# Comma below: Ș ș Ț ț  (Romanian — U+0219/U+021B are the canonical forms;
+# U+015F/U+0163 cedilla variants already exist above)
+for cp, base in [
+    (0x0218, 'S'), (0x0219, 's'),
+    (0x021A, 'T'), (0x021B, 't'),
+]:
+    _make_cedilla(font, cp, base)
+
 # Macron: Ā Ī Ō Ū / ā ī ō ū ē  (Ē skipped — hand-drawn)
 for cp, base in [
     (0x0100, 'A'), (0x012A, 'I'), (0x014C, 'O'), (0x016A, 'U'), (0x0112, 'E'),
@@ -648,6 +712,14 @@ for cp, base in [
     (0x1EA1, 'a'), (0x1EB9, 'e'), (0x1ECB, 'i'), (0x1ECD, 'o'), (0x1EE5, 'u'), (0x1EF5, 'y'),
 ]:
     _make_dot_below(font, cp, base)
+
+# Macron below: Ḏ Ḻ Ṉ Ṟ Ṯ Ẕ / ḏ ḻ ṉ ṟ ṯ ẕ  (Semitic transliteration)
+for cp, base in [
+    (0x1E0E, 'D'), (0x1E3A, 'L'), (0x1E48, 'N'), (0x1E5E, 'R'), (0x1E6E, 'T'), (0x1E94, 'Z'),
+    (0x1E0F, 'd'), (0x1E3B, 'l'), (0x1E49, 'n'), (0x1E6F, 't'), (0x1E95, 'z'),
+]:
+    _make_macron_below(font, cp, base)
+_make_macron_below(font, 0x1E5F, 'r', gap=45)  # ṟ — r sits low, needs extra gap
 
 # ĳ U+0133 / Ĳ U+0132: Dutch IJ digraph ligatures.
 # Position so the ink edges have the same gap as adjacent letters would after kerning (~40 units).

@@ -17,7 +17,21 @@ font = fontforge.open(font_fname)
 # ---------------------------------------------------------------------------
 
 def _base_char(c):
-    """Return the base letter for an accented character (e.g. É → E)."""
+    """Return the base letter for an accented character (e.g. É → E).
+
+    Characters without a Unicode canonical decomposition (e.g. ø, ł) are
+    handled via the manual table below.
+    """
+    _no_decomp = {
+        'ø': 'o', 'Ø': 'O',
+        'ł': 'l', 'Ł': 'L',
+        'đ': 'd', 'Đ': 'D',
+        'ħ': 'h', 'Ħ': 'H',
+        'ŧ': 't', 'Ŧ': 'T',
+        'ð': 'd', 'Ð': 'D',
+    }
+    if c in _no_decomp:
+        return _no_decomp[c]
     decomp = unicodedata.decomposition(c)
     if decomp and not decomp.startswith('<'):
         return chr(int(decomp.split()[0], 16))
