@@ -178,6 +178,29 @@ for glyph in font.glyphs():
 
 
 # ---------------------------------------------------------------------------
+# CFF hinting zones and OS/2 metrics
+# ---------------------------------------------------------------------------
+# FontForge auto-computes these by scanning all glyph tops and stem widths.
+# Adding non-Latin scripts shifts the cluster centroids and silently changes
+# hinting, which alters the rendered pixel positions of Latin letters.  Pin
+# all values here (derived from the Latin+diacritic glyph set) so the
+# hinting is stable regardless of how many non-Latin glyphs are added.
+font.private['BlueValues'] = (-20, 20, 411, 450, 573, 613)
+font.private['OtherBlues'] = (-241, -190)
+font.private['BlueScale'] = 0.0208333
+font.private['BlueShift'] = 16
+font.private['StdHW'] = 74
+font.private['StdVW'] = 76
+font.private['StemSnapH'] = (53, 61, 70, 74, 78, 83, 87, 172, 220)
+font.private['StemSnapV'] = (60, 70, 76, 80, 85)
+
+# sxHeight / sCapHeight: used by text renderers for optical sizing.
+# Same issue — adding Greek glyphs shifts the auto-computed values.
+font.os2_xheight = 338
+font.os2_capheight = 592
+
+
+# ---------------------------------------------------------------------------
 # Save
 # ---------------------------------------------------------------------------
 

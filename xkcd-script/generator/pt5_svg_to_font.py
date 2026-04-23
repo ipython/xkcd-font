@@ -2,12 +2,13 @@
 """
 Convert hand-drawn SVG glyphs into the base xkcd-script SFD font file.
 
-Reads per-character SVG files produced by pt3_ppm_to_svg.py, scales and
-positions each glyph to fit the EM, applies per-line scale corrections, and
-saves the result as xkcd-script.sfd.
+Reads per-character SVG files produced by pt3_ppm_to_svg.py and additional
+comic-sourced SVGs produced by pt4_additional_sources.py, scales and positions
+each glyph to fit the EM, applies per-line scale corrections, and saves the
+result as xkcd-script.sfd.
 
-Derived characters (diacriticals, aliases) are added in pt5_derived_chars.py.
-Font-wide properties (kerning) are applied in pt6_font_properties.py.
+Derived characters (diacriticals, aliases) are added in pt6_derived_chars.py.
+Font-wide properties (kerning) are applied in pt7_font_properties.py.
 """
 from __future__ import division
 import base64
@@ -315,6 +316,240 @@ for line, position, bbox, fname, chars in characters:
 
 c = font.createMappedChar(32)
 c.width = 256
+
+
+# ---------------------------------------------------------------------------
+# Glyphs imported from xkcd comic images
+# ---------------------------------------------------------------------------
+
+_COMIC_CHARS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../generated/additional_chars')
+
+
+def _scan_stroke_width(g, y_lo, y_hi, n=8):
+    """Rough stroke-width estimate via horizontal line scanning.
+
+    Samples n evenly-spaced y values in [y_lo, y_hi].  At each y, finds all
+    x-crossings of the contour edges (polyline approximation between consecutive
+    points) and records the minimum gap between consecutive crossings.  Returns
+    the median of those per-y minimums — approximating the typical thinnest
+    visible stroke in the scan band.
+    """
+    results = []
+    for k in range(n):
+        y = y_lo + (y_hi - y_lo) * (k + 0.5) / n
+        xs = []
+        for contour in g.foreground:
+            pts = list(contour)
+            for i in range(len(pts)):
+                p1, p2 = pts[i], pts[(i + 1) % len(pts)]
+                if (p1.y - y) * (p2.y - y) < 0:
+                    t = (y - p1.y) / (p2.y - p1.y)
+                    xs.append(p1.x + t * (p2.x - p1.x))
+        xs.sort()
+        gaps = [xs[j + 1] - xs[j] for j in range(len(xs) - 1)]
+        if gaps:
+            results.append(min(gaps))
+    if not results:
+        return None
+    results.sort()
+    return results[len(results) // 2]
+
+
+def _import_comic_glyph(font, name, svg_path, target_top, weight_delta=0):
+    """Import a pre-cleaned SVG (from pt4_additional_sources.py) and scale it
+    so the top of the ink reaches target_top in font units, preserving the
+    aspect ratio so any descender falls naturally below baseline.
+
+    weight_delta: if non-zero, apply changeWeight() after scaling.
+    """
+    g = font.createChar(-1, f'_comic_{name}')
+    g.clear()
+    g.importOutlines(svg_path)
+
+    bb = g.boundingBox()
+    g.transform(psMat.scale(target_top / bb[3]))
+
+    bb = g.boundingBox()
+    g.transform(psMat.translate(-bb[0] + 20, 0))
+
+    if weight_delta:
+        g.removeOverlap()
+        g.changeWeight(weight_delta)
+
+    g.correctDirection()
+    # round() before removeOverlap() avoids a FontForge "endpoint intersection"
+    # bug that fires when two spline curves meet exactly at a fractional-
+    # coordinate point on the sweep line.
+    g.round()
+    g.removeOverlap()
+    g.addExtrema()
+
+    bb = g.boundingBox()
+    g.width = int(round(bb[2] + 20))
+    return g
+
+
+# Greek letters vectorised by pt4 from xkcd comic images.
+# Each entry: (svg_name, unicode_cp, ref_char_for_height, baseline_snap)
+# baseline_snap=True  → translate so bb[1]=0 (letters that sit on the baseline).
+# baseline_snap=False → leave at natural import coords; descender positioning
+#                        is handled separately via _GREEK_DESCENDER_FRAC.
+_GREEK = [
+    ('pi',      0x03C0, 'a', True),
+    ('Delta',   0x0394, 'A', True),
+    ('delta',   0x03B4, 'b', True),
+    ('theta',   0x03B8, 'b', True),
+    ('phi',     0x03C6, 'a', True),
+    ('epsilon', 0x03B5, 'a', True),
+    ('upsilon', 0x03C5, 'a', True),
+    ('nu',      0x03BD, 'a', True),
+    ('mu',      0x03BC, 'a', False),
+    ('Sigma',   0x03A3, 'A', True),
+    ('Pi',      0x03A0, 'A', True),
+    ('zeta',    0x03B6, 'b', False),
+    ('beta',    0x03B2, 'b', False),
+    ('alpha',   0x03B1, 'a', True),
+    ('Omega',   0x03A9, 'A', True),
+    ('omega',   0x03C9, 'a', True),
+    ('sigma',   0x03C3, 'a', True),
+    ('xi',      0x03BE, 'b', False),
+    ('gamma',   0x03B3, 'a', False),
+    ('rho',     0x03C1, 'a', False),
+    ('Xi',      0x039E, 'A', True),
+    ('psi',     0x03C8, 'a', False),
+    ('lambda',  0x03BB, 'b', True),
+    ('tau', 0x03C4, 'a', True),
+    ('varsigma', 0x03C2, 'a', True),
+]
+
+# Letters with genuine descenders: fraction of the crop height that is the
+# body (above baseline).  Remaining fraction becomes the descender below y=0.
+# Estimated from pixel proportions in the 2× source image crop.
+_GREEK_DESCENDER_FRAC = {
+    'mu': 0.61,
+    'beta': 0.75,
+    'rho': 0.67,
+}
+
+# Measure target stroke width from 'l' — a clean vertical stroke with no
+# ambiguity from curves or bowls.
+_l_bb = font['l'].boundingBox()
+_target_stroke = _scan_stroke_width(
+    font['l'],
+    _l_bb[1] + (_l_bb[3] - _l_bb[1]) * 0.2,
+    _l_bb[1] + (_l_bb[3] - _l_bb[1]) * 0.8,
+)
+
+# Glyphs dominated by horizontal strokes: the horizontal scan in
+# _scan_stroke_width measures bar *lengths* rather than stroke thickness,
+# producing a grossly over-estimated value and a large negative delta that
+# massively thins the letter.  Skip stroke normalisation for these.
+_GREEK_NO_STROKE_NORM = {'epsilon', 'Xi', 'Sigma'}
+
+# Per-letter changeWeight nudge applied after all positioning and stroke
+# normalisation.  Positive = thicker, negative = thinner.
+_GREEK_WEIGHT_NUDGE = {
+    'Sigma':   15,
+    'mu':      15,
+    'epsilon': 15,
+    'psi':    -15,
+    'lambda':  10,
+}
+
+for _name, _cp, _ref, _snap in _GREEK:
+    _svg = os.path.join(_COMIC_CHARS_DIR, f'{_name}.svg')
+    _target_top = font[_ref].boundingBox()[3]
+    _g = _import_comic_glyph(font, _name, _svg, target_top=_target_top)
+    _desc_frac = _GREEK_DESCENDER_FRAC.get(_name)
+    if _desc_frac is not None:
+        # Seat the body in [0, target_top] and let the descender fall below y=0.
+        # baseline_y is the font-unit y that corresponds to the baseline inside
+        # the imported glyph.
+        _bb = _g.boundingBox()
+        _baseline_y = _bb[3] - _desc_frac * (_bb[3] - _bb[1])
+        _g.transform(psMat.translate(0, -_baseline_y))
+        _bb = _g.boundingBox()
+        if _bb[3] > 0:
+            _g.transform(psMat.scale(_target_top / _bb[3]))
+            _g.width = int(round(_g.boundingBox()[2] + 20))
+    elif _snap:
+        # Seat the glyph on the baseline: translate so bb[1]=0 then re-scale to
+        # restore target_top.  Handles both positive bb[1] (sub-baseline
+        # whitespace in the source crop) and negative bb[1] (ink that slightly
+        # undercuts the baseline).
+        _bb = _g.boundingBox()
+        if _bb[1] != 0:
+            _g.transform(psMat.translate(0, -_bb[1]))
+            _bb = _g.boundingBox()
+            if _bb[3] > 0:
+                _g.transform(psMat.scale(_target_top / _bb[3]))
+                _g.width = int(round(_g.boundingBox()[2] + 20))
+    # Normalise stroke width AFTER all positioning so that snap/descender
+    # re-scales do not alter the final stroke width.
+    if _target_stroke is not None and _name not in _GREEK_NO_STROKE_NORM:
+        _measured = _scan_stroke_width(_g, _target_top * 0.15, _target_top * 0.85)
+        if _measured and _measured > 0:
+            _delta = int(round(_target_stroke - _measured))
+            if abs(_delta) > 3:
+                _g.correctDirection()
+                _g.addExtrema()
+                _g.removeOverlap()
+                _g.changeWeight(_delta)
+                _bb2 = _g.boundingBox()
+                if _bb2[3] > 0:
+                    _g.transform(psMat.scale(_target_top / _bb2[3]))
+                    _bb2 = _g.boundingBox()
+                    _g.transform(psMat.translate(-_bb2[0] + 20, 0))
+                    _g.width = int(round(_g.boundingBox()[2] + 20))
+    # Per-letter weight nudge (applied last so it overrides normalisation).
+    _nudge = _GREEK_WEIGHT_NUDGE.get(_name)
+    if _nudge:
+        _g.correctDirection()
+        _g.addExtrema()
+        _g.removeOverlap()
+        _g.changeWeight(_nudge)
+        _bb2 = _g.boundingBox()
+        if _bb2[3] > 0:
+            _g.transform(psMat.scale(_target_top / _bb2[3]))
+            _bb2 = _g.boundingBox()
+            _g.transform(psMat.translate(-_bb2[0] + 20, 0))
+            _g.width = int(round(_g.boundingBox()[2] + 20))
+    _ch = font.createMappedChar(_cp)
+    _ch.clear()
+    for c in _g.foreground:
+        _ch.foreground += c
+    _ch.width = _g.width
+
+
+# ß (U+00DF) and ẞ (U+1E9E) — hand-drawn source from extras/eszett.png.
+# The same SVG is imported twice at different scales for the two case forms.
+_eszett_svg = os.path.join(_COMIC_CHARS_DIR, 'eszett.svg')
+
+_eszett_glyph = _import_comic_glyph(
+    font, 'eszett', _eszett_svg,
+    target_top=font['b'].boundingBox()[3] * 0.59,
+    weight_delta=23)
+_bb = _eszett_glyph.boundingBox()
+if _bb[1] < 0:
+    _eszett_glyph.transform(psMat.translate(0, -_bb[1]))
+_ch = font.createMappedChar(0x00DF)
+_ch.clear()
+for c in _eszett_glyph.foreground:
+    _ch.foreground += c
+_ch.width = _eszett_glyph.width
+
+_cap_eszett_glyph = _import_comic_glyph(
+    font, 'eszett_cap', _eszett_svg,
+    target_top=font['B'].boundingBox()[3] * 0.72,
+    weight_delta=19)
+_bb = _cap_eszett_glyph.boundingBox()
+if _bb[1] < 0:
+    _cap_eszett_glyph.transform(psMat.translate(0, -_bb[1]))
+_ch = font.createMappedChar(0x1E9E)
+_ch.clear()
+for c in _cap_eszett_glyph.foreground:
+    _ch.foreground += c
+_ch.width = _cap_eszett_glyph.width
 
 
 # ---------------------------------------------------------------------------

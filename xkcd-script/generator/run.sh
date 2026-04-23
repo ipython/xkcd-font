@@ -14,8 +14,8 @@ set -ex
 [ "$FROM" -le 1 ] && $RUN_CTXT python3 pt1_character_extraction.py
 [ "$FROM" -le 2 ] && $RUN_CTXT python3 pt2_character_classification.py
 [ "$FROM" -le 3 ] && $RUN_CTXT python3 pt3_ppm_to_svg.py
-[ "$FROM" -le 4 ] && $RUN_CTXT python3 pt4_svg_to_font.py
-[ "$FROM" -le 5 ] && $RUN_CTXT python3 pt5_additional_sources.py
+[ "$FROM" -le 4 ] && $RUN_CTXT python3 pt4_additional_sources.py
+[ "$FROM" -le 5 ] && $RUN_CTXT python3 pt5_svg_to_font.py
 [ "$FROM" -le 6 ] && $RUN_CTXT python3 pt6_derived_chars.py
 [ "$FROM" -le 7 ] && $RUN_CTXT python3 pt7_font_properties.py
 [ "$FROM" -le 8 ] && $RUN_CTXT python3 pt8_gen_reprod_font.py
