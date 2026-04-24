@@ -552,6 +552,31 @@ for c in _cap_eszett_glyph.foreground:
 _ch.width = _cap_eszett_glyph.width
 
 
+# Æ/æ/Œ/œ — hand-drawn sources from ai_extensions_1.png.
+# Œ is capital height; æ and œ are x-height.
+for _name, _cp, _ref in [
+    ('AElig', 0x00C6, 'A'),  # Æ — capital
+    ('OElig', 0x0152, 'O'),  # Œ — capital
+    ('aelig', 0x00E6, 'a'),  # æ — lowercase
+    ('oelig', 0x0153, 'o'),  # œ — lowercase
+]:
+    _svg = os.path.join(_COMIC_CHARS_DIR, f'{_name}.svg')
+    _target_top = font[_ref].boundingBox()[3]
+    _g = _import_comic_glyph(font, _name, _svg, target_top=_target_top, weight_delta=20)
+    _bb = _g.boundingBox()
+    if _bb[1] != 0:
+        _g.transform(psMat.translate(0, -_bb[1]))
+        _bb = _g.boundingBox()
+        if _bb[3] > 0:
+            _g.transform(psMat.scale(_target_top / _bb[3]))
+            _g.width = int(round(_g.boundingBox()[2] + 20))
+    _ch = font.createMappedChar(_cp)
+    _ch.clear()
+    for c in _g.foreground:
+        _ch.foreground += c
+    _ch.width = _g.width
+
+
 # ---------------------------------------------------------------------------
 # Save
 # ---------------------------------------------------------------------------
