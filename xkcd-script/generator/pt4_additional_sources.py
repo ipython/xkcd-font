@@ -158,6 +158,7 @@ EXTRAS = [
     ('lambda', '1145_sky_color_2x__lambda'),    # λ U+03BB source
     ('tau', '2520_symbols_2x__tau'),            # τ U+03C4 source
     ('varsigma', '2586_greek_letters_2x__sigma'), # ς U+03C2 source
+    ('AElig', '2763_linguistics_gossip_2x__AE'), # Æ U+00C6 source
 ]
 
 print('Extracting hand-drawn extras...')
@@ -166,3 +167,22 @@ for name, filename in EXTRAS:
     arr_extra = np.array(Image.open(src_path).convert('L'))
     h, w = arr_extra.shape
     extract_symbol(arr_extra, 0, h, 0, w, name)
+
+
+# ---------------------------------------------------------------------------
+# ai_extensions_1.png — hand-drawn ligatures and IPA letters
+# Coordinates measured from the 1774×887 px image.
+# ---------------------------------------------------------------------------
+
+AI_EXT_1 = {
+    # name       y0    y1    x0    x1
+    'OElig': (155, 358,  835, 1107),  # Œ  U+0152
+    'aelig': (225, 357, 1363, 1515),  # æ  U+00E6
+    'oelig': (223, 354, 1582, 1750),  # œ  U+0153
+}
+
+_ai_ext_1_image = os.path.join(os.path.dirname(__file__), 'ai_extensions_1.png')
+print(f'Extracting ligatures from {_ai_ext_1_image}...')
+arr_ai1 = np.array(Image.open(_ai_ext_1_image).convert('L'))
+for name, (y0, y1, x0, x1) in AI_EXT_1.items():
+    extract_symbol(arr_ai1, y0, y1, x0, x1, name)
