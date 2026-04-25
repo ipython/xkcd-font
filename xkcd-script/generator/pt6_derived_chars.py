@@ -306,6 +306,28 @@ for c in _i_layer:
 _dotlessi_glyph.foreground = _dotless_layer
 _dotlessi_glyph.width = font['i'].width
 
+# dotlessj (U+0237): j without the dot, for ĵ ǰ etc. to avoid dot + accent stack.
+_j_layer = font['j'].foreground
+_j_dot_ymin = max(min(p.y for p in c) for c in _j_layer)
+_dotlessj_glyph = font.createMappedChar(0x0237)
+_dotlessj_layer = fontforge.layer()
+for c in _j_layer:
+    if min(p.y for p in c) < _j_dot_ymin:
+        _dotlessj_layer += c
+_dotlessj_glyph.foreground = _dotlessj_layer
+_dotlessj_glyph.width = font['j'].width
+
+# longs (U+017F LATIN SMALL LETTER LONG S): dotless j rotated ~175° and placed
+# on the baseline.  The descender curve of j becomes the top hook of long s.
+_longs_glyph = font.createMappedChar(0x017F)
+_longs_glyph.foreground = _dotlessj_glyph.foreground.dup()
+_longs_glyph.transform(psMat.rotate(math.radians(175)))
+_longs_glyph.addExtrema('only_good_rm')
+_, _longs_ymin, _, _ = _longs_glyph.boundingBox()
+_longs_glyph.transform(psMat.translate(0, -_longs_ymin))
+_longs_glyph.left_side_bearing = 20
+_longs_glyph.right_side_bearing = 40
+
 # Double acute: two acute-mark references shifted apart.
 _double_acute_mark = font.createChar(-1, '_double_acute_mark')
 _double_acute_mark.clear()
