@@ -6,12 +6,52 @@ accented Latin letters, and Greek aliases and derived glyphs.
 Reads the base SFD produced by pt5_svg_to_font.py, adds derived glyphs, saves.
 """
 import math
+import sys
+import string
 import fontforge
 import psMat
 
 font_fname = '../font/xkcd-script.sfd'
 font = fontforge.open(font_fname)
 
+if len(sys.argv) >= 2:
+    bodyname = sys.argv[1]
+    font_fname = f'../font/{bodyname}.sfd'
+else:
+    bodyname = 'xkcd-script'
+
+if bodyname == 'xkcd-script-mono':
+    font.fontname = 'xkcdScriptMono'
+    font.fullname = 'xkcd-Script-Monospace'
+
+    # See https://fontforge.org/docs/faq.html#faq-monospace
+    # TODO: GPOS
+
+    for gname in (string.ascii_uppercase + string.ascii_lowercase):
+        font.selection.select(gname + '.mono')
+        font.cut()
+        font.selection.select(gname)
+        font.paste()
+    
+
+    for gname in ['c_o', 'o_o', 'I_hyphen_p_r_o_n_o_u_n', 'E_A', 'C_O', 'C_R', 'O_C_H', 'E_E', 'T_T', 'L_B', 'E_R', 'R_R', 'L_A', 'L_L', 'O_N', 'C_A', 'P_S', 'T_O', 'bar_greater', 'less_bar' ]:
+        font.selection.select(gname)
+        font.clear()
+
+    def fix_width(c, width):
+        space1 = (width - c.width) // 2
+        space2 = width - c.width - space1
+        if c.width == 0: # combination chars
+            space1 = width - c.width
+            space2 = 0
+        c.width = c.width + space1
+        t = psMat.translate(space2, 0)
+        c.transform(t)
+
+    monospace_width = 514
+    font.selection.all()
+    for c in font.selection.byGlyphs:
+        fix_width(c, monospace_width)
 
 # ---------------------------------------------------------------------------
 # Helper functions
@@ -287,11 +327,15 @@ _tilde_mark = _make_weighted_mark(font, 'asciitilde', _mark_scale, 35, '_tilde_m
 
 # Breve: parenleft rotated 90° CCW — the arc gives the right bowl shape for ˘.
 _breve_mark = _make_weighted_mark(font, 'parenleft', _mark_scale, 35, '_breve_mark')
+_glyph_bbox = _breve_mark.boundingBox()
+_breve_mark.transform(psMat.translate(-_glyph_bbox[0] + 20, 0))
 _breve_mark.transform(psMat.rotate(math.radians(90)))
 _bb = _breve_mark.boundingBox()
+#print(_bb)
 _breve_mark.transform(psMat.translate(-(_bb[0] + _bb[2]) / 2, 0))
 _breve_mark.transform(psMat.scale(0.5, 1))
 _breve_mark.transform(psMat.translate(-220, 0))
+_breve_mark.width = 0
 
 # --- Marks composed from existing mark glyphs ---
 
@@ -721,15 +765,27 @@ for cp, base in [
 _make_macron_below(font, 0x1E5F, 'r', gap=45)  # ṟ — r sits low, needs extra gap
 
 # ĳ U+0133 / Ĳ U+0132: Dutch IJ digraph ligatures.
-# Position so the ink edges have the same gap as adjacent letters would after kerning (~40 units).
-for cp, left, right in [(0x0133, 'i', 'j'), (0x0132, 'I', 'J')]:
-    _ij = font.createMappedChar(cp)
-    _ij.clear()
-    _ij.addReference(left)
-    _ink_gap = 0
-    _dx = int(round(font[left].boundingBox()[2] + _ink_gap - font[right].boundingBox()[0]))
-    _ij.addReference(right, psMat.translate(_dx, 0))
-    _ij.width = _dx + font[right].width
+if bodyname == 'xkcd-script-mono':
+    c = font.createMappedChar(0x0133)
+    c.clear()
+    c.addReference('i', psMat.translate(-100, 0))
+    c.addReference('j', psMat.translate(0, 0))
+    c.width = 514
+    c = font.createMappedChar(0x0132)
+    c.clear()
+    c.addReference('uni026A', psMat.translate(-110, 260))
+    c.addReference('J', psMat.translate(100, 0))
+    c.width = 514
+else:
+    # Position so the ink edges have the same gap as adjacent letters would after kerning (~40 units).
+    for cp, left, right in [(0x0133, 'i', 'j'), (0x0132, 'I', 'J')]:
+        _ij = font.createMappedChar(cp)
+        _ij.clear()
+        _ij.addReference(left)
+        _ink_gap = 0
+        _dx = int(round(font[left].boundingBox()[2] + _ink_gap - font[right].boundingBox()[0]))
+        _ij.addReference(right, psMat.translate(_dx, 0))
+        _ij.width = _dx + font[right].width
 
 
 # ---------------------------------------------------------------------------
@@ -861,8 +917,20 @@ _g.addReference('_eta_bar', psMat.translate(
 _g.width = font['n'].width
 
 
+if bodyname == 'xkcd-script-mono':
+    #font.reencode("unicodeFull")
+
+    font.selection.all()
+    for c in font.selection.byGlyphs:
+        fix_width(c, monospace_width)
+
+    panosetuple = font.os2_panose
+    panosetuple = tuple([2]) + panosetuple[1:3] + tuple([9]) + panosetuple[4::]
+    font.os2_panose = panosetuple
+
 # ---------------------------------------------------------------------------
 # Save
 # ---------------------------------------------------------------------------
 
 font.save(font_fname)
+

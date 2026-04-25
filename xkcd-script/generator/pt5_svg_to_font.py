@@ -55,6 +55,13 @@ def basic_font():
                                                          ['dflt']]]]])
     font.addLookupSubtable('ligatures', 'liga')
 
+    c = font.createChar(-1, ".notdef")
+    c.width = 514
+    c = font.createChar(0x0000, ".null")
+    c.width = 514
+    c = font.createChar(0x000D, "nonmarkingreturn")
+    c.width = 514
+
     return font
 
 
@@ -91,6 +98,11 @@ def create_char(font, chars, fname):
             c = font.createMappedChar(chars[0])
         else:
             c = font.createMappedChar(ord(chars[0]))
+    elif len(chars) >= 3 and chars[1] == '.':
+        # variant glyph.
+        variant_name = ''.join(chars)
+
+        c = font.createChar(-1, variant_name)
     else:
         # Multiple characters - this is a ligature. We need to register this in the
         # ligature lookup table we created. Not all font-handling libraries will do anything
@@ -140,6 +152,27 @@ _spans = {line: np.mean(s['baseline']) - np.mean(s['cap-height'])
 _top_ratio = 600 / (600 + 256)
 _full_glyph_sizes = {line: span / _top_ratio for line, span in _spans.items()}
 _median_full_glyph_size = np.median(list(_full_glyph_sizes.values()))
+
+# Search most monospace-ready glyphs.
+most_monospaces = {}
+for line, position, bbox, fname, chars in characters:
+    if len(chars) == 1:
+        _line_fgs = _full_glyph_sizes.get(line).item() # em in px
+        # courier-like monospacing: 0.6em (em=856 internal units ∴0.6em=514)
+        _monowidth_px = _line_fgs * 0.6
+        char = chars[0]
+        this_char = most_monospaces.setdefault(char, [2.0, _line_fgs])
+        # 60: padding later by translate_glyph
+        _width = bbox[2] - bbox[0] + 60 * _line_fgs / 856
+        _width_r = _width / _monowidth_px;
+        #if char == 'C':
+        #    print(f'  char: {char}, bbox: {bbox}, width: {_width}, defending: {this_char}')
+        #    print(f'  line_fgs: {_line_fgs}, width_r: {_width_r}')
+        if _width_r < 1:
+            if this_char[0] >= 1 or this_char[0] < _width_r:
+                most_monospaces[char] = [_width_r, _line_fgs]
+        elif this_char[0] > _width_r:
+            most_monospaces[char] = [_width_r, _line_fgs]
 
 
 def scale_glyph(char, char_bbox, baseline, cap_height):
@@ -226,7 +259,7 @@ def charname(char):
 # ---------------------------------------------------------------------------
 
 font = basic_font()
-font.ascent = 600
+font.ascent = 600 # Because of this, font.em gets rewritten to 856.
 
 # Pin line metrics so FontForge doesn't recompute them from bounding boxes during generate().
 font.os2_typoascent = 855; font.os2_typoascent_add = False
@@ -254,15 +287,8 @@ special_choices = {('C', ): dict(line=4),
                    ('I', ): dict(line=4),
                    }
 
-for line, position, bbox, fname, chars in characters:
-    if chars in special_choices:
-        spec = special_choices[chars]
-        spec_line = spec.get('line', any)
-        if spec_line is not any and spec_line != line:
-            continue
 
-    c = create_char(font, chars, fname)
-
+def fit_glyph(c, line, position, bbox, fname, chars):
     # Get the linestats for this character.
     line_features = line_stats[line]
 
@@ -313,6 +339,44 @@ for line, position, bbox, fname, chars in characters:
     # Simplify, then put the vertices on rounded coordinate positions.
     c.simplify()
     c.round()
+
+for line, position, bbox, fname, chars in characters:
+    if chars in special_choices:
+        spec = special_choices[chars]
+        spec_line = spec.get('line', any)
+        if spec_line is not any and spec_line != line:
+            continue
+
+    c = create_char(font, chars, fname)
+    fit_glyph(c, line, position, bbox, fname, chars)
+
+for line, position, bbox, fname, chars in characters:
+    if len(chars) == 1 and chars[0].isascii() and chars[0].isalpha() and chars[0] != 'I':
+        _line_fgs = _full_glyph_sizes.get(line)
+        _monowidth_px = _line_fgs * 0.6
+        char = chars[0]
+        this_char = most_monospaces.setdefault(char, [4.0, _line_fgs])
+        _width = bbox[2] - bbox[0] + 60 * _line_fgs / 856
+        _width_r = _width / _monowidth_px;
+        if _width_r != this_char[0]:
+            continue
+        c = create_char(font, [chars[0], '.', 'mono'], fname)
+        fit_glyph(c, line, position, bbox, fname, chars)
+
+    elif ''.join(chars) == 'I-pronoun':
+        c = create_char(font, [chars[0], '.', 'mono'], fname)
+        fit_glyph(c, line, position, bbox, fname, chars)
+
+        # LATIN LETTER SMALL CAPITAL I
+        # also used for building monospace LATIN CAPITAL LIGATURE IJ "broken U"
+        c = create_char(font, tuple([0x026A]), fname)
+        fit_glyph(c, line, position, bbox, fname, chars)
+        space = 20
+        c.transform(psMat.scale(0.6))
+        c.changeWeight(30)
+        _bb_after = c.boundingBox()
+        c.width = int(round(_bb_after[2] + 2 * space))
+        c.transform(psMat.translate(space - int(round(_bb_after[0])), 0))
 
 c = font.createMappedChar(32)
 c.width = 256
