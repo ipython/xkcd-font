@@ -111,7 +111,12 @@ if _ref_otf is not None:
     _ref_subrs = _ref_top.Private.Subrs
     _ref_bias  = _subr_bias(len(_ref_subrs))
 
-    _new_otf = _TTFont(otf)
+    _new_otf = _TTFont(otf, recalcTimestamp=False)
+
+    # Pin the UniqueID so FontForge doesn't embed a build date (breaks reproducibility).
+    _new_otf.sfnt_names = (('English (US)', 'UniqueID', 'xkcd Script'), )
+    _new_otf.xuid = "-1"
+
     _new_cs  = _new_otf['CFF '].cff.topDictIndex[0].CharStrings
 
     _ref_glyphs = _ref_otf.getGlyphSet()
@@ -132,5 +137,22 @@ if _ref_otf is not None:
         _inlined = _inline_subrs(_cs.program, _ref_subrs, _ref_bias)
         _new_cs[_name].program  = _inlined
         _new_cs[_name].bytecode = None
+
+    # Desubroutinize every charstring that was not frozen above (e.g. newly
+    # added glyphs whose bytecode still contains callsubr tokens from FontForge).
+    # This makes the output stable: on the next CI run those charstrings are
+    # already inlined in the reference, so _inline_subrs is a no-op and the
+    # saved bytes are identical.
+    _new_top = _new_otf['CFF '].cff.topDictIndex[0]
+    _new_subrs = getattr(_new_top.Private, 'Subrs', [])
+    _new_bias = _subr_bias(len(_new_subrs))
+    for _name in _new_cs.keys():
+        _cs = _new_cs[_name]
+        if _cs.bytecode is not None:
+            _cs.decompile()
+        if _cs.program is None:
+            continue
+        _cs.program = _inline_subrs(_cs.program, _new_subrs, _new_bias)
+        _cs.bytecode = None
 
     _new_otf.save(otf)
