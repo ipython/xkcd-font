@@ -163,6 +163,13 @@ for cp, private_name, y_offset in _COMBINING:
     cx = (bb[0] + bb[2]) / 2
     mark_glyph.addAnchorPoint('above', 'mark', cx, bb[1] + y_offset)
 
+# j's dot is to the right of the body centre; combining marks should sit above the dot.
+_j_layer = font['j'].foreground
+_j_dot_ymin = max(min(p.y for p in c) for c in _j_layer)
+_j_dot_xs = [p.x for c in _j_layer for p in c if min(p.y for p in c) >= _j_dot_ymin]
+_j_dot_cx = (min(_j_dot_xs) + max(_j_dot_xs)) / 2
+_J_BASE_NAMES = frozenset({'j', 'uni0237'})
+
 # Base anchors at top-centre + gap for every letter in the font.
 _BASE_GAP = 20
 for glyph in font.glyphs():
@@ -173,7 +180,7 @@ for glyph in font.glyphs():
     bb = glyph.boundingBox()
     if bb[2] <= bb[0]:  # empty / unresolved composite
         continue
-    cx = (bb[0] + bb[2]) / 2
+    cx = _j_dot_cx if glyph.glyphname in _J_BASE_NAMES else (bb[0] + bb[2]) / 2
     glyph.addAnchorPoint('above', 'base', cx, bb[3] + _BASE_GAP)
 
 
