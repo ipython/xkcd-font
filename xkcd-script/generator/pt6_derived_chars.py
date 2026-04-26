@@ -9,8 +9,8 @@ import math
 import fontforge
 import psMat
 
-font_fname = '../font/xkcd-script.sfd'
-font = fontforge.open(font_fname)
+font_fname = '../generated/xkcd-script-pt6.sfd'
+font = fontforge.open('../generated/xkcd-script-pt5.sfd')
 
 
 # ---------------------------------------------------------------------------

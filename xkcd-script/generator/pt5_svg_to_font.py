@@ -583,7 +583,7 @@ for _name, _cp, _ref in [
 # Save
 # ---------------------------------------------------------------------------
 
-font_fname = '../font/xkcd-script.sfd'
+font_fname = '../generated/xkcd-script-pt5.sfd'
 
 if not os.path.exists(os.path.dirname(font_fname)):
     os.makedirs(os.path.dirname(font_fname))
