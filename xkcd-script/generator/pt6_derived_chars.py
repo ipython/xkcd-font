@@ -469,10 +469,16 @@ for cp, base in [(0x010E, 'D'), (0x0164, 'T')]:
     _make_accented(font, cp, base, '_caron_mark')
 
 # ď ť ľ (lowercase) / Ľ (uppercase): raised apostrophe to the right.
-_make_dstroke(font, 0x010F, 'd', gap=-30)
-_make_dstroke(font, 0x0165, 't', gap=-50)
-_make_dstroke(font, 0x013E, 'l', gap=-50, width_extra=80)
-_make_dstroke(font, 0x013D, 'L', gap=-50, dy_offset=100, width_extra=80)
+if bodyname == 'xkcd-script-mono':
+    _make_dstroke(font, 0x010F, 'd', gap=-80)
+    _make_dstroke(font, 0x0165, 't', gap=-100)
+    _make_dstroke(font, 0x013E, 'l', gap=-140, width_extra=40)
+    _make_dstroke(font, 0x013D, 'L', gap=-140, dy_offset=100, width_extra=40)
+else:
+    _make_dstroke(font, 0x010F, 'd', gap=-30)
+    _make_dstroke(font, 0x0165, 't', gap=-50)
+    _make_dstroke(font, 0x013E, 'l', gap=-50, width_extra=80)
+    _make_dstroke(font, 0x013D, 'L', gap=-50, dy_offset=100, width_extra=80)
 
 # ---------------------------------------------------------------------------
 # L with stroke: Ł U+0141 / ł U+0142
@@ -507,23 +513,26 @@ def _make_l_crossbar_mark(font, name, bar_width, rotation=0):
 
 
 def _make_lslash(font, cp, base_name, crossbar_name, y_frac, x_center):
-    """L-with-stroke: base glyph + crossbar mark at (x_center, y_frac * height)."""
+    """L-with-stroke: base glyph + crossbar mark at (x_center, y_frac * height).
+
+    The x-direction is based on the bounding box, and the y-direction is based on the font baseline.
+    """
     c = font.createMappedChar(cp)
     c.clear()
     c.addReference(base_name)
     c.width = font[base_name].width
     base_bb = font[base_name].boundingBox()
     target_y = base_bb[1] + (base_bb[3] - base_bb[1]) * y_frac
-    c.addReference(crossbar_name, psMat.translate(x_center, target_y))
+    c.addReference(crossbar_name, psMat.translate(base_bb[0] + x_center, target_y))
     return c
 
 
 _l_crossbar = _make_l_crossbar_mark(font, '_l_crossbar', bar_width=300, rotation=40)
 
 # Ł U+0141 — crossbar at 42% of cap height, centered on the vertical stroke (x≈75)
-_make_lslash(font, 0x0141, 'L', '_l_crossbar', y_frac=0.42, x_center=75)
+_make_lslash(font, 0x0141, 'L', '_l_crossbar', y_frac=0.42, x_center=55)
 # ł U+0142 — crossbar at 60% of ascender height, l's stroke is at x≈75
-_make_lslash(font, 0x0142, 'l', '_l_crossbar', y_frac=0.60, x_center=75)
+_make_lslash(font, 0x0142, 'l', '_l_crossbar', y_frac=0.60, x_center=55)
 
 
 # ---------------------------------------------------------------------------

@@ -381,6 +381,9 @@ for line, position, bbox, fname, chars in characters:
 c = font.createMappedChar(32)
 c.width = 256
 
+c = font[".notdef"]
+c.addReference("numbersign")
+c.addReference("at")
 
 # ---------------------------------------------------------------------------
 # Glyphs imported from xkcd comic images

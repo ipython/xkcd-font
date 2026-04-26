@@ -5,10 +5,16 @@ Apply font-wide properties: kerning, spacing, and any other metric tweaks.
 Reads the SFD produced by pt6_derived_chars.py (which has all glyphs),
 applies properties, saves.
 """
+import sys
 import fontforge
 import unicodedata
 
-font_fname = '../font/xkcd-script.sfd'
+if len(sys.argv) >= 2:
+    bodyname = sys.argv[1]
+else:
+    bodyname = 'xkcd-script'
+
+font_fname = f'../font/{bodyname}.sfd'
 font = fontforge.open(font_fname)
 
 
@@ -128,7 +134,8 @@ def autokern(font):
     kern(60, ['O'], all_chars)
 
 
-autokern(font)
+if bodyname != 'xkcd-script-mono':
+    autokern(font)
 
 
 # ---------------------------------------------------------------------------
