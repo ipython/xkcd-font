@@ -4,4 +4,4 @@
 xkcd-script/generated
 *.afm
 fonts.conf
-
+xkcd-script/generator/venv

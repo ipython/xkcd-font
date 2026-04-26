@@ -4,6 +4,7 @@ This script gives us reproducible builds of the fonts themselves, so that we don
 """
 import datetime
 import os
+import sys
 import shutil
 import calendar
 
@@ -11,13 +12,17 @@ import fontforge
 from fontTools.ttLib import TTFont as _TTFont
 from fontTools.pens.recordingPen import RecordingPen as _RecordingPen
 
+if len(sys.argv) >= 2:
+    bodyname = sys.argv[1]
+else:
+    bodyname = 'xkcd-script'
 
 base = '../font/'
-sfd = os.path.join(base, 'xkcd-script.sfd')
-newsfd = os.path.join(base, 'new-xkcd-script.sfd')
-otf = os.path.join(base, 'xkcd-script.otf')
-ttf = os.path.join(base, 'xkcd-script.ttf')
-woff = os.path.join(base, 'xkcd-script.woff')
+sfd = os.path.join(base, f'{bodyname}.sfd')
+newsfd = os.path.join(base, f'new-{bodyname}.sfd')
+otf = os.path.join(base, f'{bodyname}.otf')
+ttf = os.path.join(base, f'{bodyname}.ttf')
+woff = os.path.join(base, f'{bodyname}.woff')
 
 then_utc = datetime.datetime(2000, 1, 1, 0, 0)
 then_str = 'Sat Jan 1 00:00:00 2000'
