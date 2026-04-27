@@ -9,8 +9,8 @@ import math
 import fontforge
 import psMat
 
-font_fname = '../font/xkcd-script.sfd'
-font = fontforge.open(font_fname)
+font_fname = '../generated/xkcd-script-pt6.sfd'
+font = fontforge.open('../generated/xkcd-script-pt5.sfd')
 
 
 # ---------------------------------------------------------------------------
@@ -306,6 +306,36 @@ for c in _i_layer:
 _dotlessi_glyph.foreground = _dotless_layer
 _dotlessi_glyph.width = font['i'].width
 
+# dotlessj (U+0237): j without the dot, for ĵ ǰ etc. to avoid dot + accent stack.
+_j_layer = font['j'].foreground
+_j_dot_ymin = max(min(p.y for p in c) for c in _j_layer)
+_dotlessj_glyph = font.createMappedChar(0x0237)
+_dotlessj_layer = fontforge.layer()
+for c in _j_layer:
+    if min(p.y for p in c) < _j_dot_ymin:
+        _dotlessj_layer += c
+_dotlessj_glyph.foreground = _dotlessj_layer
+_dotlessj_glyph.width = font['j'].width
+
+# Marks above j/dotlessj should be centered over the dot position, not the body centre.
+# The body centre is at (bb[0]+bb[2])/2; the dot was further right.
+_j_dot_xs = [p.x for c in _j_layer for p in c if min(p.y for p in c) >= _j_dot_ymin]
+_j_dot_cx = (min(_j_dot_xs) + max(_j_dot_xs)) / 2
+_j_body_bb = _dotlessj_glyph.boundingBox()
+_j_body_cx = (_j_body_bb[0] + _j_body_bb[2]) / 2
+_j_x_adj = int(round(_j_dot_cx - _j_body_cx))
+
+# longs (U+017F LATIN SMALL LETTER LONG S): dotless j rotated ~175° and placed
+# on the baseline.  The descender curve of j becomes the top hook of long s.
+_longs_glyph = font.createMappedChar(0x017F)
+_longs_glyph.foreground = _dotlessj_glyph.foreground.dup()
+_longs_glyph.transform(psMat.rotate(math.radians(175)))
+_longs_glyph.addExtrema('only_good_rm')
+_, _longs_ymin, _, _ = _longs_glyph.boundingBox()
+_longs_glyph.transform(psMat.translate(0, -_longs_ymin))
+_longs_glyph.left_side_bearing = 20
+_longs_glyph.right_side_bearing = 40
+
 # Double acute: two acute-mark references shifted apart.
 _double_acute_mark = font.createChar(-1, '_double_acute_mark')
 _double_acute_mark.clear()
@@ -404,6 +434,7 @@ for cp, base in [
 ]:
     _make_accented(font, cp, base, '_caron_mark', gap=8)
 _make_accented(font, 0x01D0, 'dotlessi', '_caron_mark', gap=40)
+_make_accented(font, 0x01F0, 'uni0237', '_caron_mark', gap=40, x_adj=_j_x_adj)  # ǰ — dotless to avoid dot+caron stack
 
 # Ring above: å Ů / ů
 for cp, base in [(0x00E5, 'a'), (0x016E, 'U'), (0x016F, 'u')]:
@@ -629,9 +660,10 @@ for cp, base in [
     (0x00C2, 'A'), (0x00CA, 'E'), (0x00CE, 'I'), (0x00D4, 'O'), (0x00DB, 'U'),
     (0x0108, 'C'), (0x011C, 'G'), (0x0124, 'H'), (0x0134, 'J'), (0x015C, 'S'), (0x0174, 'W'), (0x0176, 'Y'),
     (0x00E2, 'a'), (0x00EA, 'e'), (0x00EE, 'dotlessi'), (0x00F4, 'o'), (0x00FB, 'u'),
-    (0x0109, 'c'), (0x011D, 'g'), (0x0125, 'h'), (0x0135, 'j'), (0x015D, 's'), (0x0175, 'w'), (0x0177, 'y'),
+    (0x0109, 'c'), (0x011D, 'g'), (0x0125, 'h'), (0x015D, 's'), (0x0175, 'w'), (0x0177, 'y'),
 ]:
     _accented(cp, base, '_circumflex_mark')
+_make_accented(font, 0x0135, 'uni0237', '_circumflex_mark', x_adj=_j_x_adj)  # ĵ — dotless to avoid dot+circumflex stack
 
 # Grave: À È Ì Ò Ù Ỳ / à è ì ò ù ỳ  + Ẁ ẁ Ǹ ǹ
 for cp, base in [
