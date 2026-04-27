@@ -412,6 +412,13 @@ _c0320.clear()
 _c0320.addReference('_macron_below_mark', psMat.translate(0, _descender_bottom // 2 - _combining_gap - _mb_bb[3]))
 _c0320.width = 0
 
+# U+0327 ◌̧  COMBINING CEDILLA — hook cedilla shape, positioned below descender.
+_hc_bb = font['_hook_cedilla_mark'].boundingBox()
+_c0327 = font.createMappedChar(0x0327)
+_c0327.clear()
+_c0327.addReference('_hook_cedilla_mark', psMat.translate(0, _descender_bottom - _combining_gap - _hc_bb[3]))
+_c0327.width = 0
+
 
 # ---------------------------------------------------------------------------
 # Accented character tables
@@ -840,8 +847,39 @@ for _cp, _name in [
     _g.addReference(_name)
     _g.width = font[_name].width
 
+# ɛ U+025B LATIN SMALL LETTER OPEN E — same letterform as Greek ε, 20% larger but
+# stroke-weight corrected back to match (scaling thickens strokes proportionally).
+_eps = font[0x03B5]
+_g = font.createMappedChar(0x025B)
+_g.clear()
+_layer = fontforge.layer()
+for _c in _eps.foreground:
+    _layer += _c
+_g.foreground = _layer
+_g.transform(psMat.scale(1.2))
+_g.correctDirection()
+_g.removeOverlap()
+_g.changeWeight(-15)
+_bb = _g.boundingBox()
+_g.width = int(round(_bb[2] + 20))
+
 # Greek uppercase derived by scaling the corresponding lowercase to capital height.
 _cap_height = font['A'].boundingBox()[3]
+
+# Ɛ U+0190 LATIN CAPITAL LETTER OPEN E — ɛ (U+025B) scaled to capital height.
+_eps_lc_bb = font[0x025B].boundingBox()
+_g = font.createMappedChar(0x0190)
+_g.clear()
+_layer = fontforge.layer()
+for _c in font[0x025B].foreground:
+    _layer += _c
+_g.foreground = _layer
+_g.transform(psMat.scale(_cap_height / _eps_lc_bb[3]))
+_g.correctDirection()
+_g.removeOverlap()
+_g.changeWeight(-20)
+_bb = _g.boundingBox()
+_g.width = int(round(_bb[2] + 20))
 
 
 def _greek_lc_to_uc(font, lc_cp, uc_cp, snap=True, weight_delta=0):
@@ -917,6 +955,30 @@ _g.addReference('_eta_bar', psMat.translate(
     -_eta_bar_bb[3] + _eng_stroke,  # top of bar overlaps baseline by one stroke width
 ))
 _g.width = font['n'].width
+
+
+# ---------------------------------------------------------------------------
+# Greek monotonic accented forms (tonos = acute accent)
+# Lowercase bases that have their own hand-drawn glyphs use those glyph names.
+# Bases aliased to Latin letters reference the Latin glyph directly to avoid
+# chained composites (Alpha → A → A).
+# ---------------------------------------------------------------------------
+
+_make_accented(font, 0x03AC, 'alpha',    '_acute_mark')  # ά
+_make_accented(font, 0x03AD, 'epsilon',  '_acute_mark')  # έ
+_make_accented(font, 0x03AE, 'eta',      '_acute_mark')  # ή
+_make_accented(font, 0x03AF, 'dotlessi', '_acute_mark')  # ί  (dotless — iota has no dot)
+_make_accented(font, 0x03CC, 'o',        '_acute_mark')  # ό  (o for omicron)
+_make_accented(font, 0x03CD, 'upsilon',  '_acute_mark')  # ύ
+_make_accented(font, 0x03CE, 'omega',    '_acute_mark')  # ώ
+
+_make_accented(font, 0x0386, 'A',     '_acute_mark')  # Ά
+_make_accented(font, 0x0388, 'E',     '_acute_mark')  # Έ
+_make_accented(font, 0x0389, 'H',     '_acute_mark')  # Ή
+_make_accented(font, 0x038A, 'I',     '_acute_mark')  # Ί
+_make_accented(font, 0x038C, 'O',     '_acute_mark')  # Ό
+_make_accented(font, 0x038E, 'Y',     '_acute_mark')  # Ύ
+_make_accented(font, 0x038F, font[0x03A9].glyphname, '_acute_mark')  # Ώ
 
 
 # ---------------------------------------------------------------------------

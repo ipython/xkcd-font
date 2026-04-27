@@ -402,6 +402,7 @@ _GREEK = [
     ('delta',   0x03B4, 'b', True),
     ('theta',   0x03B8, 'b', True),
     ('phi',     0x03C6, 'a', True),
+    ('lunate_epsilon', 0x03F5, 'a', True),
     ('epsilon', 0x03B5, 'a', True),
     ('upsilon', 0x03C5, 'a', True),
     ('nu',      0x03BD, 'a', True),
@@ -446,14 +447,15 @@ _target_stroke = _scan_stroke_width(
 # _scan_stroke_width measures bar *lengths* rather than stroke thickness,
 # producing a grossly over-estimated value and a large negative delta that
 # massively thins the letter.  Skip stroke normalisation for these.
-_GREEK_NO_STROKE_NORM = {'epsilon', 'Xi', 'Sigma'}
+_GREEK_NO_STROKE_NORM = {'epsilon', 'lunate_epsilon', 'Xi', 'Sigma'}
 
 # Per-letter changeWeight nudge applied after all positioning and stroke
 # normalisation.  Positive = thicker, negative = thinner.
 _GREEK_WEIGHT_NUDGE = {
     'Sigma':   15,
     'mu':      15,
-    'epsilon': 15,
+    'lunate_epsilon': 15,
+    'epsilon': 20,
     'psi':    -15,
     'lambda':  10,
 }
