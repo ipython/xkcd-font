@@ -159,6 +159,7 @@ EXTRAS = [
     ('tau', '2520_symbols_2x__tau'),            # τ U+03C4 source
     ('varsigma', '2586_greek_letters_2x__sigma'), # ς U+03C2 source
     ('AElig', '2763_linguistics_gossip_2x__AE'), # Æ U+00C6 source
+    ('cedilla', '2034_equations_2x__cedilla.hand-tweaked'),  # hook cedilla mark source
 ]
 
 print('Extracting hand-drawn extras...')

@@ -523,6 +523,17 @@ for _name, _cp, _ref, _snap in _GREEK:
     _ch.width = _g.width
 
 
+# ¸ U+00B8 CEDILLA — hand-drawn hook shape from extras/cedilla.png.
+_cedilla_svg = os.path.join(_COMIC_CHARS_DIR, 'cedilla.svg')
+_cedilla_src = _import_comic_glyph(font, 'cedilla', _cedilla_svg,
+                                   target_top=font['comma'].boundingBox()[3])
+_ch = font.createMappedChar(0x00B8)
+_ch.clear()
+for c in _cedilla_src.foreground:
+    _ch.foreground += c
+_ch.width = _cedilla_src.width
+
+
 # ß (U+00DF) and ẞ (U+1E9E) — hand-drawn source from extras/eszett.png.
 # The same SVG is imported twice at different scales for the two case forms.
 _eszett_svg = os.path.join(_COMIC_CHARS_DIR, 'eszett.svg')
