@@ -402,6 +402,7 @@ _GREEK = [
     ('delta',   0x03B4, 'b', True),
     ('theta',   0x03B8, 'b', True),
     ('phi',     0x03C6, 'a', True),
+    ('lunate_epsilon', 0x03F5, 'a', True),
     ('epsilon', 0x03B5, 'a', True),
     ('upsilon', 0x03C5, 'a', True),
     ('nu',      0x03BD, 'a', True),
@@ -446,14 +447,15 @@ _target_stroke = _scan_stroke_width(
 # _scan_stroke_width measures bar *lengths* rather than stroke thickness,
 # producing a grossly over-estimated value and a large negative delta that
 # massively thins the letter.  Skip stroke normalisation for these.
-_GREEK_NO_STROKE_NORM = {'epsilon', 'Xi', 'Sigma'}
+_GREEK_NO_STROKE_NORM = {'epsilon', 'lunate_epsilon', 'Xi', 'Sigma'}
 
 # Per-letter changeWeight nudge applied after all positioning and stroke
 # normalisation.  Positive = thicker, negative = thinner.
 _GREEK_WEIGHT_NUDGE = {
     'Sigma':   15,
     'mu':      15,
-    'epsilon': 15,
+    'lunate_epsilon': 15,
+    'epsilon': 20,
     'psi':    -15,
     'lambda':  10,
 }
@@ -521,6 +523,17 @@ for _name, _cp, _ref, _snap in _GREEK:
     for c in _g.foreground:
         _ch.foreground += c
     _ch.width = _g.width
+
+
+# ¸ U+00B8 CEDILLA — hand-drawn hook shape from extras/cedilla.png.
+_cedilla_svg = os.path.join(_COMIC_CHARS_DIR, 'cedilla.svg')
+_cedilla_src = _import_comic_glyph(font, 'cedilla', _cedilla_svg,
+                                   target_top=font['comma'].boundingBox()[3])
+_ch = font.createMappedChar(0x00B8)
+_ch.clear()
+for c in _cedilla_src.foreground:
+    _ch.foreground += c
+_ch.width = _cedilla_src.width
 
 
 # ß (U+00DF) and ẞ (U+1E9E) — hand-drawn source from extras/eszett.png.

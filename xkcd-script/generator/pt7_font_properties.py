@@ -185,6 +185,31 @@ for glyph in font.glyphs():
 
 
 # ---------------------------------------------------------------------------
+# Mark-to-base GPOS: position combining cedilla below base glyphs
+# ---------------------------------------------------------------------------
+
+font.addLookup('below', 'gpos_mark2base', (), [['mark', [['latn', ['dflt']]]]])
+font.addLookupSubtable('below', 'below_sub')
+font.addAnchorClass('below_sub', 'below')
+
+# Mark anchor at top-centre of the combining cedilla glyph.
+_c0327 = font[0x0327]
+_c0327_bb = _c0327.boundingBox()
+_c0327.addAnchorPoint('below', 'mark', (_c0327_bb[0] + _c0327_bb[2]) / 2, _c0327_bb[3])
+
+# Base anchors at bottom-centre of ɛ and Ɛ, pulled up by 15 units to match the
+# y_adj=-15 overlap used in the precomposed cedilla glyphs (avoids a rendering gap).
+_BELOW_BASES = {0x025B, 0x0190}  # ɛ  Ɛ
+for glyph in font.glyphs():
+    if glyph.unicode not in _BELOW_BASES:
+        continue
+    bb = glyph.boundingBox()
+    if bb[2] <= bb[0]:
+        continue
+    glyph.addAnchorPoint('below', 'base', (bb[0] + bb[2]) / 2, bb[1] + 15)
+
+
+# ---------------------------------------------------------------------------
 # CFF hinting zones and OS/2 metrics
 # ---------------------------------------------------------------------------
 # FontForge auto-computes these by scanning all glyph tops and stem widths.

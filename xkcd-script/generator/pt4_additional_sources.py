@@ -110,7 +110,7 @@ GREEK_LETTERS_2586 = {
     'delta':    ( 256,  304,  80, 136),  # δ  U+03B4
     'theta':    ( 334,  372,  80, 136),  # θ  U+03B8
     'phi':      ( 370,  440,  80, 136),  # φ  U+03C6  (y1 extended: clips on bottom)
-    'epsilon':  ( 450,  476,  80, 136),  # ε  U+03B5
+    'lunate_epsilon': ( 450,  476,  80, 136),  # ϵ  U+03F5
     'upsilon':  ( 500,  534,  35,  86),  # υ  U+03C5  (left half of ν/υ pair row; x1 tightened: comma at col 87)
     'nu':       ( 500,  534,  88, 120),  # ν  U+03BD  (right half of ν/υ pair row)
     'mu':       ( 562,  608,  65, 136),  # μ  U+03BC  (x0 extended: clips on left)
@@ -159,6 +159,8 @@ EXTRAS = [
     ('tau', '2520_symbols_2x__tau'),            # τ U+03C4 source
     ('varsigma', '2586_greek_letters_2x__sigma'), # ς U+03C2 source
     ('AElig', '2763_linguistics_gossip_2x__AE'), # Æ U+00C6 source
+    ('cedilla', '2034_equations_2x__cedilla.hand-tweaked'),  # hook cedilla mark source
+    ('epsilon', '2034_equations_2x__epsilon'),               # ε U+03B5 source
 ]
 
 print('Extracting hand-drawn extras...')

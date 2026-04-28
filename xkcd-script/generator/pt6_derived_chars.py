@@ -130,45 +130,49 @@ def _make_dstroke(font, cp, base_name, gap=5, dy_offset=0, width_extra=0):
     return c
 
 
-def _place_below(font, base_name, mark_name, gap=10):
-    """Compute translation to place mark centered below base."""
+def _place_below(font, base_name, mark_name, y_adj=10, x_adj=0):
+    """Compute translation to place mark below base.
+
+    y_adj: positive = more space (mark lower), negative = closer/overlapping.
+    x_adj: positive shifts mark right, negative shifts left.
+    """
     base_bb = font[base_name].boundingBox()
     mark_bb = font[mark_name].boundingBox()
     base_cx = (base_bb[0] + base_bb[2]) / 2
     mark_cx = (mark_bb[0] + mark_bb[2]) / 2
-    dx = base_cx - mark_cx
-    dy = base_bb[1] - gap - mark_bb[3]
+    dx = base_cx - mark_cx + x_adj
+    dy = base_bb[1] - y_adj - mark_bb[3]
     return psMat.translate(dx, dy)
 
 
-def _make_cedilla(font, cp, base_name, gap=8):
+def _make_cedilla(font, cp, base_name, y_adj=8, mark='comma', x_adj=0):
+    if cp in _SKIP_CPS:
+        return
+    c = font.createMappedChar(cp)
+    c.clear()
+    c.width = font[base_name].width
+    c.addReference(base_name)
+    c.addReference(mark, _place_below(font, base_name, mark, y_adj, x_adj))
+
+
+def _make_macron_below(font, cp, base_name, y_adj=15):
     if cp in _SKIP_CPS:
         return
     c = font.createMappedChar(cp)
     c.clear()
     c.addReference(base_name)
     c.width = font[base_name].width
-    c.addReference('comma', _place_below(font, base_name, 'comma', gap))
+    c.addReference('_macron_below_mark', _place_below(font, base_name, '_macron_below_mark', y_adj))
 
 
-def _make_macron_below(font, cp, base_name, gap=15):
+def _make_dot_below(font, cp, base_name, y_adj=15):
     if cp in _SKIP_CPS:
         return
     c = font.createMappedChar(cp)
     c.clear()
     c.addReference(base_name)
     c.width = font[base_name].width
-    c.addReference('_macron_below_mark', _place_below(font, base_name, '_macron_below_mark', gap))
-
-
-def _make_dot_below(font, cp, base_name, gap=15):
-    if cp in _SKIP_CPS:
-        return
-    c = font.createMappedChar(cp)
-    c.clear()
-    c.addReference(base_name)
-    c.width = font[base_name].width
-    c.addReference('_dot_below_mark', _place_below(font, base_name, '_dot_below_mark', gap))
+    c.addReference('_dot_below_mark', _place_below(font, base_name, '_dot_below_mark', y_adj))
 
 
 def _make_ogonek(font, cp, base_name):
@@ -267,6 +271,16 @@ _dot_below_mark = make_mark(font, '_dot_below_mark', extract_top_contours(font, 
 _macron_below_mark = make_mark(font, '_macron_below_mark', extract_top_contours(font, 0x0112, 1))
 _macron_below_mark.changeWeight(20)
 
+
+# Hook cedilla: hand-drawn mark from the 2034 equations comic (extras/cedilla).
+# Used for French/Turkish/Cameroonian characters (ç ş ţ); the comma-based cedilla
+# is kept for Latvian (ģ ķ ļ ņ ŗ) where that shape is traditional.
+_hook_cedilla_mark = make_mark(font, '_hook_cedilla_mark',
+                               list(font['cedilla'].foreground))
+_hook_cedilla_mark.changeWeight(30)
+_hook_cedilla_mark.correctDirection()
+_hook_cedilla_mark.removeOverlap()
+_hook_cedilla_mark.transform(psMat.scale(1.2))
 
 # Macron: topmost stroke from Ē, with weight correction.
 _macron_mark = make_mark(font, '_macron_mark', extract_top_contours(font, 0x0112, 1))
@@ -397,6 +411,13 @@ _c0320 = font.createMappedChar(0x0320)
 _c0320.clear()
 _c0320.addReference('_macron_below_mark', psMat.translate(0, _descender_bottom // 2 - _combining_gap - _mb_bb[3]))
 _c0320.width = 0
+
+# U+0327 ◌̧  COMBINING CEDILLA — hook cedilla shape, positioned below descender.
+_hc_bb = font['_hook_cedilla_mark'].boundingBox()
+_c0327 = font.createMappedChar(0x0327)
+_c0327.clear()
+_c0327.addReference('_hook_cedilla_mark', psMat.translate(0, _descender_bottom - _combining_gap - _hc_bb[3]))
+_c0327.width = 0
 
 
 # ---------------------------------------------------------------------------
@@ -707,10 +728,22 @@ for cp, base in [
 ]:
     _accented(cp, base, '_double_acute_mark')
 
-# Cedilla: Ç Ş Ţ Ģ Ķ Ļ Ņ Ŗ / ç ş ţ ģ ķ ļ ņ ŗ
+# Hook cedilla: Ç Ş Ţ / ç ş ţ  — French/Turkish/Cameroonian
+# C/c/S/s: curved base bottom leaves visual space — pull cedilla up to close the gap
+_make_cedilla(font, 0x00C7, 'C', mark='_hook_cedilla_mark', y_adj=-15)  # Ç
+_make_cedilla(font, 0x00E7, 'c', mark='_hook_cedilla_mark', y_adj=-15)  # ç
+_make_cedilla(font, 0x015E, 'S', mark='_hook_cedilla_mark', y_adj=-15)  # Ş
+_make_cedilla(font, 0x015F, 's', mark='_hook_cedilla_mark', y_adj=-15)  # ş
+_make_cedilla(font, 0x0162, 'T', mark='_hook_cedilla_mark', y_adj=-10, x_adj=-37)  # Ţ
+_make_cedilla(font, 0x0163, 't', mark='_hook_cedilla_mark', y_adj=-15, x_adj=40)  # ţ
+# Ȩ/ȩ U+0228/U+0229 — E with cedilla (Cameroonian)
+_make_cedilla(font, 0x0228, 'E', mark='_hook_cedilla_mark', y_adj=-25)  # Ȩ
+_make_cedilla(font, 0x0229, 'e', mark='_hook_cedilla_mark', y_adj=-15)  # ȩ
+
+# Comma cedilla: Ģ Ķ Ļ Ņ Ŗ / ģ ķ ļ ņ ŗ  — Latvian
 for cp, base in [
-    (0x00C7, 'C'), (0x015E, 'S'), (0x0162, 'T'), (0x0122, 'G'), (0x0136, 'K'), (0x013B, 'L'), (0x0145, 'N'), (0x0156, 'R'),
-    (0x00E7, 'c'), (0x015F, 's'), (0x0163, 't'), (0x0123, 'g'), (0x0137, 'k'), (0x013C, 'l'), (0x0146, 'n'), (0x0157, 'r'),
+    (0x0122, 'G'), (0x0136, 'K'), (0x013B, 'L'), (0x0145, 'N'), (0x0156, 'R'),
+    (0x0123, 'g'), (0x0137, 'k'), (0x013C, 'l'), (0x0146, 'n'), (0x0157, 'r'),
 ]:
     _make_cedilla(font, cp, base)
 
@@ -750,7 +783,7 @@ for cp, base in [
     (0x1E0F, 'd'), (0x1E3B, 'l'), (0x1E49, 'n'), (0x1E6F, 't'), (0x1E95, 'z'),
 ]:
     _make_macron_below(font, cp, base)
-_make_macron_below(font, 0x1E5F, 'r', gap=45)  # ṟ — r sits low, needs extra gap
+_make_macron_below(font, 0x1E5F, 'r', y_adj=45)  # ṟ — r sits low, needs extra gap
 
 # ĳ U+0133 / Ĳ U+0132: Dutch IJ digraph ligatures.
 # Position so the ink edges have the same gap as adjacent letters would after kerning (~40 units).
@@ -814,8 +847,39 @@ for _cp, _name in [
     _g.addReference(_name)
     _g.width = font[_name].width
 
+# ɛ U+025B LATIN SMALL LETTER OPEN E — same letterform as Greek ε, 20% larger but
+# stroke-weight corrected back to match (scaling thickens strokes proportionally).
+_eps = font[0x03B5]
+_g = font.createMappedChar(0x025B)
+_g.clear()
+_layer = fontforge.layer()
+for _c in _eps.foreground:
+    _layer += _c
+_g.foreground = _layer
+_g.transform(psMat.scale(1.2))
+_g.correctDirection()
+_g.removeOverlap()
+_g.changeWeight(-15)
+_bb = _g.boundingBox()
+_g.width = int(round(_bb[2] + 20))
+
 # Greek uppercase derived by scaling the corresponding lowercase to capital height.
 _cap_height = font['A'].boundingBox()[3]
+
+# Ɛ U+0190 LATIN CAPITAL LETTER OPEN E — ɛ (U+025B) scaled to capital height.
+_eps_lc_bb = font[0x025B].boundingBox()
+_g = font.createMappedChar(0x0190)
+_g.clear()
+_layer = fontforge.layer()
+for _c in font[0x025B].foreground:
+    _layer += _c
+_g.foreground = _layer
+_g.transform(psMat.scale(_cap_height / _eps_lc_bb[3]))
+_g.correctDirection()
+_g.removeOverlap()
+_g.changeWeight(-20)
+_bb = _g.boundingBox()
+_g.width = int(round(_bb[2] + 20))
 
 
 def _greek_lc_to_uc(font, lc_cp, uc_cp, snap=True, weight_delta=0):
@@ -891,6 +955,30 @@ _g.addReference('_eta_bar', psMat.translate(
     -_eta_bar_bb[3] + _eng_stroke,  # top of bar overlaps baseline by one stroke width
 ))
 _g.width = font['n'].width
+
+
+# ---------------------------------------------------------------------------
+# Greek monotonic accented forms (tonos = acute accent)
+# Lowercase bases that have their own hand-drawn glyphs use those glyph names.
+# Bases aliased to Latin letters reference the Latin glyph directly to avoid
+# chained composites (Alpha → A → A).
+# ---------------------------------------------------------------------------
+
+_make_accented(font, 0x03AC, 'alpha',    '_acute_mark')  # ά
+_make_accented(font, 0x03AD, 'epsilon',  '_acute_mark')  # έ
+_make_accented(font, 0x03AE, 'eta',      '_acute_mark')  # ή
+_make_accented(font, 0x03AF, 'dotlessi', '_acute_mark')  # ί  (dotless — iota has no dot)
+_make_accented(font, 0x03CC, 'o',        '_acute_mark')  # ό  (o for omicron)
+_make_accented(font, 0x03CD, 'upsilon',  '_acute_mark')  # ύ
+_make_accented(font, 0x03CE, 'omega',    '_acute_mark')  # ώ
+
+_make_accented(font, 0x0386, 'A',     '_acute_mark')  # Ά
+_make_accented(font, 0x0388, 'E',     '_acute_mark')  # Έ
+_make_accented(font, 0x0389, 'H',     '_acute_mark')  # Ή
+_make_accented(font, 0x038A, 'I',     '_acute_mark')  # Ί
+_make_accented(font, 0x038C, 'O',     '_acute_mark')  # Ό
+_make_accented(font, 0x038E, 'Y',     '_acute_mark')  # Ύ
+_make_accented(font, 0x038F, font[0x03A9].glyphname, '_acute_mark')  # Ώ
 
 
 # ---------------------------------------------------------------------------
