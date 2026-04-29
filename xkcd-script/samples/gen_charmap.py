@@ -12,6 +12,7 @@ diffs immediately show which characters were added or changed.
 """
 import os
 import re
+import sys
 import unicodedata
 
 import matplotlib
@@ -43,7 +44,8 @@ BLOCKS = [
     (0x0180, 0x0250, "Latin Extended-B"),
     (0x0300, 0x0370, "Combining Diacritical Marks"),
     (0x0370, 0x0400, "Greek and Coptic"),
-    (0x2018, 0x2040, "General Punctuation"),
+    (0x1E00, 0x1F00, "Latin Extended Additional"),
+    (0x2000, 0x2070, "General Punctuation"),
     (0x2190, 0x2200, "Arrows"),
     (0x2200, 0x2300, "Mathematical Operators"),
 ]
@@ -51,11 +53,39 @@ BLOCKS = [
 COLS = 16
 COMBINING_CATS = {'Mn', 'Mc', 'Me'}
 
-# Any font glyphs not covered by the defined blocks go in a catch-all block.
+# Explicit ordered list of codepoints that fall outside all named blocks above.
+# Order here controls layout in the "Non-Latin / Other" charmap table.
+# If the font contains a glyph outside every named block that is not listed
+# here, the script errors and tells you to add it.
+# Use None to reserve a slot (renders as a blank cell) so that removing a
+# character doesn't shift subsequent entries and cause a noisy table diff.
+EXTRAS_ORDER = [
+    0x025B,   # ɛ  LATIN SMALL LETTER OPEN E
+    0x1F382,  # 🎂  BIRTHDAY CAKE
+]
+
 block_covered = set()
 for start, end, _ in BLOCKS:
     block_covered.update(range(start, end))
-extras = sorted(cp for cp in present if cp not in block_covered)
+
+extras_in_block = [cp for cp in EXTRAS_ORDER if cp is not None and cp in block_covered]
+if extras_in_block:
+    lines = [f"  U+{cp:04X}  {unicodedata.name(chr(cp), '(unknown)')}" for cp in extras_in_block]
+    raise ValueError(
+        "EXTRAS_ORDER contains codepoints already covered by a named block:\n"
+        + "\n".join(lines)
+    )
+
+extras_cps = set(cp for cp in EXTRAS_ORDER if cp is not None)
+uncovered = sorted(cp for cp in present if cp not in block_covered and cp not in extras_cps)
+if uncovered:
+    lines = [f"  U+{cp:04X}  {unicodedata.name(chr(cp), '(unknown)')}" for cp in uncovered]
+    raise ValueError(
+        "Font contains codepoints not in any named block or EXTRAS_ORDER.\n"
+        "Add them to EXTRAS_ORDER in gen_charmap.py:\n" + "\n".join(lines)
+    )
+
+extras = list(EXTRAS_ORDER)
 if extras:
     BLOCKS = list(BLOCKS) + [(None, None, "Non-Latin / Other")]
 
@@ -134,13 +164,17 @@ def render_block(label, rows):
         y_bottom = y_top - CELL_H
         y_center = (y_top + y_bottom) / 2
 
-        hex_tag = f'U+{cps[0]:04X}' if cps else ''
+        first_cp = next((c for c in cps if c is not None), None)
+        hex_tag = f'U+{first_cp:04X}' if first_cp is not None else ''
         ax.text(LABEL_W - 0.05, y_center, hex_tag,
                 ha='right', va='center', fontproperties=fp_tiny, color='#555555')
 
         for col, cp in enumerate(cps):
             x_left   = LABEL_W + col * CELL_W
             x_center = x_left + CELL_W / 2
+
+            if cp is None:
+                continue
 
             try:
                 cat = unicodedata.category(chr(cp))
