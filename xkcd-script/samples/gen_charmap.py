@@ -62,11 +62,20 @@ COMBINING_CATS = {'Mn', 'Mc', 'Me'}
 EXTRAS_ORDER = [
     0x025B,   # ɛ  LATIN SMALL LETTER OPEN E
     0x1F382,  # 🎂  BIRTHDAY CAKE
+    0x20DE,   # ⃞  COMBINING ENCLOSING SQUARE
+    0x25A1,   # □  WHITE SQUARE
 ]
 
 block_covered = set()
 for start, end, _ in BLOCKS:
     block_covered.update(range(start, end))
+
+# Control/format characters (Cc, Cf) have no visual representation; skip them.
+def _is_invisible(cp):
+    try:
+        return unicodedata.category(chr(cp)) in ('Cc', 'Cf')
+    except (ValueError, OverflowError):
+        return False
 
 extras_in_block = [cp for cp in EXTRAS_ORDER if cp is not None and cp in block_covered]
 if extras_in_block:
@@ -77,7 +86,7 @@ if extras_in_block:
     )
 
 extras_cps = set(cp for cp in EXTRAS_ORDER if cp is not None)
-uncovered = sorted(cp for cp in present if cp not in block_covered and cp not in extras_cps)
+uncovered = sorted(cp for cp in present if cp not in block_covered and cp not in extras_cps and not _is_invisible(cp))
 if uncovered:
     lines = [f"  U+{cp:04X}  {unicodedata.name(chr(cp), '(unknown)')}" for cp in uncovered]
     raise ValueError(
