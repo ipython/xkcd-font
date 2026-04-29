@@ -10,6 +10,10 @@
 	src: url('xkcd-script/font/xkcd-script.woff') format('woff');
 }
 
+#font-url-row {
+	display: none;
+}
+
 .xkcd-script {
 	font-family: xkcd-script;
 	color: black;
@@ -104,6 +108,12 @@ This is a live preview of xkcd-script - type whatever you like!
         <input type="text" class="form-control" id="share-url-input" readonly>
       </div>
     </div>
+	<div class="form-group row" id="font-url-row">
+      <label for="font-url-input" class="col-xs-3 col-sm-2 col-form-label" style="padding-top: 5px;">Font URL:</label>
+      <div class="col-xs-9 col-sm-10">
+        <input type="text" class="form-control" id="font-url-input" placeholder="https://…/xkcd-script.woff">
+      </div>
+    </div>
 	</form>
   </div>
  </div>
@@ -178,13 +188,68 @@ function renderText(content) {
 
 
 function move_ribbon () {
-	container = document.getElementById("container");
-	var rect = container.getBoundingClientRect();
-	ribbon = document.getElementById("forkme-ribbon");
+	var ribbon = document.getElementById("forkme-ribbon");
+	if (!ribbon) return;
+	var rect = document.getElementById("container").getBoundingClientRect();
 	ribbon.style.left = rect.right - 149;
 	ribbon.style.right = null;
 };
 window.onresize = move_ribbon;
+
+var loadedFontUrl = null;
+
+function mimeForUrl(url) {
+	if (url.endsWith('.woff2')) return 'font/woff2';
+	if (url.endsWith('.ttf'))   return 'font/ttf';
+	if (url.endsWith('.otf'))   return 'font/otf';
+	return 'font/woff';
+}
+
+function normalizeGithubUrl(url) {
+	// github.com/.../raw/... redirects via a broken CORS header; go direct
+	var m = url.match(/^https?:\/\/github\.com\/([^/]+\/[^/]+)\/raw\/(.+)$/);
+	if (m) return 'https://raw.githubusercontent.com/' + m[1] + '/' + m[2];
+	return url;
+}
+
+async function loadFontFromUrl(url) {
+	if (!url || url === loadedFontUrl) return;
+	try {
+		var resp = await fetch(normalizeGithubUrl(url));
+		if (!resp.ok) throw new Error('HTTP ' + resp.status);
+		var buf = await resp.arrayBuffer();
+		var blobUrl = URL.createObjectURL(new Blob([buf], {type: mimeForUrl(url)}));
+		var face = new FontFace('xkcd-script', 'url(' + blobUrl + ')');
+		await face.load();
+		document.fonts.add(face);
+		loadedFontUrl = url;
+	} catch (e) {
+		console.error('Failed to load font from URL:', url, e);
+	}
+}
+
+function updateFontUrlQuerystring(url) {
+	var newHref = UpdateQueryString('font', encodeURIComponent(url), window.location.href);
+	history.replaceState({}, null, newHref);
+	document.getElementById('share-url-input').value = newHref;
+}
+
+document.getElementById('font-url-input').addEventListener('change', function () {
+	var url = this.value.trim();
+	loadFontFromUrl(url);
+	updateFontUrlQuerystring(url);
+});
+
+// Show font URL row and load font if ?font= param is present
+(function initFontUrl() {
+	fetchUrlParams();
+	var fontUrl = urlParams['font'];
+	if (fontUrl) {
+		document.getElementById('font-url-row').style.display = '';
+		document.getElementById('font-url-input').value = fontUrl;
+		loadFontFromUrl(fontUrl);
+	}
+})();
 
 </script>
 </body>
