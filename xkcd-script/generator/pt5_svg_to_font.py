@@ -317,6 +317,28 @@ for line, position, bbox, fname, chars in characters:
 c = font.createMappedChar(32)
 c.width = 256
 
+# recommended by OpenType specification
+c = font.createChar(-1, '.notdef')
+c.addReference('question', psMat.compose(psMat.scale(0.5), psMat.translate(font.ascent * 0.25, font.ascent * 0.25)))
+c.unlinkRef()
+c.width = round(font.em * 0.6)
+pen = c.glyphPen(replace=False)
+pen.moveTo(20, 20)
+pen.lineTo((c.width - 20, 20))
+pen.lineTo((c.width - 20, font.ascent - 20))
+pen.lineTo((20, font.ascent - 20))
+pen.lineTo((20, 20))
+pen.lineTo((60, 60))
+pen.lineTo((60, font.ascent - 60))
+pen.lineTo((c.width - 60, font.ascent - 60))
+pen.lineTo((c.width - 60, 60))
+pen.lineTo((60, 60))
+pen.closePath()
+c = font.createChar(0x0000, '.null')
+c.width = 256
+c = font.createChar(0x000D, 'nonmarkingreturn')
+c.width = 256
+
 
 # ---------------------------------------------------------------------------
 # Glyphs imported from xkcd comic images
