@@ -213,10 +213,15 @@ def _accented(cp, base_name, mark_name, gap=20, x_adj=0):
 # ---------------------------------------------------------------------------
 
 # Vertical pipe: re-use the I glyph (same stroke, same weight).
+font.selection.select('I')
+font.copy()
+c = font.createChar(-1, 'I.sansserif')
+font.selection.select(c)
+font.paste()
 pipe = font.createMappedChar(ord('|'))
 pipe.clear()
-pipe.addReference('I')
-pipe.width = font['I'].width
+pipe.addReference('I.sansserif', psMat.compose(psMat.scale(1, 1.3), psMat.translate(0, -0.2 * font.ascent)))
+pipe.width = font['I.sansserif'].width
 
 
 
