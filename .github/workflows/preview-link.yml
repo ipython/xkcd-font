@@ -1,0 +1,24 @@
+name: Font preview link
+
+on:
+  pull_request_target:
+    branches: [master]
+
+jobs:
+  preview-link:
+    runs-on: ubuntu-latest
+    permissions:
+      statuses: write
+    steps:
+      - name: Post font preview link
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          sha="${{ github.event.pull_request.head.sha }}"
+          font_url="https://raw.githubusercontent.com/${{ github.repository }}/${sha}/xkcd-script/font/xkcd-script.woff"
+          encoded=$(python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.argv[1], safe=''))" "$font_url")
+          gh api "repos/${{ github.repository }}/statuses/${sha}" \
+            -f state=success \
+            -f target_url="https://ipython.org/xkcd-font/preview.html?font=${encoded}" \
+            -f description="Click to preview the font from this PR" \
+            -f context="Font preview"
