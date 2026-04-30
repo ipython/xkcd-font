@@ -952,13 +952,6 @@ _g.clear()
 _g.addReference('L', psMat.compose(psMat.scale(1, -1), psMat.translate(0, _L_bb[3])))
 _g.width = font['L'].width
 
-# Λ (U+039B): V flipped vertically — two diagonals meeting at the top.
-_V_bb = font['V'].boundingBox()
-_g = font.createMappedChar(0x039B)
-_g.clear()
-_g.addReference('V', psMat.compose(psMat.scale(1, -1), psMat.translate(0, _V_bb[3])))
-_g.width = font['V'].width
-
 # η (eta, U+03B7): n with a straight vertical descender on the right leg.
 # A rotated hyphen-bar gives a stroke of matching weight and shape.
 # x-scaled to 90% of original thickness so it reads slightly thinner than n's strokes.
