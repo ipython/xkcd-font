@@ -154,6 +154,8 @@ EXTRAS_DIR = 'extras'
 
 # Each entry is (output_name, source_filename_stem).
 EXTRAS = [
+    ('notdef', '1913_i_2x__notdef'),            # .notdef fallback glyph source
+    ('square', '2251_alignment_chart_2x__square'),  # □ U+25A1 source
     ('eszett', 'eszett'),                       # ß U+00DF / ẞ U+1E9E source
     ('lambda', '1145_sky_color_2x__lambda'),    # λ U+03BB source
     ('tau', '2520_symbols_2x__tau'),            # τ U+03C4 source

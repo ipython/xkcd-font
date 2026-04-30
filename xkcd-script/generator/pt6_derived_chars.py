@@ -212,11 +212,33 @@ def _accented(cp, base_name, mark_name, gap=20, x_adj=0):
 # Glyph aliases and re-uses
 # ---------------------------------------------------------------------------
 
+# U+20DE COMBINING ENCLOSING SQUARE — zero-width mark sized and positioned to
+# enclose '?' with a small margin.  GPOS would be needed for full generality.
+_sq = font[0x25A1]
+_sq_bb = _sq.boundingBox()
+_sq_cx = (_sq_bb[0] + _sq_bb[2]) / 2
+_sq_h = _sq_bb[3] - _sq_bb[1]   # sq_bb[1] == 0 after baseline snap
+_q_bb = font[ord('?')].boundingBox()
+_q_adv = font[ord('?')].width
+_margin = 20
+_scale_y = (_q_bb[3] - _q_bb[1] + 2 * _margin) / _sq_h
+_x_offset = -_q_adv / 2 - _sq_cx
+_y_offset = _q_bb[1] - _margin
+c = font.createMappedChar(0x20DE)
+c.addReference(_sq.glyphname, psMat.compose(
+    psMat.scale(1, _scale_y),
+    psMat.translate(_x_offset, _y_offset),
+))
+c.width = 0
+
 # Vertical pipe: re-use the I glyph (same stroke, same weight).
+c = font.createChar(-1, 'I.sansserif')
+c.addReference('I')
+c.width = font['I'].width
 pipe = font.createMappedChar(ord('|'))
 pipe.clear()
-pipe.addReference('I')
-pipe.width = font['I'].width
+pipe.addReference('I.sansserif', psMat.compose(psMat.scale(1, 1.3), psMat.translate(0, -0.2 * font.ascent)))
+pipe.width = font['I.sansserif'].width
 
 
 

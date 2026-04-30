@@ -317,6 +317,11 @@ for line, position, bbox, fname, chars in characters:
 c = font.createMappedChar(32)
 c.width = 256
 
+c = font.createChar(0x0000, '.null')   # U+0000: null, zero-width; required by OpenType
+c.width = 256
+c = font.createChar(0x000D, 'nonmarkingreturn')  # U+000D: carriage return, zero-width; required by OpenType
+c.width = 256
+
 
 # ---------------------------------------------------------------------------
 # Glyphs imported from xkcd comic images
@@ -389,6 +394,23 @@ def _import_comic_glyph(font, name, svg_path, target_top, weight_delta=0):
     bb = g.boundingBox()
     g.width = int(round(bb[2] + 20))
     return g
+
+
+# .notdef is shown for any codepoint the font doesn't cover; OpenType requires it.
+# Hand-drawn source: xkcd #1913 (I), a sketchy question-mark-in-a-box.
+_notdef_svg = os.path.join(_COMIC_CHARS_DIR, 'notdef.svg')
+_notdef_src = _import_comic_glyph(font, 'notdef', _notdef_svg, target_top=font.ascent, weight_delta=20)
+_bb = _notdef_src.boundingBox()
+_notdef_src.transform(psMat.translate(0, -_bb[1]))
+_bb = _notdef_src.boundingBox()
+if _bb[3] > 0:
+    _notdef_src.transform(psMat.scale(font.ascent / _bb[3]))
+    _notdef_src.width = int(round(_notdef_src.boundingBox()[2] + 20))
+c = font.createChar(-1, '.notdef')
+c.clear()
+for _cont in _notdef_src.foreground:
+    c.foreground += _cont
+c.width = _notdef_src.width
 
 
 # Greek letters vectorised by pt4 from xkcd comic images.
@@ -590,6 +612,23 @@ for _name, _cp, _ref in [
     for c in _g.foreground:
         _ch.foreground += c
     _ch.width = _g.width
+
+
+# □ U+25A1 WHITE SQUARE — hand-drawn source from extras/square.png.
+_square_svg = os.path.join(_COMIC_CHARS_DIR, 'square.svg')
+_target_top_sq = font['H'].boundingBox()[3]
+_square_src = _import_comic_glyph(font, 'square', _square_svg, target_top=_target_top_sq, weight_delta=45)
+_bb = _square_src.boundingBox()
+_square_src.transform(psMat.translate(0, -_bb[1]))
+_bb = _square_src.boundingBox()
+if _bb[3] > 0:
+    _square_src.transform(psMat.scale(_target_top_sq / _bb[3]))
+    _square_src.width = int(round(_square_src.boundingBox()[2] + 20))
+_ch = font.createMappedChar(0x25A1)
+_ch.clear()
+for _cont in _square_src.foreground:
+    _ch.foreground += _cont
+_ch.width = _square_src.width
 
 
 # ---------------------------------------------------------------------------
