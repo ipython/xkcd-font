@@ -61,10 +61,13 @@ COMBINING_CATS = {'Mn', 'Mc', 'Me'}
 # Use None to reserve a slot (renders as a blank cell) so that removing a
 # character doesn't shift subsequent entries and cause a noisy table diff.
 EXTRAS_ORDER = [
-    0x025B,   # ɛ  LATIN SMALL LETTER OPEN E
+    0x025B,  # ɛ  LATIN SMALL LETTER OPEN E
     0x1F382,  # 🎂  BIRTHDAY CAKE
-    0x20DE,   # ⃞  COMBINING ENCLOSING SQUARE
-    0x25A1,   # □  WHITE SQUARE
+    0x20DE,  # ⃞  COMBINING ENCLOSING SQUARE
+    0x25A1,  # □  WHITE SQUARE
+    0x20E4,  #  b⃤ COMBINING ENCLOSING UPWARD POINTING TRIANGLE
+    0x25B3,  # △ WHITE UP-POINTING TRIANGLE
+    0x25BD,  # ▽ WHITE DOWN-POINTING TRIANGLE
 ]
 
 block_covered = set()
@@ -80,7 +83,7 @@ def _is_invisible(cp):
 
 extras_in_block = [cp for cp in EXTRAS_ORDER if cp is not None and cp in block_covered]
 if extras_in_block:
-    lines = [f"  U+{cp:04X}  {unicodedata.name(chr(cp), '(unknown)')}" for cp in extras_in_block]
+    lines = [f"  0x{cp:04X},  # chr(cp) {unicodedata.name(chr(cp), '(unknown)')}" for cp in extras_in_block]
     raise ValueError(
         "EXTRAS_ORDER contains codepoints already covered by a named block:\n"
         + "\n".join(lines)
@@ -89,7 +92,7 @@ if extras_in_block:
 extras_cps = set(cp for cp in EXTRAS_ORDER if cp is not None)
 uncovered = sorted(cp for cp in present if cp not in block_covered and cp not in extras_cps and not _is_invisible(cp))
 if uncovered:
-    lines = [f"  U+{cp:04X}  {unicodedata.name(chr(cp), '(unknown)')}" for cp in uncovered]
+    lines = [f"  0x{cp:04X},  # {chr(cp)} {unicodedata.name(chr(cp), '(unknown)')}" for cp in uncovered]
     raise ValueError(
         "Font contains codepoints not in any named block or EXTRAS_ORDER.\n"
         "Add them to EXTRAS_ORDER in gen_charmap.py:\n" + "\n".join(lines)
