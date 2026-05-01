@@ -41,13 +41,6 @@ ${RUN_CTXT} convert -strip ${NAME}.pgm ${NAME}.png
 ${RUN_CTXT} rm ${NAME}.pgm
 
 
-NAME=ligatures
-CONTENT=$(${RUN_CTXT} python3 gen_ligatures.py) || exit 1
-${SIMPLE_CTXT} -o ${NAME}.pgm --text "${CONTENT}"
-${RUN_CTXT} convert -strip ${NAME}.pgm ${NAME}.png
-${RUN_CTXT} rm ${NAME}.pgm
-
-
 if [ "$?" == "141" ] ; then
     # Unexplained exit code from the handwriting sample.
     exit 0

@@ -102,6 +102,18 @@ for line_no, (character_line, glyph_line) in enumerate(zip(paragraphs, glyphs_by
 
 
 
+_LIGATURE_SOURCES = [
+    (5, 4, 5, 'TH'),   # UNAUTHORITATIVENESS: T + H
+    (5, 31, 32, 'TR'),  # INTRACOLIC: T + R
+    (6, 24, 25, 'TI'),  # ALBERTITE: T + I
+]
+for line_no, left_no, right_no, lig in _LIGATURE_SOURCES:
+    _, left_bbox, left_img = characters_by_line[line_no][left_no]
+    _, right_bbox, right_img = characters_by_line[line_no][right_no]
+    lig_img, lig_bbox = merge(left_img, left_bbox, right_img, right_bbox)
+    characters_by_line[line_no].append([lig, lig_bbox, lig_img])
+
+
 import skimage.io
 
 if not os.path.isdir('../generated/characters'):
