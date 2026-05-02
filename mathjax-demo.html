@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>xkcd-script + MathJax</title>
+
+<style>
+@font-face {
+    font-family: 'xkcd-script-math';
+    src: url('xkcd-script/font/xkcd-script-mathjax.woff') format('woff');
+}
+@font-face {
+    font-family: 'xkcd-script';
+    src: url('xkcd-script/font/xkcd-script.woff') format('woff');
+}
+
+body {
+    font-family: 'xkcd-script', sans-serif;
+    font-size: 1.25em;
+    max-width: 920px;
+    margin: 2em auto;
+    padding: 0 1.5em;
+    line-height: 1.7;
+    color: #111;
+    background: #fff;
+}
+
+h1 { font-size: 2.2em; margin-bottom: 0.2em; }
+h2 { font-size: 1.5em; margin-top: 2em; border-bottom: 1px solid #ccc; padding-bottom: 0.2em; }
+p  { margin: 0.8em 0; }
+
+/* MathJax CHTML renders characters via ::before pseudo-elements.
+   Font override is injected dynamically after MathJax's CSS loads so that
+   our !important comes later in the cascade and wins. See injectFontOverride(). */
+
+/* ── Editor ── */
+.editor-wrap {
+    display: flex;
+    gap: 1em;
+    align-items: flex-start;
+    margin-top: 0.5em;
+}
+#latex-input {
+    flex: 1;
+    min-height: 220px;
+    font-family: monospace;
+    font-size: 0.78em;
+    padding: 0.6em;
+    border: 1px solid #999;
+    resize: vertical;
+    background: #fffff0;
+    box-sizing: border-box;
+}
+#latex-preview {
+    flex: 1;
+    min-height: 220px;
+    padding: 0.6em 1em;
+    border: 1px solid #ccc;
+    background: #fff;
+    box-sizing: border-box;
+    overflow-wrap: break-word;
+}
+</style>
+
+<script>
+// ── Hand-drawn vinculum SVGs (from xkcd comic #2343) ──────────────────────
+//
+// SQRT_BAR: the horizontal bar from long_sqrt.png, viewBox clipped to the
+// portion right of the font glyph's advance width (x≈845 potrace = x≈84.5px).
+// Used as the overline above radicands.
+//
+// FRAC_LINE: the standalone line from long_line.png.
+// Used as fraction bars.
+//
+// Both SVGs use the potrace coordinate system with the standard potrace
+// transform (translate + scale/flip).  The viewBox clips to the relevant
+// region so only the ink band is visible.
+
+const SQRT_BAR_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="82 0 88 9" preserveAspectRatio="none"><g transform="translate(0,61) scale(.1,-.1)"><path d="M845 602 c-1 -1 -118 -4 -259 -5 -209 -2 -259 -6 -270 -17 -11 -12 -47 -118 -62 -180 -17 -77 -89 -299 -94 -293 -4 5 -18 28 -31 53 -34 64 -59 92 -74 80 -10 -8 0 -37 42 -120 30 -61 58 -110 61 -110 14 0 28 16 40 43 10 23 85 272 134 447 5 19 14 39 18 44 5 5 306 10 670 11 364 2 664 5 667 8 3 3 2 14 -1 24 -5 17 -28 18 -422 18 -228 0 -417 -1 -419 -3z"/></g></svg>`;
+
+const FRAC_LINE_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="4 15 154 11" preserveAspectRatio="none"><g transform="translate(0,37) scale(.1,-.1)"><path d="M146 190 c-49 -3 -81 -10 -83 -17 -7 -21 33 -24 282 -21 207 2 424 -4 675 -18 144 -8 519 -11 530 -4 7 5 10 15 7 24 -6 14 -31 16 -189 17 -185 0 -281 3 -463 14 -136 8 -662 12 -759 5z"/></g></svg>`;
+
+const SQRT_BAR_URI = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(SQRT_BAR_SVG);
+const FRAC_LINE_URI = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(FRAC_LINE_SVG);
+
+// MathJax 3 CHTML renders characters via CSS ::before pseudo-elements.
+// Injecting our font-family override *after* MathJax's CSS ensures we're
+// later in the cascade and our !important beats MathJax's for equal specificity.
+let _fontOverrideInjected = false;
+function injectFontOverride() {
+    if (_fontOverrideInjected) return;
+    _fontOverrideInjected = true;
+    const STACK = "'xkcd-script-math', MJXTEX, MJXTEX-I, MJXTEX-B, MJXTEX-BI, MJXTEX-S1, MJXTEX-S2, MJXTEX-S3, MJXTEX-S4, MJXTEX-A";
+    const s = document.createElement('style');
+    s.textContent = `
+        mjx-container[jax="CHTML"] *,
+        mjx-container[jax="CHTML"] *::before {
+            font-family: ${STACK} !important;
+        }
+    `;
+    document.head.appendChild(s);
+}
+
+// Replace MathJax border-top vinculums with hand-drawn SVG lines.
+// Must be called after each typesetPromise() resolves.
+function replaceVinculums(root) {
+    const scope = root || document;
+    // MathJax applies border-top via CSS class rules, not inline styles, so we
+    // must check computed style on every element rather than using [style*=].
+    scope.querySelectorAll('mjx-container[jax="CHTML"] *').forEach(el => {
+        const cs = getComputedStyle(el);
+        if (cs.borderTopStyle !== 'solid' || parseFloat(cs.borderTopWidth) <= 0) return;
+
+        // MathJax 3 uses mjx-msqrt (not mjx-sqrt) for \sqrt
+        const uri = el.closest('mjx-msqrt') ? SQRT_BAR_URI : FRAC_LINE_URI;
+
+        // Render at least 3px tall so the hand-drawn wobble is visible.
+        const barH = Math.max(parseFloat(cs.borderTopWidth), 3);
+        el.style.borderTopColor = 'transparent';
+        el.style.backgroundImage = `url("${uri}")`;
+        el.style.backgroundSize = `100% ${barH}px`;
+        el.style.backgroundRepeat = 'no-repeat';
+        el.style.backgroundPosition = '0 0';
+        el.style.backgroundOrigin = 'border-box';
+        el.style.backgroundClip = 'border-box';
+    });
+}
+</script>
+
+<script>
+MathJax = {
+    tex: {
+        inlineMath:   [['$', '$'], ['\\(', '\\)']],
+        displayMath:  [['$$', '$$'], ['\\[', '\\]']],
+    },
+    startup: {
+        typeset: false,
+        ready() {
+            MathJax.startup.defaultReady();
+            document.fonts.load("1em 'xkcd-script-math'").then(() => {
+                MathJax.typesetPromise().then(() => {
+                    injectFontOverride();
+                    replaceVinculums();
+                });
+            });
+        }
+    }
+};
+</script>
+<script id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+</head>
+<body>
+
+<h1>xkcd-script + MathJax</h1>
+<p>MathJax CHTML with xkcd-script substituted for letter and Greek glyphs.</p>
+
+<div class="editor-wrap">
+    <textarea id="latex-input" spellcheck="false">Euler's identity: $e^{i\pi} + 1 = 0$
+
+Quadratic formula:
+$$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$
+
+Greek: $\alpha, \beta, \gamma, \delta, \varepsilon, \zeta, \eta, \theta, \lambda, \mu, \pi, \sigma, \omega$
+
+$$\int_{-\infty}^{\infty} e^{-x^2}\,dx = \sqrt{\pi}$$</textarea>
+    <div id="latex-preview"></div>
+</div>
+
+<script>
+const input   = document.getElementById('latex-input');
+const preview = document.getElementById('latex-preview');
+let renderTimer;
+
+function renderMath() {
+    MathJax.typesetClear([preview]);
+    preview.textContent = input.value;
+    MathJax.typesetPromise([preview]).then(() => {
+        injectFontOverride();
+        replaceVinculums(preview);
+    });
+}
+
+input.addEventListener('input', () => {
+    clearTimeout(renderTimer);
+    renderTimer = setTimeout(renderMath, 350);
+});
+
+// Render initial content once MathJax + font are both ready.
+document.fonts.load("1em 'xkcd-script-math'").then(() => {
+    if (window.MathJax && MathJax.startup && MathJax.startup.promise) {
+        MathJax.startup.promise.then(renderMath);
+    } else {
+        document.addEventListener('mathjax-ready', renderMath);
+    }
+});
+</script>
+
+<h2>Algebra</h2>
+
+<p>Quadratic formula:
+$$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$</p>
+
+<p>Pythagorean theorem: $a^2 + b^2 = c^2$</p>
+
+<p>Binomial theorem:
+$$\sum_{k=0}^{n} \binom{n}{k} x^k y^{n-k} = (x + y)^n$$</p>
+
+<h2>Calculus</h2>
+
+<p>Definition of derivative:
+$$f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}$$</p>
+
+<p>Gaussian integral:
+$$\int_{-\infty}^{\infty} e^{-x^2}\,dx = \sqrt{\pi}$$</p>
+
+<p>Product rule: $\dfrac{d}{dx}\bigl[f(x)\,g(x)\bigr] = f'(x)\,g(x) + f(x)\,g'(x)$</p>
+
+<h2>Greek letters</h2>
+
+<p>Euler's identity: $e^{i\pi} + 1 = 0$</p>
+
+<p>$\alpha,\ \beta,\ \gamma,\ \delta,\ \varepsilon,\ \zeta,\ \eta,\
+   \theta,\ \iota,\ \kappa,\ \lambda,\ \mu,\ \nu,\ \xi,\ \pi,\
+   \rho,\ \sigma,\ \tau,\ \upsilon,\ \phi,\ \chi,\ \psi,\ \omega$</p>
+
+<p>Fourier transform:
+$$\hat{f}(\xi) = \int_{-\infty}^{\infty} f(x)\,e^{-2\pi i x \xi}\,dx$$</p>
+
+<h2>Physics</h2>
+
+<p>Einstein: $E = mc^2$</p>
+
+<p>Schrödinger equation:
+$$i\hbar\frac{\partial\psi}{\partial t} = \hat{H}\psi$$</p>
+
+<p>Maxwell in free space:
+$$\nabla \cdot \mathbf{E} = 0 \qquad \nabla \times \mathbf{E} = -\frac{\partial \mathbf{B}}{\partial t}$$</p>
+
+</body>
+</html>
