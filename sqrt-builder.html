@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>sqrt line builder</title>
+<style>
+  body { font-family: monospace; padding: 20px; background: #f0f0f0; }
+  #output svg { display: block; background: white; margin-top: 12px; border: 1px solid #ccc; }
+  label { display: block; margin: 10px 0 4px; }
+  input[type=range] { width: 600px; vertical-align: middle; }
+  #info { margin-top: 8px; color: #555; font-size: 0.9em; }
+</style>
+</head>
+<body>
+<h2>sqrt line builder</h2>
+
+<label><input type="checkbox" id="surdCheck" checked> Include surd (&radic;)</label>
+<label>
+  Target width:
+  <input type="range" id="widthSlider" min="128" max="2000" value="300">
+  <span id="widthLabel">300</span> pt
+</label>
+<div id="info"></div>
+<div id="output"></div>
+
+<script>
+// All coordinates are in the source SVG's pt space (viewBox "0 0 170 61").
+// Cut points derived from pixel-profile analysis of sqrt.png (400x143px → 0.425pt/px).
+const SRC_W = 170, SRC_H = 61;
+const CUT_A = 57.5;                  // end of surd cap / start of tile (flat zone)
+const CUT_B = 59.0;                  // start of right cap (still in flat zone, fixes the step)
+const TILE_W = CUT_B - CUT_A;        // 42.5 pt — the stretchable flat-bar tile
+const RIGHT_CAP_W = SRC_W - CUT_B;  // 85 pt
+
+const PATH_D = `m 410.6448,596.25455 c -52.01622,-1.52077 -90.0699,-7.17037 -96.13414,-14.11479 -5.06429,-6.95363 -20.44144,-47.81367 -32.84636,-91.70123 -12.40492,-43.88756 -36.13187,-122.67228 -52.61034,-174.52264 -15.47851,-51.85958 -36.11344,-120.67237 -45.40792,-152.58808 -9.28526,-30.91575 -20.52437,-56.81329 -23.52424,-56.78565 -3.99983,0.0369 -17.7873,23.16488 -30.52875,51.28348 C 95.267178,231.14504 70.535454,260.37417 54.416347,247.52215 36.278897,232.68864 140.33939,21.72084 165.33833,21.490482 c 12.99945,-0.119786 25.22008,23.768624 49.91935,99.544258 48.37094,148.5606 70.01505,218.36413 102.04573,330.07373 l 28.93867,101.73767 400.02909,1.31406 c 221.01827,0.96351 522.03313,1.18988 670.02683,-0.17384 147.9937,-1.36371 271.0069,-0.49716 273.0345,2.48429 3.0275,2.97223 3.1104,11.97184 -0.8065,21.00832 -4.8707,14.04548 -64.8498,16.59825 -597.8548,18.5096 -326.00457,1.00395 -632.01001,1.82361 -680.0264,0.26598 z`;
+
+// Caps extend this far into the tile region so their clipped edges
+// land on flat-bar content rather than at a path outline boundary.
+// The tile is drawn behind; caps (opaque black) paint over any tile
+// bleed in their regions — black on black, no visible change.
+const OVERLAP = 2;
+
+const slider = document.getElementById('widthSlider');
+const surdCheck = document.getElementById('surdCheck');
+const widthLabel = document.getElementById('widthLabel');
+const info = document.getElementById('info');
+const output = document.getElementById('output');
+
+surdCheck.addEventListener('change', () => {
+  const minW = surdCheck.checked
+    ? Math.ceil(CUT_A + RIGHT_CAP_W)
+    : Math.ceil(2 * RIGHT_CAP_W);
+  slider.min = minW;
+  if (+slider.value < minW) slider.value = minW;
+  redraw();
+});
+slider.addEventListener('input', redraw);
+
+function f(n) { return n.toFixed(3); }
+
+function redraw() {
+  const W = +slider.value;
+  widthLabel.textContent = W;
+  const surd = surdCheck.checked;
+  const leftCapW = surd ? CUT_A : RIGHT_CAP_W;
+
+  const M = Math.max(0, W - leftCapW - RIGHT_CAP_W);
+  const sx = M > 0 ? M / TILE_W : 1;
+  const tileTx = leftCapW - CUT_A * sx;
+  const rightTx = W - RIGHT_CAP_W - CUT_B;
+
+  // Below this threshold the scaled tile is too thin to rasterize cleanly —
+  // skip it and let the extended left cap bridge the gap instead.
+  const TILE_THRESHOLD = 4;
+  const useTile = M >= TILE_THRESHOLD;
+
+  // When tiling: tight sub-clip on the tile, caps extend OVERLAP into it.
+  // When not tiling: left cap extends all the way across the gap (+ OVERLAP
+  // into the right cap), so no tile clip is needed.
+  const leftClipW = useTile ? leftCapW + OVERLAP : leftCapW + M + OVERLAP;
+
+  const clipMid = useTile ? `<clipPath id="cm">
+      <rect x="${f(leftCapW)}" y="0" width="${f(M)}" height="${SRC_H}"/>
+    </clipPath>` : '';
+
+  const clipLeft = `<clipPath id="cl">
+      <rect x="0" y="0" width="${f(leftClipW)}" height="${SRC_H}"/>
+    </clipPath>`;
+
+  const clipRight = `<clipPath id="cr">
+      <rect x="${f(W - RIGHT_CAP_W - OVERLAP)}" y="0" width="${f(RIGHT_CAP_W + OVERLAP)}" height="${SRC_H}"/>
+    </clipPath>`;
+
+  const mid = useTile ? `<g clip-path="url(#cm)">
+    <g transform="translate(${f(tileTx)},0) scale(${f(sx)},1)"><use href="#src"/></g>
+  </g>` : '';
+
+  // Left cap drawn on top of tile — covers the tile's left clip seam.
+  const leftCap = surd
+    ? `<g clip-path="url(#cl)"><use href="#src"/></g>`
+    : `<g clip-path="url(#cl)">
+    <g transform="translate(${f(SRC_W)},0) scale(-1,1)"><use href="#src"/></g>
+  </g>`;
+
+  // Right cap drawn on top of tile — covers the tile's right clip seam.
+  const right = `<g clip-path="url(#cr)">
+    <g transform="translate(${f(rightTx)},0)"><use href="#src"/></g>
+  </g>`;
+
+  // Render order: tile (back) → left cap → right cap (front).
+  output.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg"
+    width="${W}pt" height="${SRC_H}pt" viewBox="0 0 ${W} ${SRC_H}">
+  <defs>
+    <g id="src" transform="translate(0,61) scale(0.1,-0.1)">
+      <path d="${PATH_D}" fill="black"/>
+    </g>
+    ${clipMid}
+    ${clipLeft}
+    ${clipRight}
+  </defs>
+  ${mid}
+  ${leftCap}
+  ${right}
+</svg>`;
+
+  info.textContent = `left: ${f(leftCapW)}pt  |  tile: ${f(M)}pt (${f(sx)}×)  |  right: ${f(RIGHT_CAP_W)}pt  |  total: ${W}pt`;
+}
+
+redraw();
+</script>
+</body>
+</html>
