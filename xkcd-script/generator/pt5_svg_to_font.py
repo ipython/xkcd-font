@@ -114,7 +114,7 @@ def create_char(font, chars, fname):
     return c
 
 
-baseline_chars = ['a' 'e', 'm', 'A', 'E', 'M', '&', '@', '.', u'≪', u'É']
+baseline_chars = ['a', 'e', 'm', 'A', 'E', 'M', '&', '@', '.', u'≪', u'É']
 caps_chars = ['S', 'T', 'J', 'k', 't', 'l', 'b', 'd', '1', '2', u'3', u'≪', '?', '!']
 
 line_stats = {}
