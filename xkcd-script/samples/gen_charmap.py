@@ -21,6 +21,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from matplotlib.font_manager import FontProperties
 from fontTools.ttLib import TTFont
+from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OTF  = os.path.join(HERE, '../font/xkcd-script.otf')
@@ -245,5 +246,6 @@ for start, end, label in BLOCKS:
     fig = render_block(label, rows)
     out = os.path.join(OUTDIR, f'charmap_{slugify(label)}.png')
     fig.savefig(out, dpi=150, bbox_inches='tight', facecolor=fig.get_facecolor())
+    Image.open(out).save(out)
     plt.close(fig)
     print(f'charmap → {out}')

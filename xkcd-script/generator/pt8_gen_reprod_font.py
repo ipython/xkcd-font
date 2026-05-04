@@ -5,6 +5,7 @@ This script gives us reproducible builds of the fonts themselves, so that we don
 import datetime
 import os
 import calendar
+from pathlib import Path
 
 import fontforge
 from fontTools.ttLib import TTFont as _TTFont
@@ -54,6 +55,7 @@ with open(sfd_in, 'rb') as fh_in:
 
         content.append(line.encode('utf-8'))
 
+Path(base).mkdir(exist_ok=True)
 with open(sfd_out, 'wb') as fh_out:
     for line in content:
         fh_out.write(line)

@@ -103,6 +103,7 @@ def autokern(font):
     kern(175, ['r'], ['i'], minKern=35)
     kern(180, ['r'], ['g', 'x'], minKern=35)
     kern(100, ['r'], lower, minKern=50)
+    kern(60, ['r'], ['e'], minKern=30)
     kern(60, ['s'], lower, minKern=50)
     # f has a long right-arm; kern slightly tighter than default but don't overdo it.
     kern(75, ['f'], lower, minKern=40)

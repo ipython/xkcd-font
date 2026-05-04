@@ -7,7 +7,7 @@ cat <<EOF > fonts.conf
 <?xml version="1.0"?>
 <!DOCTYPE fontconfig SYSTEM "fonts.dtd">
 <fontconfig>
-  <dir>../font/</dir>
+  <dir prefix="cwd">../font/</dir>
   <cachedir>../.font-cache</cachedir>
   <config></config>
 </fontconfig>
