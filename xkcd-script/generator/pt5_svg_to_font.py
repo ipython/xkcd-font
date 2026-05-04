@@ -152,6 +152,20 @@ print({line: np.mean(s['baseline']) - np.mean(s['x-height'])
           if 'baseline' in s and 'x-height' in s})
 print(_baselines)
 
+# Adjust to be consistent with the subsequent per-line weight adjustment.
+# changeWeight() seems to enlarge the stroke to the right and downward.
+for line in line_stats.keys():
+    _line_fgs = _full_glyph_sizes.get(line)
+    if _line_fgs:
+        if _line_fgs > _median_full_glyph_size * 1.10:
+            _scale_correction = _line_fgs / _median_full_glyph_size
+            _estimated_stroke = 0.12 * 600
+            _delta = int(round(_estimated_stroke * (_scale_correction - 1)))
+            _delta *= _median_full_glyph_size / (600 + 256)
+            _spans[line] += _delta
+            _baselines[line] += _delta
+        # not yet for < 0.90 (pending)
+
 
 def scale_glyph(char, char_bbox, baseline, cap_height):
     # TODO: The code in this function is convoluted - it can be hugely simplified.
@@ -217,11 +231,12 @@ def translate_glyph(c, char_bbox, cap_height, baseline):
     t = psMat.translate(-glyph_bbox[0], -glyph_bbox[1] + ((baseline - char_bbox[3]) * c.font.em / full_glyph_size))
     c.transform(t)
 
+def pad_glyph(c):
     # Put horizontal padding around the glyph. I choose a number here that looks reasonable,
     # there are far more sophisticated means of doing this (like looking at the original image,
     # and calculating how much space there should be).
     space = 20
-    scaled_width = glyph_bbox[2] - glyph_bbox[0]
+    scaled_width = c.boundingBox()[2]
     c.width = int(round(scaled_width + 2 * space))
     t = psMat.translate(space, 0)
     c.transform(t)
@@ -316,7 +331,9 @@ for line, position, bbox, fname, chars in characters:
     _size_scale = _per_char_size.get(chars)
     if _size_scale is not None:
         c.transform(psMat.scale(_size_scale))
-        c.width = int(round(c.width * _size_scale))
+
+    # Apply padding afterward so that it is not affected by scaling.
+    pad_glyph(c)
 
     # Simplify, then put the vertices on rounded coordinate positions.
     c.simplify()
