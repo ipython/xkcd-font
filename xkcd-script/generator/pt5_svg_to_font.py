@@ -266,9 +266,9 @@ font.hhea_linegap = 77
 
 # Per-character size scaling applied after changeWeight, to fine-tune individual glyphs
 # that end up slightly too large despite correct stroke weight.
-_per_char_size = {
-    ('q',): 0.92,
-    ('x',): 0.83,
+_per_char_operation = {
+    ('q',): psMat.compose(psMat.scale(0.92), psMat.translate(0, 20)),
+    ('x',): psMat.translate(0, 20),
 }
 
 # Pick out particular glyphs that are more pleasant than their latter alternatives.
@@ -328,9 +328,9 @@ for line, position, bbox, fname, chars in characters:
 
     # Per-character size adjustments: scale about the baseline (origin) to reduce
     # overall size while preserving stroke weight gained from changeWeight above.
-    _size_scale = _per_char_size.get(chars)
-    if _size_scale is not None:
-        c.transform(psMat.scale(_size_scale))
+    _operation_matrix = _per_char_operation.get(chars)
+    if _operation_matrix is not None:
+        c.transform(_operation_matrix)
 
     # Apply padding afterward so that it is not affected by scaling.
     pad_glyph(c)
