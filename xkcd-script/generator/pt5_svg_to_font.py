@@ -116,6 +116,7 @@ def create_char(font, chars, fname):
 
 baseline_chars = ['a', 'e', 'm', 'A', 'E', 'M', '&', '@', '.', u'≪', u'É']
 caps_chars = ['S', 'T', 'J', 'k', 't', 'l', 'b', 'd', '1', '2', u'3', u'≪', '?', '!']
+exheight_chars = ['a', 'e', 'm']
 
 line_stats = {}
 for line, position, bbox, fname, chars in characters:
@@ -126,6 +127,8 @@ for line, position, bbox, fname, chars in characters:
             this_line.setdefault('baseline', []).append(bbox[3])
         if char in caps_chars:
             this_line.setdefault('cap-height', []).append(bbox[1])
+        if char in exheight_chars:
+            this_line.setdefault('x-height', []).append(bbox[1])
 
 
 import numpy as np
@@ -137,9 +140,17 @@ import psMat
 _spans = {line: np.mean(s['baseline']) - np.mean(s['cap-height'])
           for line, s in line_stats.items()
           if 'baseline' in s and 'cap-height' in s}
+_baselines = {line: np.mean(s['baseline'])
+          for line, s in line_stats.items()
+          if 'baseline' in s and 'cap-height' in s}
 _top_ratio = 600 / (600 + 256)
 _full_glyph_sizes = {line: span / _top_ratio for line, span in _spans.items()}
 _median_full_glyph_size = np.median(list(_full_glyph_sizes.values()))
+print(_spans)
+print({line: np.mean(s['baseline']) - np.mean(s['x-height'])
+          for line, s in line_stats.items()
+          if 'baseline' in s and 'x-height' in s})
+print(_baselines)
 
 
 def scale_glyph(char, char_bbox, baseline, cap_height):
@@ -263,18 +274,15 @@ for line, position, bbox, fname, chars in characters:
 
     c = create_char(font, chars, fname)
 
-    # Get the linestats for this character.
-    line_features = line_stats[line]
-
     scale_glyph(
         c, bbox,
-        baseline=np.mean(line_features['baseline']),
-        cap_height=np.mean(line_features['cap-height']))
+        baseline=_baselines[line],
+        cap_height=_baselines[line] - _spans[line])
 
     translate_glyph(
         c, bbox,
-        baseline=np.mean(line_features['baseline']),
-        cap_height=np.mean(line_features['cap-height']))
+        baseline=_baselines[line],
+        cap_height=_baselines[line] - _spans[line])
 
     # Correct for lines written at a significantly different scale than the median.
     # - Too large (fgs high): chars scaled down → thin strokes → fatten with changeWeight.
