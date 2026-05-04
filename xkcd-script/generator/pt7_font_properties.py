@@ -6,6 +6,7 @@ Reads the SFD produced by pt6_derived_chars.py (which has all glyphs),
 applies properties, saves.
 """
 import fontforge
+import psMat
 import unicodedata
 
 font_fname = '../generated/xkcd-script-pt7.sfd'
@@ -60,6 +61,23 @@ def _expand_with_variants(font, chars):
 
 
 # ---------------------------------------------------------------------------
+# Advance-width overrides
+# ---------------------------------------------------------------------------
+# r's arm extends to ~x=402 but the default advance (440) leaves too much
+# whitespace; reduce to give a slight negative right sidebearing.
+font['r'].width = 410
+font['r'].transform(psMat.translate(10, 0))
+
+
+# g's bowl (above baseline) starts ~19 units further right than other rounded
+# letters.  Shift the whole glyph left by 90 to bring bowl_lsb to ~20, matching
+# e/n/o.  Width is reduced by 30 to leave a moderate right sidebearing (~25).
+_g = font['g']
+_g.transform(psMat.translate(-115, 0))
+_g.width -= 30
+
+
+# ---------------------------------------------------------------------------
 # Kerning
 # ---------------------------------------------------------------------------
 
@@ -99,19 +117,14 @@ def autokern(font):
         font.autoKern('kern', sep, expand(left, left_side=True), expand(right, left_side=False), **kwargs)
 
     kern(150, ['/', '\\'], ['/', '\\'])
-
-    kern(175, ['r'], ['i'], minKern=35)
-    kern(180, ['r'], ['g', 'x'], minKern=35)
-    kern(100, ['r'], lower, minKern=50)
-    kern(60, ['r'], ['e'], minKern=30)
+    kern(20, ['r'], ['a', 'i'], minKern=10)
+    # kern(175, ['r'], ['i'], minKern=35)
+    # kern(210, ['r'], ['g', 'x'], minKern=35)
+    # kern(100, ['r'], lower, minKern=50)
     kern(60, ['s'], lower, minKern=50)
     # f has a long right-arm; kern slightly tighter than default but don't overdo it.
     kern(75, ['f'], lower, minKern=40)
-    # g has a round left side; nudge preceding glyphs in a little.
-    # Letters with open/diagonal right sides need a looser target before g.
-    kern(115, list('EKLPRYkz'), ['g'], minKern=30)
-    kern(75, lower, ['g'], minKern=30)
-    kern(75, caps, ['g'], minKern=30)
+    # kern(75, ['g'], ['j'], minKern=30)
     # x has diagonal strokes that leave visual space on its left side.
     kern(90, lower, ['x'], minKern=40)
     # H has tall verticals that sit naturally close to j's descender.
