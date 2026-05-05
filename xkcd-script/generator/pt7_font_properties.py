@@ -66,6 +66,13 @@ def _expand_with_variants(font, chars):
 # r's arm extends to ~x=402 but the default advance (440) leaves too much
 # whitespace; reduce to give a slight negative right sidebearing.
 font['r'].width = 410
+
+# f's lsb (17) leaves too much space before the stem; shift left 12 units.
+# Width is reduced by 110 total to bring natural spacing after the crossbar
+# into line (~90 units for fo), leaving arm clearance handled by kern rules.
+_f = font['f']
+_f.transform(psMat.translate(-12, 0))
+_f.width -= 110
 font['r'].transform(psMat.translate(10, 0))
 
 
@@ -118,15 +125,9 @@ def autokern(font):
 
     kern(150, ['/', '\\'], ['/', '\\'])
     kern(20, ['r'], ['a', 'i'], minKern=10)
-    # kern(175, ['r'], ['i'], minKern=35)
-    # kern(210, ['r'], ['g', 'x'], minKern=35)
-    # kern(100, ['r'], lower, minKern=50)
     kern(60, ['s'], lower, minKern=50)
-    # f has a long right-arm; kern slightly tighter than default but don't overdo it.
-    kern(75, ['f'], lower, minKern=40)
-    # kern(75, ['g'], ['j'], minKern=30)
     # x has diagonal strokes that leave visual space on its left side.
-    kern(90, lower, ['x'], minKern=40)
+    kern(90, set(lower) - {'f'}, ['x'], minKern=40)
     # H has tall verticals that sit naturally close to j's descender.
     kern(150, ['H'], ['j'], minKern=35)
     # Raise separation so Jj doesn't get pulled too close.
@@ -138,8 +139,8 @@ def autokern(font):
     kern(120, ['T', 'J'], ['R'])
     kern(150, ['T', 'J'], all_chars)
     # C: loosen from the default (was too tight for Ct/Cf/Cj).
-    kern(65, ['C'], all_chars)
-    kern(60, ['O'], all_chars)
+    kern(65, ['C'], set(all_chars) - {'f'})
+    kern(60, ['O'], set(all_chars) - {'f'})
 
 
 autokern(font)
