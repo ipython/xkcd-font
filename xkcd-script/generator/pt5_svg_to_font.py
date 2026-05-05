@@ -116,6 +116,7 @@ def create_char(font, chars, fname):
 
 baseline_chars = ['a', 'e', 'm', 'A', 'E', 'M', '&', '@', '.', u'≪', u'É']
 caps_chars = ['S', 'T', 'J', 'k', 't', 'l', 'b', 'd', '1', '2', u'3', u'≪', '?', '!']
+exheight_chars = ['a', 'e', 'm']
 
 line_stats = {}
 for line, position, bbox, fname, chars in characters:
@@ -126,6 +127,8 @@ for line, position, bbox, fname, chars in characters:
             this_line.setdefault('baseline', []).append(bbox[3])
         if char in caps_chars:
             this_line.setdefault('cap-height', []).append(bbox[1])
+        if char in exheight_chars:
+            this_line.setdefault('x-height', []).append(bbox[1])
 
 
 import numpy as np
@@ -137,9 +140,31 @@ import psMat
 _spans = {line: np.mean(s['baseline']) - np.mean(s['cap-height'])
           for line, s in line_stats.items()
           if 'baseline' in s and 'cap-height' in s}
+_baselines = {line: np.mean(s['baseline'])
+          for line, s in line_stats.items()
+          if 'baseline' in s and 'cap-height' in s}
 _top_ratio = 600 / (600 + 256)
 _full_glyph_sizes = {line: span / _top_ratio for line, span in _spans.items()}
 _median_full_glyph_size = np.median(list(_full_glyph_sizes.values()))
+print(_spans)
+print({line: np.mean(s['baseline']) - np.mean(s['x-height'])
+          for line, s in line_stats.items()
+          if 'baseline' in s and 'x-height' in s})
+print(_baselines)
+
+# Adjust to be consistent with the subsequent per-line weight adjustment.
+# changeWeight() seems to enlarge the stroke to the right and downward.
+for line in line_stats.keys():
+    _line_fgs = _full_glyph_sizes.get(line)
+    if _line_fgs:
+        if _line_fgs > _median_full_glyph_size * 1.10:
+            _scale_correction = _line_fgs / _median_full_glyph_size
+            _estimated_stroke = 0.12 * 600
+            _delta = int(round(_estimated_stroke * (_scale_correction - 1)))
+            _delta *= _median_full_glyph_size / (600 + 256)
+            _spans[line] += _delta
+            _baselines[line] += _delta
+        # not yet for < 0.90 (pending)
 
 
 def scale_glyph(char, char_bbox, baseline, cap_height):
@@ -206,11 +231,12 @@ def translate_glyph(c, char_bbox, cap_height, baseline):
     t = psMat.translate(-glyph_bbox[0], -glyph_bbox[1] + ((baseline - char_bbox[3]) * c.font.em / full_glyph_size))
     c.transform(t)
 
+def pad_glyph(c):
     # Put horizontal padding around the glyph. I choose a number here that looks reasonable,
     # there are far more sophisticated means of doing this (like looking at the original image,
     # and calculating how much space there should be).
     space = 20
-    scaled_width = glyph_bbox[2] - glyph_bbox[0]
+    scaled_width = c.boundingBox()[2]
     c.width = int(round(scaled_width + 2 * space))
     t = psMat.translate(space, 0)
     c.transform(t)
@@ -240,9 +266,9 @@ font.hhea_linegap = 77
 
 # Per-character size scaling applied after changeWeight, to fine-tune individual glyphs
 # that end up slightly too large despite correct stroke weight.
-_per_char_size = {
-    ('q',): 0.92,
-    ('x',): 0.83,
+_per_char_operation = {
+    ('q',): psMat.compose(psMat.scale(0.92), psMat.translate(0, 20)),
+    ('x',): psMat.translate(0, 20),
 }
 
 # Pick out particular glyphs that are more pleasant than their latter alternatives.
@@ -263,18 +289,15 @@ for line, position, bbox, fname, chars in characters:
 
     c = create_char(font, chars, fname)
 
-    # Get the linestats for this character.
-    line_features = line_stats[line]
-
     scale_glyph(
         c, bbox,
-        baseline=np.mean(line_features['baseline']),
-        cap_height=np.mean(line_features['cap-height']))
+        baseline=_baselines[line],
+        cap_height=_baselines[line] - _spans[line])
 
     translate_glyph(
         c, bbox,
-        baseline=np.mean(line_features['baseline']),
-        cap_height=np.mean(line_features['cap-height']))
+        baseline=_baselines[line],
+        cap_height=_baselines[line] - _spans[line])
 
     # Correct for lines written at a significantly different scale than the median.
     # - Too large (fgs high): chars scaled down → thin strokes → fatten with changeWeight.
@@ -305,10 +328,12 @@ for line, position, bbox, fname, chars in characters:
 
     # Per-character size adjustments: scale about the baseline (origin) to reduce
     # overall size while preserving stroke weight gained from changeWeight above.
-    _size_scale = _per_char_size.get(chars)
-    if _size_scale is not None:
-        c.transform(psMat.scale(_size_scale))
-        c.width = int(round(c.width * _size_scale))
+    _operation_matrix = _per_char_operation.get(chars)
+    if _operation_matrix is not None:
+        c.transform(_operation_matrix)
+
+    # Apply padding afterward so that it is not affected by scaling.
+    pad_glyph(c)
 
     # Simplify, then put the vertices on rounded coordinate positions.
     c.simplify()
