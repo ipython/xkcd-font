@@ -63,9 +63,6 @@ def _expand_with_variants(font, chars):
 # ---------------------------------------------------------------------------
 # Advance-width overrides
 # ---------------------------------------------------------------------------
-# r's arm extends to ~x=402 but the default advance (440) leaves too much
-# whitespace; reduce to give a slight negative right sidebearing.
-font['r'].width = 410
 
 # f's lsb (17) leaves too much space before the stem; shift left 12 units.
 # Width is reduced by 110 total to bring natural spacing after the crossbar
@@ -80,8 +77,21 @@ font['r'].transform(psMat.translate(10, 0))
 # letters.  Shift the whole glyph left by 90 to bring bowl_lsb to ~20, matching
 # e/n/o.  Width is reduced by 30 to leave a moderate right sidebearing (~25).
 _g = font['g']
-_g.transform(psMat.translate(-115, 0))
+_g.transform(psMat.translate(-145, 0))
 _g.width -= 30
+
+
+# j
+_j = font['j']
+_j.transform(psMat.translate(-115, 0))
+_j.width -= 25
+
+
+# r's arm extends to ~x=402 but the default advance (440) leaves too much
+# whitespace; reduce to give a slight negative right sidebearing.
+_r = font['r']
+_r.transform(psMat.translate(-30, 0))
+_r.width = 385
 
 
 # ---------------------------------------------------------------------------
@@ -124,23 +134,18 @@ def autokern(font):
         font.autoKern('kern', sep, expand(left, left_side=True), expand(right, left_side=False), **kwargs)
 
     kern(150, ['/', '\\'], ['/', '\\'])
-    kern(20, ['r'], ['a', 'i'], minKern=10)
-    kern(60, ['s'], lower, minKern=50)
+    kern(60, ['s'], set(lower) - {'j', 'f'}, minKern=50)
     # x has diagonal strokes that leave visual space on its left side.
     kern(90, set(lower) - {'f'}, ['x'], minKern=40)
-    # H has tall verticals that sit naturally close to j's descender.
-    kern(150, ['H'], ['j'], minKern=35)
-    # Raise separation so Jj doesn't get pulled too close.
-    kern(220, all_chars, ['j'], minKern=35)
     # F/E are separated from T/J so they can use a tighter target gap.
-    kern(130, ['F'], all_chars)
+    kern(130, ['F'], set(all_chars) - {'f', 'j'})
     kern(140, ['E'], ['V', 'W', 'Y'])
-    kern(100, ['E'], all_chars)
+    kern(100, ['E'], set(all_chars) - {'f', 'j'})
     kern(120, ['T', 'J'], ['R'])
-    kern(150, ['T', 'J'], all_chars)
+    kern(150, ['T', 'J'], set(all_chars) - {'f', 'j'})
     # C: loosen from the default (was too tight for Ct/Cf/Cj).
-    kern(65, ['C'], set(all_chars) - {'f'})
-    kern(60, ['O'], set(all_chars) - {'f'})
+    kern(65, ['C'], set(all_chars) - {'f', 'j'})
+    kern(60, ['O'], set(all_chars) - {'f', 'j'})
 
 
 autokern(font)
