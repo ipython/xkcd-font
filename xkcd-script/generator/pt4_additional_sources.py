@@ -163,6 +163,13 @@ EXTRAS = [
     ('AElig', '2763_linguistics_gossip_2x__AE'), # Æ U+00C6 source
     ('cedilla', '2034_equations_2x__cedilla.hand-tweaked'),  # hook cedilla mark source
     ('epsilon', '2034_equations_2x__epsilon'),               # ε U+03B5 source
+    ('Lambda', '2034_equations_2x__Lambda'),                 # Λ U+039B source
+    ('rounded_d', '2520_symbols_2x__rounded_d'),             # ∂ U+2202 source
+    ('infinity', '2343_mathematical_symbol_fight_2x__infinity'),              # ∞ U+221E source
+    ('right_double_arrow', '2343_mathematical_symbol_fight_2x__right_double_arrow'),  # ⇒ U+21D2 source
+    ('right_half_arrow', '2343_mathematical_symbol_fight_2x__right_half_arrow'),      # ⇀ U+21C0 source
+    ('right_lim_arrow', '2343_mathematical_symbol_fight_2x__right_lim_arrow'),        # → U+2192 source
+    ('triangle', '2343_mathematical_symbol_fight_2x__triangle'),              # △ U+25B3 source
 ]
 
 print('Extracting hand-drawn extras...')

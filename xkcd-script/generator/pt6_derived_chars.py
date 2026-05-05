@@ -212,23 +212,48 @@ def _accented(cp, base_name, mark_name, gap=20, x_adj=0):
 # Glyph aliases and re-uses
 # ---------------------------------------------------------------------------
 
-# U+20DE COMBINING ENCLOSING SQUARE — zero-width mark sized and positioned to
-# enclose '?' with a small margin.  GPOS would be needed for full generality.
+# U+20DE COMBINING ENCLOSING SQUARE / U+20E4 COMBINING ENCLOSING UPWARD
+# POINTING TRIANGLE — zero-width marks spanning the full font EM.
+# Centred over 'e' width ('e' renders correctly; narrower letters like 'f'
+# will be slightly off — unavoidable without GPOS anchors).
 _sq = font[0x25A1]
 _sq_bb = _sq.boundingBox()
 _sq_cx = (_sq_bb[0] + _sq_bb[2]) / 2
-_sq_h = _sq_bb[3] - _sq_bb[1]   # sq_bb[1] == 0 after baseline snap
-_q_bb = font[ord('?')].boundingBox()
-_q_adv = font[ord('?')].width
-_margin = 20
-_scale_y = (_q_bb[3] - _q_bb[1] + 2 * _margin) / _sq_h
-_x_offset = -_q_adv / 2 - _sq_cx
-_y_offset = _q_bb[1] - _margin
+_sq_h = _sq_bb[3] - _sq_bb[1]
+_e_adv = font['e'].width
+# Both combining marks share _comb_top so their tops are aligned.
+# 1.3× factor ensures they visually enclose tall capitals; the bottom
+# hangs 0.3 × _comb_top below the baseline on both marks.
+_comb_top = font.ascent + font.descent // 2
+
+_sq_s = 1.3 * _comb_top / _sq_h
+_sq_dy = _comb_top - _sq_h * _sq_s
 c = font.createMappedChar(0x20DE)
 c.addReference(_sq.glyphname, psMat.compose(
-    psMat.scale(1, _scale_y),
-    psMat.translate(_x_offset, _y_offset),
+    psMat.scale(_sq_s),
+    psMat.translate(-_e_adv / 2 - _sq_cx * _sq_s, _sq_dy),
 ))
+c.width = 0
+
+# Triangle: outlines copied (not a reference) so stroke weight can be
+# controlled independently of the regular △.  Top at _comb_top;
+# 1.3× _comb_top tall so bottom hangs below baseline.
+_tri_g = font[0x25B3]
+_tri_bb = _tri_g.boundingBox()
+_tri_cx = (_tri_bb[0] + _tri_bb[2]) / 2
+_tri_h = _tri_bb[3] - _tri_bb[1]
+_tri_comb_s = 1.3 * _comb_top / _tri_h
+_tri_dy = _comb_top - _tri_h * _tri_comb_s
+c = font.createMappedChar(0x20E4)
+c.clear()
+_layer = fontforge.layer()
+for _cont in _tri_g.foreground:
+    _layer += _cont
+c.foreground = _layer
+c.transform(psMat.scale(_tri_comb_s))
+c.transform(psMat.translate(-_e_adv / 2 - _tri_cx * _tri_comb_s, _tri_dy))
+c.changeWeight(-40)
+c.correctDirection()
 c.width = 0
 
 # Vertical pipe: re-use the I glyph (same stroke, same weight).
@@ -952,13 +977,6 @@ _g.clear()
 _g.addReference('L', psMat.compose(psMat.scale(1, -1), psMat.translate(0, _L_bb[3])))
 _g.width = font['L'].width
 
-# Λ (U+039B): V flipped vertically — two diagonals meeting at the top.
-_V_bb = font['V'].boundingBox()
-_g = font.createMappedChar(0x039B)
-_g.clear()
-_g.addReference('V', psMat.compose(psMat.scale(1, -1), psMat.translate(0, _V_bb[3])))
-_g.width = font['V'].width
-
 # η (eta, U+03B7): n with a straight vertical descender on the right leg.
 # A rotated hyphen-bar gives a stroke of matching weight and shape.
 # x-scaled to 90% of original thickness so it reads slightly thinner than n's strokes.
@@ -1001,6 +1019,132 @@ _make_accented(font, 0x038A, 'I',     '_acute_mark')  # Ί
 _make_accented(font, 0x038C, 'O',     '_acute_mark')  # Ό
 _make_accented(font, 0x038E, 'Y',     '_acute_mark')  # Ύ
 _make_accented(font, 0x038F, font[0x03A9].glyphname, '_acute_mark')  # Ώ
+
+
+# ---------------------------------------------------------------------------
+# Arrow mirrors and rotations
+# ---------------------------------------------------------------------------
+
+# Left-pointing arrows: horizontal flip of right-pointing.
+for _src_cp, _dst_cp in [
+    (0x2192, 0x2190),  # → ←  LEFTWARDS ARROW
+    (0x21D2, 0x21D0),  # ⇒ ⇐  LEFTWARDS DOUBLE ARROW
+    (0x21C0, 0x21BC),  # ⇀ ↼  LEFTWARDS HARPOON WITH BARB UPWARDS
+]:
+    _src = font[_src_cp]
+    _g = font.createMappedChar(_dst_cp)
+    _g.clear()
+    _layer = fontforge.layer()
+    for _c in _src.foreground:
+        _layer += _c
+    _g.foreground = _layer
+    _g.transform(psMat.scale(-1, 1))
+    _g.correctDirection()
+    _bb = _g.boundingBox()
+    _g.transform(psMat.translate(-_bb[0] + 20, 0))
+    _g.width = _src.width
+
+# Up/down arrows: 90° CCW rotation of each right-pointing arrow family,
+# scaled to the ascent height; down is a vertical flip of up.
+#   → ↑ ↓   U+2192 U+2191 U+2193  RIGHTWARDS / UPWARDS / DOWNWARDS ARROW
+#   ⇒ ⇑ ⇓   U+21D2 U+21D1 U+21D3  RIGHTWARDS / UPWARDS / DOWNWARDS DOUBLE ARROW
+#   ⇀ ↿ ⇃   U+21C0 U+21BF U+21C3  RIGHTWARDS / UPWARDS / DOWNWARDS HARPOON
+for _src_cp, _up_cp, _dn_cp in [
+    (0x2192, 0x2191, 0x2193),
+    (0x21D2, 0x21D1, 0x21D3),
+    (0x21C0, 0x21BF, 0x21C3),
+]:
+    _g = font.createMappedChar(_up_cp)
+    _g.clear()
+    _layer = fontforge.layer()
+    for _c in font[_src_cp].foreground:
+        _layer += _c
+    _g.foreground = _layer
+    _g.transform(psMat.rotate(math.radians(90)))
+    _bb = _g.boundingBox()
+    _s = font.ascent / (_bb[3] - _bb[1])
+    _g.transform(psMat.scale(_s))
+    _bb = _g.boundingBox()
+    _g.transform(psMat.translate(-_bb[0] + 20, -_bb[1]))
+    _g.width = int(round(_g.boundingBox()[2] + 20))
+
+    _g = font.createMappedChar(_dn_cp)
+    _g.clear()
+    _layer = fontforge.layer()
+    for _c in font[_up_cp].foreground:
+        _layer += _c
+    _g.foreground = _layer
+    _up_bb = font[_up_cp].boundingBox()
+    _g.transform(psMat.compose(psMat.scale(1, -1), psMat.translate(0, _up_bb[1] + _up_bb[3])))
+    _g.correctDirection()
+    _g.width = font[_up_cp].width
+
+# ⇋ U+21CB LEFTWARDS HARPOON OVER RIGHTWARDS HARPOON
+# ⇌ U+21CC RIGHTWARDS HARPOON OVER LEFTWARDS HARPOON
+# Packed tightly: top harpoon shifted up, bottom harpoon flipped vertically and
+# shifted down so its barb faces outward (away from centre).
+_harp_bb = font[0x21C0].boundingBox()
+_harp_cy = (_harp_bb[1] + _harp_bb[3]) / 2
+_harp_sep = (_harp_bb[3] - _harp_bb[1]) // 2 + 20
+for _dst_cp, _top_cp, _bot_cp in [
+    (0x21CB, 0x21BC, 0x21C0),  # ⇋: ↼ over ⇀
+    (0x21CC, 0x21C0, 0x21BC),  # ⇌: ⇀ over ↼
+]:
+    c = font.createMappedChar(_dst_cp)
+    c.clear()
+    c.addReference(font[_top_cp].glyphname, psMat.translate(0, _harp_sep))
+    c.addReference(font[_bot_cp].glyphname, psMat.compose(
+        psMat.scale(1, -1),
+        psMat.translate(0, 2 * _harp_cy - _harp_sep),
+    ))
+    c.width = font[_top_cp].width
+
+# 45° diagonal arrows: each right-pointing source rotated to NE/NW/SW/SE and
+# scaled to the same ascent height as the 90° arrows.
+#   → ↗ ↖ ↙ ↘   U+2192 U+2197 U+2196 U+2199 U+2198
+#   ⇒ ⇗ ⇖ ⇙ ⇘   U+21D2 U+21D7 U+21D6 U+21D9 U+21D8
+for _src_cp, _diag_cps in [
+    (0x2192, [(0x2197, 45), (0x2196, 135), (0x2199, 225), (0x2198, -45)]),
+    (0x21D2, [(0x21D7, 45), (0x21D6, 135), (0x21D9, 225), (0x21D8, -45)]),
+]:
+    _src = font[_src_cp]
+    for _diag_cp, _angle in _diag_cps:
+        _g = font.createMappedChar(_diag_cp)
+        _g.clear()
+        _layer = fontforge.layer()
+        for _c in _src.foreground:
+            _layer += _c
+        _g.foreground = _layer
+        _g.transform(psMat.rotate(math.radians(_angle)))
+        _bb = _g.boundingBox()
+        _s = font.ascent / (_bb[3] - _bb[1])
+        _g.transform(psMat.scale(_s))
+        _bb = _g.boundingBox()
+        _g.transform(psMat.translate(-_bb[0] + 20, -_bb[1]))
+        _g.width = int(round(_g.boundingBox()[2] + 20))
+
+
+# ---------------------------------------------------------------------------
+# Triangles
+# ---------------------------------------------------------------------------
+
+# ▽ U+25BD WHITE DOWN-POINTING TRIANGLE — △ flipped vertically, point at baseline.
+_tri_up_bb = font[0x25B3].boundingBox()
+_g = font.createMappedChar(0x25BD)
+_g.clear()
+_layer = fontforge.layer()
+for _c in font[0x25B3].foreground:
+    _layer += _c
+_g.foreground = _layer
+_g.transform(psMat.compose(psMat.scale(1, -1), psMat.translate(0, _tri_up_bb[1] + _tri_up_bb[3])))
+_g.correctDirection()
+_g.width = font[0x25B3].width
+
+# ∇ U+2207 NABLA (del / gradient / curl operator) — same letterform as ▽.
+_g = font.createMappedChar(0x2207)
+_g.clear()
+_g.addReference(font[0x25BD].glyphname)
+_g.width = font[0x25BD].width
 
 
 # ---------------------------------------------------------------------------

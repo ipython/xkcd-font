@@ -470,6 +470,7 @@ _GREEK = [
     ('lambda',  0x03BB, 'b', True),
     ('tau', 0x03C4, 'a', True),
     ('varsigma', 0x03C2, 'a', True),
+    ('Lambda',  0x039B, 'A', True),
 ]
 
 # Letters with genuine descenders: fraction of the crop height that is the
@@ -654,6 +655,73 @@ _ch.clear()
 for _cont in _square_src.foreground:
     _ch.foreground += _cont
 _ch.width = _square_src.width
+
+
+# ∂ U+2202 PARTIAL DIFFERENTIAL — hand-drawn "rounded d" from xkcd #2520.
+# Sits on the baseline and reaches ascender height like 'b'.
+_rounded_d_svg = os.path.join(_COMIC_CHARS_DIR, 'rounded_d.svg')
+_rounded_d_src = _import_comic_glyph(font, 'rounded_d', _rounded_d_svg,
+                                     target_top=font['b'].boundingBox()[3], weight_delta=-35)
+_bb = _rounded_d_src.boundingBox()
+if _bb[1] != 0:
+    _rounded_d_src.transform(psMat.translate(0, -_bb[1]))
+    _bb = _rounded_d_src.boundingBox()
+    if _bb[3] > 0:
+        _rounded_d_src.transform(psMat.scale(font['b'].boundingBox()[3] / _bb[3]))
+        _rounded_d_src.width = int(round(_rounded_d_src.boundingBox()[2] + 20))
+_ch = font.createMappedChar(0x2202)
+_ch.clear()
+for _cont in _rounded_d_src.foreground:
+    _ch.foreground += _cont
+_ch.width = _rounded_d_src.width
+
+
+# ---------------------------------------------------------------------------
+# Math symbols from xkcd #2343 "Mathematical Symbol Fight"
+# Horizontally-oriented symbols (∞, arrows) are centred at the math axis
+# (x-height / 2).  The triangle sits on the baseline at cap height.
+# Arrow height fractions are initial estimates and may need tuning.
+# ---------------------------------------------------------------------------
+
+_xh = font['a'].boundingBox()[3]
+_cap_h = font['A'].boundingBox()[3]
+_math_axis = _xh / 2
+
+
+def _import_math_centered(name, cp, target_top, weight_delta=0):
+    """Import a math symbol SVG, then centre it at the math axis."""
+    svg = os.path.join(_COMIC_CHARS_DIR, f'{name}.svg')
+    g = _import_comic_glyph(font, name, svg, target_top=target_top, weight_delta=weight_delta)
+    bb = g.boundingBox()
+    g.transform(psMat.translate(0, _math_axis - (bb[1] + bb[3]) / 2))
+    ch = font.createMappedChar(cp)
+    ch.clear()
+    for cont in g.foreground:
+        ch.foreground += cont
+    ch.width = g.width
+    return ch
+
+
+_import_math_centered('infinity', 0x221E, _xh, weight_delta=30)   # ∞
+_import_math_centered('right_lim_arrow', 0x2192, _xh, weight_delta=20)    # →
+_import_math_centered('right_double_arrow', 0x21D2, _xh, weight_delta=20) # ⇒
+_import_math_centered('right_half_arrow', 0x21C0, _xh, weight_delta=20)   # ⇀
+
+# △ U+25B3 WHITE UP-POINTING TRIANGLE — baseline to cap height.
+_tri_svg = os.path.join(_COMIC_CHARS_DIR, 'triangle.svg')
+_tri_src = _import_comic_glyph(font, 'triangle', _tri_svg, target_top=_cap_h, weight_delta=30)
+_bb = _tri_src.boundingBox()
+if _bb[1] != 0:
+    _tri_src.transform(psMat.translate(0, -_bb[1]))
+    _bb = _tri_src.boundingBox()
+    if _bb[3] > 0:
+        _tri_src.transform(psMat.scale(_cap_h / _bb[3]))
+        _tri_src.width = int(round(_tri_src.boundingBox()[2] + 20))
+_ch = font.createMappedChar(0x25B3)
+_ch.clear()
+for _cont in _tri_src.foreground:
+    _ch.foreground += _cont
+_ch.width = _tri_src.width
 
 
 # ---------------------------------------------------------------------------
