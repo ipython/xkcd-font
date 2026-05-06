@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sqrt Vertical Stretch Demo</title>
+  <style>
+    body { font-family: monospace; margin: 20px; background: #eee; color: #222; }
+    h1 { font-size: 1.1em; margin-bottom: 12px; }
+    section {
+      background: white;
+      border: 1px solid #bbb;
+      border-radius: 3px;
+      padding: 10px 14px;
+      margin: 6px 0;
+    }
+    section > h2 { font-size: 0.85em; margin: 0 0 6px; color: #666; text-transform: uppercase; letter-spacing: 0.05em; }
+    .row { display: flex; align-items: center; gap: 8px; margin: 4px 0; }
+    .row label { min-width: 200px; }
+    .row input[type=range] { width: 340px; }
+    .row .v { min-width: 60px; text-align: right; font-variant-numeric: tabular-nums; }
+    .info { font-size: 0.82em; color: #555; margin: 2px 0 8px; }
+    .svg-scroll { overflow-x: auto; padding: 4px 0; }
+  </style>
+</head>
+<body>
+  <h1>Sqrt Vertical Stretch Demo</h1>
+
+  <section>
+    <h2>Key extensible coordinates</h2>
+    <p class="info">
+      <b>Width (bar):</b> bar forward ep&thinsp;<code>1882</code> and bar return ep&thinsp;<code>-2091</code>.
+      All x-values in each cubic (cp1, cp2, ep) scale together.<br>
+      <b>Height (surd):</b> descent ep&thinsp;<code>-3680</code> and ascent ep&thinsp;<code>3300</code>.
+      All y-values in each cubic (cp1, cp2, ep) scale together.
+    </p>
+  </section>
+
+  <section>
+    <h2>Width + Height</h2>
+    <div class="row">
+      <label for="dw">Width extension (dw):</label>
+      <input type="range" id="dw" min="-500" max="5000" value="0" step="10">
+      <span class="v" id="dw-v">0</span>&thinsp;pt
+    </div>
+    <div class="row">
+      <label for="dh">Height extension (dh):</label>
+      <input type="range" id="dh" min="-2920" max="5000" value="0" step="10">
+      <span class="v" id="dh-v">0</span>&thinsp;pt
+    </div>
+    <div class="info" id="info"></div>
+    <div class="svg-scroll" id="result"></div>
+  </section>
+
+<script>
+
+const ORIGINAL_PATH = `m 1320,3691 c -8,-6 -17,-8 -21,-6 -6,4 -140,-124 -164,-156 -5,-8 -23,-31 -38,-52 -32,-43 -46.3589,-214.6662 -67,-412 -21,-234 -89,-3429 -124,-3680 -30.43312,-217.37946 -45.22736,-513.5633 -54,-690 -34.12704,-184.7142 -42.94822,-375.7902 -82,-560 -5,-22 -16,-96 -26,-165 -9,-69 -20,-133 -23,-143 -5,-13 -19,12 -50,87 -24,58 -46,106 -50,108 -5,2 -25,48 -46,103 -51.37238,134.5467 -85,187.2366 -85,214 0,30 -132,155 -240,228 -76,51 -117,30 -215,-112 -40,-57 -44,-94 -16,-145 11,-19 28,-53 40,-76 36.056956,-72.1139 54.23868,-33.8922 165,-319 26,-66 59,-149 73,-185 33,-81 136,-281 173,-335 26,-39 94,-151 159,-265 98.64586,-208.7933 330.01201,-101.8829 368,-19 41,87 69,230 162,804 5,33 30,177 54,320 25,143 45,274 45,290 1,17 9,77 20,135 11,58 8,136 11,175 15,164 36,553 60,690 16,89 67,3152 76,3300 3,55 10,173 17,261 l 11,161 51,-13 c 124,-31 1699,-37 1882,-24 186,13 237,7 310,-15 37,-11 47,-10 85,7 24,10 46,22 49,26 3,5 26,21 52,37 34,21 52,42 63,69 16,38 15,41 -9,89 -14,27 -26,60 -26,73 0,28 -37,84 -56,84 -6,0 -31,9 -54,19 -39,17 -66,19 -359,16 -451,-4 -1904,7 -2091,79 -8,3 -22,2 -30,-3 z`;
+
+// The four key extensible cubics, each replaced as a unit:
+//
+//   Surd descent  surd[4]:  cp1=(-21,-234)  cp2=(-89,-3429)  ep=(-124,-3680)
+//                           scale all y-values by (3680+dh)/3680
+//
+//   Surd ascent   surd[28]: cp1=(16,89)     cp2=(67,3152)    ep=(76,3300)
+//                           scale all y-values by (3300+dh)/3300
+//
+//   Bar forward   bar[0]:   cp1=(124,-31)   cp2=(1699,-37)   ep=(1882,-24)
+//                           scale all x-values by (1882+dw)/1882
+//
+//   Bar return    bar[11]:  cp1=(-451,-4)   cp2=(-1904,7)    ep=(-2091,79)
+//                           scale all x-values by (2091+dw)/2091
+
+function f(x) { return +x.toFixed(1); }
+
+function buildPath(dw, dh) {
+  const hDownScale = (3680 + dh) / 3680;
+  const hUpScale   = (3300 + dh) / 3300;
+  const wFwdScale  = (1882 + dw) / 1882;
+  const wRetScale  = (2091 + dw) / 2091;
+
+  return ORIGINAL_PATH
+    // Surd descent: scale all y
+    .replace(`-21,-234 -89,-3429 -124,-3680`,
+             `-21,${f(-234*hDownScale)} -89,${f(-3429*hDownScale)} -124,${f(-3680*hDownScale)}`)
+    // Surd ascent: scale all y
+    .replace(`16,89 67,3152 76,3300`,
+             `16,${f(89*hUpScale)} 67,${f(3152*hUpScale)} 76,${f(3300*hUpScale)}`)
+    // Bar forward: scale all x
+    .replace(`124,-31 1699,-37 1882,-24`,
+             `${f(124*wFwdScale)},-31 ${f(1699*wFwdScale)},-37 ${f(1882*wFwdScale)},-24`)
+    // Bar return: scale all x
+    .replace(`-451,-4 -1904,7 -2091,79`,
+             `${f(-451*wRetScale)},-4 ${f(-1904*wRetScale)},7 ${f(-2091*wRetScale)},79`);
+}
+
+// g transform: matrix(0.1, 0, 0, -0.1, 0, 370)
+//
+// Width grows by dw * 0.1 SVG units (bar extends right).
+// Height grows by dh * 0.1 SVG units (surd descends further).
+// The translate y=370 stays fixed: it pins the top of the path near SVG y=0.
+//
+// SVG_CONTENT_H: surd bottom endpoint lands at SVG y=658.9 when dh=0 (traced
+// from path cursor through all cubic endpoints). The original 800pt viewBox
+// had ~141 units of empty space below; this tighter value lets the display
+// shrink to ~180 px at SC=0.5 without the scale factors going negative.
+const SVG_CONTENT_H = 659;
+const SC = 0.5;  // display scale: viewBox pt → screen px
+
+function render(dw, dh) {
+  const vbW = 400 + dw * 0.1;
+  const vbH = SVG_CONTENT_H + dh * 0.1 + 20;
+  const pxW = Math.round(vbW * SC);
+  const pxH = Math.round(vbH * SC);
+  const path = buildPath(dw, dh);
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${pxW}px" height="${pxH}px" viewBox="0 0 ${vbW} ${vbH}">` +
+    `<g transform="matrix(0.1,0,0,-0.1,0,370)" fill="#000" stroke="none"><path d="${path}"/></g>` +
+    `</svg>`;
+}
+
+function update() {
+  const dw = +document.getElementById('dw').value;
+  const dh = +document.getElementById('dh').value;
+  document.getElementById('dw-v').textContent = dw;
+  document.getElementById('dh-v').textContent = dh;
+  document.getElementById('info').textContent =
+    `Display: ${Math.round((400 + dw*0.1)*SC)} × ${Math.round((800 + dh*0.1)*SC)} px` +
+    `  |  bar ep: ${1882+dw}  return ep: ${-(2091+dw)}` +
+    `  |  descent ep: ${-(3680+dh)}  ascent ep: ${3300+dh}`;
+  document.getElementById('result').innerHTML = render(dw, dh);
+}
+
+document.getElementById('dw').addEventListener('input', update);
+document.getElementById('dh').addEventListener('input', update);
+update();
+</script>
+</body>
+</html>
