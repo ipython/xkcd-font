@@ -19,3 +19,5 @@ set -ex
 [ "$FROM" -le 6 ] && $RUN_CTXT python3 pt6_derived_chars.py
 [ "$FROM" -le 7 ] && $RUN_CTXT python3 pt7_font_properties.py
 [ "$FROM" -le 8 ] && $RUN_CTXT python3 pt8_gen_reprod_font.py
+
+$RUN_CTXT python3 gen_mathjax_font.py
