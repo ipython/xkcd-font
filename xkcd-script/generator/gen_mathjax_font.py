@@ -20,6 +20,9 @@ from fontTools.ttLib import TTFont
 FONT_IN = '/work/xkcd-script/font/xkcd-script.otf'
 FONT_OUT = '/work/xkcd-script/font/xkcd-script-mathjax.woff'
 
+# y-position of the math axis (fraction-bar centre) in xkcd-script font units.
+MATH_AXIS = 260
+
 
 def build_aliases():
     a = {}
@@ -35,7 +38,9 @@ def build_aliases():
             a[src] = 0x0061 + i
     # Special TeX italic substitutes used where the standard slot is a hole
     a[0x210E] = ord('h')  # PLANCK CONSTANT ℎ → h
+    a[0x210F] = ord('h')  # PLANCK CONSTANT OVER TWO PI ℏ → h (no hbar glyph)
     a[0x2113] = ord('l')  # SCRIPT SMALL L ℓ → l
+    a[0x03D5] = 0x03C6    # GREEK PHI SYMBOL ϕ → φ (closest available)
 
     # Math Bold Capital A–Z: U+1D400–U+1D419
     for i in range(26):
@@ -115,17 +120,14 @@ def build_operator_glyphs(ff_font):
     intercepts Size1 usage, so we supply glyphs with appropriate metrics here.
 
     Tuning knobs (adjust and rebuild to iterate):
-      MATH_AXIS   — y-position of the math axis (fraction-bar centre) in xkcd-script.
-                    Theoretical: ~0.30 × UPM ≈ 257.  Measured mid-height of Σ/Π ≈ 296;
-                    260 is a conservative compromise.
+      MATH_AXIS   — module-level constant; y-position of the math axis in xkcd-script.
       OP_WEIGHT   — stroke thinning for ∑ and ∏ after scale-up (negative = thinner).
       INTEGRAL_H  — display-mode ∫ height in font units.  Current xkcd ∫ is 951
                     (≈1.11 × UPM); Size1 fonts target ≈1.4–1.6 × UPM.
     """
     upem = ff_font.em  # 856
 
-    MATH_AXIS  = 260
-    OP_WEIGHT  = -20
+    OP_WEIGHT = -20
     INTEGRAL_H = round(1.4 * upem)  # ≈ 1198
 
     def _make_largeop(src_cp, dst_cp, dst_name, target_h, weight=0, rbear=0):
@@ -267,6 +269,32 @@ def build_sqrt_glyphs(ff_font):
     print(f"  U+E221 (longsqrt): bounds={glong.boundingBox()}, advance={glong.width}")
 
 
+def build_misc_glyphs(ff_font):
+    """Create U+22C5 (⋅, cdot): period scaled to 75%, centred on math axis."""
+    ff_font.selection.select(ord('.'))
+    ff_font.copy()
+    try:
+        g = ff_font[0x22C5]
+        g.clear()
+    except TypeError:
+        g = ff_font.createChar(0x22C5, 'cdot')
+    ff_font.selection.select(0x22C5)
+    ff_font.paste()
+    g = ff_font[0x22C5]
+
+    TARGET_W = 220
+    g.transform(psMat.scale(0.75))
+    bb = g.boundingBox()
+    cx = (bb[0] + bb[2]) / 2
+    cy = (bb[1] + bb[3]) / 2
+    g.transform(psMat.translate(TARGET_W / 2 - cx, MATH_AXIS - cy))
+    g.correctDirection()
+    g.addExtrema()
+    g.width = TARGET_W
+    print(f"  U+22C5 (cdot): bounds={g.boundingBox()}, advance={g.width}")
+
+
+
 # ── Phase A: fontforge — glyph editing ────────────────────────────────────────
 _tmp = tempfile.NamedTemporaryFile(suffix='.otf', delete=False)
 FONT_TEMP = _tmp.name
@@ -275,6 +303,7 @@ _tmp.close()
 ff_font = fontforge.open(FONT_IN)
 build_operator_glyphs(ff_font)
 build_sqrt_glyphs(ff_font)
+build_misc_glyphs(ff_font)
 ff_font.generate(FONT_TEMP, flags=('opentype',))
 ff_font.close()
 print(f"Phase A complete: intermediate OTF at {FONT_TEMP}")

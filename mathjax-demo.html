@@ -104,26 +104,42 @@ function buildBarPath(delta) {
         .replace(/-326 -2 -632 -4 -680 -6/, `${f1(-326)} -2 ${f1(-632)} -4 ${f1(-680)} -6`);
 }
 
-// Return HTML for a mirrored hand-drawn bar of the given pixel dimensions.
-// The viewBox half-width is quartered (÷4) relative to the pixel half-width,
-// producing a uniform 4× zoom so the bar stroke appears 4× thicker.
-// pixelHeight is the CSS border thickness; the SVG is rendered at 4× that
-// height and centred on the border via a negative top offset in the caller.
+// Return an SVG for a mirrored hand-drawn bar of the given pixel dimensions.
+// Each half is a nested <svg> that clips to its own viewport, preventing the
+// surd checkmark portion of the path from bleeding into the join area.
+// Both nested elements share one outer <svg>, so there is no inter-HTML-element
+// boundary that could produce a sub-pixel seam.
+//
+// Transform derivation (path units -> nested-SVG px):
+//   gGroup:   path (x,y) -> SVG pt (x/10, BAR_PATH_H - y/10)
+//   viewport: SVG pt u -> nested px (u - cx) * sx   [right half]
+//                         nested px (cx + halfPt - u) * sx  [left half, mirrored]
 function mirrorBarHTML(pixelWidth, pixelHeight) {
-    const halfPx  = pixelWidth / 2;
     const Sx      = pixelHeight / BAR_VB_H;
-    const halfPt  = halfPx / Sx / 3;                  // ÷3 → 3× zoom
+    const halfPt  = pixelWidth / 2 / Sx / 3;
     const maxHalf = BAR_BASE_W - BAR_LEFT_X;
     const delta   = Math.max(0, halfPt - maxHalf);
     const totalW  = BAR_BASE_W + delta;
     const cx      = totalW - halfPt;
     const path    = buildBarPath(delta);
-    const g       = `<g transform="translate(0,${BAR_PATH_H}) scale(0.1,-0.1)" fill="currentColor" stroke="none"><path d="${path}"/></g>`;
-    const dims    = `width="${halfPx}px" height="${pixelHeight * 3}px"`;   // 3× height
-    const vb      = `viewBox="${cx} 0 ${halfPt} ${BAR_VB_H}"`;
-    const right    = `<svg xmlns="http://www.w3.org/2000/svg" style="display:block" ${dims} ${vb}>${g}</svg>`;
-    const mirrored = `<svg xmlns="http://www.w3.org/2000/svg" style="display:block;transform:scaleX(-1)" ${dims} ${vb}>${g}</svg>`;
-    return `<div style="display:inline-flex;gap:0;align-items:flex-start">${mirrored}${right}</div>`;
+    const svgH    = pixelHeight * 3;
+    const hw      = pixelWidth / 2;
+    const sx      = hw / halfPt;
+    const sy      = svgH / BAR_VB_H;
+    const a       =  0.1 * sx;
+    const d       = -0.1 * sy;
+    const e       = -cx * sx;          // right half: path x=cx*10 -> nested px 0
+    const f       =  BAR_PATH_H * sy;
+    const matR    = `matrix(${a},0,0,${d},${e},${f})`;
+    const matL    = `matrix(${-a},0,0,${d},${hw - e},${f})`;  // mirror: path x=cx*10 -> nested px hw
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="${pixelWidth}px" height="${svgH}px" style="display:block">
+      <svg x="0" y="0" width="${hw}" height="${svgH}">
+        <path transform="${matL}" d="${path}" fill="currentColor" stroke="none"/>
+      </svg>
+      <svg x="${hw}" y="0" width="${hw}" height="${svgH}">
+        <path transform="${matR}" d="${path}" fill="currentColor" stroke="none"/>
+      </svg>
+    </svg>`;
 }
 
 // ── Hand-drawn sqrt surd (from sqrt_vertical.svg) ─────────────────────────
@@ -206,9 +222,9 @@ function replaceSqrtSymbols(root) {
         const vinculumRect = vinculumEl ? vinculumEl.getBoundingClientRect() : null;
 
         // Sx: uniform scale based on font size — keeps stroke weight consistent.
-        // dh: path height extension so the surd body reaches the required pixel height
-        //     without needing non-uniform SVG scaling.
-        const Sx     = parseFloat(getComputedStyle(msqrt).fontSize) / SURD_HEIGHT_SVG;
+        // ×1.5 thickens strokes; dw/dh are recomputed at the new Sx so the bar
+        // width and overall surd height stay matched to the radicand.
+        const Sx     = parseFloat(getComputedStyle(msqrt).fontSize) / SURD_HEIGHT_SVG * 1.5;
         const W_bar  = vinculumRect ? vinculumRect.width : surdRect.height;
         // SURD_GAP_SVG pushes the bar junction left of the vinculum edge, adding
         // whitespace between the surd body and the first character of the radicand.
@@ -269,6 +285,22 @@ function injectFontOverride() {
            right in display mode.  Nudge it back. */
         mjx-container[jax="CHTML"][display="true"] mjx-munderover:has(.mjx-c2211) mjx-over {
             margin-left: -0.15em !important;
+        }
+        /* xkcd capitals are ~0.20em narrower than MJXTEX-I metrics so MathJax
+           centres \hat (U+02C6) too far right.  Nudge it back; tune visually. */
+        mjx-container[jax="CHTML"] mjx-mover mjx-over:has(.mjx-c2C6) {
+            margin-left: -0.10em !important;
+        }
+        /* MJXTEX-I applies ~0.133em italic-correction padding to f (U+1D453) as
+           the superscript base, positioning the prime too far right for xkcd's
+           upright f shape.  Zeroing it closes the equal gap on both sides of '. */
+        mjx-container[jax="CHTML"] mjx-msup mjx-base mjx-mi:has(.mjx-c1D453) {
+            padding-right: 0 !important;
+        }
+        /* xkcd italic g (U+1D454) descender crowds the following '(' — add a
+           small nudge after it.  Tune visually if needed. */
+        mjx-container[jax="CHTML"] mjx-mi:has(.mjx-c1D454) {
+            margin-right: 0.05em;
         }
     `;
     document.head.appendChild(s);
