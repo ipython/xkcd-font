@@ -63,9 +63,68 @@ p  { margin: 0.8em 0; }
 </style>
 
 <script>
-// ── Hand-drawn fraction bar (from xkcd comic #2343) ───────────────────────
-const FRAC_LINE_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="4 15 154 11" preserveAspectRatio="none"><g transform="translate(0,37) scale(.1,-.1)"><path d="M146 190 c-49 -3 -81 -10 -83 -17 -7 -21 33 -24 282 -21 207 2 424 -4 675 -18 144 -8 519 -11 530 -4 7 5 10 15 7 24 -6 14 -31 16 -189 17 -185 0 -281 3 -463 14 -136 8 -662 12 -759 5z"/></g></svg>`;
-const FRAC_LINE_URI = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(FRAC_LINE_SVG);
+// ── Hand-drawn bar / vinculum (mirror approach from sqrt-extend-demo.html) ──
+// The rightmost half of the sqrt bar path is mirrored to produce a symmetric
+// hand-drawn bar of any width.  BAR_VB_H is the viewBox height that exposes
+// just the bar strip (SVG y ≈ 1–7 pt out of the full 61 pt path height).
+
+const BAR_ORIGINAL_PATH = `M408 592
+c-52 -2 -90 -8 -96 -15
+-5 -7 -20 -48 -32 -92
+-12 -44 -35 -123 -51 -175
+-15 -52 -35 -121 -44 -153
+-9 -31 -20 -57 -23 -57
+-4 0 -18 23 -31 51
+-35 73 -60 102 -76 89
+-18 -15 88 -225 113 -225
+13 0 25 24 49 100
+47 149 68 219 99 331
+l28 102
+400 5
+c221 3 522 6 670 6
+148 0 271 2 273 5
+3 3 3 12 -1 21
+-5 14 -65 16 -598 13
+-326 -2 -632 -4 -680 -6
+z`;
+
+const BAR_BASE_W  = 170;   // natural path width in SVG pt
+const BAR_PATH_H  = 61;    // natural path height in SVG pt
+const BAR_LEFT_X  = 79;    // x where flat bar begins in SVG pt
+const BAR_VB_H    = 8;     // viewBox height to expose just the bar strip
+
+function buildBarPath(delta) {
+    const d       = delta * 10;
+    const forward = 400 + d;
+    const r       = (1278 + d) / 1278;
+    const f1      = x => +(x * r).toFixed(1);
+    return BAR_ORIGINAL_PATH
+        .replace(/400 5/, `${forward} 5`)
+        .replace(/-5 14 -65 16 -598 13/, `${f1(-5)} 14 ${f1(-65)} 16 ${f1(-598)} 13`)
+        .replace(/-326 -2 -632 -4 -680 -6/, `${f1(-326)} -2 ${f1(-632)} -4 ${f1(-680)} -6`);
+}
+
+// Return HTML for a mirrored hand-drawn bar of the given pixel dimensions.
+// The viewBox half-width is quartered (÷4) relative to the pixel half-width,
+// producing a uniform 4× zoom so the bar stroke appears 4× thicker.
+// pixelHeight is the CSS border thickness; the SVG is rendered at 4× that
+// height and centred on the border via a negative top offset in the caller.
+function mirrorBarHTML(pixelWidth, pixelHeight) {
+    const halfPx  = pixelWidth / 2;
+    const Sx      = pixelHeight / BAR_VB_H;
+    const halfPt  = halfPx / Sx / 3;                  // ÷3 → 3× zoom
+    const maxHalf = BAR_BASE_W - BAR_LEFT_X;
+    const delta   = Math.max(0, halfPt - maxHalf);
+    const totalW  = BAR_BASE_W + delta;
+    const cx      = totalW - halfPt;
+    const path    = buildBarPath(delta);
+    const g       = `<g transform="translate(0,${BAR_PATH_H}) scale(0.1,-0.1)" fill="currentColor" stroke="none"><path d="${path}"/></g>`;
+    const dims    = `width="${halfPx}px" height="${pixelHeight * 3}px"`;   // 3× height
+    const vb      = `viewBox="${cx} 0 ${halfPt} ${BAR_VB_H}"`;
+    const right    = `<svg xmlns="http://www.w3.org/2000/svg" style="display:block" ${dims} ${vb}>${g}</svg>`;
+    const mirrored = `<svg xmlns="http://www.w3.org/2000/svg" style="display:block;transform:scaleX(-1)" ${dims} ${vb}>${g}</svg>`;
+    return `<div style="display:inline-flex;gap:0;align-items:flex-start">${mirrored}${right}</div>`;
+}
 
 // ── Hand-drawn sqrt surd (from sqrt_vertical.svg) ─────────────────────────
 //
@@ -165,12 +224,13 @@ function replaceSqrtSymbols(root) {
         const svgLeft = vincLeft - (BAR_JUNC_SVG_X + SURD_GAP_SVG) * Sx;
         const svgTop  = (surdRect.top - msqrtRect.top) - (BAR_TOP_SVG_Y - SURD_BAR_NUDGE_SVG) * Sx + SURD_BAR_NUDGE_PX;
 
+        surd.dataset.xkcdHidden = '1';
         surd.style.visibility = 'hidden';
-        if (vinculumEl) vinculumEl.style.borderTopColor = 'transparent';
-        if (getComputedStyle(msqrt).position === 'static') msqrt.style.position = 'relative';
+        if (vinculumEl) { vinculumEl.dataset.xkcdHidden = '1'; vinculumEl.style.borderTopColor = 'transparent'; }
+        if (getComputedStyle(msqrt).position === 'static') { msqrt.dataset.xkcdPos = '1'; msqrt.style.position = 'relative'; }
 
         msqrt.insertAdjacentHTML('beforeend',
-            `<svg xmlns="http://www.w3.org/2000/svg"
+            `<svg class="xkcd-overlay" xmlns="http://www.w3.org/2000/svg"
                 width="${vbW * Sx}px" height="${vbH * Sx}px" viewBox="0 0 ${vbW} ${vbH}"
                 style="position:absolute;overflow:visible;left:${svgLeft}px;top:${svgTop}px;pointer-events:none;">
               <g transform="matrix(0.1,0,0,-0.1,0,370)" fill="currentColor" stroke="none">
@@ -194,26 +254,69 @@ function injectFontOverride() {
         mjx-container[jax="CHTML"] *::before {
             font-family: ${STACK} !important;
         }
+        /* MathJax positions inline limits using pre-baked JS metrics, ignoring
+           the font's advance width.  Adding margin-right to the mo wrapper is
+           the only way to push inline scripts further right for our wider ∏ and
+           ∫ glyphs.  Restricted to non-display containers: in display mode the
+           limits are above/below (∑) or upper/lower-right (∫) and the extra gap
+           looks wrong. */
+        mjx-container[jax="CHTML"]:not([display="true"]) mjx-mo:has(.mjx-c220F),
+        mjx-container[jax="CHTML"]:not([display="true"]) mjx-mo:has(.mjx-c222B) {
+            margin-right: 0.4em !important;
+        }
+        /* MathJax's italic correction for ∑ was designed for the slanted MJXTEX
+           glyph; our upright version inherits it, pushing the over-script too far
+           right in display mode.  Nudge it back. */
+        mjx-container[jax="CHTML"][display="true"] mjx-munderover:has(.mjx-c2211) mjx-over {
+            margin-left: -0.15em !important;
+        }
     `;
     document.head.appendChild(s);
+}
+
+// Remove all overlays and restore hidden/transparent elements so the
+// replacement functions can run again with fresh BCR measurements.
+function resetOverlays(scope) {
+    const root = scope || document;
+    root.querySelectorAll('.xkcd-overlay').forEach(el => el.remove());
+    root.querySelectorAll('[data-xkcd-hidden]').forEach(el => {
+        el.style.visibility = '';
+        el.style.borderTopColor = '';
+        delete el.dataset.xkcdHidden;
+    });
+    root.querySelectorAll('[data-xkcd-pos]').forEach(el => {
+        el.style.position = '';
+        delete el.dataset.xkcdPos;
+    });
+    root.querySelectorAll('[data-sqrt-replaced]').forEach(el => {
+        delete el.dataset.sqrtReplaced;
+    });
 }
 
 // Replace non-sqrt border-top vinculums (fraction bars) with hand-drawn SVG.
 // Must be called after each typesetPromise() resolves.
 function replaceVinculums(root) {
     const scope = root || document;
-    scope.querySelectorAll('mjx-container[jax="CHTML"] *').forEach(el => {
-        if (el.closest('mjx-msqrt')) return;  // handled by replaceSqrtSymbols
-        const cs = getComputedStyle(el);
-        if (cs.borderTopStyle !== 'solid' || parseFloat(cs.borderTopWidth) <= 0) return;
-        const barH = Math.max(parseFloat(cs.borderTopWidth), 3);
-        el.style.borderTopColor      = 'transparent';
-        el.style.backgroundImage     = `url("${FRAC_LINE_URI}")`;
-        el.style.backgroundSize      = `100% ${barH}px`;
-        el.style.backgroundRepeat    = 'no-repeat';
-        el.style.backgroundPosition  = '0 0';
-        el.style.backgroundOrigin    = 'border-box';
-        el.style.backgroundClip      = 'border-box';
+    scope.querySelectorAll('mjx-container[jax="CHTML"]').forEach(container => {
+        container.querySelectorAll('*').forEach(el => {
+            if (el.closest('mjx-msqrt')) return;  // handled by replaceSqrtSymbols
+            const cs = getComputedStyle(el);
+            if (cs.borderTopStyle !== 'solid' || parseFloat(cs.borderTopWidth) <= 0) return;
+            const barH = Math.max(parseFloat(cs.borderTopWidth), 1);
+            el.dataset.xkcdHidden = '1';
+            el.style.borderTopColor = 'transparent';
+
+            if (getComputedStyle(container).position === 'static')
+                { container.dataset.xkcdPos = '1'; container.style.position = 'relative'; }
+
+            const containerRect = container.getBoundingClientRect();
+            const elRect        = el.getBoundingClientRect();
+            const left = elRect.left - containerRect.left;
+            const top  = elRect.top  - containerRect.top - 1.5 * barH;
+
+            container.insertAdjacentHTML('beforeend',
+                `<div class="xkcd-overlay" style="position:absolute;left:${left}px;top:${top}px;pointer-events:none;">${mirrorBarHTML(elRect.width, barH)}</div>`);
+        });
     });
 }
 </script>
@@ -288,6 +391,19 @@ document.fonts.load("1em 'xkcd-script-math'").then(() => {
     } else {
         document.addEventListener('mathjax-ready', renderMath);
     }
+});
+
+// Reposition overlays on resize/zoom (BCR coordinates change).
+let resizeTimer;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+        resetOverlays();
+        replaceSqrtSymbols();
+        replaceVinculums();
+        // Also re-render the live preview with fresh layout.
+        renderMath();
+    }, 150);
 });
 </script>
 

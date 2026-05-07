@@ -110,37 +110,72 @@ def build_operator_glyphs(ff_font):
     """Create/resize large-operator glyphs to match MathJax Size1 font proportions.
 
     MathJax CHTML uses the same Unicode codepoints for both inline and display-mode
-    large operators (U+2211, U+222B, U+220F, etc.) — it achieves the display-mode
-    size increase via CSS font-size scaling combined with different glyph metrics in
-    the MJXTEX-S1 font.  Our !important font-family override intercepts Size1 usage,
-    so we must supply glyphs at the metrics MathJax expects from Size1:
+    large operators — display-mode sizing is achieved via CSS font-size scaling plus
+    different glyph metrics in MJXTEX-S1.  Our !important font-family override
+    intercepts Size1 usage, so we supply glyphs with appropriate metrics here.
 
-    Target height fractions (from MathJax_Size1-Regular.woff, UPM 1000):
-      U+2211 ∑: 1.000 × UPM
-      U+220F ∏: 1.000 × UPM
-      U+222B ∫: 1.111 × UPM  — xkcd already has 951/856 = 1.111, no change needed.
-
-    Scaling from origin (baseline) keeps the glyph sitting on the baseline.
+    Tuning knobs (adjust and rebuild to iterate):
+      MATH_AXIS   — y-position of the math axis (fraction-bar centre) in xkcd-script.
+                    Theoretical: ~0.30 × UPM ≈ 257.  Measured mid-height of Σ/Π ≈ 296;
+                    260 is a conservative compromise.
+      OP_WEIGHT   — stroke thinning for ∑ and ∏ after scale-up (negative = thinner).
+      INTEGRAL_H  — display-mode ∫ height in font units.  Current xkcd ∫ is 951
+                    (≈1.11 × UPM); Size1 fonts target ≈1.4–1.6 × UPM.
     """
-    upem = ff_font.em
+    upem = ff_font.em  # 856
 
-    def _scale_greek_to_upem(src_cp, dst_cp, dst_name):
+    MATH_AXIS  = 260
+    OP_WEIGHT  = -20
+    INTEGRAL_H = round(1.4 * upem)  # ≈ 1198
+
+    def _make_largeop(src_cp, dst_cp, dst_name, target_h, weight=0, rbear=0):
+        """Scale src to target_h, optionally thin strokes, centre on MATH_AXIS.
+
+        rbear: right bearing in font units (advance = right glyph edge + rbear).
+               Note: MathJax CHTML ignores the font advance width — it pre-bakes
+               character widths from its own JS metric tables, so rbear only
+               affects non-MathJax uses.  Inline limit spacing in MathJax is
+               controlled via CSS margin-right in mathjax-demo.html instead.
+        """
         ff_font.selection.select(src_cp)
         ff_font.copy()
-        g = ff_font.createChar(dst_cp, dst_name)
+        try:
+            g = ff_font[dst_cp]
+            g.clear()
+        except TypeError:
+            g = ff_font.createChar(dst_cp, dst_name)
         ff_font.selection.select(dst_cp)
         ff_font.paste()
+        g = ff_font[dst_cp]
+
         bb = g.boundingBox()
-        scale = upem / (bb[3] - bb[1])
+        scale = target_h / (bb[3] - bb[1])
         g.transform(psMat.scale(scale))
-        g.width = round(g.width * scale)
-        print(f"  U+{dst_cp:04X} ({dst_name}): scale={scale:.3f}, bounds={g.boundingBox()}, advance={g.width}")
 
-    # ∑ (U+2211): scaled copy of Σ (U+03A3), sized to exactly 1.000 × UPM
-    _scale_greek_to_upem(0x03A3, 0x2211, 'summation')
+        if weight != 0:
+            g.correctDirection()
+            g.removeOverlap()
+            g.changeWeight(weight)
+            g.correctDirection()
+            g.addExtrema()
 
-    # ∏ (U+220F): scaled copy of Π (U+03A0), sized to exactly 1.000 × UPM
-    _scale_greek_to_upem(0x03A0, 0x220F, 'product')
+        # Centre the glyph's y-midpoint on MATH_AXIS so display-mode operators
+        # straddle the text baseline and MathJax places limits at expected positions.
+        bb2 = g.boundingBox()
+        g.transform(psMat.translate(0, MATH_AXIS - (bb2[3] + bb2[1]) / 2))
+
+        bb3 = g.boundingBox()
+        g.width = round(bb3[2] + rbear)
+
+        print(f"  U+{dst_cp:04X} ({dst_name}): scale={scale:.3f} weight={weight} "
+              f"bounds={g.boundingBox()} advance={g.width}")
+
+    # ∑ (U+2211): Σ scaled to 1.0 × UPM, strokes thinned, centred on math axis
+    _make_largeop(0x03A3, 0x2211, 'summation', upem, weight=OP_WEIGHT, rbear=20)
+    # ∏ (U+220F): Π scaled to 1.0 × UPM, strokes thinned, centred on math axis
+    _make_largeop(0x03A0, 0x220F, 'product',   upem, weight=OP_WEIGHT, rbear=5000)
+    # ∫ (U+222B): existing xkcd ∫ scaled to INTEGRAL_H, strokes thinned, centred
+    _make_largeop(0x222B, 0x222B, 'integral', INTEGRAL_H, weight=-15,  rbear=5000)
 
 
 def build_sqrt_glyphs(ff_font):
