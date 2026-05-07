@@ -249,14 +249,15 @@ MathJax = {
 <p>MathJax CHTML with xkcd-script substituted for letter and Greek glyphs.</p>
 
 <div class="editor-wrap">
-    <textarea id="latex-input" spellcheck="false">Euler's identity: $e^{i\pi} + 1 = 0$
+    <textarea id="latex-input" spellcheck="false">Inline vs display large operators:
 
-Quadratic formula:
-$$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$
+$\sum_{k=1}^{n} k$ and $\int_0^1 x^2\,dx$
 
-Greek: $\alpha, \beta, \gamma, \delta, \varepsilon, \zeta, \eta, \theta, \lambda, \mu, \pi, \sigma, \omega$
+$$\sum_{k=1}^{n} k = \frac{n(n+1)}{2}$$
 
-$$\int_{-\infty}^{\infty} e^{-x^2}\,dx = \sqrt{\pi}$$</textarea>
+$$\int_0^\infty e^{-x}\,dx = 1$$
+
+$$\prod_{p\;\text{prime}} \frac{1}{1-p^{-s}} = \sum_{n=1}^{\infty} \frac{1}{n^s}$$</textarea>
     <div id="latex-preview"></div>
 </div>
 
@@ -289,6 +290,16 @@ document.fonts.load("1em 'xkcd-script-math'").then(() => {
     }
 });
 </script>
+
+<h2>Large operators: inline vs display</h2>
+
+<p>Inline: $\sum_{k=1}^{n} k$ and $\int_0^1 x^2\,dx$ and $\prod_{k=1}^{n} k$</p>
+
+<p>Display:
+$$\sum_{k=1}^{n} k = \frac{n(n+1)}{2}$$
+$$\int_0^\infty e^{-x}\,dx = 1 \qquad \int_{-\infty}^{\infty} e^{-x^2}\,dx = \sqrt{\pi}$$
+$$\prod_{p\;\text{prime}} \frac{1}{1-p^{-s}} = \sum_{n=1}^{\infty} \frac{1}{n^s}$$
+</p>
 
 <h2>Algebra</h2>
 

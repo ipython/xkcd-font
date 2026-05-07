@@ -109,26 +109,38 @@ def build_aliases():
 def build_operator_glyphs(ff_font):
     """Create/resize large-operator glyphs to match MathJax Size1 font proportions.
 
+    MathJax CHTML uses the same Unicode codepoints for both inline and display-mode
+    large operators (U+2211, U+222B, U+220F, etc.) — it achieves the display-mode
+    size increase via CSS font-size scaling combined with different glyph metrics in
+    the MJXTEX-S1 font.  Our !important font-family override intercepts Size1 usage,
+    so we must supply glyphs at the metrics MathJax expects from Size1:
+
     Target height fractions (from MathJax_Size1-Regular.woff, UPM 1000):
       U+2211 ∑: 1.000 × UPM
+      U+220F ∏: 1.000 × UPM
       U+222B ∫: 1.111 × UPM  — xkcd already has 951/856 = 1.111, no change needed.
 
     Scaling from origin (baseline) keeps the glyph sitting on the baseline.
     """
     upem = ff_font.em
 
-    # ∑ (U+2211): scaled copy of Σ (U+03A3), sized to exactly 1.000 × UPM
-    ff_font.selection.select(0x03A3)
-    ff_font.copy()
-    g = ff_font.createChar(0x2211, 'summation')
-    ff_font.selection.select(0x2211)
-    ff_font.paste()
+    def _scale_greek_to_upem(src_cp, dst_cp, dst_name):
+        ff_font.selection.select(src_cp)
+        ff_font.copy()
+        g = ff_font.createChar(dst_cp, dst_name)
+        ff_font.selection.select(dst_cp)
+        ff_font.paste()
+        bb = g.boundingBox()
+        scale = upem / (bb[3] - bb[1])
+        g.transform(psMat.scale(scale))
+        g.width = round(g.width * scale)
+        print(f"  U+{dst_cp:04X} ({dst_name}): scale={scale:.3f}, bounds={g.boundingBox()}, advance={g.width}")
 
-    bb = g.boundingBox()
-    scale = upem / (bb[3] - bb[1])
-    g.transform(psMat.scale(scale))
-    g.width = round(g.width * scale)
-    print(f"  U+2211 (summation): scale={scale:.3f}, bounds={g.boundingBox()}, advance={g.width}")
+    # ∑ (U+2211): scaled copy of Σ (U+03A3), sized to exactly 1.000 × UPM
+    _scale_greek_to_upem(0x03A3, 0x2211, 'summation')
+
+    # ∏ (U+220F): scaled copy of Π (U+03A0), sized to exactly 1.000 × UPM
+    _scale_greek_to_upem(0x03A0, 0x220F, 'product')
 
 
 def build_sqrt_glyphs(ff_font):
