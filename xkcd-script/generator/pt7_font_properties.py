@@ -6,6 +6,7 @@ Reads the SFD produced by pt6_derived_chars.py (which has all glyphs),
 applies properties, saves.
 """
 import fontforge
+import psMat
 import unicodedata
 
 font_fname = '../generated/xkcd-script-pt7.sfd'
@@ -60,6 +61,40 @@ def _expand_with_variants(font, chars):
 
 
 # ---------------------------------------------------------------------------
+# Advance-width overrides
+# ---------------------------------------------------------------------------
+
+# f's lsb (17) leaves too much space before the stem; shift left 12 units.
+# Width is reduced by 110 total to bring natural spacing after the crossbar
+# into line (~90 units for fo), leaving arm clearance handled by kern rules.
+_f = font['f']
+_f.transform(psMat.translate(-12, 0))
+_f.width -= 110
+font['r'].transform(psMat.translate(10, 0))
+
+
+# g's bowl (above baseline) starts ~19 units further right than other rounded
+# letters.  Shift the whole glyph left by 90 to bring bowl_lsb to ~20, matching
+# e/n/o.  Width is reduced by 30 to leave a moderate right sidebearing (~25).
+_g = font['g']
+_g.transform(psMat.translate(-145, 0))
+_g.width -= 30
+
+
+# j
+_j = font['j']
+_j.transform(psMat.translate(-115, 0))
+_j.width -= 25
+
+
+# r's arm extends to ~x=402 but the default advance (440) leaves too much
+# whitespace; reduce to give a slight negative right sidebearing.
+_r = font['r']
+_r.transform(psMat.translate(-30, 0))
+_r.width = 385
+
+
+# ---------------------------------------------------------------------------
 # Kerning
 # ---------------------------------------------------------------------------
 
@@ -99,34 +134,18 @@ def autokern(font):
         font.autoKern('kern', sep, expand(left, left_side=True), expand(right, left_side=False), **kwargs)
 
     kern(150, ['/', '\\'], ['/', '\\'])
-
-    kern(175, ['r'], ['i'], minKern=35)
-    kern(180, ['r'], ['g', 'x'], minKern=35)
-    kern(100, ['r'], lower, minKern=50)
-    kern(60, ['r'], ['e'], minKern=30)
-    kern(60, ['s'], lower, minKern=50)
-    # f has a long right-arm; kern slightly tighter than default but don't overdo it.
-    kern(75, ['f'], lower, minKern=40)
-    # g has a round left side; nudge preceding glyphs in a little.
-    # Letters with open/diagonal right sides need a looser target before g.
-    kern(115, list('EKLPRYkz'), ['g'], minKern=30)
-    kern(75, lower, ['g'], minKern=30)
-    kern(75, caps, ['g'], minKern=30)
+    kern(60, ['s'], set(lower) - {'j', 'f'}, minKern=50)
     # x has diagonal strokes that leave visual space on its left side.
-    kern(90, lower, ['x'], minKern=40)
-    # H has tall verticals that sit naturally close to j's descender.
-    kern(150, ['H'], ['j'], minKern=35)
-    # Raise separation so Jj doesn't get pulled too close.
-    kern(220, all_chars, ['j'], minKern=35)
+    kern(90, set(lower) - {'f'}, ['x'], minKern=40)
     # F/E are separated from T/J so they can use a tighter target gap.
-    kern(130, ['F'], all_chars)
+    kern(130, ['F'], set(all_chars) - {'f', 'j'})
     kern(140, ['E'], ['V', 'W', 'Y'])
-    kern(100, ['E'], all_chars)
+    kern(100, ['E'], set(all_chars) - {'f', 'j'})
     kern(120, ['T', 'J'], ['R'])
-    kern(150, ['T', 'J'], all_chars)
+    kern(150, ['T', 'J'], set(all_chars) - {'f', 'j'})
     # C: loosen from the default (was too tight for Ct/Cf/Cj).
-    kern(65, ['C'], all_chars)
-    kern(60, ['O'], all_chars)
+    kern(65, ['C'], set(all_chars) - {'f', 'j'})
+    kern(60, ['O'], set(all_chars) - {'f', 'j'})
 
 
 autokern(font)
