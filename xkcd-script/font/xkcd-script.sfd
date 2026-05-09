@@ -78,7 +78,7 @@ StemSnapH 30 [53 61 70 74 78 83 87 172 220]
 StemSnapV 16 [60 70 76 80 85]
 EndPrivate
 AnchorClass2: "below" "below_sub" "above" "above_sub"
-BeginChars: 1114202 570
+BeginChars: 1114203 570
 
 StartChar: a
 Encoding: 97 97 0
@@ -1956,7 +1956,7 @@ EndSplineSet
 EndChar
 
 StartChar: c_o
-Encoding: 1114112 -1 37
+Encoding: 1114113 -1 37
 Width: 739
 VWidth: -44
 Flags: W
@@ -2020,7 +2020,7 @@ Ligature2: "liga" c o
 EndChar
 
 StartChar: o_o
-Encoding: 1114113 -1 38
+Encoding: 1114114 -1 38
 Width: 805
 VWidth: -123
 Flags: W
@@ -2964,7 +2964,7 @@ EndSplineSet
 EndChar
 
 StartChar: I_hyphen_p_r_o_n_o_u_n
-Encoding: 1114114 -1 57
+Encoding: 1114115 -1 57
 Width: 410
 VWidth: 189
 Flags: W
@@ -3381,7 +3381,7 @@ Kerns2: 533 -82 "kern" 506 -81 "kern" 505 -105 "kern" 504 -59 "kern" 503 -81 "ke
 EndChar
 
 StartChar: E_A
-Encoding: 1114115 -1 66
+Encoding: 1114116 -1 66
 Width: 895
 VWidth: 12
 Flags: W
@@ -3479,7 +3479,7 @@ Ligature2: "liga" E A
 EndChar
 
 StartChar: C_O
-Encoding: 1114116 -1 67
+Encoding: 1114117 -1 67
 Width: 757
 VWidth: 91
 Flags: W
@@ -3562,7 +3562,7 @@ Ligature2: "liga" C O
 EndChar
 
 StartChar: C_R
-Encoding: 1114117 -1 68
+Encoding: 1114118 -1 68
 Width: 749
 VWidth: 113
 Flags: W
@@ -3664,7 +3664,7 @@ Ligature2: "liga" C R
 EndChar
 
 StartChar: O_C_H
-Encoding: 1114118 -1 69
+Encoding: 1114119 -1 69
 Width: 1205
 VWidth: -222
 Flags: W
@@ -3777,7 +3777,7 @@ Ligature2: "liga" O C H
 EndChar
 
 StartChar: T_H
-Encoding: 1114119 -1 70
+Encoding: 1114120 -1 70
 Width: 724
 VWidth: 122
 Flags: W
@@ -3849,7 +3849,7 @@ Ligature2: "liga" T H
 EndChar
 
 StartChar: T_R
-Encoding: 1114120 -1 71
+Encoding: 1114121 -1 71
 Width: 778
 VWidth: 69
 Flags: W
@@ -3936,7 +3936,7 @@ Ligature2: "liga" T R
 EndChar
 
 StartChar: E_E
-Encoding: 1114121 -1 72
+Encoding: 1114122 -1 72
 Width: 871
 VWidth: -1
 Flags: W
@@ -4042,7 +4042,7 @@ Ligature2: "liga" E E
 EndChar
 
 StartChar: T_T
-Encoding: 1114122 -1 73
+Encoding: 1114123 -1 73
 Width: 868
 VWidth: 27
 Flags: W
@@ -4100,7 +4100,7 @@ Ligature2: "liga" T T
 EndChar
 
 StartChar: L_B
-Encoding: 1114123 -1 74
+Encoding: 1114124 -1 74
 Width: 795
 VWidth: 78
 Flags: W
@@ -4180,7 +4180,7 @@ Ligature2: "liga" L B
 EndChar
 
 StartChar: E_R
-Encoding: 1114124 -1 75
+Encoding: 1114125 -1 75
 Width: 860
 VWidth: 876
 Flags: W
@@ -4283,7 +4283,7 @@ Ligature2: "liga" E R
 EndChar
 
 StartChar: R_R
-Encoding: 1114125 -1 76
+Encoding: 1114126 -1 76
 Width: 831
 VWidth: 26
 Flags: W
@@ -4387,7 +4387,7 @@ Ligature2: "liga" R R
 EndChar
 
 StartChar: T_I
-Encoding: 1114126 -1 77
+Encoding: 1114127 -1 77
 Width: 449
 VWidth: 190
 Flags: W
@@ -4452,7 +4452,7 @@ Ligature2: "liga" T I
 EndChar
 
 StartChar: L_A
-Encoding: 1114127 -1 78
+Encoding: 1114128 -1 78
 Width: 834
 VWidth: 40
 Flags: W
@@ -4522,7 +4522,7 @@ Ligature2: "liga" L A
 EndChar
 
 StartChar: L_L
-Encoding: 1114128 -1 79
+Encoding: 1114129 -1 79
 Width: 752
 VWidth: 43
 Flags: W
@@ -4574,7 +4574,7 @@ Ligature2: "liga" L L
 EndChar
 
 StartChar: O_N
-Encoding: 1114129 -1 80
+Encoding: 1114130 -1 80
 Width: 851
 VWidth: 42
 Flags: W
@@ -4657,7 +4657,7 @@ Ligature2: "liga" O N
 EndChar
 
 StartChar: C_A
-Encoding: 1114130 -1 81
+Encoding: 1114131 -1 81
 Width: 776
 VWidth: 102
 Flags: W
@@ -4732,7 +4732,7 @@ Ligature2: "liga" C A
 EndChar
 
 StartChar: P_S
-Encoding: 1114131 -1 82
+Encoding: 1114132 -1 82
 Width: 830
 VWidth: 45
 Flags: W
@@ -4830,7 +4830,7 @@ Ligature2: "liga" P S
 EndChar
 
 StartChar: T_O
-Encoding: 1114132 -1 83
+Encoding: 1114133 -1 83
 Width: 715
 VWidth: 97
 Flags: W
@@ -6702,7 +6702,7 @@ EndSplineSet
 EndChar
 
 StartChar: bar_greater
-Encoding: 1114133 -1 122
+Encoding: 1114134 -1 122
 Width: 514
 VWidth: 191
 Flags: W
@@ -6753,7 +6753,7 @@ Ligature2: "liga" bar greater
 EndChar
 
 StartChar: less_bar
-Encoding: 1114134 -1 123
+Encoding: 1114135 -1 123
 Width: 524
 VWidth: 171
 Flags: W
@@ -7770,7 +7770,7 @@ LayerCount: 2
 EndChar
 
 StartChar: _comic_notdef
-Encoding: 1114135 -1 145
+Encoding: 1114136 -1 145
 Width: 607
 VWidth: 116
 Flags: W
@@ -7904,7 +7904,7 @@ EndSplineSet
 EndChar
 
 StartChar: .notdef
-Encoding: 1114136 -1 146
+Encoding: 1114137 -1 146
 Width: 607
 VWidth: 0
 Flags: W
@@ -8038,7 +8038,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_pi
-Encoding: 1114137 -1 147
+Encoding: 1114138 -1 147
 Width: 512
 VWidth: -212
 Flags: W
@@ -8187,7 +8187,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_Delta
-Encoding: 1114138 -1 149
+Encoding: 1114139 -1 149
 Width: 646
 VWidth: -60
 Flags: W
@@ -8475,7 +8475,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_delta
-Encoding: 1114139 -1 151
+Encoding: 1114140 -1 151
 Width: 361
 VWidth: 86
 Flags: W
@@ -8705,7 +8705,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_theta
-Encoding: 1114140 -1 153
+Encoding: 1114141 -1 153
 Width: 469
 VWidth: -53
 Flags: W
@@ -8938,7 +8938,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_phi
-Encoding: 1114141 -1 155
+Encoding: 1114142 -1 155
 Width: 319
 VWidth: 68
 Flags: W
@@ -9120,7 +9120,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_lunate_epsilon
-Encoding: 1114142 -1 157
+Encoding: 1114143 -1 157
 Width: 411
 VWidth: -237
 Flags: W
@@ -9275,7 +9275,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_epsilon
-Encoding: 1114143 -1 159
+Encoding: 1114144 -1 159
 Width: 293
 VWidth: 110
 Flags: W
@@ -9412,7 +9412,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_upsilon
-Encoding: 1114144 -1 161
+Encoding: 1114145 -1 161
 Width: 426
 VWidth: -138
 Flags: W
@@ -9580,7 +9580,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_nu
-Encoding: 1114145 -1 163
+Encoding: 1114146 -1 163
 Width: 474
 VWidth: 58
 Flags: W
@@ -9744,7 +9744,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_mu
-Encoding: 1114146 -1 165
+Encoding: 1114147 -1 165
 Width: 583
 VWidth: -324
 Flags: W
@@ -9943,7 +9943,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_Sigma
-Encoding: 1114147 -1 167
+Encoding: 1114148 -1 167
 Width: 524
 VWidth: -132
 Flags: W
@@ -10055,7 +10055,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_Pi
-Encoding: 1114148 -1 168
+Encoding: 1114149 -1 168
 Width: 661
 VWidth: -116
 Flags: W
@@ -10211,7 +10211,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_zeta
-Encoding: 1114149 -1 170
+Encoding: 1114150 -1 170
 Width: 392
 VWidth: 0
 Flags: W
@@ -10416,7 +10416,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_beta
-Encoding: 1114150 -1 172
+Encoding: 1114151 -1 172
 Width: 462
 VWidth: -111
 Flags: W
@@ -10639,7 +10639,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_alpha
-Encoding: 1114151 -1 174
+Encoding: 1114152 -1 174
 Width: 518
 VWidth: 54
 Flags: W
@@ -10839,7 +10839,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_Omega
-Encoding: 1114152 -1 176
+Encoding: 1114153 -1 176
 Width: 652
 VWidth: 27
 Flags: W
@@ -11095,7 +11095,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_omega
-Encoding: 1114153 -1 178
+Encoding: 1114154 -1 178
 Width: 645
 VWidth: -325
 Flags: W
@@ -11351,7 +11351,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_sigma
-Encoding: 1114154 -1 180
+Encoding: 1114155 -1 180
 Width: 471
 VWidth: -198
 Flags: W
@@ -11536,7 +11536,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_xi
-Encoding: 1114155 -1 182
+Encoding: 1114156 -1 182
 Width: 296
 VWidth: 0
 Flags: W
@@ -11774,7 +11774,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_gamma
-Encoding: 1114156 -1 184
+Encoding: 1114157 -1 184
 Width: 437
 VWidth: 0
 Flags: W
@@ -11943,7 +11943,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_rho
-Encoding: 1114157 -1 186
+Encoding: 1114158 -1 186
 Width: 475
 VWidth: -71
 Flags: W
@@ -12163,7 +12163,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_Xi
-Encoding: 1114158 -1 188
+Encoding: 1114159 -1 188
 Width: 489
 VWidth: 82
 Flags: W
@@ -12403,7 +12403,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_psi
-Encoding: 1114159 -1 190
+Encoding: 1114160 -1 190
 Width: 376
 VWidth: 0
 Flags: W
@@ -12605,7 +12605,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_lambda
-Encoding: 1114160 -1 192
+Encoding: 1114161 -1 192
 Width: 471
 VWidth: 194
 Flags: W
@@ -12774,7 +12774,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_tau
-Encoding: 1114161 -1 194
+Encoding: 1114162 -1 194
 Width: 443
 VWidth: 118
 Flags: W
@@ -12911,7 +12911,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_varsigma
-Encoding: 1114162 -1 196
+Encoding: 1114163 -1 196
 Width: 245
 VWidth: 112
 Flags: W
@@ -13042,7 +13042,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_Lambda
-Encoding: 1114163 -1 198
+Encoding: 1114164 -1 198
 Width: 547
 VWidth: 56
 Flags: W
@@ -13220,7 +13220,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_cedilla
-Encoding: 1114164 -1 200
+Encoding: 1114165 -1 200
 Width: 122
 VWidth: 0
 Flags: W
@@ -13320,7 +13320,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_eszett
-Encoding: 1114165 -1 202
+Encoding: 1114166 -1 202
 Width: 371
 VWidth: 160
 Flags: W
@@ -13498,7 +13498,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_eszett_cap
-Encoding: 1114166 -1 204
+Encoding: 1114167 -1 204
 Width: 419
 VWidth: 182
 Flags: W
@@ -13686,7 +13686,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_AElig
-Encoding: 1114167 -1 206
+Encoding: 1114168 -1 206
 Width: 734
 VWidth: 35
 Flags: W
@@ -14028,7 +14028,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_OElig
-Encoding: 1114168 -1 208
+Encoding: 1114169 -1 208
 Width: 692
 VWidth: 21
 Flags: W
@@ -14472,7 +14472,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_aelig
-Encoding: 1114169 -1 210
+Encoding: 1114170 -1 210
 Width: 497
 VWidth: 68
 Flags: W
@@ -14909,7 +14909,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_oelig
-Encoding: 1114170 -1 212
+Encoding: 1114171 -1 212
 Width: 567
 VWidth: 30
 Flags: W
@@ -15320,7 +15320,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_square
-Encoding: 1114171 -1 214
+Encoding: 1114172 -1 214
 Width: 599
 VWidth: 148
 Flags: W
@@ -15554,7 +15554,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_rounded_d
-Encoding: 1114172 -1 216
+Encoding: 1114173 -1 216
 Width: 467
 VWidth: 103
 Flags: W
@@ -15708,7 +15708,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_infinity
-Encoding: 1114173 -1 218
+Encoding: 1114174 -1 218
 Width: 638
 VWidth: -52
 Flags: W
@@ -16029,7 +16029,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_right_lim_arrow
-Encoding: 1114174 -1 220
+Encoding: 1114175 -1 220
 Width: 631
 VWidth: -102
 Flags: W
@@ -16201,7 +16201,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_right_double_arrow
-Encoding: 1114175 -1 222
+Encoding: 1114176 -1 222
 Width: 628
 VWidth: -51
 Flags: W
@@ -16457,7 +16457,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_right_half_arrow
-Encoding: 1114176 -1 224
+Encoding: 1114177 -1 224
 Width: 630
 VWidth: -142
 Flags: W
@@ -16592,7 +16592,7 @@ EndSplineSet
 EndChar
 
 StartChar: _comic_triangle
-Encoding: 1114177 -1 226
+Encoding: 1114178 -1 226
 Width: 656
 VWidth: 158
 Flags: W
@@ -17089,7 +17089,7 @@ EndSplineSet
 EndChar
 
 StartChar: I.sansserif
-Encoding: 1114178 -1 230
+Encoding: 1114179 -1 230
 Width: 147
 VWidth: 0
 Flags: HW
@@ -17216,7 +17216,7 @@ Refer: 89 8212 N 1 0 0 1 0 0 2
 EndChar
 
 StartChar: _acute_mark
-Encoding: 1114179 -1 244
+Encoding: 1114180 -1 244
 Width: 0
 VWidth: 0
 Flags: HW
@@ -17241,7 +17241,7 @@ Kerns2: 15 166 "kern"
 EndChar
 
 StartChar: _grave_mark
-Encoding: 1114180 -1 245
+Encoding: 1114181 -1 245
 Width: 0
 VWidth: 0
 Flags: HW
@@ -17266,7 +17266,7 @@ Kerns2: 15 166 "kern"
 EndChar
 
 StartChar: _ring_above_mark
-Encoding: 1114181 -1 246
+Encoding: 1114182 -1 246
 Width: 0
 VWidth: 0
 Flags: HW
@@ -17307,7 +17307,7 @@ Kerns2: 15 191 "kern"
 EndChar
 
 StartChar: _diaeresis_mark
-Encoding: 1114182 -1 247
+Encoding: 1114183 -1 247
 Width: 0
 VWidth: 0
 Flags: HW
@@ -17338,7 +17338,7 @@ Kerns2: 15 232 "kern"
 EndChar
 
 StartChar: _dot_above_mark
-Encoding: 1114183 -1 248
+Encoding: 1114184 -1 248
 Width: 0
 VWidth: 0
 Flags: HW
@@ -17360,7 +17360,7 @@ Kerns2: 15 135 "kern"
 EndChar
 
 StartChar: _dot_below_mark
-Encoding: 1114184 -1 249
+Encoding: 1114185 -1 249
 Width: 0
 VWidth: 0
 Flags: HW
@@ -17382,7 +17382,7 @@ Kerns2: 15 135 "kern"
 EndChar
 
 StartChar: _macron_below_mark
-Encoding: 1114185 -1 250
+Encoding: 1114186 -1 250
 Width: 0
 VWidth: 0
 Flags: HW
@@ -17411,7 +17411,7 @@ Kerns2: 15 245 "kern"
 EndChar
 
 StartChar: _hook_cedilla_mark
-Encoding: 1114186 -1 251
+Encoding: 1114187 -1 251
 Width: 0
 VWidth: 0
 Flags: HW
@@ -17449,7 +17449,7 @@ Kerns2: 15 141 "kern"
 EndChar
 
 StartChar: _macron_mark
-Encoding: 1114187 -1 252
+Encoding: 1114188 -1 252
 Width: 0
 VWidth: 0
 Flags: HW
@@ -17478,7 +17478,7 @@ Kerns2: 15 245 "kern"
 EndChar
 
 StartChar: _caron_mark
-Encoding: 1114188 -1 253
+Encoding: 1114189 -1 253
 Width: 0
 VWidth: 608
 Flags: HW
@@ -17507,7 +17507,7 @@ Kerns2: 15 208 "kern"
 EndChar
 
 StartChar: _circumflex_mark
-Encoding: 1114189 -1 254
+Encoding: 1114190 -1 254
 Width: 0
 VWidth: 0
 Flags: HW
@@ -17537,7 +17537,7 @@ Kerns2: 15 163 "kern"
 EndChar
 
 StartChar: _tilde_mark
-Encoding: 1114190 -1 255
+Encoding: 1114191 -1 255
 Width: 0
 VWidth: 0
 Flags: HW
@@ -17571,7 +17571,7 @@ Kerns2: 15 223 "kern"
 EndChar
 
 StartChar: _breve_mark
-Encoding: 1114191 -1 256
+Encoding: 1114192 -1 256
 Width: -132
 VWidth: 0
 Flags: HW
@@ -17747,7 +17747,7 @@ EndSplineSet
 EndChar
 
 StartChar: _double_acute_mark
-Encoding: 1114192 -1 260
+Encoding: 1114193 -1 260
 Width: 0
 VWidth: 0
 Flags: HW
@@ -18664,7 +18664,7 @@ Refer: 41 76 N 1 0 0 1 0 0 2
 EndChar
 
 StartChar: _l_crossbar
-Encoding: 1114193 -1 343
+Encoding: 1114194 -1 343
 Width: 0
 VWidth: -272
 Flags: HW
@@ -18709,7 +18709,7 @@ Kerns2: 15 41 "kern"
 EndChar
 
 StartChar: _cap_o_crossbar
-Encoding: 1114194 -1 346
+Encoding: 1114195 -1 346
 Width: 0
 VWidth: -274
 Flags: HW
@@ -18731,7 +18731,7 @@ Kerns2: 15 235 "kern"
 EndChar
 
 StartChar: _lc_o_crossbar
-Encoding: 1114195 -1 347
+Encoding: 1114196 -1 347
 Width: 0
 VWidth: -273
 Flags: HW
@@ -18798,7 +18798,7 @@ Refer: 2 108 N 1 0 0 1 0 0 2
 EndChar
 
 StartChar: _bar_300
-Encoding: 1114196 -1 352
+Encoding: 1114197 -1 352
 Width: 0
 VWidth: -271
 Flags: HW
@@ -18820,7 +18820,7 @@ Kerns2: 15 208 "kern"
 EndChar
 
 StartChar: _bar_220
-Encoding: 1114197 -1 353
+Encoding: 1114198 -1 353
 Width: 0
 VWidth: -271
 Flags: HW
@@ -18842,7 +18842,7 @@ Kerns2: 15 172 "kern"
 EndChar
 
 StartChar: _bar_480
-Encoding: 1114198 -1 354
+Encoding: 1114199 -1 354
 Width: 0
 VWidth: -271
 Flags: HW
@@ -18943,7 +18943,7 @@ Refer: 59 68 N 1 0 0 1 0 0 2
 EndChar
 
 StartChar: _eng_comma_uc
-Encoding: 1114199 -1 362
+Encoding: 1114200 -1 362
 Width: 0
 VWidth: 84
 Flags: HW
@@ -18968,7 +18968,7 @@ Kerns2: 15 228 "kern"
 EndChar
 
 StartChar: _eng_comma_lc
-Encoding: 1114200 -1 363
+Encoding: 1114201 -1 363
 Width: 0
 VWidth: 50
 Flags: HW
@@ -21326,7 +21326,7 @@ Refer: 41 76 N 1 0 0 -1 0 555.001 2
 EndChar
 
 StartChar: _eta_bar
-Encoding: 1114201 -1 533
+Encoding: 1114202 -1 533
 Width: 0
 VWidth: -270
 Flags: HW

@@ -98,10 +98,15 @@ def autokern(font):
             return expanded
         font.autoKern('kern', sep, expand(left, left_side=True), expand(right, left_side=False), **kwargs)
 
+    a = font['_pad_space'].width
+    a = max(a - 20, 0)
+
+    # autoKern looks at the outline, so even if you change the padding, it absorbs all of it.
+    # Use `+a` when you want to link the spacing after kerning to the padding.
     kern(150, ['/', '\\'], ['/', '\\'])
-    kern(60, ['s'], set(lower) - {'j', 'f'}, minKern=50)
+    kern(60+a, ['s'], set(lower) - {'j', 'f'}, minKern=50)
     # x has diagonal strokes that leave visual space on its left side.
-    kern(90, set(lower) - {'f'}, ['x'], minKern=40)
+    kern(90+a, set(lower) - {'f'}, ['x'], minKern=40)
     # F/E are separated from T/J so they can use a tighter target gap.
     kern(130, ['F'], set(all_chars) - {'f', 'j'})
     kern(140, ['E'], ['V', 'W', 'Y'])
@@ -114,6 +119,7 @@ def autokern(font):
 
 
 autokern(font)
+font.removeGlyph(font['_pad_space'])
 
 
 # ---------------------------------------------------------------------------
