@@ -236,9 +236,64 @@ def pad_glyph(c):
     # there are far more sophisticated means of doing this (like looking at the original image,
     # and calculating how much space there should be).
     space = 20
-    scaled_width = c.boundingBox()[2]
-    c.width = int(round(scaled_width + 2 * space))
-    t = psMat.translate(space, 0)
+    bbox = c.boundingBox()
+    if c.glyphname in list('gjpqy'):
+        # Recalculate the bounding box by excluding the tail of the glyph
+        # Do not remove the glyph's tail if it is too close to the baseline
+        capxrange = c.foreground.xBoundsAtY(-40, 600)
+        if c.glyphname == 'j':
+            bbox = tuple([(capxrange[0] + bbox[0])/2, bbox[1], capxrange[1], bbox[3]])
+        else:
+            bbox = tuple([capxrange[0], bbox[1], capxrange[1], bbox[3]])
+    if c.glyphname == 'f':
+        # Recalculate the bounding box by excluding the arm of the glyph
+        # Restrict the arm so that it does not pierce through the stem of the next glyph
+        xxrange = c.foreground.xBoundsAtY(0, 420)
+        bbox = tuple([xxrange[0], bbox[1], max(xxrange[1], bbox[2] - (space + 0.12 * 600)), bbox[3]])
+    lflatness = c.foreground.yBoundsAtX(bbox[0] - 1, bbox[0] + 20)
+    rflatness = c.foreground.yBoundsAtX(bbox[2] - 20, bbox[2] + 1)
+    roughness = []
+    for i in range(4):
+        roughness.append(c.foreground.xBoundsAtY(100 + 100 * i, 150 + 100 * i) or tuple([bbox[2], bbox[0]]))
+    lroughness = np.sqrt(np.median([(roughness[i][0] - bbox[0])**2 for i in range(4)]))
+    rroughness = np.sqrt(np.median([(bbox[2] - roughness[i][1])**2 for i in range(4)]))
+    add_left = 0
+    if lflatness[1] - lflatness[0] < 0.25 * 600:
+        add_left = 0
+    elif lroughness >= 35:
+        add_left = 0
+    elif lroughness >= 20:
+        add_left = 5
+    elif lroughness >= 10:
+        add_left = 10
+    elif lroughness >= 5:
+        add_left = 15
+    else:
+        add_left = 20
+    add_right = 0
+    if rflatness[1] - rflatness[0] < 0.25 * 600:
+        add_right = 0
+    elif rroughness >= 35:
+        add_right = 0
+    elif rroughness >= 20:
+        add_right = 5
+    elif rroughness >= 10:
+        add_right = 10
+    elif rroughness >= 5:
+        add_right = 15
+    else:
+        add_right = 20
+    if c.glyphname == 'i':
+        add_left += 10
+        add_right += 10
+    may_too_wide1 = list('aebdpr')
+    if c.glyphname in may_too_wide1:
+        if bbox[2] - bbox[0] > 370:
+            add_left -= 5
+            add_right -= 10
+    scaled_width = bbox[2]
+    c.width = round(scaled_width + space + add_right)
+    t = psMat.translate(round((-bbox[0]) + add_left), 0)
     c.transform(t)
 
 

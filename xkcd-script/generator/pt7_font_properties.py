@@ -6,7 +6,6 @@ Reads the SFD produced by pt6_derived_chars.py (which has all glyphs),
 applies properties, saves.
 """
 import fontforge
-import psMat
 import unicodedata
 
 font_fname = '../generated/xkcd-script-pt7.sfd'
@@ -58,40 +57,6 @@ def _expand_with_variants(font, chars):
                 result.append(name)
                 seen.add(name)
     return result
-
-
-# ---------------------------------------------------------------------------
-# Advance-width overrides
-# ---------------------------------------------------------------------------
-
-# f's lsb (17) leaves too much space before the stem; shift left 12 units.
-# Width is reduced by 110 total to bring natural spacing after the crossbar
-# into line (~90 units for fo), leaving arm clearance handled by kern rules.
-_f = font['f']
-_f.transform(psMat.translate(-12, 0))
-_f.width -= 110
-font['r'].transform(psMat.translate(10, 0))
-
-
-# g's bowl (above baseline) starts ~19 units further right than other rounded
-# letters.  Shift the whole glyph left by 90 to bring bowl_lsb to ~20, matching
-# e/n/o.  Width is reduced by 30 to leave a moderate right sidebearing (~25).
-_g = font['g']
-_g.transform(psMat.translate(-145, 0))
-_g.width -= 30
-
-
-# j
-_j = font['j']
-_j.transform(psMat.translate(-115, 0))
-_j.width -= 25
-
-
-# r's arm extends to ~x=402 but the default advance (440) leaves too much
-# whitespace; reduce to give a slight negative right sidebearing.
-_r = font['r']
-_r.transform(psMat.translate(-30, 0))
-_r.width = 385
 
 
 # ---------------------------------------------------------------------------
