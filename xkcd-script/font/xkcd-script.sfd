@@ -68,7 +68,7 @@ DisplaySize: -48
 AntiAlias: 1
 FitToEm: 0
 BeginPrivate: 8
-BlueValues 24 [-20 20 411 450 573 613]
+BlueValues 24 [-10 20 411 441 573 603]
 OtherBlues 11 [-241 -190]
 BlueScale 9 0.0208333
 BlueShift 2 16

@@ -208,7 +208,7 @@ for glyph in font.glyphs():
 # hinting, which alters the rendered pixel positions of Latin letters.  Pin
 # all values here (derived from the Latin+diacritic glyph set) so the
 # hinting is stable regardless of how many non-Latin glyphs are added.
-font.private['BlueValues'] = (-20, 20, 411, 450, 573, 613)
+font.private['BlueValues'] = (-10, 20, 411, 441, 573, 603)
 font.private['OtherBlues'] = (-241, -190)
 font.private['BlueScale'] = 0.0208333
 font.private['BlueShift'] = 16
