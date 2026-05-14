@@ -110,6 +110,8 @@ def create_char(font, chars, fname):
     with tmp_symlink(fname) as tmp_fname:
         # At last, bring in the SVG image as an outline for this glyph.
         c.importOutlines(tmp_fname)
+        # Call addExtrema() first to ensure the proper operation of boundingBox().
+        c.addExtrema()
 
     return c
 
