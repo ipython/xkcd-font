@@ -101,6 +101,7 @@ def autokern(font):
     a = font['_pad_space'].width
     a = max(a - 20, 0)
 
+    # The same combination will be overwritten, so the one written last will take effect.
     # autoKern looks at the outline, so even if you change the padding, it absorbs all of it.
     # Use `+a` when you want to link the spacing after kerning to the padding.
     kern(150, ['/', '\\'], ['/', '\\'])
@@ -108,13 +109,14 @@ def autokern(font):
     # x has diagonal strokes that leave visual space on its left side.
     kern(90+a, set(lower) - {'f'}, ['x'], minKern=40)
     # F/E are separated from T/J so they can use a tighter target gap.
-    kern(130, ['F'], set(all_chars) - {'f', 'j'})
-    kern(140, ['E'], ['V', 'W', 'Y'])
-    kern(100, ['E'], set(all_chars) - {'f', 'j'})
-    kern(120, ['T', 'J'], ['R'])
-    kern(150, ['T', 'J'], set(all_chars) - {'f', 'j'})
+    kern(130, ['F'], set(all_chars) - {'f', 'j'}, onlyCloser=True)
+    kern(100, ['E'], set(all_chars) - {'f', 'j'}, onlyCloser=True)
+    kern(140, ['E'], ['V', 'W', 'Y'], onlyCloser=True)
+    kern(150, ['T', 'J'], set(all_chars) - {'f', 'j'}, onlyCloser=True)
+    kern(120, ['T', 'J'], ['R'], onlyCloser=True)
     # C: loosen from the default (was too tight for Ct/Cf/Cj).
     kern(65, ['C'], set(all_chars) - {'f', 'j'})
+    kern(105, ['C'], ['V'])
     kern(60, ['O'], set(all_chars) - {'f', 'j'})
 
 
