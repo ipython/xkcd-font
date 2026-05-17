@@ -96,6 +96,14 @@ def autokern(font):
             return expanded
         font.autoKern('kern', sep, expand(left, left_side=True), expand(right, left_side=False), **kwargs)
 
+    def getkern(left, right):
+        c = font[left]
+        tuples = c.getPosSub('kern')
+        for tup in tuples:
+            if tup[1] == 'Pair' and tup[2] == right:
+                return tup[5]
+        return None
+
     a = font['_pad_space'].width
     a = max(a - 20, 0)
 
@@ -108,6 +116,10 @@ def autokern(font):
     kern(90+a, set(lower) - {'f'}, ['x'], minKern=40)
     # F/E are separated from T/J so they can use a tighter target gap.
     kern(130, ['F'], set(roman) - {'f', 'j'}, onlyCloser=True)
+    # Since F and z mesh together and the kerning becomes too large,
+    # reuse the kerning value of the round letterforms.
+    diff_Fo_Fz = getkern('F', 'o') - getkern('F', 'z')
+    kern(130 + diff_Fo_Fz, ['F'], ['z'])
     kern(100, ['E'], set(roman) - {'f', 'j'}, onlyCloser=True)
     kern(140, ['E'], ['V', 'W', 'Y'], onlyCloser=True)
     kern(150, ['T', 'J'], set(roman) - {'f', 'j'}, onlyCloser=True)
