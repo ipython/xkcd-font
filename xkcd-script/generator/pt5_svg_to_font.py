@@ -246,7 +246,7 @@ def pad_glyph(c):
         # Do not remove the glyph's tail if it is too close to the baseline
         capxrange = c.foreground.xBoundsAtY(-40, 600)
         if c.glyphname == 'j':
-            bbox = tuple([(capxrange[0] + bbox[0])/2, bbox[1], capxrange[1], bbox[3]])
+            bbox = tuple([(capxrange[0]*2 + bbox[0])/3, bbox[1], capxrange[1], bbox[3]])
         else:
             bbox = tuple([capxrange[0], bbox[1], capxrange[1], bbox[3]])
     if c.glyphname == 'f':
@@ -254,34 +254,37 @@ def pad_glyph(c):
         # Restrict the arm so that it does not pierce through the stem of the next glyph
         xxrange = c.foreground.xBoundsAtY(0, 420)
         bbox = tuple([xxrange[0], bbox[1], max(xxrange[1], bbox[2] - (rspace + space + 0.12 * 600)), bbox[3]])
-    lflatness = c.foreground.yBoundsAtX(bbox[0] - 1, bbox[0] + 20)
-    rflatness = c.foreground.yBoundsAtX(bbox[2] - 20, bbox[2] + 1)
+    # Measure the smoothness of a peak when there is one extremum.
+    lflatness = c.foreground.yBoundsAtX(bbox[0] - 20, bbox[0] + 20)
+    rflatness = c.foreground.yBoundsAtX(bbox[2] - 20, bbox[2] + 20)
+    # In the case of a complex shape, the average depth is calculated from measurements taken at four points.
+    # However, for a parabola, this is an algorithm that can accurately determine the coefficient of the quadratic term.
     roughness = []
     for i in range(4):
         roughness.append(c.foreground.xBoundsAtY(100 + 100 * i, 150 + 100 * i) or tuple([bbox[2], bbox[0]]))
-    lroughness = np.sqrt(np.median([(roughness[i][0] - bbox[0])**2 for i in range(4)]))
-    rroughness = np.sqrt(np.median([(bbox[2] - roughness[i][1])**2 for i in range(4)]))
+    lroughness = np.median([np.sqrt(max(roughness[i][0] - bbox[0], 0)) for i in range(4)])**2
+    rroughness = np.median([np.sqrt(max(bbox[2] - roughness[i][1], 0)) for i in range(4)])**2
     add_left = 0
-    if lflatness[1] - lflatness[0] < 0.25 * 600:
+    if lflatness[1] - lflatness[0] < 0.2 * 600:
         add_left = 0
     elif lroughness >= 35:
         add_left = 0
     elif lroughness >= 20:
         add_left = 5
-    elif lroughness >= 10:
+    elif lroughness >= 11:
         add_left = 10
     elif lroughness >= 5:
         add_left = 15
     else:
         add_left = 20
     add_right = 0
-    if rflatness[1] - rflatness[0] < 0.25 * 600:
+    if rflatness[1] - rflatness[0] < 0.2 * 600:
         add_right = 0
     elif rroughness >= 35:
         add_right = 0
     elif rroughness >= 20:
         add_right = 5
-    elif rroughness >= 10:
+    elif rroughness >= 11:
         add_right = 10
     elif rroughness >= 5:
         add_right = 15
@@ -292,9 +295,12 @@ def pad_glyph(c):
         add_right += 10
     may_too_wide1 = list('aebdpr')
     if c.glyphname in may_too_wide1:
-        if bbox[2] - bbox[0] > 370:
-            add_left -= 5
+        if bbox[2] - bbox[0] + add_left + add_right >= 398:
+            add_left -= 10
             add_right -= 10
+        elif bbox[2] - bbox[0] + add_left + add_right >= 378:
+            add_left -= 5
+            add_right -= 5
     scaled_width = bbox[2]
     c.width = round(scaled_width + rspace + space / 2 + add_right)
     t = psMat.translate(round((-bbox[0]) + space / 2 + add_left), 0)
