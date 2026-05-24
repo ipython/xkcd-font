@@ -66,15 +66,13 @@ def _expand_with_variants(font, chars):
 def autokern(font):
     all_glyphs = [glyph.glyphname for glyph in font.glyphs()
                   if not glyph.glyphname.startswith(' ')]
-    ligatures = [name for name in all_glyphs if '_' in name]
+    ligatures = [name for name in all_glyphs if name[0] != '_' and '_' in name]
     upper_ligatures = [ligature for ligature in ligatures if ligature.upper() == ligature]
     lower_ligatures = [ligature for ligature in ligatures if ligature.lower() == ligature]
 
-    # Expand the broad letter lists to include accented variants from the outset,
-    # so every rule that references `caps`, `lower`, or `all_chars` covers them too.
-    caps = _expand_with_variants(font, list('ABCDEFGHIJKLMNOPQRSTUVWXYZ') + upper_ligatures)
-    lower = _expand_with_variants(font, list('abcdefghijklmnopqrstuvwxyz') + lower_ligatures)
-    all_chars = caps + lower
+    caps = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+    lower = list('abcdefghijklmnopqrstuvwxyz')
+    roman = caps + lower
 
     font.addLookup('kerning', 'gpos_pair', (), [['kern', [['latn', ['dflt']]]]])
     font.addLookupSubtable('kerning', 'kern')
@@ -86,7 +84,7 @@ def autokern(font):
             seen = set(expanded)
             for glyph in font.glyphs():
                 name = glyph.glyphname
-                if '_' not in name:
+                if name[0] == '_' or '_' not in name:
                     continue
                 parts = name.split('_')
                 # Left side: ligature's right edge (last component) determines spacing.
@@ -109,15 +107,15 @@ def autokern(font):
     # x has diagonal strokes that leave visual space on its left side.
     kern(90+a, set(lower) - {'f'}, ['x'], minKern=40)
     # F/E are separated from T/J so they can use a tighter target gap.
-    kern(130, ['F'], set(all_chars) - {'f', 'j'}, onlyCloser=True)
-    kern(100, ['E'], set(all_chars) - {'f', 'j'}, onlyCloser=True)
+    kern(130, ['F'], set(roman) - {'f', 'j'}, onlyCloser=True)
+    kern(100, ['E'], set(roman) - {'f', 'j'}, onlyCloser=True)
     kern(140, ['E'], ['V', 'W', 'Y'], onlyCloser=True)
-    kern(150, ['T', 'J'], set(all_chars) - {'f', 'j'}, onlyCloser=True)
+    kern(150, ['T', 'J'], set(roman) - {'f', 'j'}, onlyCloser=True)
     kern(120, ['T', 'J'], ['R'], onlyCloser=True)
     # C: loosen from the default (was too tight for Ct/Cf/Cj).
-    kern(65, ['C'], set(all_chars) - {'f', 'j'})
+    kern(65, ['C'], set(roman) - {'f', 'j'})
     kern(105, ['C'], ['V'])
-    kern(60, ['O'], set(all_chars) - {'f', 'j'})
+    kern(60, ['O'], set(roman) - {'f', 'j'})
 
 
 autokern(font)
