@@ -129,6 +129,8 @@ def autokern(font):
     kern(80+a, ['x'], set(lower) - {'i', 'j'}, onlyCloser=True, damper=0.75)
     kern(100+a, ['f', 't'], set(lower) - {'i', 'j'}, onlyCloser=True, damper=0.75) # oveerwrite fx
     # including uppercase
+    # Set *Y altogether first: CY, OY, etc. will have appropriate values set in the latter part.
+    kern(105, roman, ['Y', 'T'], onlyCloser=True, damper=0.75)
     # F/E are separated from T/J so they can use a tighter target gap.
     kern(110, ['F'], set(roman) - {'j'}, onlyCloser=True, damper=0.75) # keep FO≈-60
     # Since F and z mesh together and the kerning becomes too large,
@@ -138,6 +140,7 @@ def autokern(font):
     kern(90, ['E'], set(roman) - {'j'}, onlyCloser=True, damper=0.75) # keep ES≈-30
     kern(45, ['E'], ['V'], onlyCloser=True, touch=True)
     kern(115, ['T', 'J'], set(roman) - {'j'}, onlyCloser=True, damper=0.75) # keep Tr≈-105
+    kern(105, ['Y'], set(roman) - {'j'}, onlyCloser=True, damper=0.75)
     # C: loosen from the default (was too tight for Cj).
     # Compared to E, the lower curve of C tends to come close to the next character,
     # but this is considered an intentional design.

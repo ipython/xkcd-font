@@ -129,7 +129,7 @@ SplineSet
  250 225 258 268 258 269 c 0
  259 274 260 273 253 273 c 0
 EndSplineSet
-Kerns2: 517 -36 "kern" 478 -36 "kern" 462 -36 "kern" 373 -33 "kern" 353 -36 "kern" 21 -43 "kern" 10 -36 "kern"
+Kerns2: 512 -64 "kern" 501 -87 "kern" 477 -74 "kern" 461 -66 "kern" 445 -87 "kern" 407 -87 "kern" 390 -87 "kern" 372 -57 "kern" 351 -71 "kern" 293 -87 "kern" 83 -61 "kern" 77 -34 "kern" 73 -54 "kern" 71 -65 "kern" 70 -44 "kern" 55 -87 "kern" 49 -71 "kern" 517 -36 "kern" 478 -36 "kern" 462 -36 "kern" 373 -33 "kern" 353 -36 "kern" 21 -43 "kern" 10 -36 "kern"
 EndChar
 
 StartChar: k
@@ -182,7 +182,7 @@ SplineSet
  12 88 28 299 30 368 c 0
  33 465 44 502 44 517 c 0
 EndSplineSet
-Kerns2: 15 -10 "kern" 517 -39 "kern" 478 -38 "kern" 462 -38 "kern" 373 -36 "kern" 353 -36 "kern" 21 -67 "kern" 10 -36 "kern"
+Kerns2: 512 -45 "kern" 501 -84 "kern" 477 -111 "kern" 461 -93 "kern" 445 -83 "kern" 407 -83 "kern" 390 -83 "kern" 372 -110 "kern" 351 -114 "kern" 293 -83 "kern" 83 -99 "kern" 77 -71 "kern" 73 -96 "kern" 71 -105 "kern" 70 -81 "kern" 55 -83 "kern" 49 -114 "kern" 15 -10 "kern" 517 -39 "kern" 478 -38 "kern" 462 -38 "kern" 373 -36 "kern" 353 -36 "kern" 21 -67 "kern" 10 -36 "kern"
 EndChar
 
 StartChar: l
@@ -273,6 +273,7 @@ SplineSet
  96 0 95 -4 55 -4 c 0
  33 -4 27 16 27 20 c 0
 EndSplineSet
+Kerns2: 512 -59 "kern" 501 -61 "kern" 477 -63 "kern" 461 -61 "kern" 445 -61 "kern" 407 -61 "kern" 390 -61 "kern" 372 -46 "kern" 351 -60 "kern" 293 -61 "kern" 83 -57 "kern" 77 -36 "kern" 73 -51 "kern" 71 -56 "kern" 70 -40 "kern" 55 -61 "kern" 49 -60 "kern"
 EndChar
 
 StartChar: n
@@ -314,7 +315,7 @@ SplineSet
  48 367 51 367 54 367 c 0
  60 367 68 361 68 359 c 0
 EndSplineSet
-Kerns2: 517 -20 "kern" 478 -21 "kern" 462 -21 "kern" 373 -14 "kern" 353 -19 "kern" 21 -26 "kern" 10 -19 "kern"
+Kerns2: 512 -42 "kern" 501 -74 "kern" 477 -63 "kern" 461 -57 "kern" 445 -72 "kern" 407 -72 "kern" 390 -72 "kern" 372 -49 "kern" 351 -59 "kern" 293 -72 "kern" 83 -52 "kern" 77 -26 "kern" 73 -45 "kern" 71 -54 "kern" 70 -35 "kern" 55 -72 "kern" 49 -59 "kern" 517 -20 "kern" 478 -21 "kern" 462 -21 "kern" 373 -14 "kern" 353 -19 "kern" 21 -26 "kern" 10 -19 "kern"
 EndChar
 
 StartChar: o
@@ -361,7 +362,7 @@ SplineSet
  184 327 184 332 182 329 c 0
  181 328 177 327 173 327 c 0
 EndSplineSet
-Kerns2: 517 -17 "kern" 478 -16 "kern" 462 -17 "kern" 373 -9 "kern" 353 -16 "kern" 21 -14 "kern" 10 -16 "kern"
+Kerns2: 512 -64 "kern" 501 -76 "kern" 477 -65 "kern" 461 -65 "kern" 445 -76 "kern" 407 -76 "kern" 390 -76 "kern" 372 -45 "kern" 351 -61 "kern" 293 -76 "kern" 83 -60 "kern" 77 -42 "kern" 73 -54 "kern" 71 -57 "kern" 70 -42 "kern" 55 -76 "kern" 49 -61 "kern" 517 -17 "kern" 478 -16 "kern" 462 -17 "kern" 373 -9 "kern" 353 -16 "kern" 21 -14 "kern" 10 -16 "kern"
 EndChar
 
 StartChar: p
@@ -416,7 +417,7 @@ SplineSet
  99 145 107 141 119 134 c 0
  131 127 162 109 212 109 c 0
 EndSplineSet
-Kerns2: 517 -12 "kern" 478 -15 "kern" 462 -14 "kern" 353 -9 "kern" 21 -10 "kern" 10 -9 "kern"
+Kerns2: 512 -60 "kern" 501 -75 "kern" 477 -72 "kern" 461 -68 "kern" 445 -67 "kern" 407 -67 "kern" 390 -67 "kern" 372 -40 "kern" 351 -54 "kern" 293 -67 "kern" 83 -53 "kern" 77 -34 "kern" 73 -46 "kern" 71 -51 "kern" 70 -35 "kern" 55 -67 "kern" 49 -54 "kern" 517 -12 "kern" 478 -15 "kern" 462 -14 "kern" 353 -9 "kern" 21 -10 "kern" 10 -9 "kern"
 EndChar
 
 StartChar: q
@@ -471,7 +472,7 @@ SplineSet
  146 383 175 398 204 399 c 0
  209 399 212 397 219 397 c 0
 EndSplineSet
-Kerns2: 517 -11 "kern" 478 -21 "kern" 462 -23 "kern" 373 -11 "kern" 353 -14 "kern" 10 -14 "kern"
+Kerns2: 512 -52 "kern" 501 -79 "kern" 477 -60 "kern" 461 -61 "kern" 445 -73 "kern" 407 -73 "kern" 390 -73 "kern" 372 -42 "kern" 351 -60 "kern" 293 -73 "kern" 83 -57 "kern" 77 -39 "kern" 73 -52 "kern" 71 -56 "kern" 70 -40 "kern" 55 -73 "kern" 49 -60 "kern" 517 -11 "kern" 478 -21 "kern" 462 -23 "kern" 373 -11 "kern" 353 -14 "kern" 10 -14 "kern"
 EndChar
 
 StartChar: r
@@ -506,6 +507,7 @@ SplineSet
  98 175 103 146 105 88 c 0
  106 28 111 24 111 14 c 0
 EndSplineSet
+Kerns2: 512 -99 "kern" 501 -69 "kern" 477 -101 "kern" 461 -102 "kern" 445 -68 "kern" 407 -68 "kern" 390 -68 "kern" 372 -66 "kern" 351 -94 "kern" 293 -68 "kern" 83 -98 "kern" 77 -94 "kern" 73 -97 "kern" 71 -93 "kern" 70 -78 "kern" 55 -68 "kern" 49 -94 "kern"
 EndChar
 
 StartChar: s
@@ -560,7 +562,7 @@ SplineSet
  84 173 76 156 87 140 c 0
  89 137 92 132 92 129 c 0
 EndSplineSet
-Kerns2: 517 -28 "kern" 478 -27 "kern" 462 -27 "kern" 373 -17 "kern" 353 -27 "kern" 21 -39 "kern" 10 -27 "kern" 600 -18 "kern" 596 -18 "kern" 518 -42 "kern" 515 -18 "kern" 507 -21 "kern" 476 -8 "kern" 472 -8 "kern" 470 -16 "kern" 460 -8 "kern" 451 -24 "kern" 438 -46 "kern" 437 -18 "kern" 413 -24 "kern" 401 -24 "kern" 399 -8 "kern" 397 -18 "kern" 371 -13 "kern" 346 -18 "kern" 329 -47 "kern" 328 -8 "kern" 311 -46 "kern" 309 -8 "kern" 303 -8 "kern" 299 -24 "kern" 22 -16 "kern" 17 -42 "kern" 16 -21 "kern" 13 -17 "kern" 9 -8 "kern"
+Kerns2: 512 -69 "kern" 501 -84 "kern" 477 -70 "kern" 461 -70 "kern" 445 -84 "kern" 407 -84 "kern" 390 -84 "kern" 372 -54 "kern" 351 -68 "kern" 293 -84 "kern" 83 -63 "kern" 77 -45 "kern" 73 -58 "kern" 71 -63 "kern" 70 -46 "kern" 55 -84 "kern" 49 -68 "kern" 517 -28 "kern" 478 -27 "kern" 462 -27 "kern" 373 -17 "kern" 353 -27 "kern" 21 -39 "kern" 10 -27 "kern" 600 -18 "kern" 596 -18 "kern" 518 -42 "kern" 515 -18 "kern" 507 -21 "kern" 476 -8 "kern" 472 -8 "kern" 470 -16 "kern" 460 -8 "kern" 451 -24 "kern" 438 -46 "kern" 437 -18 "kern" 413 -24 "kern" 401 -24 "kern" 399 -8 "kern" 397 -18 "kern" 371 -13 "kern" 346 -18 "kern" 329 -47 "kern" 328 -8 "kern" 311 -46 "kern" 309 -8 "kern" 303 -8 "kern" 299 -24 "kern" 22 -16 "kern" 17 -42 "kern" 16 -21 "kern" 13 -17 "kern" 9 -8 "kern"
 EndChar
 
 StartChar: t
@@ -612,7 +614,7 @@ SplineSet
  99 516 122 581 122 582 c 0
  122 586 128 588 128 593 c 0
 EndSplineSet
-Kerns2: 600 -51 "kern" 596 -51 "kern" 515 -16 "kern" 507 -21 "kern" 470 -35 "kern" 451 -25 "kern" 437 -45 "kern" 413 -33 "kern" 401 -30 "kern" 397 -42 "kern" 346 -42 "kern" 299 -32 "kern" 22 -35 "kern" 21 -14 "kern" 16 -21 "kern"
+Kerns2: 512 -75 "kern" 501 -60 "kern" 477 -80 "kern" 461 -75 "kern" 445 -61 "kern" 407 -61 "kern" 390 -61 "kern" 372 -77 "kern" 351 -78 "kern" 293 -61 "kern" 83 -72 "kern" 77 -48 "kern" 73 -66 "kern" 71 -72 "kern" 70 -58 "kern" 55 -60 "kern" 49 -78 "kern" 600 -51 "kern" 596 -51 "kern" 515 -16 "kern" 507 -21 "kern" 470 -35 "kern" 451 -25 "kern" 437 -45 "kern" 413 -33 "kern" 401 -30 "kern" 397 -42 "kern" 346 -42 "kern" 299 -32 "kern" 22 -35 "kern" 21 -14 "kern" 16 -21 "kern"
 EndChar
 
 StartChar: b
@@ -662,7 +664,7 @@ SplineSet
  131 96 147 88 164 88 c 0
  188 88 253 110 253 214 c 0
 EndSplineSet
-Kerns2: 517 -15 "kern" 478 -13 "kern" 462 -13 "kern" 373 -9 "kern" 353 -13 "kern" 10 -13 "kern"
+Kerns2: 512 -75 "kern" 501 -79 "kern" 477 -75 "kern" 461 -75 "kern" 445 -81 "kern" 407 -81 "kern" 390 -81 "kern" 372 -58 "kern" 351 -74 "kern" 293 -81 "kern" 83 -68 "kern" 77 -52 "kern" 73 -64 "kern" 71 -69 "kern" 70 -52 "kern" 55 -79 "kern" 49 -74 "kern" 517 -15 "kern" 478 -13 "kern" 462 -13 "kern" 373 -9 "kern" 353 -13 "kern" 10 -13 "kern"
 EndChar
 
 StartChar: u
@@ -702,6 +704,7 @@ SplineSet
  302 305 299 283 298 317 c 0
  296 366 280 373 280 387 c 0
 EndSplineSet
+Kerns2: 512 -61 "kern" 501 -59 "kern" 477 -62 "kern" 461 -62 "kern" 445 -59 "kern" 407 -59 "kern" 390 -59 "kern" 372 -43 "kern" 351 -60 "kern" 293 -59 "kern" 83 -57 "kern" 77 -42 "kern" 73 -53 "kern" 71 -55 "kern" 70 -41 "kern" 55 -59 "kern" 49 -60 "kern"
 EndChar
 
 StartChar: v
@@ -739,6 +742,7 @@ SplineSet
  60 391 64 391 64 386 c 0
  64 381 70 378 70 375 c 0
 EndSplineSet
+Kerns2: 512 -72 "kern" 501 -44 "kern" 477 -74 "kern" 461 -74 "kern" 445 -42 "kern" 407 -42 "kern" 390 -42 "kern" 372 -54 "kern" 351 -69 "kern" 293 -42 "kern" 83 -69 "kern" 77 -60 "kern" 73 -66 "kern" 71 -66 "kern" 70 -54 "kern" 55 -42 "kern" 49 -69 "kern"
 EndChar
 
 StartChar: w
@@ -795,6 +799,7 @@ SplineSet
  364 213 355 244 361 286 c 0
  363 299 364 357 364 381 c 0
 EndSplineSet
+Kerns2: 512 -63 "kern" 501 -30 "kern" 477 -65 "kern" 461 -64 "kern" 445 -30 "kern" 407 -30 "kern" 390 -30 "kern" 372 -46 "kern" 351 -60 "kern" 293 -30 "kern" 83 -35 "kern" 77 -45 "kern" 73 -55 "kern" 71 -50 "kern" 70 -44 "kern" 55 -30 "kern" 49 -60 "kern"
 EndChar
 
 StartChar: x
@@ -842,7 +847,7 @@ SplineSet
  224 349 268 410 284 418 c 0
  288 419 292 421 296 421 c 0
 EndSplineSet
-Kerns2: 600 -32 "kern" 596 -32 "kern" 517 -18 "kern" 515 -15 "kern" 507 -30 "kern" 506 -9 "kern" 495 -9 "kern" 486 -9 "kern" 478 -17 "kern" 476 -9 "kern" 472 -7 "kern" 470 -32 "kern" 462 -17 "kern" 460 -9 "kern" 458 -10 "kern" 456 -9 "kern" 453 -9 "kern" 451 -31 "kern" 450 -9 "kern" 440 -9 "kern" 437 -32 "kern" 435 -10 "kern" 429 -7 "kern" 427 -11 "kern" 415 -9 "kern" 413 -33 "kern" 412 -9 "kern" 401 -31 "kern" 400 -9 "kern" 399 -9 "kern" 397 -32 "kern" 396 -10 "kern" 395 -9 "kern" 373 -17 "kern" 371 -9 "kern" 353 -17 "kern" 348 -9 "kern" 346 -32 "kern" 337 -9 "kern" 332 -9 "kern" 328 -9 "kern" 324 -10 "kern" 313 -9 "kern" 309 -9 "kern" 303 -7 "kern" 301 -10 "kern" 299 -33 "kern" 298 -9 "kern" 38 -17 "kern" 37 -18 "kern" 22 -32 "kern" 21 -36 "kern" 18 -10 "kern" 16 -30 "kern" 14 -9 "kern" 13 -18 "kern" 12 -9 "kern" 10 -17 "kern" 9 -9 "kern" 7 -12 "kern"
+Kerns2: 512 -81 "kern" 501 -72 "kern" 477 -81 "kern" 461 -76 "kern" 445 -72 "kern" 407 -72 "kern" 390 -72 "kern" 372 -74 "kern" 351 -80 "kern" 293 -72 "kern" 83 -68 "kern" 77 -39 "kern" 73 -60 "kern" 71 -73 "kern" 70 -51 "kern" 55 -72 "kern" 49 -80 "kern" 600 -32 "kern" 596 -32 "kern" 517 -18 "kern" 515 -15 "kern" 507 -30 "kern" 506 -9 "kern" 495 -9 "kern" 486 -9 "kern" 478 -17 "kern" 476 -9 "kern" 472 -7 "kern" 470 -32 "kern" 462 -17 "kern" 460 -9 "kern" 458 -10 "kern" 456 -9 "kern" 453 -9 "kern" 451 -31 "kern" 450 -9 "kern" 440 -9 "kern" 437 -32 "kern" 435 -10 "kern" 429 -7 "kern" 427 -11 "kern" 415 -9 "kern" 413 -33 "kern" 412 -9 "kern" 401 -31 "kern" 400 -9 "kern" 399 -9 "kern" 397 -32 "kern" 396 -10 "kern" 395 -9 "kern" 373 -17 "kern" 371 -9 "kern" 353 -17 "kern" 348 -9 "kern" 346 -32 "kern" 337 -9 "kern" 332 -9 "kern" 328 -9 "kern" 324 -10 "kern" 313 -9 "kern" 309 -9 "kern" 303 -7 "kern" 301 -10 "kern" 299 -33 "kern" 298 -9 "kern" 38 -17 "kern" 37 -18 "kern" 22 -32 "kern" 21 -36 "kern" 18 -10 "kern" 16 -30 "kern" 14 -9 "kern" 13 -18 "kern" 12 -9 "kern" 10 -17 "kern" 9 -9 "kern" 7 -12 "kern"
 EndChar
 
 StartChar: y
@@ -897,7 +902,7 @@ SplineSet
  307 341 324 350 334 350 c 0
  338 350 345 352 349 352 c 0
 EndSplineSet
-Kerns2: 517 -8 "kern" 478 -21 "kern" 462 -21 "kern" 373 -9 "kern" 353 -15 "kern" 21 -7 "kern" 10 -15 "kern"
+Kerns2: 512 -36 "kern" 501 -79 "kern" 477 -66 "kern" 461 -56 "kern" 445 -72 "kern" 407 -72 "kern" 390 -72 "kern" 372 -40 "kern" 351 -52 "kern" 293 -72 "kern" 83 -47 "kern" 77 -22 "kern" 73 -39 "kern" 71 -47 "kern" 70 -29 "kern" 55 -72 "kern" 49 -52 "kern" 517 -8 "kern" 478 -21 "kern" 462 -21 "kern" 373 -9 "kern" 353 -15 "kern" 21 -7 "kern" 10 -15 "kern"
 EndChar
 
 StartChar: z
@@ -975,6 +980,7 @@ SplineSet
 9 374 m 1
  9 367 9 366 9 374 c 1
 EndSplineSet
+Kerns2: 512 -84 "kern" 501 -76 "kern" 477 -85 "kern" 461 -79 "kern" 445 -76 "kern" 407 -76 "kern" 390 -76 "kern" 372 -63 "kern" 351 -82 "kern" 293 -76 "kern" 83 -72 "kern" 77 -51 "kern" 73 -68 "kern" 71 -77 "kern" 70 -57 "kern" 55 -76 "kern" 49 -82 "kern"
 EndChar
 
 StartChar: c
@@ -1016,7 +1022,7 @@ SplineSet
  66 355 95 398 120 425 c 0
  132 438 169 465 175 465 c 0
 EndSplineSet
-Kerns2: 21 -8 "kern"
+Kerns2: 512 -86 "kern" 501 -54 "kern" 477 -87 "kern" 461 -85 "kern" 445 -54 "kern" 407 -54 "kern" 390 -54 "kern" 372 -81 "kern" 351 -84 "kern" 293 -54 "kern" 83 -60 "kern" 77 -50 "kern" 73 -69 "kern" 71 -72 "kern" 70 -60 "kern" 55 -54 "kern" 49 -84 "kern" 21 -8 "kern"
 EndChar
 
 StartChar: d
@@ -1108,6 +1114,7 @@ SplineSet
  298 291 303 296 303 317 c 0
  303 327 301 336 298 341 c 0
 EndSplineSet
+Kerns2: 512 -67 "kern" 501 -51 "kern" 477 -68 "kern" 461 -67 "kern" 445 -51 "kern" 407 -51 "kern" 390 -51 "kern" 372 -39 "kern" 351 -65 "kern" 293 -51 "kern" 83 -63 "kern" 77 -54 "kern" 73 -61 "kern" 71 -62 "kern" 70 -48 "kern" 55 -51 "kern" 49 -65 "kern"
 EndChar
 
 StartChar: f
@@ -1225,7 +1232,7 @@ SplineSet
  277 263 276 263 277 272 c 0
  278 277 279 282 279 287 c 0
 EndSplineSet
-Kerns2: 478 -24 "kern" 462 -22 "kern" 373 -11 "kern" 353 -16 "kern" 21 -18 "kern" 10 -16 "kern"
+Kerns2: 512 -37 "kern" 501 -77 "kern" 477 -73 "kern" 461 -58 "kern" 445 -72 "kern" 407 -72 "kern" 390 -72 "kern" 372 -48 "kern" 351 -59 "kern" 293 -72 "kern" 83 -53 "kern" 77 -27 "kern" 73 -45 "kern" 71 -53 "kern" 70 -35 "kern" 55 -72 "kern" 49 -59 "kern" 478 -24 "kern" 462 -22 "kern" 373 -11 "kern" 353 -16 "kern" 21 -18 "kern" 10 -16 "kern"
 EndChar
 
 StartChar: h
@@ -1276,7 +1283,7 @@ SplineSet
  24 438 28 420 28 453 c 0
  28 454 28 512 28 517 c 0
 EndSplineSet
-Kerns2: 517 -15 "kern" 478 -13 "kern" 462 -13 "kern" 373 -10 "kern" 353 -13 "kern" 10 -13 "kern"
+Kerns2: 512 -69 "kern" 501 -78 "kern" 477 -72 "kern" 461 -69 "kern" 445 -78 "kern" 407 -78 "kern" 390 -78 "kern" 372 -54 "kern" 351 -70 "kern" 293 -78 "kern" 83 -62 "kern" 77 -39 "kern" 73 -57 "kern" 71 -64 "kern" 70 -45 "kern" 55 -78 "kern" 49 -70 "kern" 517 -15 "kern" 478 -13 "kern" 462 -13 "kern" 373 -10 "kern" 353 -13 "kern" 10 -13 "kern"
 EndChar
 
 StartChar: i
@@ -1316,6 +1323,7 @@ SplineSet
  110 312 113 309 113 307 c 0
  113 302 121 294 121 250 c 0
 EndSplineSet
+Kerns2: 512 -76 "kern" 477 -76 "kern" 461 -76 "kern" 372 -69 "kern" 351 -76 "kern" 77 -38 "kern" 73 -59 "kern" 70 -56 "kern" 49 -76 "kern"
 EndChar
 
 StartChar: j
@@ -1377,6 +1385,7 @@ SplineSet
  167 408 145 386 137 386 c 0
  137 386 133 382 117 382 c 0
 EndSplineSet
+Kerns2: 512 -21 "kern" 477 -42 "kern" 461 -35 "kern" 372 -25 "kern" 351 -29 "kern" 73 -12 "kern" 70 -19 "kern" 49 -29 "kern"
 EndChar
 
 StartChar: Eacute
@@ -1534,6 +1543,7 @@ SplineSet
  253 609 271 626 279 630 c 0
  285 634 311 672 316 692 c 1
 EndSplineSet
+Kerns2: 512 -43 "kern" 501 -57 "kern" 477 -66 "kern" 461 -60 "kern" 445 -62 "kern" 407 -66 "kern" 390 -67 "kern" 372 -55 "kern" 351 -72 "kern" 293 -66 "kern" 83 -45 "kern" 77 -30 "kern" 73 -48 "kern" 71 -48 "kern" 70 -39 "kern" 55 -56 "kern" 49 -63 "kern"
 EndChar
 
 StartChar: Udieresis
@@ -2059,7 +2069,7 @@ SplineSet
  548 354 547 355 547 352 c 0
  547 348 525 333 519 333 c 0
 EndSplineSet
-Kerns2: 517 -15 "kern" 478 -15 "kern" 462 -15 "kern" 373 -9 "kern" 353 -15 "kern" 10 -15 "kern"
+Kerns2: 512 -67 "kern" 501 -75 "kern" 477 -68 "kern" 461 -68 "kern" 445 -75 "kern" 407 -75 "kern" 390 -75 "kern" 372 -46 "kern" 351 -65 "kern" 293 -75 "kern" 83 -63 "kern" 77 -48 "kern" 73 -58 "kern" 71 -60 "kern" 70 -46 "kern" 55 -75 "kern" 49 -65 "kern" 517 -15 "kern" 478 -15 "kern" 462 -15 "kern" 373 -9 "kern" 353 -15 "kern" 10 -15 "kern"
 Ligature2: "liga" c o
 EndChar
 
@@ -2140,7 +2150,7 @@ SplineSet
  673 263 666 270 661 275 c 0
  643 293 606 314 589 314 c 0
 EndSplineSet
-Kerns2: 517 -27 "kern" 478 -27 "kern" 462 -27 "kern" 373 -14 "kern" 353 -27 "kern" 21 -49 "kern" 10 -27 "kern"
+Kerns2: 512 -69 "kern" 501 -93 "kern" 477 -69 "kern" 461 -69 "kern" 445 -92 "kern" 407 -92 "kern" 390 -92 "kern" 372 -55 "kern" 351 -66 "kern" 293 -92 "kern" 83 -63 "kern" 77 -40 "kern" 73 -55 "kern" 71 -60 "kern" 70 -44 "kern" 55 -92 "kern" 49 -66 "kern" 517 -27 "kern" 478 -27 "kern" 462 -27 "kern" 373 -14 "kern" 353 -27 "kern" 21 -49 "kern" 10 -27 "kern"
 Ligature2: "liga" o o
 EndChar
 
@@ -2188,6 +2198,7 @@ SplineSet
  306 324 294 397 292 399 c 0
  287 406 284 443 280 447 c 0
 EndSplineSet
+Kerns2: 512 -43 "kern" 501 -27 "kern" 477 -44 "kern" 461 -44 "kern" 445 -27 "kern" 407 -27 "kern" 390 -27 "kern" 372 -36 "kern" 351 -43 "kern" 293 -27 "kern" 83 -26 "kern" 77 -26 "kern" 73 -35 "kern" 71 -28 "kern" 70 -32 "kern" 55 -27 "kern" 49 -43 "kern"
 EndChar
 
 StartChar: K
@@ -2237,6 +2248,7 @@ SplineSet
  96 388 108 400 113 409 c 0
  140 453 268 568 268 570 c 0
 EndSplineSet
+Kerns2: 512 -42 "kern" 501 -57 "kern" 477 -50 "kern" 461 -46 "kern" 445 -58 "kern" 407 -58 "kern" 390 -57 "kern" 372 -48 "kern" 351 -48 "kern" 293 -57 "kern" 83 -66 "kern" 77 -32 "kern" 73 -47 "kern" 71 -54 "kern" 70 -40 "kern" 55 -57 "kern" 49 -48 "kern"
 EndChar
 
 StartChar: L
@@ -2274,6 +2286,7 @@ SplineSet
  369 43 363 45 352 45 c 0
  281 45 188 -5 129 -5 c 0
 EndSplineSet
+Kerns2: 512 -130 "kern" 501 -156 "kern" 477 -132 "kern" 461 -129 "kern" 445 -156 "kern" 407 -156 "kern" 390 -156 "kern" 372 -127 "kern" 351 -128 "kern" 293 -156 "kern" 83 -114 "kern" 77 -63 "kern" 73 -97 "kern" 71 -117 "kern" 70 -88 "kern" 55 -156 "kern" 49 -128 "kern"
 EndChar
 
 StartChar: M
@@ -2549,6 +2562,7 @@ SplineSet
  393 350 389 368 375 406 c 0
  370 419 352 466 331 491 c 1
 EndSplineSet
+Kerns2: 512 -76 "kern" 501 -63 "kern" 477 -76 "kern" 461 -74 "kern" 445 -65 "kern" 407 -65 "kern" 390 -66 "kern" 372 -69 "kern" 351 -75 "kern" 293 -66 "kern" 83 -59 "kern" 77 -45 "kern" 73 -61 "kern" 71 -63 "kern" 70 -55 "kern" 55 -63 "kern" 49 -75 "kern"
 EndChar
 
 StartChar: R
@@ -2669,6 +2683,7 @@ SplineSet
  59 285 31 314 27 332 c 0
  25 337 24 341 23 341 c 0
 EndSplineSet
+Kerns2: 512 -38 "kern" 501 -37 "kern" 477 -39 "kern" 461 -39 "kern" 445 -38 "kern" 407 -38 "kern" 390 -38 "kern" 372 -30 "kern" 351 -36 "kern" 293 -38 "kern" 83 -42 "kern" 77 -26 "kern" 73 -31 "kern" 71 -33 "kern" 70 -30 "kern" 55 -37 "kern" 49 -36 "kern"
 EndChar
 
 StartChar: T
@@ -2819,6 +2834,7 @@ SplineSet
  301 511 288 525 288 552 c 0
  288 571 295 586 307 586 c 0
 EndSplineSet
+Kerns2: 512 -7 "kern" 477 -7 "kern" 461 -8 "kern" 73 -7 "kern" 70 -9 "kern"
 EndChar
 
 StartChar: V
@@ -2967,6 +2983,7 @@ SplineSet
  186 240 66 21 59 21 c 2
  57 21 l 2
 EndSplineSet
+Kerns2: 501 -14 "kern" 477 -7 "kern" 461 -7 "kern" 445 -15 "kern" 407 -15 "kern" 390 -15 "kern" 293 -15 "kern" 83 -38 "kern" 77 -9 "kern" 73 -13 "kern" 71 -19 "kern" 70 -10 "kern" 55 -14 "kern"
 EndChar
 
 StartChar: Y
@@ -3006,6 +3023,7 @@ SplineSet
  385 548 385 549 389 554 c 0
  394 559 405 564 411 564 c 0
 EndSplineSet
+Kerns2: 600 -88 "kern" 599 -29 "kern" 596 -78 "kern" 595 -29 "kern" 519 -78 "kern" 518 -79 "kern" 517 -43 "kern" 516 -79 "kern" 515 -18 "kern" 514 -108 "kern" 507 -106 "kern" 506 -76 "kern" 505 -92 "kern" 504 -13 "kern" 503 -87 "kern" 502 -100 "kern" 499 -33 "kern" 496 -53 "kern" 495 -76 "kern" 494 -14 "kern" 493 -87 "kern" 492 -100 "kern" 488 -54 "kern" 487 -19 "kern" 486 -29 "kern" 485 -24 "kern" 484 -27 "kern" 483 -42 "kern" 481 -33 "kern" 480 -9 "kern" 479 -53 "kern" 478 -42 "kern" 476 -69 "kern" 475 -7 "kern" 474 -78 "kern" 473 -79 "kern" 470 -96 "kern" 465 -30 "kern" 464 -87 "kern" 462 -42 "kern" 460 -69 "kern" 459 -7 "kern" 458 -87 "kern" 457 -47 "kern" 453 -48 "kern" 451 -59 "kern" 450 -20 "kern" 449 -10 "kern" 447 -18 "kern" 446 -25 "kern" 444 -33 "kern" 441 -53 "kern" 440 -78 "kern" 438 -77 "kern" 437 -72 "kern" 436 -79 "kern" 435 -73 "kern" 432 -29 "kern" 430 -47 "kern" 424 -13 "kern" 420 -33 "kern" 418 -53 "kern" 417 -68 "kern" 415 -81 "kern" 413 -82 "kern" 412 -71 "kern" 411 -75 "kern" 409 -82 "kern" 408 -80 "kern" 403 -53 "kern" 401 -55 "kern" 400 -52 "kern" 397 -8 "kern" 395 -30 "kern" 394 -21 "kern" 392 -28 "kern" 391 -34 "kern" 388 -7 "kern" 387 -81 "kern" 385 -29 "kern" 384 -47 "kern" 382 -33 "kern" 379 -53 "kern" 373 -42 "kern" 369 -102 "kern" 362 -94 "kern" 361 -33 "kern" 357 -12 "kern" 353 -42 "kern" 352 -108 "kern" 348 -36 "kern" 347 -26 "kern" 346 -16 "kern" 345 -48 "kern" 344 -33 "kern" 342 -33 "kern" 340 -29 "kern" 338 -53 "kern" 337 -47 "kern" 335 -50 "kern" 332 -51 "kern" 331 -44 "kern" 330 -49 "kern" 329 -24 "kern" 328 -42 "kern" 327 -56 "kern" 326 -39 "kern" 325 -60 "kern" 324 -58 "kern" 322 -33 "kern" 321 -53 "kern" 319 -7 "kern" 314 -47 "kern" 313 -74 "kern" 311 -68 "kern" 309 -49 "kern" 308 -7 "kern" 307 -68 "kern" 305 -58 "kern" 301 -59 "kern" 300 -47 "kern" 299 -94 "kern" 298 -66 "kern" 297 -70 "kern" 296 -39 "kern" 295 -69 "kern" 294 -79 "kern" 291 -33 "kern" 289 -53 "kern" 81 -47 "kern" 80 -39 "kern" 69 -45 "kern" 68 -38 "kern" 67 -21 "kern" 65 -81 "kern" 62 -29 "kern" 61 -27 "kern" 58 -47 "kern" 57 -10 "kern" 48 -7 "kern" 46 -33 "kern" 44 -33 "kern" 39 -53 "kern" 38 -92 "kern" 37 -90 "kern" 35 -40 "kern" 29 -72 "kern" 28 -33 "kern" 24 -12 "kern" 22 -96 "kern" 21 -63 "kern" 20 -87 "kern" 19 -108 "kern" 18 -85 "kern" 17 -79 "kern" 16 -106 "kern" 15 -62 "kern" 14 -78 "kern" 13 -62 "kern" 12 -76 "kern" 10 -42 "kern" 9 -69 "kern" 8 -78 "kern" 7 -103 "kern" 6 -68 "kern" 5 -92 "kern" 4 -79 "kern" 3 -75 "kern" 0 -100 "kern"
 EndChar
 
 StartChar: Z
@@ -3103,7 +3121,7 @@ SplineSet
  158 507 l 1
  120 507 l 2
 EndSplineSet
-Kerns2: 517 -78 "kern" 478 -78 "kern" 462 -78 "kern" 373 -77 "kern" 353 -78 "kern" 21 -98 "kern" 10 -78 "kern"
+Kerns2: 83 -67 "kern" 517 -78 "kern" 478 -78 "kern" 462 -78 "kern" 373 -77 "kern" 353 -78 "kern" 21 -98 "kern" 10 -78 "kern"
 Ligature2: "liga" I hyphen p r o n o u n
 EndChar
 
@@ -3208,6 +3226,7 @@ SplineSet
  318 450 308 460 301 466 c 0
  290 475 262 495 259 495 c 0
 EndSplineSet
+Kerns2: 512 -57 "kern" 501 -24 "kern" 477 -57 "kern" 461 -58 "kern" 445 -25 "kern" 407 -25 "kern" 390 -25 "kern" 372 -45 "kern" 351 -57 "kern" 293 -25 "kern" 83 -29 "kern" 77 -45 "kern" 73 -51 "kern" 71 -35 "kern" 70 -46 "kern" 55 -24 "kern" 49 -57 "kern"
 EndChar
 
 StartChar: E
@@ -3369,6 +3388,7 @@ SplineSet
  41 438 87 517 104 533 c 0
  120 548 164 575 172 575 c 0
 EndSplineSet
+Kerns2: 512 -7 "kern" 477 -7 "kern" 461 -8 "kern" 70 -8 "kern"
 EndChar
 
 StartChar: H
@@ -3577,6 +3597,7 @@ SplineSet
  723 384 742 384 742 385 c 0
  742 387 733 404 724 420 c 0
 EndSplineSet
+Kerns2: 512 -63 "kern" 501 -54 "kern" 477 -63 "kern" 461 -63 "kern" 445 -55 "kern" 407 -55 "kern" 390 -55 "kern" 372 -53 "kern" 351 -63 "kern" 293 -55 "kern" 83 -48 "kern" 77 -40 "kern" 73 -52 "kern" 71 -51 "kern" 70 -44 "kern" 55 -54 "kern" 49 -63 "kern"
 Ligature2: "liga" E A
 EndChar
 
@@ -4309,6 +4330,7 @@ SplineSet
  538 386 572 405 608 435 c 0
  629 452 649 484 649 496 c 0
 EndSplineSet
+Kerns2: 512 -25 "kern" 501 -16 "kern" 477 -26 "kern" 461 -27 "kern" 445 -15 "kern" 407 -15 "kern" 390 -15 "kern" 372 -18 "kern" 351 -21 "kern" 293 -15 "kern" 83 -18 "kern" 77 -13 "kern" 73 -18 "kern" 71 -14 "kern" 70 -19 "kern" 55 -14 "kern" 49 -21 "kern"
 Ligature2: "liga" L B
 EndChar
 
@@ -4418,6 +4440,7 @@ SplineSet
  728 403 729 404 747 422 c 0
  759 434 761 437 761 441 c 0
 EndSplineSet
+Kerns2: 512 -8 "kern" 477 -9 "kern" 461 -9 "kern" 372 -7 "kern" 351 -7 "kern" 49 -7 "kern"
 Ligature2: "liga" E R
 Ligature2: "liga" E R
 EndChar
@@ -4599,6 +4622,7 @@ SplineSet
  322 371 322 373 322 375 c 0
  322 385 318 398 318 413 c 0
 EndSplineSet
+Kerns2: 83 -30 "kern" 77 -10 "kern" 73 -9 "kern" 71 -8 "kern"
 Ligature2: "liga" T I
 EndChar
 
@@ -4674,6 +4698,7 @@ SplineSet
  699 320 l 1
  694 353 676 383 670 405 c 0
 EndSplineSet
+Kerns2: 512 -47 "kern" 501 -49 "kern" 477 -58 "kern" 461 -54 "kern" 445 -49 "kern" 407 -49 "kern" 390 -49 "kern" 372 -48 "kern" 351 -56 "kern" 293 -49 "kern" 83 -43 "kern" 77 -29 "kern" 73 -44 "kern" 71 -45 "kern" 70 -36 "kern" 55 -49 "kern" 49 -56 "kern"
 Ligature2: "liga" L A
 EndChar
 
@@ -4727,6 +4752,7 @@ SplineSet
  77 7 50 35 48 40 c 0
  29 81 30 81 30 87 c 0
 EndSplineSet
+Kerns2: 512 -132 "kern" 501 -160 "kern" 477 -132 "kern" 461 -130 "kern" 445 -159 "kern" 407 -159 "kern" 390 -159 "kern" 372 -126 "kern" 351 -127 "kern" 293 -159 "kern" 83 -114 "kern" 77 -63 "kern" 73 -97 "kern" 71 -117 "kern" 70 -87 "kern" 55 -159 "kern" 49 -127 "kern"
 Ligature2: "liga" L L
 EndChar
 
@@ -4894,6 +4920,7 @@ SplineSet
  582 304 608 303 622 301 c 2
  632 300 l 1
 EndSplineSet
+Kerns2: 512 -66 "kern" 501 -63 "kern" 477 -68 "kern" 461 -65 "kern" 445 -64 "kern" 407 -64 "kern" 390 -64 "kern" 372 -57 "kern" 351 -64 "kern" 293 -64 "kern" 83 -51 "kern" 77 -32 "kern" 73 -49 "kern" 71 -54 "kern" 70 -41 "kern" 55 -63 "kern" 49 -64 "kern"
 Ligature2: "liga" C A
 EndChar
 
@@ -4992,6 +5019,7 @@ SplineSet
  134 320 156 318 190 318 c 0
  279 318 330 397 330 401 c 0
 EndSplineSet
+Kerns2: 512 -45 "kern" 501 -62 "kern" 477 -46 "kern" 461 -46 "kern" 445 -63 "kern" 407 -63 "kern" 390 -63 "kern" 372 -37 "kern" 351 -44 "kern" 293 -63 "kern" 83 -66 "kern" 77 -39 "kern" 73 -47 "kern" 71 -53 "kern" 70 -37 "kern" 55 -62 "kern" 49 -44 "kern"
 Ligature2: "liga" P S
 EndChar
 
@@ -18290,6 +18318,7 @@ LayerCount: 2
 Fore
 Refer: 249 -1 N 1 0 0 1 201.5 -72 2
 Refer: 39 65 N 1 0 0 1 0 0 2
+Kerns2: 512 -44 "kern" 501 -27 "kern" 477 -45 "kern" 461 -45 "kern" 445 -32 "kern" 407 -33 "kern" 390 -35 "kern" 372 -37 "kern" 351 -50 "kern" 293 -33 "kern" 83 -26 "kern" 77 -27 "kern" 73 -36 "kern" 71 -28 "kern" 70 -32 "kern" 55 -27 "kern" 49 -44 "kern"
 EndChar
 
 StartChar: Iacute
@@ -18301,6 +18330,7 @@ LayerCount: 2
 Fore
 Refer: 249 -1 N 1 0 0 1 68.5 -96 2
 Refer: 64 73 N 1 0 0 1 0 0 2
+Kerns2: 512 -10 "kern" 477 -11 "kern" 461 -11 "kern" 372 -7 "kern" 351 -12 "kern" 293 -7 "kern" 49 -9 "kern"
 EndChar
 
 StartChar: Oacute
@@ -18324,6 +18354,7 @@ LayerCount: 2
 Fore
 Refer: 249 -1 N 1 0 0 1 217.5 -72 2
 Refer: 51 85 N 1 0 0 1 0 0 2
+Kerns2: 512 -8 "kern" 477 -8 "kern" 461 -8 "kern" 351 -11 "kern" 73 -7 "kern" 70 -9 "kern"
 EndChar
 
 StartChar: Yacute
@@ -18335,6 +18366,7 @@ LayerCount: 2
 Fore
 Refer: 249 -1 N 1 0 0 1 230.5 -95 2
 Refer: 55 89 N 1 0 0 1 0 0 2
+Kerns2: 600 -91 "kern" 599 -36 "kern" 598 -10 "kern" 596 -83 "kern" 595 -36 "kern" 519 -78 "kern" 518 -79 "kern" 517 -45 "kern" 516 -79 "kern" 515 -20 "kern" 514 -114 "kern" 507 -106 "kern" 506 -76 "kern" 505 -92 "kern" 504 -13 "kern" 503 -87 "kern" 502 -100 "kern" 499 -33 "kern" 496 -54 "kern" 495 -76 "kern" 494 -14 "kern" 493 -87 "kern" 492 -100 "kern" 488 -54 "kern" 487 -19 "kern" 486 -29 "kern" 485 -24 "kern" 484 -27 "kern" 483 -42 "kern" 481 -37 "kern" 480 -12 "kern" 479 -57 "kern" 478 -44 "kern" 476 -69 "kern" 475 -7 "kern" 474 -78 "kern" 473 -79 "kern" 470 -96 "kern" 465 -30 "kern" 464 -87 "kern" 462 -44 "kern" 460 -69 "kern" 459 -7 "kern" 458 -87 "kern" 457 -48 "kern" 453 -50 "kern" 451 -59 "kern" 450 -20 "kern" 449 -10 "kern" 447 -18 "kern" 446 -25 "kern" 444 -39 "kern" 443 -10 "kern" 441 -59 "kern" 440 -79 "kern" 438 -77 "kern" 437 -72 "kern" 436 -79 "kern" 435 -74 "kern" 432 -34 "kern" 430 -54 "kern" 424 -13 "kern" 420 -41 "kern" 418 -59 "kern" 417 -70 "kern" 415 -87 "kern" 413 -82 "kern" 412 -73 "kern" 411 -76 "kern" 409 -85 "kern" 408 -81 "kern" 403 -61 "kern" 401 -56 "kern" 400 -60 "kern" 397 -14 "kern" 396 -11 "kern" 395 -33 "kern" 394 -25 "kern" 392 -33 "kern" 391 -37 "kern" 388 -13 "kern" 387 -92 "kern" 386 -7 "kern" 385 -36 "kern" 384 -54 "kern" 382 -41 "kern" 381 -10 "kern" 379 -61 "kern" 373 -43 "kern" 369 -108 "kern" 362 -94 "kern" 361 -34 "kern" 358 -8 "kern" 357 -12 "kern" 353 -44 "kern" 352 -114 "kern" 348 -39 "kern" 347 -27 "kern" 346 -18 "kern" 345 -51 "kern" 344 -34 "kern" 342 -41 "kern" 341 -7 "kern" 340 -36 "kern" 338 -61 "kern" 337 -53 "kern" 335 -55 "kern" 332 -54 "kern" 331 -48 "kern" 330 -52 "kern" 329 -25 "kern" 328 -47 "kern" 327 -60 "kern" 326 -42 "kern" 325 -66 "kern" 324 -64 "kern" 322 -41 "kern" 321 -61 "kern" 319 -13 "kern" 316 -9 "kern" 314 -54 "kern" 313 -78 "kern" 311 -68 "kern" 309 -53 "kern" 308 -13 "kern" 307 -70 "kern" 305 -60 "kern" 301 -64 "kern" 300 -54 "kern" 299 -94 "kern" 298 -68 "kern" 297 -72 "kern" 296 -39 "kern" 295 -72 "kern" 294 -80 "kern" 291 -41 "kern" 289 -62 "kern" 81 -48 "kern" 80 -40 "kern" 69 -45 "kern" 68 -39 "kern" 67 -21 "kern" 65 -81 "kern" 62 -29 "kern" 61 -27 "kern" 58 -48 "kern" 57 -12 "kern" 48 -7 "kern" 46 -34 "kern" 44 -33 "kern" 39 -53 "kern" 38 -92 "kern" 37 -90 "kern" 35 -45 "kern" 29 -81 "kern" 28 -41 "kern" 24 -12 "kern" 22 -96 "kern" 21 -63 "kern" 20 -87 "kern" 19 -114 "kern" 18 -85 "kern" 17 -79 "kern" 16 -106 "kern" 15 -62 "kern" 14 -78 "kern" 13 -62 "kern" 12 -76 "kern" 10 -44 "kern" 9 -69 "kern" 8 -78 "kern" 7 -103 "kern" 6 -68 "kern" 5 -92 "kern" 4 -79 "kern" 3 -75 "kern" 0 -100 "kern"
 EndChar
 
 StartChar: aacute
@@ -18346,7 +18378,7 @@ LayerCount: 2
 Fore
 Refer: 249 -1 N 1 0 0 1 192 -255 2
 Refer: 0 97 N 1 0 0 1 0 0 2
-Kerns2: 517 -46 "kern" 478 -46 "kern" 462 -46 "kern" 373 -42 "kern" 353 -46 "kern" 21 -53 "kern" 10 -46 "kern"
+Kerns2: 512 -58 "kern" 501 -72 "kern" 477 -64 "kern" 461 -60 "kern" 445 -74 "kern" 407 -74 "kern" 390 -73 "kern" 372 -54 "kern" 351 -62 "kern" 293 -74 "kern" 83 -65 "kern" 77 -39 "kern" 73 -55 "kern" 71 -62 "kern" 70 -46 "kern" 55 -72 "kern" 49 -62 "kern" 517 -46 "kern" 478 -46 "kern" 462 -46 "kern" 373 -42 "kern" 353 -46 "kern" 21 -53 "kern" 10 -46 "kern"
 EndChar
 
 StartChar: eacute
@@ -18358,6 +18390,7 @@ LayerCount: 2
 Fore
 Refer: 249 -1 N 1 0 0 1 192.5 -218 2
 Refer: 20 101 N 1 0 0 1 0 0 2
+Kerns2: 512 -68 "kern" 501 -54 "kern" 477 -69 "kern" 461 -69 "kern" 445 -57 "kern" 407 -57 "kern" 390 -57 "kern" 372 -46 "kern" 351 -66 "kern" 293 -57 "kern" 83 -69 "kern" 77 -60 "kern" 73 -66 "kern" 71 -65 "kern" 70 -53 "kern" 55 -54 "kern" 49 -66 "kern"
 EndChar
 
 StartChar: iacute
@@ -18369,6 +18402,7 @@ LayerCount: 2
 Fore
 Refer: 249 -1 N 1 0 0 1 88 -343 2
 Refer: 262 305 N 1 0 0 1 0 0 2
+Kerns2: 512 -45 "kern" 477 -45 "kern" 461 -45 "kern" 372 -42 "kern" 351 -45 "kern" 73 -11 "kern" 70 -27 "kern" 49 -45 "kern"
 EndChar
 
 StartChar: oacute
@@ -18380,7 +18414,7 @@ LayerCount: 2
 Fore
 Refer: 249 -1 N 1 0 0 1 183 -246 2
 Refer: 5 111 N 1 0 0 1 0 0 2
-Kerns2: 517 -24 "kern" 478 -24 "kern" 462 -24 "kern" 373 -15 "kern" 353 -23 "kern" 21 -21 "kern" 10 -23 "kern"
+Kerns2: 512 -60 "kern" 501 -69 "kern" 477 -60 "kern" 461 -60 "kern" 445 -70 "kern" 407 -70 "kern" 390 -69 "kern" 372 -46 "kern" 351 -57 "kern" 293 -70 "kern" 83 -64 "kern" 77 -46 "kern" 73 -56 "kern" 71 -58 "kern" 70 -45 "kern" 55 -69 "kern" 49 -57 "kern" 517 -24 "kern" 478 -24 "kern" 462 -24 "kern" 373 -15 "kern" 353 -23 "kern" 21 -21 "kern" 10 -23 "kern"
 EndChar
 
 StartChar: uacute
@@ -18392,6 +18426,7 @@ LayerCount: 2
 Fore
 Refer: 249 -1 N 1 0 0 1 196.004 -240 2
 Refer: 12 117 N 1 0 0 1 0 0 2
+Kerns2: 512 -63 "kern" 501 -60 "kern" 477 -63 "kern" 461 -63 "kern" 445 -63 "kern" 407 -63 "kern" 390 -62 "kern" 372 -48 "kern" 351 -61 "kern" 293 -63 "kern" 83 -63 "kern" 77 -48 "kern" 73 -58 "kern" 71 -60 "kern" 70 -47 "kern" 55 -60 "kern" 49 -61 "kern"
 EndChar
 
 StartChar: yacute
@@ -18403,7 +18438,7 @@ LayerCount: 2
 Fore
 Refer: 249 -1 N 1 0 0 1 197.5 -303 2
 Refer: 16 121 N 1 0 0 1 0 0 2
-Kerns2: 517 -14 "kern" 478 -27 "kern" 462 -27 "kern" 373 -15 "kern" 353 -21 "kern" 21 -15 "kern" 10 -21 "kern"
+Kerns2: 512 -44 "kern" 501 -75 "kern" 477 -69 "kern" 461 -60 "kern" 445 -70 "kern" 407 -70 "kern" 390 -70 "kern" 372 -48 "kern" 351 -59 "kern" 293 -70 "kern" 83 -53 "kern" 77 -30 "kern" 73 -46 "kern" 71 -52 "kern" 70 -37 "kern" 55 -70 "kern" 49 -59 "kern" 517 -14 "kern" 478 -27 "kern" 462 -27 "kern" 373 -15 "kern" 353 -21 "kern" 21 -15 "kern" 10 -21 "kern"
 EndChar
 
 StartChar: Cacute
@@ -18427,7 +18462,7 @@ LayerCount: 2
 Fore
 Refer: 249 -1 N 1 0 0 1 174 -189 2
 Refer: 18 99 N 1 0 0 1 0 0 2
-Kerns2: 21 -13 "kern"
+Kerns2: 512 -82 "kern" 501 -56 "kern" 477 -82 "kern" 461 -81 "kern" 445 -59 "kern" 407 -62 "kern" 390 -59 "kern" 372 -79 "kern" 351 -82 "kern" 293 -61 "kern" 83 -65 "kern" 77 -56 "kern" 73 -73 "kern" 71 -72 "kern" 70 -63 "kern" 55 -56 "kern" 49 -81 "kern" 21 -13 "kern"
 EndChar
 
 StartChar: Lacute
@@ -18439,6 +18474,7 @@ LayerCount: 2
 Fore
 Refer: 249 -1 N 1 0 0 1 215 -106 2
 Refer: 41 76 N 1 0 0 1 0 0 2
+Kerns2: 512 -134 "kern" 501 -156 "kern" 477 -136 "kern" 461 -132 "kern" 445 -151 "kern" 407 -161 "kern" 390 -150 "kern" 372 -131 "kern" 351 -132 "kern" 293 -163 "kern" 83 -115 "kern" 77 -67 "kern" 73 -102 "kern" 71 -120 "kern" 70 -92 "kern" 55 -156 "kern" 49 -132 "kern"
 EndChar
 
 StartChar: lacute
@@ -18473,7 +18509,7 @@ LayerCount: 2
 Fore
 Refer: 249 -1 N 1 0 0 1 176.497 -233 2
 Refer: 4 110 N 1 0 0 1 0 0 2
-Kerns2: 517 -27 "kern" 478 -27 "kern" 462 -27 "kern" 373 -20 "kern" 353 -26 "kern" 21 -33 "kern" 10 -26 "kern"
+Kerns2: 512 -42 "kern" 501 -64 "kern" 477 -57 "kern" 461 -53 "kern" 445 -65 "kern" 407 -66 "kern" 390 -64 "kern" 372 -47 "kern" 351 -54 "kern" 293 -65 "kern" 83 -57 "kern" 77 -32 "kern" 73 -48 "kern" 71 -54 "kern" 70 -37 "kern" 55 -63 "kern" 49 -54 "kern" 517 -27 "kern" 478 -27 "kern" 462 -27 "kern" 373 -20 "kern" 353 -26 "kern" 21 -33 "kern" 10 -26 "kern"
 EndChar
 
 StartChar: Racute
@@ -18496,6 +18532,7 @@ LayerCount: 2
 Fore
 Refer: 249 -1 N 1 0 0 1 200 -236 2
 Refer: 8 114 N 1 0 0 1 0 0 2
+Kerns2: 512 -81 "kern" 501 -64 "kern" 477 -81 "kern" 461 -82 "kern" 445 -66 "kern" 407 -67 "kern" 390 -66 "kern" 372 -62 "kern" 351 -78 "kern" 293 -66 "kern" 83 -93 "kern" 77 -84 "kern" 73 -87 "kern" 71 -81 "kern" 70 -72 "kern" 55 -63 "kern" 49 -78 "kern"
 EndChar
 
 StartChar: Sacute
@@ -18507,6 +18544,7 @@ LayerCount: 2
 Fore
 Refer: 249 -1 N 1 0 0 1 218.5 -72 2
 Refer: 48 83 N 1 0 0 1 0 0 2
+Kerns2: 512 -39 "kern" 501 -37 "kern" 477 -39 "kern" 461 -39 "kern" 445 -43 "kern" 407 -45 "kern" 390 -47 "kern" 372 -30 "kern" 351 -45 "kern" 293 -45 "kern" 83 -42 "kern" 77 -26 "kern" 73 -32 "kern" 71 -33 "kern" 70 -30 "kern" 55 -37 "kern" 49 -37 "kern"
 EndChar
 
 StartChar: sacute
@@ -18518,7 +18556,7 @@ LayerCount: 2
 Fore
 Refer: 249 -1 N 1 0 0 1 172.5 -212 2
 Refer: 9 115 N 1 0 0 1 0 0 2
-Kerns2: 517 -35 "kern" 478 -34 "kern" 462 -34 "kern" 373 -22 "kern" 353 -34 "kern" 21 -45 "kern" 10 -34 "kern" 600 -27 "kern" 596 -30 "kern" 518 -42 "kern" 515 -27 "kern" 507 -21 "kern" 476 -8 "kern" 472 -12 "kern" 470 -16 "kern" 460 -8 "kern" 451 -25 "kern" 438 -48 "kern" 437 -23 "kern" 422 -10 "kern" 413 -27 "kern" 401 -29 "kern" 399 -12 "kern" 397 -29 "kern" 371 -18 "kern" 346 -27 "kern" 329 -54 "kern" 328 -12 "kern" 311 -51 "kern" 309 -11 "kern" 303 -12 "kern" 299 -27 "kern" 22 -16 "kern" 17 -42 "kern" 16 -21 "kern" 13 -17 "kern" 9 -8 "kern"
+Kerns2: 512 -66 "kern" 501 -78 "kern" 477 -67 "kern" 461 -67 "kern" 445 -79 "kern" 407 -82 "kern" 390 -79 "kern" 372 -55 "kern" 351 -66 "kern" 293 -81 "kern" 83 -68 "kern" 77 -50 "kern" 73 -61 "kern" 71 -64 "kern" 70 -50 "kern" 55 -78 "kern" 49 -66 "kern" 517 -35 "kern" 478 -34 "kern" 462 -34 "kern" 373 -22 "kern" 353 -34 "kern" 21 -45 "kern" 10 -34 "kern" 600 -27 "kern" 596 -30 "kern" 518 -42 "kern" 515 -27 "kern" 507 -21 "kern" 476 -8 "kern" 472 -12 "kern" 470 -16 "kern" 460 -8 "kern" 451 -25 "kern" 438 -48 "kern" 437 -23 "kern" 422 -10 "kern" 413 -27 "kern" 401 -29 "kern" 399 -12 "kern" 397 -29 "kern" 371 -18 "kern" 346 -27 "kern" 329 -54 "kern" 328 -12 "kern" 311 -51 "kern" 309 -11 "kern" 303 -12 "kern" 299 -27 "kern" 22 -16 "kern" 17 -42 "kern" 16 -21 "kern" 13 -17 "kern" 9 -8 "kern"
 EndChar
 
 StartChar: Zacute
@@ -18541,6 +18579,7 @@ LayerCount: 2
 Fore
 Refer: 249 -1 N 1 0 0 1 180 -277 2
 Refer: 17 122 N 1 0 0 1 0 0 2
+Kerns2: 512 -65 "kern" 501 -60 "kern" 477 -66 "kern" 461 -63 "kern" 445 -60 "kern" 407 -60 "kern" 390 -60 "kern" 372 -54 "kern" 351 -64 "kern" 293 -60 "kern" 83 -69 "kern" 77 -48 "kern" 73 -59 "kern" 71 -63 "kern" 70 -52 "kern" 55 -60 "kern" 49 -64 "kern"
 EndChar
 
 StartChar: Wacute
@@ -18563,6 +18602,7 @@ LayerCount: 2
 Fore
 Refer: 249 -1 N 1 0 0 1 230 -197.975 2
 Refer: 14 119 N 1 0 0 1 0 0 2
+Kerns2: 512 -69 "kern" 501 -35 "kern" 477 -71 "kern" 461 -70 "kern" 445 -38 "kern" 407 -38 "kern" 390 -38 "kern" 372 -54 "kern" 351 -69 "kern" 293 -38 "kern" 83 -41 "kern" 77 -53 "kern" 73 -62 "kern" 71 -57 "kern" 70 -50 "kern" 55 -34 "kern" 49 -68 "kern"
 EndChar
 
 StartChar: Ccaron
@@ -18598,6 +18638,7 @@ LayerCount: 2
 Fore
 Refer: 258 -1 N 1 0 0 1 68.5005 390.602 2
 Refer: 64 73 N 1 0 0 1 0 0 2
+Kerns2: 512 -24 "kern" 501 -11 "kern" 477 -25 "kern" 461 -24 "kern" 445 -10 "kern" 407 -15 "kern" 390 -9 "kern" 372 -19 "kern" 351 -7 "kern" 293 -19 "kern" 83 -17 "kern" 77 -10 "kern" 73 -18 "kern" 71 -13 "kern" 70 -14 "kern" 55 -11 "kern" 49 -23 "kern"
 EndChar
 
 StartChar: Ncaron
@@ -18631,6 +18672,7 @@ LayerCount: 2
 Fore
 Refer: 258 -1 N 1 0 0 1 218.5 414.602 2
 Refer: 48 83 N 1 0 0 1 0 0 2
+Kerns2: 512 -39 "kern" 501 -37 "kern" 477 -39 "kern" 461 -39 "kern" 445 -43 "kern" 407 -45 "kern" 390 -48 "kern" 372 -30 "kern" 351 -45 "kern" 293 -46 "kern" 83 -42 "kern" 77 -26 "kern" 73 -32 "kern" 71 -33 "kern" 70 -30 "kern" 55 -37 "kern" 49 -37 "kern"
 EndChar
 
 StartChar: Zcaron
@@ -18653,6 +18695,7 @@ LayerCount: 2
 Fore
 Refer: 258 -1 N 1 0 0 1 201.5 414.602 2
 Refer: 39 65 N 1 0 0 1 0 0 2
+Kerns2: 512 -44 "kern" 501 -27 "kern" 477 -45 "kern" 461 -45 "kern" 445 -32 "kern" 407 -34 "kern" 390 -36 "kern" 372 -37 "kern" 351 -51 "kern" 293 -34 "kern" 83 -26 "kern" 77 -27 "kern" 73 -36 "kern" 71 -28 "kern" 70 -32 "kern" 55 -27 "kern" 49 -44 "kern"
 EndChar
 
 StartChar: uni01D1
@@ -18676,6 +18719,7 @@ LayerCount: 2
 Fore
 Refer: 258 -1 N 1 0 0 1 217.5 409.602 2
 Refer: 51 85 N 1 0 0 1 0 0 2
+Kerns2: 512 -8 "kern" 477 -8 "kern" 461 -9 "kern" 351 -13 "kern" 77 -7 "kern" 73 -7 "kern" 70 -9 "kern"
 EndChar
 
 StartChar: ccaron
@@ -18687,7 +18731,7 @@ LayerCount: 2
 Fore
 Refer: 258 -1 N 1 0 0 1 174 285.602 2
 Refer: 18 99 N 1 0 0 1 0 0 2
-Kerns2: 517 -7 "kern" 21 -14 "kern"
+Kerns2: 512 -63 "kern" 501 -48 "kern" 477 -63 "kern" 461 -63 "kern" 445 -48 "kern" 407 -56 "kern" 390 -49 "kern" 372 -61 "kern" 351 -65 "kern" 293 -54 "kern" 83 -61 "kern" 77 -49 "kern" 73 -63 "kern" 71 -61 "kern" 70 -53 "kern" 55 -48 "kern" 49 -63 "kern" 517 -7 "kern" 21 -14 "kern"
 EndChar
 
 StartChar: ecaron
@@ -18699,6 +18743,7 @@ LayerCount: 2
 Fore
 Refer: 258 -1 N 1 0 0 1 192.5 256.602 2
 Refer: 20 101 N 1 0 0 1 0 0 2
+Kerns2: 512 -52 "kern" 501 -45 "kern" 477 -53 "kern" 461 -53 "kern" 445 -48 "kern" 407 -51 "kern" 390 -48 "kern" 372 -36 "kern" 351 -53 "kern" 293 -50 "kern" 83 -63 "kern" 77 -51 "kern" 73 -57 "kern" 71 -54 "kern" 70 -44 "kern" 55 -45 "kern" 49 -51 "kern"
 EndChar
 
 StartChar: ncaron
@@ -18710,7 +18755,7 @@ LayerCount: 2
 Fore
 Refer: 258 -1 N 1 0 0 1 176.497 241.602 2
 Refer: 4 110 N 1 0 0 1 0 0 2
-Kerns2: 517 -27 "kern" 478 -27 "kern" 462 -27 "kern" 373 -21 "kern" 353 -26 "kern" 21 -33 "kern" 10 -26 "kern"
+Kerns2: 512 -21 "kern" 501 -40 "kern" 477 -27 "kern" 461 -27 "kern" 445 -40 "kern" 407 -43 "kern" 390 -40 "kern" 372 -22 "kern" 351 -25 "kern" 293 -42 "kern" 83 -48 "kern" 77 -22 "kern" 73 -32 "kern" 71 -36 "kern" 70 -23 "kern" 55 -39 "kern" 49 -24 "kern" 517 -27 "kern" 478 -27 "kern" 462 -27 "kern" 373 -21 "kern" 353 -26 "kern" 21 -33 "kern" 10 -26 "kern"
 EndChar
 
 StartChar: rcaron
@@ -18722,6 +18767,7 @@ LayerCount: 2
 Fore
 Refer: 258 -1 N 1 0 0 1 200 238.602 2
 Refer: 8 114 N 1 0 0 1 0 0 2
+Kerns2: 512 -48 "kern" 501 -45 "kern" 477 -48 "kern" 461 -49 "kern" 445 -46 "kern" 407 -50 "kern" 390 -46 "kern" 372 -38 "kern" 351 -47 "kern" 293 -48 "kern" 83 -76 "kern" 77 -59 "kern" 73 -61 "kern" 71 -56 "kern" 70 -48 "kern" 55 -45 "kern" 49 -45 "kern"
 EndChar
 
 StartChar: scaron
@@ -18733,7 +18779,7 @@ LayerCount: 2
 Fore
 Refer: 258 -1 N 1 0 0 1 172.5 262.602 2
 Refer: 9 115 N 1 0 0 1 0 0 2
-Kerns2: 517 -35 "kern" 478 -35 "kern" 462 -35 "kern" 373 -23 "kern" 353 -35 "kern" 21 -46 "kern" 10 -35 "kern" 600 -28 "kern" 596 -30 "kern" 518 -42 "kern" 515 -26 "kern" 507 -21 "kern" 476 -8 "kern" 472 -12 "kern" 470 -16 "kern" 460 -8 "kern" 451 -26 "kern" 438 -48 "kern" 437 -24 "kern" 422 -11 "kern" 413 -27 "kern" 401 -30 "kern" 399 -13 "kern" 397 -27 "kern" 371 -18 "kern" 346 -24 "kern" 329 -51 "kern" 328 -13 "kern" 311 -52 "kern" 309 -12 "kern" 303 -13 "kern" 299 -27 "kern" 22 -16 "kern" 17 -42 "kern" 16 -21 "kern" 13 -17 "kern" 9 -8 "kern"
+Kerns2: 512 -46 "kern" 501 -60 "kern" 477 -47 "kern" 461 -47 "kern" 445 -57 "kern" 407 -66 "kern" 390 -58 "kern" 372 -39 "kern" 351 -48 "kern" 293 -63 "kern" 83 -61 "kern" 77 -42 "kern" 73 -50 "kern" 71 -51 "kern" 70 -39 "kern" 55 -60 "kern" 49 -45 "kern" 517 -35 "kern" 478 -35 "kern" 462 -35 "kern" 373 -23 "kern" 353 -35 "kern" 21 -46 "kern" 10 -35 "kern" 600 -28 "kern" 596 -30 "kern" 518 -42 "kern" 515 -26 "kern" 507 -21 "kern" 476 -8 "kern" 472 -12 "kern" 470 -16 "kern" 460 -8 "kern" 451 -26 "kern" 438 -48 "kern" 437 -24 "kern" 422 -11 "kern" 413 -27 "kern" 401 -30 "kern" 399 -13 "kern" 397 -27 "kern" 371 -18 "kern" 346 -24 "kern" 329 -51 "kern" 328 -13 "kern" 311 -52 "kern" 309 -12 "kern" 303 -13 "kern" 299 -27 "kern" 22 -16 "kern" 17 -42 "kern" 16 -21 "kern" 13 -17 "kern" 9 -8 "kern"
 EndChar
 
 StartChar: zcaron
@@ -18745,7 +18791,7 @@ LayerCount: 2
 Fore
 Refer: 258 -1 N 1 0 0 1 180 197.602 2
 Refer: 17 122 N 1 0 0 1 0 0 2
-Kerns2: 517 -8 "kern"
+Kerns2: 512 -21 "kern" 501 -24 "kern" 477 -22 "kern" 461 -21 "kern" 445 -26 "kern" 407 -26 "kern" 390 -26 "kern" 372 -18 "kern" 351 -21 "kern" 293 -26 "kern" 83 -48 "kern" 77 -24 "kern" 73 -27 "kern" 71 -31 "kern" 70 -23 "kern" 55 -24 "kern" 49 -21 "kern" 517 -8 "kern"
 EndChar
 
 StartChar: uni01CE
@@ -18757,7 +18803,7 @@ LayerCount: 2
 Fore
 Refer: 258 -1 N 1 0 0 1 192 219.602 2
 Refer: 0 97 N 1 0 0 1 0 0 2
-Kerns2: 517 -46 "kern" 478 -46 "kern" 462 -46 "kern" 373 -42 "kern" 353 -46 "kern" 21 -53 "kern" 10 -46 "kern"
+Kerns2: 512 -32 "kern" 501 -44 "kern" 477 -34 "kern" 461 -33 "kern" 445 -46 "kern" 407 -47 "kern" 390 -45 "kern" 372 -29 "kern" 351 -32 "kern" 293 -46 "kern" 83 -54 "kern" 77 -27 "kern" 73 -37 "kern" 71 -41 "kern" 70 -29 "kern" 55 -44 "kern" 49 -32 "kern" 517 -46 "kern" 478 -46 "kern" 462 -46 "kern" 373 -42 "kern" 353 -46 "kern" 21 -53 "kern" 10 -46 "kern"
 EndChar
 
 StartChar: uni01D2
@@ -18769,7 +18815,7 @@ LayerCount: 2
 Fore
 Refer: 258 -1 N 1 0 0 1 183 228.602 2
 Refer: 5 111 N 1 0 0 1 0 0 2
-Kerns2: 517 -24 "kern" 478 -24 "kern" 462 -24 "kern" 373 -16 "kern" 353 -24 "kern" 21 -22 "kern" 10 -24 "kern"
+Kerns2: 512 -34 "kern" 501 -45 "kern" 477 -34 "kern" 461 -35 "kern" 445 -46 "kern" 407 -48 "kern" 390 -46 "kern" 372 -27 "kern" 351 -33 "kern" 293 -48 "kern" 83 -54 "kern" 77 -34 "kern" 73 -39 "kern" 71 -41 "kern" 70 -30 "kern" 55 -45 "kern" 49 -32 "kern" 517 -24 "kern" 478 -24 "kern" 462 -24 "kern" 373 -16 "kern" 353 -24 "kern" 21 -22 "kern" 10 -24 "kern"
 EndChar
 
 StartChar: uni01D4
@@ -18781,6 +18827,7 @@ LayerCount: 2
 Fore
 Refer: 258 -1 N 1 0 0 1 196.005 234.602 2
 Refer: 12 117 N 1 0 0 1 0 0 2
+Kerns2: 512 -46 "kern" 501 -48 "kern" 477 -46 "kern" 461 -47 "kern" 445 -51 "kern" 407 -52 "kern" 390 -51 "kern" 372 -36 "kern" 351 -45 "kern" 293 -51 "kern" 83 -58 "kern" 77 -41 "kern" 73 -48 "kern" 71 -49 "kern" 70 -38 "kern" 55 -48 "kern" 49 -45 "kern"
 EndChar
 
 StartChar: uni01D0
@@ -18814,7 +18861,7 @@ LayerCount: 2
 Fore
 Refer: 251 -1 N 1 0 0 1 192 -162 2
 Refer: 0 97 N 1 0 0 1 0 0 2
-Kerns2: 517 -46 "kern" 478 -46 "kern" 462 -46 "kern" 373 -42 "kern" 353 -46 "kern" 21 -53 "kern" 10 -46 "kern"
+Kerns2: 512 -45 "kern" 501 -51 "kern" 477 -48 "kern" 461 -46 "kern" 445 -55 "kern" 407 -57 "kern" 390 -55 "kern" 372 -41 "kern" 351 -48 "kern" 293 -57 "kern" 83 -53 "kern" 77 -31 "kern" 73 -44 "kern" 71 -46 "kern" 70 -36 "kern" 55 -51 "kern" 49 -46 "kern" 517 -46 "kern" 478 -46 "kern" 462 -46 "kern" 373 -42 "kern" 353 -46 "kern" 21 -53 "kern" 10 -46 "kern"
 EndChar
 
 StartChar: Uring
@@ -18826,6 +18873,7 @@ LayerCount: 2
 Fore
 Refer: 251 -1 N 1 0 0 1 217.5 21 2
 Refer: 51 85 N 1 0 0 1 0 0 2
+Kerns2: 512 -8 "kern" 477 -8 "kern" 461 -8 "kern" 351 -14 "kern" 73 -7 "kern" 70 -9 "kern"
 EndChar
 
 StartChar: uring
@@ -18837,6 +18885,7 @@ LayerCount: 2
 Fore
 Refer: 251 -1 N 1 0 0 1 196.004 -147 2
 Refer: 12 117 N 1 0 0 1 0 0 2
+Kerns2: 512 -52 "kern" 501 -50 "kern" 477 -53 "kern" 461 -53 "kern" 445 -54 "kern" 407 -56 "kern" 390 -54 "kern" 372 -41 "kern" 351 -54 "kern" 293 -56 "kern" 83 -57 "kern" 77 -42 "kern" 73 -50 "kern" 71 -51 "kern" 70 -41 "kern" 55 -50 "kern" 49 -51 "kern"
 EndChar
 
 StartChar: Abreve
@@ -18848,6 +18897,7 @@ LayerCount: 2
 Fore
 Refer: 261 -1 N 1 0 0 1 421.5 700.619 2
 Refer: 39 65 N 1 0 0 1 0 0 2
+Kerns2: 512 -44 "kern" 501 -27 "kern" 477 -45 "kern" 461 -45 "kern" 445 -32 "kern" 407 -34 "kern" 390 -36 "kern" 372 -37 "kern" 351 -50 "kern" 293 -34 "kern" 83 -26 "kern" 77 -27 "kern" 73 -36 "kern" 71 -28 "kern" 70 -32 "kern" 55 -27 "kern" 49 -44 "kern"
 EndChar
 
 StartChar: Ebreve
@@ -18871,6 +18921,7 @@ LayerCount: 2
 Fore
 Refer: 261 -1 N 1 0 0 1 446 692.619 2
 Refer: 62 71 N 1 0 0 1 0 0 2
+Kerns2: 512 -8 "kern" 477 -9 "kern" 461 -9 "kern" 351 -15 "kern" 70 -8 "kern" 49 -8 "kern"
 EndChar
 
 StartChar: Ibreve
@@ -18882,6 +18933,7 @@ LayerCount: 2
 Fore
 Refer: 261 -1 N 1 0 0 1 288.5 676.619 2
 Refer: 64 73 N 1 0 0 1 0 0 2
+Kerns2: 512 -22 "kern" 501 -10 "kern" 477 -24 "kern" 461 -23 "kern" 407 -13 "kern" 372 -18 "kern" 351 -11 "kern" 293 -16 "kern" 83 -16 "kern" 77 -9 "kern" 73 -18 "kern" 71 -12 "kern" 70 -13 "kern" 55 -10 "kern" 49 -21 "kern"
 EndChar
 
 StartChar: Obreve
@@ -18905,6 +18957,7 @@ LayerCount: 2
 Fore
 Refer: 261 -1 N 1 0 0 1 437.5 700.619 2
 Refer: 51 85 N 1 0 0 1 0 0 2
+Kerns2: 512 -8 "kern" 477 -8 "kern" 461 -8 "kern" 351 -12 "kern" 73 -7 "kern" 70 -9 "kern"
 EndChar
 
 StartChar: abreve
@@ -18916,7 +18969,7 @@ LayerCount: 2
 Fore
 Refer: 261 -1 N 1 0 0 1 412 505.619 2
 Refer: 0 97 N 1 0 0 1 0 0 2
-Kerns2: 517 -45 "kern" 478 -45 "kern" 462 -45 "kern" 373 -41 "kern" 353 -45 "kern" 21 -52 "kern" 10 -45 "kern"
+Kerns2: 512 -24 "kern" 501 -28 "kern" 477 -26 "kern" 461 -25 "kern" 445 -29 "kern" 407 -29 "kern" 390 -29 "kern" 372 -21 "kern" 351 -24 "kern" 293 -29 "kern" 83 -39 "kern" 77 -18 "kern" 73 -26 "kern" 71 -28 "kern" 70 -22 "kern" 55 -28 "kern" 49 -24 "kern" 517 -45 "kern" 478 -45 "kern" 462 -45 "kern" 373 -41 "kern" 353 -45 "kern" 21 -52 "kern" 10 -45 "kern"
 EndChar
 
 StartChar: ebreve
@@ -18928,6 +18981,7 @@ LayerCount: 2
 Fore
 Refer: 261 -1 N 1 0 0 1 412.5 542.619 2
 Refer: 20 101 N 1 0 0 1 0 0 2
+Kerns2: 512 -38 "kern" 501 -33 "kern" 477 -38 "kern" 461 -38 "kern" 445 -36 "kern" 407 -36 "kern" 390 -36 "kern" 372 -26 "kern" 351 -36 "kern" 293 -36 "kern" 83 -54 "kern" 77 -39 "kern" 73 -42 "kern" 71 -42 "kern" 70 -33 "kern" 55 -33 "kern" 49 -36 "kern"
 EndChar
 
 StartChar: gbreve
@@ -18939,7 +18993,7 @@ LayerCount: 2
 Fore
 Refer: 261 -1 N 1 0 0 1 359 516.619 2
 Refer: 22 103 N 1 0 0 1 0 0 2
-Kerns2: 517 -8 "kern" 478 -30 "kern" 462 -28 "kern" 373 -16 "kern" 353 -22 "kern" 21 -24 "kern" 10 -22 "kern"
+Kerns2: 512 -40 "kern" 501 -67 "kern" 477 -66 "kern" 461 -56 "kern" 445 -64 "kern" 407 -64 "kern" 390 -64 "kern" 372 -48 "kern" 351 -56 "kern" 293 -64 "kern" 83 -56 "kern" 77 -33 "kern" 73 -48 "kern" 71 -53 "kern" 70 -39 "kern" 55 -63 "kern" 49 -56 "kern" 517 -8 "kern" 478 -30 "kern" 462 -28 "kern" 373 -16 "kern" 353 -22 "kern" 21 -24 "kern" 10 -22 "kern"
 EndChar
 
 StartChar: obreve
@@ -18951,7 +19005,7 @@ LayerCount: 2
 Fore
 Refer: 261 -1 N 1 0 0 1 403 514.619 2
 Refer: 5 111 N 1 0 0 1 0 0 2
-Kerns2: 517 -24 "kern" 478 -24 "kern" 462 -24 "kern" 373 -17 "kern" 353 -24 "kern" 21 -22 "kern" 10 -24 "kern"
+Kerns2: 512 -23 "kern" 501 -27 "kern" 477 -23 "kern" 461 -24 "kern" 445 -28 "kern" 407 -28 "kern" 390 -28 "kern" 372 -18 "kern" 351 -21 "kern" 293 -28 "kern" 83 -41 "kern" 77 -22 "kern" 73 -25 "kern" 71 -28 "kern" 70 -21 "kern" 55 -27 "kern" 49 -21 "kern" 517 -24 "kern" 478 -24 "kern" 462 -24 "kern" 373 -17 "kern" 353 -24 "kern" 21 -22 "kern" 10 -24 "kern"
 EndChar
 
 StartChar: ubreve
@@ -18963,6 +19017,7 @@ LayerCount: 2
 Fore
 Refer: 261 -1 N 1 0 0 1 416.004 520.619 2
 Refer: 12 117 N 1 0 0 1 0 0 2
+Kerns2: 512 -36 "kern" 501 -36 "kern" 477 -36 "kern" 461 -37 "kern" 445 -38 "kern" 407 -38 "kern" 390 -38 "kern" 372 -29 "kern" 351 -35 "kern" 293 -38 "kern" 83 -48 "kern" 77 -33 "kern" 73 -37 "kern" 71 -39 "kern" 70 -31 "kern" 55 -36 "kern" 49 -35 "kern"
 EndChar
 
 StartChar: ibreve
@@ -18985,6 +19040,7 @@ LayerCount: 2
 Fore
 Refer: 258 -1 N 1 0 0 1 235.273 421.602 2
 Refer: 59 68 N 1 0 0 1 0 0 2
+Kerns2: 512 -58 "kern" 501 -24 "kern" 477 -59 "kern" 461 -59 "kern" 445 -30 "kern" 407 -32 "kern" 390 -35 "kern" 372 -45 "kern" 351 -66 "kern" 293 -32 "kern" 83 -29 "kern" 77 -45 "kern" 73 -51 "kern" 71 -36 "kern" 70 -46 "kern" 55 -24 "kern" 49 -57 "kern"
 EndChar
 
 StartChar: Tcaron
@@ -19044,6 +19100,7 @@ LayerCount: 2
 Fore
 Refer: 130 8217 N 1 0 0 1 380 -104 2
 Refer: 41 76 N 1 0 0 1 0 0 2
+Kerns2: 83 -16 "kern"
 EndChar
 
 StartChar: _l_crossbar
@@ -19078,6 +19135,7 @@ LayerCount: 2
 Fore
 Refer: 356 -1 N 1 0 0 1 75 230.2 2
 Refer: 41 76 N 1 0 0 1 0 0 2
+Kerns2: 512 -128 "kern" 501 -153 "kern" 477 -130 "kern" 461 -126 "kern" 445 -153 "kern" 407 -153 "kern" 390 -153 "kern" 372 -123 "kern" 351 -126 "kern" 293 -153 "kern" 83 -112 "kern" 77 -63 "kern" 73 -96 "kern" 71 -115 "kern" 70 -87 "kern" 55 -153 "kern" 49 -126 "kern"
 EndChar
 
 StartChar: lslash
@@ -19089,7 +19147,7 @@ LayerCount: 2
 Fore
 Refer: 356 -1 N 1 0 0 1 75 362.6 2
 Refer: 2 108 N 1 0 0 1 0 0 2
-Kerns2: 21 -13 "kern"
+Kerns2: 477 -8 "kern" 461 -7 "kern" 21 -13 "kern"
 EndChar
 
 StartChar: _cap_o_crossbar
@@ -19159,7 +19217,7 @@ LayerCount: 2
 Fore
 Refer: 360 -1 N 1 0 0 1 183 218.5 2
 Refer: 5 111 N 1 0 0 1 0 0 2
-Kerns2: 21 -13 "kern"
+Kerns2: 512 -60 "kern" 501 -30 "kern" 477 -61 "kern" 461 -61 "kern" 445 -29 "kern" 407 -29 "kern" 390 -29 "kern" 372 -44 "kern" 351 -57 "kern" 293 -29 "kern" 83 -36 "kern" 77 -41 "kern" 73 -51 "kern" 71 -49 "kern" 70 -39 "kern" 55 -29 "kern" 49 -57 "kern" 21 -13 "kern"
 EndChar
 
 StartChar: Ldot
@@ -19262,6 +19320,7 @@ LayerCount: 2
 Fore
 Refer: 365 -1 N 1 0 0 1 145 309.5 2
 Refer: 59 68 N 1 0 0 1 0 0 2
+Kerns2: 512 -57 "kern" 501 -24 "kern" 477 -57 "kern" 461 -58 "kern" 445 -25 "kern" 407 -25 "kern" 390 -25 "kern" 372 -45 "kern" 351 -57 "kern" 293 -25 "kern" 83 -29 "kern" 77 -45 "kern" 73 -51 "kern" 71 -35 "kern" 70 -46 "kern" 55 -24 "kern" 49 -57 "kern"
 EndChar
 
 StartChar: dcroat
@@ -19295,7 +19354,7 @@ LayerCount: 2
 Fore
 Refer: 366 -1 N 1 0 0 1 70 498.85 2
 Refer: 23 104 N 1 0 0 1 0 0 2
-Kerns2: 517 -15 "kern" 478 -14 "kern" 462 -14 "kern" 373 -10 "kern" 353 -14 "kern" 10 -14 "kern"
+Kerns2: 512 -66 "kern" 501 -72 "kern" 477 -69 "kern" 461 -66 "kern" 445 -72 "kern" 407 -73 "kern" 390 -73 "kern" 372 -53 "kern" 351 -66 "kern" 293 -73 "kern" 83 -60 "kern" 77 -38 "kern" 73 -54 "kern" 71 -60 "kern" 70 -44 "kern" 55 -72 "kern" 49 -66 "kern" 517 -15 "kern" 478 -14 "kern" 462 -14 "kern" 373 -10 "kern" 353 -14 "kern" 10 -14 "kern"
 EndChar
 
 StartChar: Tbar
@@ -19319,7 +19378,7 @@ LayerCount: 2
 Fore
 Refer: 366 -1 N 1 0 0 1 148 209.5 2
 Refer: 10 116 N 1 0 0 1 0 0 2
-Kerns2: 600 -33 "kern" 596 -33 "kern" 515 -9 "kern" 507 -12 "kern" 470 -18 "kern" 451 -18 "kern" 437 -27 "kern" 413 -24 "kern" 401 -22 "kern" 397 -27 "kern" 346 -27 "kern" 299 -23 "kern" 22 -18 "kern" 21 -14 "kern" 16 -12 "kern"
+Kerns2: 512 -71 "kern" 501 -59 "kern" 477 -75 "kern" 461 -70 "kern" 445 -60 "kern" 407 -60 "kern" 390 -60 "kern" 372 -71 "kern" 351 -72 "kern" 293 -60 "kern" 83 -67 "kern" 77 -44 "kern" 73 -62 "kern" 71 -67 "kern" 70 -54 "kern" 55 -59 "kern" 49 -72 "kern" 600 -33 "kern" 596 -33 "kern" 515 -9 "kern" 507 -12 "kern" 470 -18 "kern" 451 -18 "kern" 437 -27 "kern" 413 -24 "kern" 401 -22 "kern" 397 -27 "kern" 346 -27 "kern" 299 -23 "kern" 22 -18 "kern" 21 -14 "kern" 16 -12 "kern"
 EndChar
 
 StartChar: Eth
@@ -19331,6 +19390,7 @@ LayerCount: 2
 Fore
 Refer: 365 -1 N 1 0 0 1 145 355.34 2
 Refer: 59 68 N 1 0 0 1 0 0 2
+Kerns2: 512 -57 "kern" 501 -24 "kern" 477 -57 "kern" 461 -58 "kern" 445 -25 "kern" 407 -25 "kern" 390 -25 "kern" 372 -45 "kern" 351 -57 "kern" 293 -25 "kern" 83 -29 "kern" 77 -45 "kern" 73 -51 "kern" 71 -35 "kern" 70 -46 "kern" 55 -24 "kern" 49 -57 "kern"
 EndChar
 
 StartChar: _eng_comma_uc
@@ -19414,6 +19474,7 @@ LayerCount: 2
 Fore
 Refer: 259 -1 N 1 0 0 1 201.5 414.6 2
 Refer: 39 65 N 1 0 0 1 0 0 2
+Kerns2: 512 -44 "kern" 501 -27 "kern" 477 -45 "kern" 461 -45 "kern" 445 -31 "kern" 407 -34 "kern" 390 -36 "kern" 372 -37 "kern" 351 -52 "kern" 293 -34 "kern" 83 -26 "kern" 77 -27 "kern" 73 -36 "kern" 71 -28 "kern" 70 -32 "kern" 55 -27 "kern" 49 -44 "kern"
 EndChar
 
 StartChar: Ecircumflex
@@ -19437,6 +19498,7 @@ LayerCount: 2
 Fore
 Refer: 259 -1 N 1 0 0 1 68.5005 390.6 2
 Refer: 64 73 N 1 0 0 1 0 0 2
+Kerns2: 512 -23 "kern" 501 -11 "kern" 477 -24 "kern" 461 -23 "kern" 407 -16 "kern" 372 -18 "kern" 351 -19 "kern" 293 -14 "kern" 83 -17 "kern" 77 -10 "kern" 73 -18 "kern" 71 -12 "kern" 70 -14 "kern" 55 -11 "kern" 49 -22 "kern"
 EndChar
 
 StartChar: Ocircumflex
@@ -19460,6 +19522,7 @@ LayerCount: 2
 Fore
 Refer: 259 -1 N 1 0 0 1 217.5 414.6 2
 Refer: 51 85 N 1 0 0 1 0 0 2
+Kerns2: 512 -8 "kern" 477 -8 "kern" 461 -8 "kern" 351 -13 "kern" 73 -7 "kern" 70 -9 "kern"
 EndChar
 
 StartChar: Ccircumflex
@@ -19483,6 +19546,7 @@ LayerCount: 2
 Fore
 Refer: 259 -1 N 1 0 0 1 226 406.6 2
 Refer: 62 71 N 1 0 0 1 0 0 2
+Kerns2: 512 -8 "kern" 477 -9 "kern" 461 -9 "kern" 351 -16 "kern" 70 -8 "kern" 49 -8 "kern"
 EndChar
 
 StartChar: Hcircumflex
@@ -19517,6 +19581,7 @@ LayerCount: 2
 Fore
 Refer: 259 -1 N 1 0 0 1 218.5 414.6 2
 Refer: 48 83 N 1 0 0 1 0 0 2
+Kerns2: 512 -39 "kern" 501 -37 "kern" 477 -39 "kern" 461 -39 "kern" 445 -42 "kern" 407 -45 "kern" 390 -47 "kern" 372 -30 "kern" 351 -46 "kern" 293 -45 "kern" 83 -42 "kern" 77 -26 "kern" 73 -32 "kern" 71 -33 "kern" 70 -30 "kern" 55 -37 "kern" 49 -37 "kern"
 EndChar
 
 StartChar: Wcircumflex
@@ -19539,6 +19604,7 @@ LayerCount: 2
 Fore
 Refer: 259 -1 N 1 0 0 1 230.5 391.6 2
 Refer: 55 89 N 1 0 0 1 0 0 2
+Kerns2: 600 -90 "kern" 599 -37 "kern" 598 -11 "kern" 596 -79 "kern" 595 -39 "kern" 519 -78 "kern" 518 -79 "kern" 517 -45 "kern" 516 -79 "kern" 515 -19 "kern" 514 -114 "kern" 507 -106 "kern" 506 -76 "kern" 505 -92 "kern" 504 -13 "kern" 503 -87 "kern" 502 -100 "kern" 499 -33 "kern" 496 -54 "kern" 495 -76 "kern" 494 -14 "kern" 493 -87 "kern" 492 -100 "kern" 488 -54 "kern" 487 -19 "kern" 486 -29 "kern" 485 -24 "kern" 484 -27 "kern" 483 -42 "kern" 481 -36 "kern" 479 -53 "kern" 478 -44 "kern" 476 -69 "kern" 475 -7 "kern" 474 -78 "kern" 473 -79 "kern" 470 -96 "kern" 465 -30 "kern" 464 -87 "kern" 462 -44 "kern" 460 -69 "kern" 459 -7 "kern" 458 -87 "kern" 457 -48 "kern" 453 -50 "kern" 451 -59 "kern" 450 -20 "kern" 449 -10 "kern" 447 -18 "kern" 446 -25 "kern" 444 -39 "kern" 441 -56 "kern" 440 -79 "kern" 438 -77 "kern" 437 -72 "kern" 436 -79 "kern" 435 -74 "kern" 432 -34 "kern" 430 -54 "kern" 420 -38 "kern" 418 -50 "kern" 417 -69 "kern" 415 -85 "kern" 413 -82 "kern" 412 -73 "kern" 411 -76 "kern" 409 -84 "kern" 408 -81 "kern" 403 -63 "kern" 401 -56 "kern" 400 -59 "kern" 397 -13 "kern" 396 -12 "kern" 395 -33 "kern" 394 -25 "kern" 392 -33 "kern" 391 -37 "kern" 388 -15 "kern" 387 -91 "kern" 386 -8 "kern" 385 -38 "kern" 384 -56 "kern" 382 -42 "kern" 379 -60 "kern" 373 -43 "kern" 369 -108 "kern" 362 -94 "kern" 361 -34 "kern" 358 -8 "kern" 357 -12 "kern" 353 -44 "kern" 352 -114 "kern" 348 -38 "kern" 347 -27 "kern" 346 -18 "kern" 345 -50 "kern" 344 -34 "kern" 342 -42 "kern" 340 -38 "kern" 338 -61 "kern" 337 -52 "kern" 335 -54 "kern" 332 -52 "kern" 331 -45 "kern" 330 -51 "kern" 329 -25 "kern" 328 -43 "kern" 327 -57 "kern" 326 -40 "kern" 325 -61 "kern" 324 -57 "kern" 322 -43 "kern" 321 -63 "kern" 319 -15 "kern" 315 -7 "kern" 314 -57 "kern" 313 -78 "kern" 311 -68 "kern" 309 -53 "kern" 308 -14 "kern" 307 -70 "kern" 305 -60 "kern" 301 -64 "kern" 300 -57 "kern" 299 -94 "kern" 298 -68 "kern" 297 -72 "kern" 296 -39 "kern" 295 -72 "kern" 294 -80 "kern" 291 -42 "kern" 289 -62 "kern" 81 -48 "kern" 80 -40 "kern" 69 -45 "kern" 68 -39 "kern" 67 -21 "kern" 65 -81 "kern" 62 -29 "kern" 61 -27 "kern" 58 -48 "kern" 57 -12 "kern" 48 -7 "kern" 46 -34 "kern" 44 -33 "kern" 39 -53 "kern" 38 -92 "kern" 37 -90 "kern" 35 -48 "kern" 29 -81 "kern" 28 -42 "kern" 24 -12 "kern" 22 -96 "kern" 21 -63 "kern" 20 -87 "kern" 19 -114 "kern" 18 -85 "kern" 17 -79 "kern" 16 -106 "kern" 15 -62 "kern" 14 -78 "kern" 13 -62 "kern" 12 -76 "kern" 10 -44 "kern" 9 -69 "kern" 8 -78 "kern" 7 -103 "kern" 6 -68 "kern" 5 -92 "kern" 4 -79 "kern" 3 -75 "kern" 0 -100 "kern"
 EndChar
 
 StartChar: acircumflex
@@ -19550,7 +19616,7 @@ LayerCount: 2
 Fore
 Refer: 259 -1 N 1 0 0 1 192 231.6 2
 Refer: 0 97 N 1 0 0 1 0 0 2
-Kerns2: 517 -45 "kern" 478 -45 "kern" 462 -45 "kern" 373 -40 "kern" 353 -45 "kern" 21 -51 "kern" 10 -45 "kern"
+Kerns2: 512 -37 "kern" 501 -24 "kern" 477 -41 "kern" 461 -39 "kern" 445 -28 "kern" 407 -28 "kern" 390 -28 "kern" 372 -34 "kern" 351 -39 "kern" 293 -28 "kern" 83 -21 "kern" 77 -19 "kern" 73 -29 "kern" 71 -21 "kern" 70 -29 "kern" 55 -24 "kern" 49 -39 "kern" 517 -45 "kern" 478 -45 "kern" 462 -45 "kern" 373 -40 "kern" 353 -45 "kern" 21 -51 "kern" 10 -45 "kern"
 EndChar
 
 StartChar: ecircumflex
@@ -19562,6 +19628,7 @@ LayerCount: 2
 Fore
 Refer: 259 -1 N 1 0 0 1 192.5 268.6 2
 Refer: 20 101 N 1 0 0 1 0 0 2
+Kerns2: 512 -26 "kern" 501 -17 "kern" 477 -26 "kern" 461 -27 "kern" 445 -23 "kern" 407 -22 "kern" 390 -23 "kern" 372 -17 "kern" 351 -27 "kern" 293 -22 "kern" 83 -36 "kern" 77 -22 "kern" 73 -24 "kern" 71 -24 "kern" 70 -22 "kern" 55 -17 "kern" 49 -24 "kern"
 EndChar
 
 StartChar: icircumflex
@@ -19573,6 +19640,7 @@ LayerCount: 2
 Fore
 Refer: 259 -1 N 1 0 0 1 88.0005 143.6 2
 Refer: 262 305 N 1 0 0 1 0 0 2
+Kerns2: 512 -33 "kern" 477 -33 "kern" 461 -34 "kern" 372 -32 "kern" 351 -33 "kern" 77 -18 "kern" 73 -25 "kern" 70 -23 "kern" 49 -33 "kern"
 EndChar
 
 StartChar: ocircumflex
@@ -19584,7 +19652,7 @@ LayerCount: 2
 Fore
 Refer: 259 -1 N 1 0 0 1 183 240.6 2
 Refer: 5 111 N 1 0 0 1 0 0 2
-Kerns2: 517 -24 "kern" 478 -24 "kern" 462 -24 "kern" 373 -16 "kern" 353 -23 "kern" 21 -21 "kern" 10 -23 "kern"
+Kerns2: 512 -30 "kern" 501 -18 "kern" 477 -31 "kern" 461 -31 "kern" 445 -21 "kern" 407 -21 "kern" 390 -22 "kern" 372 -24 "kern" 351 -30 "kern" 293 -21 "kern" 83 -18 "kern" 77 -18 "kern" 73 -23 "kern" 71 -15 "kern" 70 -24 "kern" 55 -18 "kern" 49 -29 "kern" 517 -24 "kern" 478 -24 "kern" 462 -24 "kern" 373 -16 "kern" 353 -23 "kern" 21 -21 "kern" 10 -23 "kern"
 EndChar
 
 StartChar: ucircumflex
@@ -19596,6 +19664,7 @@ LayerCount: 2
 Fore
 Refer: 259 -1 N 1 0 0 1 196.005 246.6 2
 Refer: 12 117 N 1 0 0 1 0 0 2
+Kerns2: 512 -39 "kern" 501 -27 "kern" 477 -39 "kern" 461 -39 "kern" 445 -31 "kern" 407 -31 "kern" 390 -31 "kern" 372 -30 "kern" 351 -39 "kern" 293 -31 "kern" 83 -32 "kern" 77 -27 "kern" 73 -32 "kern" 71 -27 "kern" 70 -30 "kern" 55 -27 "kern" 49 -37 "kern"
 EndChar
 
 StartChar: ccircumflex
@@ -19607,7 +19676,7 @@ LayerCount: 2
 Fore
 Refer: 259 -1 N 1 0 0 1 174 297.6 2
 Refer: 18 99 N 1 0 0 1 0 0 2
-Kerns2: 517 -7 "kern" 21 -14 "kern"
+Kerns2: 445 -9 "kern" 407 -9 "kern" 390 -9 "kern" 293 -9 "kern" 83 -42 "kern" 71 -18 "kern" 517 -7 "kern" 21 -14 "kern"
 EndChar
 
 StartChar: gcircumflex
@@ -19619,7 +19688,7 @@ LayerCount: 2
 Fore
 Refer: 259 -1 N 1 0 0 1 139 242.6 2
 Refer: 22 103 N 1 0 0 1 0 0 2
-Kerns2: 517 -7 "kern" 478 -30 "kern" 462 -27 "kern" 373 -16 "kern" 353 -22 "kern" 21 -24 "kern" 10 -22 "kern"
+Kerns2: 512 -41 "kern" 501 -63 "kern" 477 -69 "kern" 461 -57 "kern" 445 -63 "kern" 407 -62 "kern" 390 -63 "kern" 372 -50 "kern" 351 -59 "kern" 293 -63 "kern" 83 -49 "kern" 77 -32 "kern" 73 -46 "kern" 71 -48 "kern" 70 -39 "kern" 55 -58 "kern" 49 -57 "kern" 517 -7 "kern" 478 -30 "kern" 462 -27 "kern" 373 -16 "kern" 353 -22 "kern" 21 -24 "kern" 10 -22 "kern"
 EndChar
 
 StartChar: hcircumflex
@@ -19631,7 +19700,7 @@ LayerCount: 2
 Fore
 Refer: 259 -1 N 1 0 0 1 174.5 411.6 2
 Refer: 23 104 N 1 0 0 1 0 0 2
-Kerns2: 517 -15 "kern" 478 -13 "kern" 462 -13 "kern" 373 -10 "kern" 353 -13 "kern" 10 -13 "kern"
+Kerns2: 512 -70 "kern" 501 -78 "kern" 477 -72 "kern" 461 -69 "kern" 445 -70 "kern" 407 -84 "kern" 390 -77 "kern" 372 -56 "kern" 351 -75 "kern" 293 -84 "kern" 83 -62 "kern" 77 -40 "kern" 73 -57 "kern" 71 -64 "kern" 70 -45 "kern" 55 -78 "kern" 49 -71 "kern" 517 -15 "kern" 478 -13 "kern" 462 -13 "kern" 373 -10 "kern" 353 -13 "kern" 10 -13 "kern"
 EndChar
 
 StartChar: scircumflex
@@ -19643,7 +19712,7 @@ LayerCount: 2
 Fore
 Refer: 259 -1 N 1 0 0 1 172.5 274.6 2
 Refer: 9 115 N 1 0 0 1 0 0 2
-Kerns2: 517 -33 "kern" 478 -33 "kern" 462 -33 "kern" 373 -22 "kern" 353 -33 "kern" 21 -45 "kern" 10 -33 "kern" 600 -27 "kern" 596 -30 "kern" 518 -42 "kern" 515 -23 "kern" 507 -21 "kern" 476 -8 "kern" 472 -12 "kern" 470 -16 "kern" 460 -8 "kern" 451 -25 "kern" 438 -48 "kern" 437 -22 "kern" 413 -27 "kern" 401 -30 "kern" 399 -13 "kern" 397 -23 "kern" 346 -20 "kern" 329 -48 "kern" 328 -13 "kern" 311 -51 "kern" 309 -12 "kern" 303 -13 "kern" 299 -27 "kern" 22 -16 "kern" 17 -42 "kern" 16 -21 "kern" 13 -17 "kern" 9 -8 "kern"
+Kerns2: 445 -7 "kern" 390 -7 "kern" 83 -24 "kern" 71 -8 "kern" 517 -33 "kern" 478 -33 "kern" 462 -33 "kern" 373 -22 "kern" 353 -33 "kern" 21 -45 "kern" 10 -33 "kern" 600 -27 "kern" 596 -30 "kern" 518 -42 "kern" 515 -23 "kern" 507 -21 "kern" 476 -8 "kern" 472 -12 "kern" 470 -16 "kern" 460 -8 "kern" 451 -25 "kern" 438 -48 "kern" 437 -22 "kern" 413 -27 "kern" 401 -30 "kern" 399 -13 "kern" 397 -23 "kern" 346 -20 "kern" 329 -48 "kern" 328 -13 "kern" 311 -51 "kern" 309 -12 "kern" 303 -13 "kern" 299 -27 "kern" 22 -16 "kern" 17 -42 "kern" 16 -21 "kern" 13 -17 "kern" 9 -8 "kern"
 EndChar
 
 StartChar: wcircumflex
@@ -19655,6 +19724,7 @@ LayerCount: 2
 Fore
 Refer: 259 -1 N 1 0 0 1 230 288.624 2
 Refer: 14 119 N 1 0 0 1 0 0 2
+Kerns2: 512 -50 "kern" 501 -28 "kern" 477 -51 "kern" 461 -51 "kern" 445 -33 "kern" 407 -32 "kern" 390 -33 "kern" 372 -40 "kern" 351 -51 "kern" 293 -33 "kern" 83 -37 "kern" 77 -42 "kern" 73 -48 "kern" 71 -45 "kern" 70 -39 "kern" 55 -27 "kern" 49 -48 "kern"
 EndChar
 
 StartChar: ycircumflex
@@ -19666,7 +19736,7 @@ LayerCount: 2
 Fore
 Refer: 259 -1 N 1 0 0 1 197.5 183.6 2
 Refer: 16 121 N 1 0 0 1 0 0 2
-Kerns2: 517 -15 "kern" 478 -28 "kern" 462 -28 "kern" 373 -17 "kern" 353 -23 "kern" 21 -16 "kern" 10 -23 "kern"
+Kerns2: 512 -45 "kern" 501 -60 "kern" 477 -69 "kern" 461 -60 "kern" 445 -56 "kern" 407 -56 "kern" 390 -56 "kern" 372 -49 "kern" 351 -59 "kern" 293 -56 "kern" 83 -45 "kern" 77 -30 "kern" 73 -47 "kern" 71 -47 "kern" 70 -39 "kern" 55 -55 "kern" 49 -59 "kern" 517 -15 "kern" 478 -28 "kern" 462 -28 "kern" 373 -17 "kern" 353 -23 "kern" 21 -16 "kern" 10 -23 "kern"
 EndChar
 
 StartChar: jcircumflex
@@ -19678,6 +19748,7 @@ LayerCount: 2
 Fore
 Refer: 259 -1 N 1 0 0 1 125 170.6 2
 Refer: 263 567 N 1 0 0 1 0 0 2
+Kerns2: 477 -16 "kern" 461 -11 "kern"
 EndChar
 
 StartChar: Agrave
@@ -19689,6 +19760,7 @@ LayerCount: 2
 Fore
 Refer: 250 -1 N 1 0 0 1 201.5 -72 2
 Refer: 39 65 N 1 0 0 1 0 0 2
+Kerns2: 512 -44 "kern" 501 -27 "kern" 477 -45 "kern" 461 -45 "kern" 445 -32 "kern" 407 -33 "kern" 390 -35 "kern" 372 -37 "kern" 351 -51 "kern" 293 -33 "kern" 83 -26 "kern" 77 -27 "kern" 73 -36 "kern" 71 -28 "kern" 70 -32 "kern" 55 -27 "kern" 49 -44 "kern"
 EndChar
 
 StartChar: Egrave
@@ -19712,6 +19784,7 @@ LayerCount: 2
 Fore
 Refer: 250 -1 N 1 0 0 1 68.5 -96 2
 Refer: 64 73 N 1 0 0 1 0 0 2
+Kerns2: 512 -10 "kern" 477 -11 "kern" 461 -10 "kern" 407 -7 "kern" 351 -15 "kern" 49 -9 "kern"
 EndChar
 
 StartChar: Ugrave
@@ -19723,6 +19796,7 @@ LayerCount: 2
 Fore
 Refer: 250 -1 N 1 0 0 1 217.5 -72 2
 Refer: 51 85 N 1 0 0 1 0 0 2
+Kerns2: 512 -8 "kern" 477 -8 "kern" 461 -8 "kern" 351 -11 "kern" 73 -7 "kern" 70 -9 "kern"
 EndChar
 
 StartChar: Ygrave
@@ -19734,6 +19808,7 @@ LayerCount: 2
 Fore
 Refer: 250 -1 N 1 0 0 1 230.5 -95 2
 Refer: 55 89 N 1 0 0 1 0 0 2
+Kerns2: 600 -90 "kern" 599 -36 "kern" 598 -10 "kern" 596 -81 "kern" 595 -36 "kern" 519 -78 "kern" 518 -79 "kern" 517 -45 "kern" 516 -79 "kern" 515 -20 "kern" 514 -114 "kern" 507 -106 "kern" 506 -76 "kern" 505 -92 "kern" 504 -13 "kern" 503 -87 "kern" 502 -100 "kern" 499 -33 "kern" 496 -54 "kern" 495 -76 "kern" 494 -14 "kern" 493 -87 "kern" 492 -100 "kern" 488 -54 "kern" 487 -19 "kern" 486 -29 "kern" 485 -24 "kern" 484 -27 "kern" 483 -42 "kern" 481 -37 "kern" 480 -7 "kern" 479 -56 "kern" 478 -44 "kern" 476 -69 "kern" 475 -7 "kern" 474 -78 "kern" 473 -79 "kern" 470 -96 "kern" 465 -30 "kern" 464 -87 "kern" 462 -44 "kern" 460 -69 "kern" 459 -7 "kern" 458 -87 "kern" 457 -48 "kern" 453 -50 "kern" 451 -59 "kern" 450 -20 "kern" 449 -10 "kern" 447 -18 "kern" 446 -25 "kern" 444 -39 "kern" 443 -7 "kern" 441 -59 "kern" 440 -79 "kern" 438 -77 "kern" 437 -72 "kern" 436 -79 "kern" 435 -74 "kern" 432 -34 "kern" 430 -54 "kern" 420 -40 "kern" 418 -59 "kern" 417 -70 "kern" 415 -86 "kern" 413 -82 "kern" 412 -73 "kern" 411 -76 "kern" 409 -84 "kern" 408 -81 "kern" 403 -62 "kern" 401 -56 "kern" 400 -60 "kern" 397 -14 "kern" 396 -12 "kern" 395 -33 "kern" 394 -25 "kern" 392 -33 "kern" 391 -38 "kern" 388 -13 "kern" 387 -92 "kern" 385 -36 "kern" 384 -54 "kern" 382 -41 "kern" 381 -8 "kern" 379 -61 "kern" 373 -44 "kern" 369 -108 "kern" 362 -94 "kern" 361 -34 "kern" 358 -8 "kern" 357 -12 "kern" 353 -44 "kern" 352 -114 "kern" 348 -39 "kern" 347 -27 "kern" 346 -18 "kern" 345 -51 "kern" 344 -34 "kern" 342 -41 "kern" 341 -9 "kern" 340 -36 "kern" 338 -62 "kern" 337 -53 "kern" 335 -55 "kern" 332 -54 "kern" 331 -47 "kern" 330 -51 "kern" 329 -25 "kern" 328 -46 "kern" 327 -59 "kern" 326 -42 "kern" 325 -65 "kern" 324 -63 "kern" 322 -41 "kern" 321 -62 "kern" 319 -13 "kern" 316 -12 "kern" 314 -55 "kern" 313 -78 "kern" 311 -68 "kern" 309 -53 "kern" 308 -12 "kern" 307 -70 "kern" 305 -60 "kern" 301 -64 "kern" 300 -54 "kern" 299 -94 "kern" 298 -68 "kern" 297 -72 "kern" 296 -39 "kern" 295 -72 "kern" 294 -80 "kern" 291 -41 "kern" 289 -62 "kern" 81 -48 "kern" 80 -40 "kern" 69 -45 "kern" 68 -39 "kern" 67 -21 "kern" 65 -81 "kern" 62 -29 "kern" 61 -27 "kern" 58 -48 "kern" 57 -12 "kern" 48 -7 "kern" 46 -34 "kern" 44 -33 "kern" 39 -53 "kern" 38 -92 "kern" 37 -90 "kern" 35 -45 "kern" 29 -81 "kern" 28 -41 "kern" 24 -12 "kern" 22 -96 "kern" 21 -63 "kern" 20 -87 "kern" 19 -114 "kern" 18 -85 "kern" 17 -79 "kern" 16 -106 "kern" 15 -62 "kern" 14 -78 "kern" 13 -62 "kern" 12 -76 "kern" 10 -44 "kern" 9 -69 "kern" 8 -78 "kern" 7 -103 "kern" 6 -68 "kern" 5 -92 "kern" 4 -79 "kern" 3 -75 "kern" 0 -100 "kern"
 EndChar
 
 StartChar: agrave
@@ -19745,7 +19820,7 @@ LayerCount: 2
 Fore
 Refer: 250 -1 N 1 0 0 1 192 -255 2
 Refer: 0 97 N 1 0 0 1 0 0 2
-Kerns2: 517 -46 "kern" 478 -45 "kern" 462 -45 "kern" 373 -42 "kern" 353 -45 "kern" 21 -53 "kern" 10 -45 "kern"
+Kerns2: 512 -66 "kern" 501 -69 "kern" 477 -74 "kern" 461 -69 "kern" 445 -70 "kern" 407 -70 "kern" 390 -70 "kern" 372 -61 "kern" 351 -72 "kern" 293 -70 "kern" 83 -57 "kern" 77 -40 "kern" 73 -58 "kern" 71 -60 "kern" 70 -50 "kern" 55 -69 "kern" 49 -72 "kern" 517 -46 "kern" 478 -45 "kern" 462 -45 "kern" 373 -42 "kern" 353 -45 "kern" 21 -53 "kern" 10 -45 "kern"
 EndChar
 
 StartChar: egrave
@@ -19757,6 +19832,7 @@ LayerCount: 2
 Fore
 Refer: 250 -1 N 1 0 0 1 192.5 -218 2
 Refer: 20 101 N 1 0 0 1 0 0 2
+Kerns2: 512 -63 "kern" 501 -45 "kern" 477 -64 "kern" 461 -64 "kern" 445 -49 "kern" 407 -49 "kern" 390 -49 "kern" 372 -43 "kern" 351 -62 "kern" 293 -49 "kern" 83 -57 "kern" 77 -52 "kern" 73 -58 "kern" 71 -55 "kern" 70 -48 "kern" 55 -45 "kern" 49 -62 "kern"
 EndChar
 
 StartChar: igrave
@@ -19768,6 +19844,7 @@ LayerCount: 2
 Fore
 Refer: 250 -1 N 1 0 0 1 88 -343 2
 Refer: 262 305 N 1 0 0 1 0 0 2
+Kerns2: 512 -78 "kern" 501 -45 "kern" 477 -79 "kern" 461 -78 "kern" 445 -45 "kern" 407 -45 "kern" 390 -45 "kern" 372 -72 "kern" 351 -78 "kern" 293 -45 "kern" 83 -54 "kern" 77 -57 "kern" 73 -68 "kern" 71 -60 "kern" 70 -60 "kern" 55 -45 "kern" 49 -78 "kern"
 EndChar
 
 StartChar: ograve
@@ -19779,7 +19856,7 @@ LayerCount: 2
 Fore
 Refer: 250 -1 N 1 0 0 1 183 -246 2
 Refer: 5 111 N 1 0 0 1 0 0 2
-Kerns2: 517 -24 "kern" 478 -24 "kern" 462 -24 "kern" 373 -15 "kern" 353 -23 "kern" 21 -21 "kern" 10 -23 "kern"
+Kerns2: 512 -66 "kern" 501 -63 "kern" 477 -66 "kern" 461 -66 "kern" 445 -64 "kern" 407 -64 "kern" 390 -64 "kern" 372 -51 "kern" 351 -63 "kern" 293 -64 "kern" 83 -54 "kern" 77 -45 "kern" 73 -56 "kern" 71 -54 "kern" 70 -48 "kern" 55 -63 "kern" 49 -63 "kern" 517 -24 "kern" 478 -24 "kern" 462 -24 "kern" 373 -15 "kern" 353 -23 "kern" 21 -21 "kern" 10 -23 "kern"
 EndChar
 
 StartChar: ugrave
@@ -19791,6 +19868,7 @@ LayerCount: 2
 Fore
 Refer: 250 -1 N 1 0 0 1 196.004 -240 2
 Refer: 12 117 N 1 0 0 1 0 0 2
+Kerns2: 512 -66 "kern" 501 -56 "kern" 477 -66 "kern" 461 -66 "kern" 445 -58 "kern" 407 -58 "kern" 390 -58 "kern" 372 -50 "kern" 351 -64 "kern" 293 -58 "kern" 83 -56 "kern" 77 -47 "kern" 73 -57 "kern" 71 -55 "kern" 70 -47 "kern" 55 -56 "kern" 49 -64 "kern"
 EndChar
 
 StartChar: ygrave
@@ -19802,7 +19880,7 @@ LayerCount: 2
 Fore
 Refer: 250 -1 N 1 0 0 1 197.5 -303 2
 Refer: 16 121 N 1 0 0 1 0 0 2
-Kerns2: 517 -14 "kern" 478 -27 "kern" 462 -27 "kern" 373 -15 "kern" 353 -21 "kern" 21 -15 "kern" 10 -21 "kern"
+Kerns2: 512 -47 "kern" 501 -81 "kern" 477 -75 "kern" 461 -65 "kern" 445 -77 "kern" 407 -77 "kern" 390 -77 "kern" 372 -53 "kern" 351 -65 "kern" 293 -77 "kern" 83 -56 "kern" 77 -32 "kern" 73 -51 "kern" 71 -57 "kern" 70 -40 "kern" 55 -77 "kern" 49 -65 "kern" 517 -14 "kern" 478 -27 "kern" 462 -27 "kern" 373 -15 "kern" 353 -21 "kern" 21 -15 "kern" 10 -21 "kern"
 EndChar
 
 StartChar: Wgrave
@@ -19825,6 +19903,7 @@ LayerCount: 2
 Fore
 Refer: 250 -1 N 1 0 0 1 230 -197.975 2
 Refer: 14 119 N 1 0 0 1 0 0 2
+Kerns2: 512 -65 "kern" 501 -33 "kern" 477 -67 "kern" 461 -66 "kern" 445 -36 "kern" 407 -36 "kern" 390 -36 "kern" 372 -51 "kern" 351 -65 "kern" 293 -36 "kern" 83 -39 "kern" 77 -50 "kern" 73 -58 "kern" 71 -54 "kern" 70 -48 "kern" 55 -33 "kern" 49 -63 "kern"
 EndChar
 
 StartChar: uni01F8
@@ -19847,7 +19926,7 @@ LayerCount: 2
 Fore
 Refer: 250 -1 N 1 0 0 1 176.497 -233 2
 Refer: 4 110 N 1 0 0 1 0 0 2
-Kerns2: 517 -27 "kern" 478 -27 "kern" 462 -27 "kern" 373 -20 "kern" 353 -26 "kern" 21 -33 "kern" 10 -26 "kern"
+Kerns2: 512 -43 "kern" 501 -53 "kern" 477 -58 "kern" 461 -54 "kern" 445 -54 "kern" 407 -53 "kern" 390 -54 "kern" 372 -48 "kern" 351 -55 "kern" 293 -54 "kern" 83 -43 "kern" 77 -28 "kern" 73 -43 "kern" 71 -43 "kern" 70 -36 "kern" 55 -51 "kern" 49 -55 "kern" 517 -27 "kern" 478 -27 "kern" 462 -27 "kern" 373 -20 "kern" 353 -26 "kern" 21 -33 "kern" 10 -26 "kern"
 EndChar
 
 StartChar: Atilde
@@ -19859,6 +19938,7 @@ LayerCount: 2
 Fore
 Refer: 260 -1 N 1 0 0 1 201.5 458.8 2
 Refer: 39 65 N 1 0 0 1 0 0 2
+Kerns2: 512 -44 "kern" 501 -27 "kern" 477 -45 "kern" 461 -45 "kern" 445 -30 "kern" 407 -33 "kern" 390 -33 "kern" 372 -37 "kern" 351 -46 "kern" 293 -34 "kern" 83 -26 "kern" 77 -27 "kern" 73 -36 "kern" 71 -28 "kern" 70 -32 "kern" 55 -27 "kern" 49 -44 "kern"
 EndChar
 
 StartChar: Ntilde
@@ -19929,6 +20009,7 @@ LayerCount: 2
 Fore
 Refer: 260 -1 N 1 0 0 1 68.5 434.8 2
 Refer: 64 73 N 1 0 0 1 0 0 2
+Kerns2: 512 -29 "kern" 501 -18 "kern" 477 -30 "kern" 461 -29 "kern" 407 -8 "kern" 372 -24 "kern" 293 -10 "kern" 83 -22 "kern" 77 -15 "kern" 73 -24 "kern" 71 -18 "kern" 70 -18 "kern" 55 -18 "kern" 49 -28 "kern"
 EndChar
 
 StartChar: itilde
@@ -19940,6 +20021,7 @@ LayerCount: 2
 Fore
 Refer: 260 -1 N 1 0 0 1 88 187.8 2
 Refer: 262 305 N 1 0 0 1 0 0 2
+Kerns2: 512 -21 "kern" 477 -22 "kern" 461 -22 "kern" 372 -20 "kern" 351 -21 "kern" 49 -21 "kern"
 EndChar
 
 StartChar: Utilde
@@ -19951,6 +20033,7 @@ LayerCount: 2
 Fore
 Refer: 260 -1 N 1 0 0 1 217.5 458.8 2
 Refer: 51 85 N 1 0 0 1 0 0 2
+Kerns2: 512 -8 "kern" 477 -8 "kern" 461 -8 "kern" 351 -10 "kern" 73 -7 "kern" 70 -9 "kern"
 EndChar
 
 StartChar: utilde
@@ -19985,6 +20068,7 @@ LayerCount: 2
 Fore
 Refer: 260 -1 N 1 0 0 1 192.5 312.8 2
 Refer: 20 101 N 1 0 0 1 0 0 2
+Kerns2: 83 -20 "kern"
 EndChar
 
 StartChar: Cdotaccent
@@ -20020,6 +20104,7 @@ LayerCount: 2
 Fore
 Refer: 253 -1 N 1 0 0 1 226 -59 2
 Refer: 62 71 N 1 0 0 1 0 0 2
+Kerns2: 512 -8 "kern" 477 -9 "kern" 461 -9 "kern" 351 -11 "kern" 70 -8 "kern" 49 -8 "kern"
 EndChar
 
 StartChar: Idotaccent
@@ -20053,7 +20138,7 @@ LayerCount: 2
 Fore
 Refer: 253 -1 N 1 0 0 1 174 -168 2
 Refer: 18 99 N 1 0 0 1 0 0 2
-Kerns2: 21 -13 "kern"
+Kerns2: 512 -73 "kern" 501 -51 "kern" 477 -73 "kern" 461 -72 "kern" 445 -52 "kern" 407 -52 "kern" 390 -52 "kern" 372 -70 "kern" 351 -72 "kern" 293 -52 "kern" 83 -63 "kern" 77 -51 "kern" 73 -66 "kern" 71 -66 "kern" 70 -57 "kern" 55 -51 "kern" 49 -72 "kern" 21 -13 "kern"
 EndChar
 
 StartChar: edotaccent
@@ -20065,6 +20150,7 @@ LayerCount: 2
 Fore
 Refer: 253 -1 N 1 0 0 1 192.5 -197 2
 Refer: 20 101 N 1 0 0 1 0 0 2
+Kerns2: 512 -66 "kern" 501 -52 "kern" 477 -66 "kern" 461 -66 "kern" 445 -52 "kern" 407 -52 "kern" 390 -52 "kern" 372 -43 "kern" 351 -64 "kern" 293 -52 "kern" 83 -65 "kern" 77 -55 "kern" 73 -61 "kern" 71 -61 "kern" 70 -50 "kern" 55 -52 "kern" 49 -64 "kern"
 EndChar
 
 StartChar: gdotaccent
@@ -20076,7 +20162,7 @@ LayerCount: 2
 Fore
 Refer: 253 -1 N 1 0 0 1 139 -223 2
 Refer: 22 103 N 1 0 0 1 0 0 2
-Kerns2: 478 -27 "kern" 462 -25 "kern" 373 -14 "kern" 353 -19 "kern" 21 -21 "kern" 10 -19 "kern"
+Kerns2: 512 -42 "kern" 501 -80 "kern" 477 -77 "kern" 461 -63 "kern" 445 -76 "kern" 407 -76 "kern" 390 -76 "kern" 372 -55 "kern" 351 -66 "kern" 293 -76 "kern" 83 -58 "kern" 77 -33 "kern" 73 -51 "kern" 71 -59 "kern" 70 -41 "kern" 55 -76 "kern" 49 -66 "kern" 478 -27 "kern" 462 -25 "kern" 373 -14 "kern" 353 -19 "kern" 21 -21 "kern" 10 -19 "kern"
 EndChar
 
 StartChar: zdotaccent
@@ -20088,6 +20174,7 @@ LayerCount: 2
 Fore
 Refer: 253 -1 N 1 0 0 1 180 -256 2
 Refer: 17 122 N 1 0 0 1 0 0 2
+Kerns2: 512 -90 "kern" 501 -72 "kern" 477 -90 "kern" 461 -86 "kern" 445 -72 "kern" 407 -72 "kern" 390 -72 "kern" 372 -72 "kern" 351 -89 "kern" 293 -72 "kern" 83 -69 "kern" 77 -57 "kern" 73 -73 "kern" 71 -75 "kern" 70 -63 "kern" 55 -72 "kern" 49 -89 "kern"
 EndChar
 
 StartChar: uni1E86
@@ -20110,6 +20197,7 @@ LayerCount: 2
 Fore
 Refer: 253 -1 N 1 0 0 1 230 -176.975 2
 Refer: 14 119 N 1 0 0 1 0 0 2
+Kerns2: 512 -66 "kern" 501 -35 "kern" 477 -68 "kern" 461 -68 "kern" 445 -34 "kern" 407 -34 "kern" 390 -34 "kern" 372 -51 "kern" 351 -65 "kern" 293 -34 "kern" 83 -41 "kern" 77 -51 "kern" 73 -60 "kern" 71 -55 "kern" 70 -48 "kern" 55 -34 "kern" 49 -65 "kern"
 EndChar
 
 StartChar: Adieresis
@@ -20121,6 +20209,7 @@ LayerCount: 2
 Fore
 Refer: 252 -1 N 1 0 0 1 201.5 -38.96 2
 Refer: 39 65 N 1 0 0 1 0 0 2
+Kerns2: 512 -44 "kern" 501 -27 "kern" 477 -45 "kern" 461 -45 "kern" 445 -31 "kern" 407 -33 "kern" 390 -33 "kern" 372 -37 "kern" 351 -48 "kern" 293 -33 "kern" 83 -26 "kern" 77 -27 "kern" 73 -36 "kern" 71 -28 "kern" 70 -32 "kern" 55 -27 "kern" 49 -44 "kern"
 EndChar
 
 StartChar: Edieresis
@@ -20144,6 +20233,7 @@ LayerCount: 2
 Fore
 Refer: 252 -1 N 1 0 0 1 68.5 -62.96 2
 Refer: 64 73 N 1 0 0 1 0 0 2
+Kerns2: 512 -23 "kern" 501 -13 "kern" 477 -24 "kern" 461 -23 "kern" 407 -15 "kern" 372 -18 "kern" 351 -17 "kern" 293 -11 "kern" 83 -18 "kern" 77 -12 "kern" 73 -18 "kern" 71 -13 "kern" 70 -15 "kern" 55 -13 "kern" 49 -21 "kern"
 EndChar
 
 StartChar: Odieresis
@@ -20167,6 +20257,7 @@ LayerCount: 2
 Fore
 Refer: 252 -1 N 1 0 0 1 230.5 -61.96 2
 Refer: 55 89 N 1 0 0 1 0 0 2
+Kerns2: 600 -90 "kern" 599 -34 "kern" 598 -9 "kern" 596 -78 "kern" 595 -34 "kern" 519 -78 "kern" 518 -79 "kern" 517 -45 "kern" 516 -79 "kern" 515 -19 "kern" 514 -114 "kern" 507 -106 "kern" 506 -76 "kern" 505 -92 "kern" 504 -13 "kern" 503 -87 "kern" 502 -100 "kern" 499 -33 "kern" 496 -54 "kern" 495 -76 "kern" 494 -14 "kern" 493 -87 "kern" 492 -100 "kern" 488 -54 "kern" 487 -19 "kern" 486 -29 "kern" 485 -24 "kern" 484 -27 "kern" 483 -42 "kern" 481 -36 "kern" 479 -52 "kern" 478 -44 "kern" 476 -69 "kern" 475 -7 "kern" 474 -78 "kern" 473 -79 "kern" 470 -96 "kern" 465 -30 "kern" 464 -87 "kern" 462 -44 "kern" 460 -69 "kern" 459 -7 "kern" 458 -87 "kern" 457 -49 "kern" 453 -50 "kern" 451 -59 "kern" 450 -20 "kern" 449 -10 "kern" 447 -18 "kern" 446 -25 "kern" 444 -38 "kern" 441 -54 "kern" 440 -79 "kern" 438 -77 "kern" 437 -72 "kern" 436 -79 "kern" 435 -74 "kern" 432 -34 "kern" 430 -52 "kern" 420 -35 "kern" 418 -44 "kern" 417 -69 "kern" 415 -85 "kern" 413 -82 "kern" 412 -72 "kern" 411 -76 "kern" 409 -84 "kern" 408 -81 "kern" 403 -58 "kern" 401 -56 "kern" 400 -59 "kern" 397 -13 "kern" 396 -11 "kern" 395 -33 "kern" 394 -25 "kern" 392 -33 "kern" 391 -37 "kern" 388 -12 "kern" 387 -83 "kern" 385 -33 "kern" 384 -51 "kern" 382 -38 "kern" 379 -54 "kern" 373 -43 "kern" 369 -108 "kern" 362 -94 "kern" 361 -35 "kern" 358 -8 "kern" 357 -12 "kern" 353 -44 "kern" 352 -114 "kern" 348 -38 "kern" 347 -27 "kern" 346 -17 "kern" 345 -49 "kern" 344 -34 "kern" 342 -39 "kern" 340 -34 "kern" 338 -57 "kern" 337 -52 "kern" 335 -54 "kern" 332 -52 "kern" 331 -45 "kern" 330 -50 "kern" 329 -25 "kern" 328 -42 "kern" 327 -57 "kern" 326 -39 "kern" 325 -60 "kern" 324 -55 "kern" 322 -39 "kern" 321 -57 "kern" 319 -12 "kern" 314 -52 "kern" 313 -78 "kern" 311 -68 "kern" 309 -53 "kern" 308 -12 "kern" 307 -70 "kern" 305 -60 "kern" 301 -64 "kern" 300 -52 "kern" 299 -94 "kern" 298 -68 "kern" 297 -72 "kern" 296 -39 "kern" 295 -72 "kern" 294 -80 "kern" 291 -39 "kern" 289 -57 "kern" 81 -48 "kern" 80 -40 "kern" 69 -45 "kern" 68 -39 "kern" 67 -21 "kern" 65 -81 "kern" 62 -29 "kern" 61 -27 "kern" 58 -48 "kern" 57 -12 "kern" 48 -7 "kern" 46 -34 "kern" 44 -33 "kern" 39 -53 "kern" 38 -92 "kern" 37 -90 "kern" 35 -43 "kern" 29 -75 "kern" 28 -39 "kern" 24 -12 "kern" 22 -96 "kern" 21 -63 "kern" 20 -87 "kern" 19 -114 "kern" 18 -85 "kern" 17 -79 "kern" 16 -106 "kern" 15 -62 "kern" 14 -78 "kern" 13 -62 "kern" 12 -76 "kern" 10 -44 "kern" 9 -69 "kern" 8 -78 "kern" 7 -103 "kern" 6 -68 "kern" 5 -92 "kern" 4 -79 "kern" 3 -75 "kern" 0 -100 "kern"
 EndChar
 
 StartChar: adieresis
@@ -20178,7 +20269,7 @@ LayerCount: 2
 Fore
 Refer: 252 -1 N 1 0 0 1 192 -221.96 2
 Refer: 0 97 N 1 0 0 1 0 0 2
-Kerns2: 517 -40 "kern" 478 -41 "kern" 462 -41 "kern" 373 -37 "kern" 353 -41 "kern" 21 -48 "kern" 10 -41 "kern"
+Kerns2: 512 -21 "kern" 501 -9 "kern" 477 -24 "kern" 461 -23 "kern" 445 -9 "kern" 407 -9 "kern" 390 -9 "kern" 372 -18 "kern" 351 -21 "kern" 293 -9 "kern" 83 -8 "kern" 73 -12 "kern" 70 -18 "kern" 55 -9 "kern" 49 -21 "kern" 517 -40 "kern" 478 -41 "kern" 462 -41 "kern" 373 -37 "kern" 353 -41 "kern" 21 -48 "kern" 10 -41 "kern"
 EndChar
 
 StartChar: edieresis
@@ -20190,6 +20281,7 @@ LayerCount: 2
 Fore
 Refer: 252 -1 N 1 0 0 1 192.5 -184.96 2
 Refer: 20 101 N 1 0 0 1 0 0 2
+Kerns2: 512 -10 "kern" 501 -7 "kern" 477 -10 "kern" 461 -11 "kern" 445 -7 "kern" 407 -7 "kern" 390 -7 "kern" 351 -9 "kern" 293 -7 "kern" 83 -29 "kern" 77 -11 "kern" 73 -11 "kern" 71 -14 "kern" 70 -10 "kern" 55 -7 "kern" 49 -9 "kern"
 EndChar
 
 StartChar: idieresis
@@ -20201,6 +20293,7 @@ LayerCount: 2
 Fore
 Refer: 252 -1 N 1 0 0 1 88 -309.96 2
 Refer: 262 305 N 1 0 0 1 0 0 2
+Kerns2: 512 -48 "kern" 477 -48 "kern" 461 -48 "kern" 372 -44 "kern" 351 -48 "kern" 83 -18 "kern" 77 -38 "kern" 73 -43 "kern" 71 -42 "kern" 70 -30 "kern" 49 -48 "kern"
 EndChar
 
 StartChar: odieresis
@@ -20212,7 +20305,7 @@ LayerCount: 2
 Fore
 Refer: 252 -1 N 1 0 0 1 183 -212.96 2
 Refer: 5 111 N 1 0 0 1 0 0 2
-Kerns2: 517 -22 "kern" 478 -21 "kern" 462 -21 "kern" 373 -15 "kern" 353 -21 "kern" 21 -20 "kern" 10 -21 "kern"
+Kerns2: 512 -11 "kern" 477 -11 "kern" 461 -12 "kern" 372 -7 "kern" 351 -9 "kern" 83 -7 "kern" 70 -9 "kern" 49 -9 "kern" 517 -22 "kern" 478 -21 "kern" 462 -21 "kern" 373 -15 "kern" 353 -21 "kern" 21 -20 "kern" 10 -21 "kern"
 EndChar
 
 StartChar: udieresis
@@ -20224,6 +20317,7 @@ LayerCount: 2
 Fore
 Refer: 252 -1 N 1 0 0 1 196.004 -206.96 2
 Refer: 12 117 N 1 0 0 1 0 0 2
+Kerns2: 512 -23 "kern" 501 -15 "kern" 477 -23 "kern" 461 -24 "kern" 445 -15 "kern" 407 -15 "kern" 390 -15 "kern" 372 -18 "kern" 351 -21 "kern" 293 -15 "kern" 83 -23 "kern" 77 -14 "kern" 73 -17 "kern" 71 -16 "kern" 70 -19 "kern" 55 -15 "kern" 49 -21 "kern"
 EndChar
 
 StartChar: ydieresis
@@ -20235,7 +20329,7 @@ LayerCount: 2
 Fore
 Refer: 252 -1 N 1 0 0 1 197.5 -269.96 2
 Refer: 16 121 N 1 0 0 1 0 0 2
-Kerns2: 517 -12 "kern" 478 -24 "kern" 462 -24 "kern" 373 -13 "kern" 353 -19 "kern" 21 -13 "kern" 10 -19 "kern"
+Kerns2: 512 -43 "kern" 501 -56 "kern" 477 -70 "kern" 461 -60 "kern" 445 -50 "kern" 407 -50 "kern" 390 -50 "kern" 372 -48 "kern" 351 -59 "kern" 293 -50 "kern" 83 -36 "kern" 77 -27 "kern" 73 -45 "kern" 71 -40 "kern" 70 -36 "kern" 55 -50 "kern" 49 -59 "kern" 517 -12 "kern" 478 -24 "kern" 462 -24 "kern" 373 -13 "kern" 353 -19 "kern" 21 -13 "kern" 10 -19 "kern"
 EndChar
 
 StartChar: Wdieresis
@@ -20258,6 +20352,7 @@ LayerCount: 2
 Fore
 Refer: 252 -1 N 1 0 0 1 230 -164.935 2
 Refer: 14 119 N 1 0 0 1 0 0 2
+Kerns2: 512 -44 "kern" 501 -26 "kern" 477 -45 "kern" 461 -45 "kern" 445 -26 "kern" 407 -26 "kern" 390 -26 "kern" 372 -35 "kern" 351 -42 "kern" 293 -26 "kern" 83 -36 "kern" 77 -38 "kern" 73 -43 "kern" 71 -42 "kern" 70 -36 "kern" 55 -25 "kern" 49 -42 "kern"
 EndChar
 
 StartChar: Uhungarumlaut
@@ -20269,6 +20364,7 @@ LayerCount: 2
 Fore
 Refer: 265 -1 N 1 0 0 1 217.5 -72 2
 Refer: 51 85 N 1 0 0 1 0 0 2
+Kerns2: 512 -8 "kern" 477 -8 "kern" 461 -8 "kern" 351 -11 "kern" 73 -7 "kern" 70 -9 "kern"
 EndChar
 
 StartChar: ohungarumlaut
@@ -20280,7 +20376,7 @@ LayerCount: 2
 Fore
 Refer: 265 -1 N 1 0 0 1 183 -246 2
 Refer: 5 111 N 1 0 0 1 0 0 2
-Kerns2: 517 -24 "kern" 478 -24 "kern" 462 -24 "kern" 373 -17 "kern" 353 -24 "kern" 21 -24 "kern" 10 -24 "kern"
+Kerns2: 83 -27 "kern" 517 -24 "kern" 478 -24 "kern" 462 -24 "kern" 373 -17 "kern" 353 -24 "kern" 21 -24 "kern" 10 -24 "kern"
 EndChar
 
 StartChar: uhungarumlaut
@@ -20292,6 +20388,7 @@ LayerCount: 2
 Fore
 Refer: 265 -1 N 1 0 0 1 196.004 -240 2
 Refer: 12 117 N 1 0 0 1 0 0 2
+Kerns2: 501 -7 "kern" 445 -9 "kern" 407 -9 "kern" 390 -9 "kern" 293 -9 "kern" 83 -40 "kern" 77 -9 "kern" 73 -7 "kern" 71 -12 "kern" 55 -7 "kern"
 EndChar
 
 StartChar: Ccedilla
@@ -20315,7 +20412,7 @@ LayerCount: 2
 Fore
 Refer: 256 -1 N 1 0 0 1 174 -99.7998 2
 Refer: 18 99 N 1 0 0 1 0 0 2
-Kerns2: 21 -9 "kern"
+Kerns2: 512 -83 "kern" 501 -64 "kern" 477 -100 "kern" 461 -92 "kern" 445 -56 "kern" 407 -56 "kern" 390 -56 "kern" 372 -81 "kern" 351 -84 "kern" 293 -56 "kern" 83 -63 "kern" 77 -51 "kern" 73 -71 "kern" 71 -72 "kern" 70 -60 "kern" 55 -56 "kern" 49 -84 "kern" 21 -9 "kern"
 EndChar
 
 StartChar: Scedilla
@@ -20327,6 +20424,7 @@ LayerCount: 2
 Fore
 Refer: 256 -1 N 1 0 0 1 218.5 -122.8 2
 Refer: 48 83 N 1 0 0 1 0 0 2
+Kerns2: 512 -40 "kern" 501 -43 "kern" 477 -47 "kern" 461 -45 "kern" 445 -38 "kern" 407 -38 "kern" 390 -38 "kern" 372 -30 "kern" 351 -36 "kern" 293 -38 "kern" 83 -42 "kern" 77 -26 "kern" 73 -31 "kern" 71 -33 "kern" 70 -30 "kern" 55 -37 "kern" 49 -36 "kern"
 EndChar
 
 StartChar: scedilla
@@ -20338,7 +20436,7 @@ LayerCount: 2
 Fore
 Refer: 256 -1 N 1 0 0 1 172.5 -101.8 2
 Refer: 9 115 N 1 0 0 1 0 0 2
-Kerns2: 517 -30 "kern" 478 -35 "kern" 462 -35 "kern" 373 -17 "kern" 353 -28 "kern" 21 -39 "kern" 10 -28 "kern" 600 -16 "kern" 596 -17 "kern" 518 -46 "kern" 515 -16 "kern" 507 -27 "kern" 476 -11 "kern" 472 -12 "kern" 470 -15 "kern" 460 -11 "kern" 451 -30 "kern" 438 -46 "kern" 437 -16 "kern" 422 -7 "kern" 413 -29 "kern" 401 -30 "kern" 399 -8 "kern" 397 -16 "kern" 371 -14 "kern" 346 -17 "kern" 329 -47 "kern" 328 -8 "kern" 311 -46 "kern" 309 -8 "kern" 303 -9 "kern" 299 -30 "kern" 22 -15 "kern" 17 -42 "kern" 16 -27 "kern" 13 -18 "kern" 9 -8 "kern"
+Kerns2: 512 -69 "kern" 501 -93 "kern" 477 -83 "kern" 461 -78 "kern" 445 -85 "kern" 407 -85 "kern" 390 -85 "kern" 372 -54 "kern" 351 -68 "kern" 293 -85 "kern" 83 -65 "kern" 77 -45 "kern" 73 -59 "kern" 71 -63 "kern" 70 -47 "kern" 55 -85 "kern" 49 -68 "kern" 517 -30 "kern" 478 -35 "kern" 462 -35 "kern" 373 -17 "kern" 353 -28 "kern" 21 -39 "kern" 10 -28 "kern" 600 -16 "kern" 596 -17 "kern" 518 -46 "kern" 515 -16 "kern" 507 -27 "kern" 476 -11 "kern" 472 -12 "kern" 470 -15 "kern" 460 -11 "kern" 451 -30 "kern" 438 -46 "kern" 437 -16 "kern" 422 -7 "kern" 413 -29 "kern" 401 -30 "kern" 399 -8 "kern" 397 -16 "kern" 371 -14 "kern" 346 -17 "kern" 329 -47 "kern" 328 -8 "kern" 311 -46 "kern" 309 -8 "kern" 303 -9 "kern" 299 -30 "kern" 22 -15 "kern" 17 -42 "kern" 16 -27 "kern" 13 -18 "kern" 9 -8 "kern"
 EndChar
 
 StartChar: uni0162
@@ -20362,7 +20460,7 @@ LayerCount: 2
 Fore
 Refer: 256 -1 N 1 0 0 1 196.5 -119.8 2
 Refer: 10 116 N 1 0 0 1 0 0 2
-Kerns2: 451 -9 "kern" 413 -13 "kern" 401 -14 "kern" 299 -13 "kern" 21 -14 "kern"
+Kerns2: 512 -70 "kern" 501 -66 "kern" 477 -87 "kern" 461 -75 "kern" 445 -61 "kern" 407 -61 "kern" 390 -61 "kern" 372 -77 "kern" 351 -78 "kern" 293 -61 "kern" 83 -72 "kern" 77 -48 "kern" 73 -66 "kern" 71 -72 "kern" 70 -58 "kern" 55 -60 "kern" 49 -78 "kern" 451 -9 "kern" 413 -13 "kern" 401 -14 "kern" 299 -13 "kern" 21 -14 "kern"
 EndChar
 
 StartChar: uni0228
@@ -20386,6 +20484,7 @@ LayerCount: 2
 Fore
 Refer: 256 -1 N 1 0 0 1 192.5 -108.8 2
 Refer: 20 101 N 1 0 0 1 0 0 2
+Kerns2: 512 -69 "kern" 501 -60 "kern" 477 -81 "kern" 461 -77 "kern" 445 -51 "kern" 407 -51 "kern" 390 -51 "kern" 372 -39 "kern" 351 -65 "kern" 293 -51 "kern" 83 -64 "kern" 77 -54 "kern" 73 -62 "kern" 71 -62 "kern" 70 -48 "kern" 55 -51 "kern" 49 -65 "kern"
 EndChar
 
 StartChar: uni0122
@@ -20397,6 +20496,7 @@ LayerCount: 2
 Fore
 Refer: 127 44 N 1 0 0 1 147 -82 2
 Refer: 62 71 N 1 0 0 1 0 0 2
+Kerns2: 512 -10 "kern" 477 -18 "kern" 461 -15 "kern" 70 -9 "kern"
 EndChar
 
 StartChar: uni0136
@@ -20408,6 +20508,7 @@ LayerCount: 2
 Fore
 Refer: 127 44 N 1 0 0 1 131 -108 2
 Refer: 40 75 N 1 0 0 1 0 0 2
+Kerns2: 512 -43 "kern" 501 -64 "kern" 477 -63 "kern" 461 -54 "kern" 445 -58 "kern" 407 -58 "kern" 390 -57 "kern" 372 -48 "kern" 351 -48 "kern" 293 -57 "kern" 83 -66 "kern" 77 -32 "kern" 73 -47 "kern" 71 -54 "kern" 70 -40 "kern" 55 -57 "kern" 49 -48 "kern"
 EndChar
 
 StartChar: uni013B
@@ -20419,6 +20520,7 @@ LayerCount: 2
 Fore
 Refer: 127 44 N 1 0 0 1 136 -107 2
 Refer: 41 76 N 1 0 0 1 0 0 2
+Kerns2: 512 -124 "kern" 501 -159 "kern" 477 -141 "kern" 461 -127 "kern" 445 -156 "kern" 407 -156 "kern" 390 -156 "kern" 372 -127 "kern" 351 -128 "kern" 293 -156 "kern" 83 -114 "kern" 77 -63 "kern" 73 -97 "kern" 71 -117 "kern" 70 -88 "kern" 55 -156 "kern" 49 -128 "kern"
 EndChar
 
 StartChar: uni0145
@@ -20452,7 +20554,7 @@ LayerCount: 2
 Fore
 Refer: 127 44 N 1 0 0 1 60 -348 2
 Refer: 22 103 N 1 0 0 1 0 0 2
-Kerns2: 478 -25 "kern" 462 -22 "kern" 373 -11 "kern" 353 -16 "kern" 21 -18 "kern" 10 -16 "kern"
+Kerns2: 512 -37 "kern" 501 -77 "kern" 477 -73 "kern" 461 -58 "kern" 445 -72 "kern" 407 -72 "kern" 390 -72 "kern" 372 -48 "kern" 351 -59 "kern" 293 -72 "kern" 83 -53 "kern" 77 -27 "kern" 73 -45 "kern" 71 -53 "kern" 70 -35 "kern" 55 -72 "kern" 49 -59 "kern" 478 -25 "kern" 462 -22 "kern" 373 -11 "kern" 353 -16 "kern" 21 -18 "kern" 10 -16 "kern"
 EndChar
 
 StartChar: uni0137
@@ -20464,7 +20566,7 @@ LayerCount: 2
 Fore
 Refer: 127 44 N 1 0 0 1 120.548 -141 2
 Refer: 1 107 N 1 0 0 1 0 0 2
-Kerns2: 15 -10 "kern" 517 -39 "kern" 478 -49 "kern" 462 -45 "kern" 373 -36 "kern" 353 -36 "kern" 21 -67 "kern" 10 -36 "kern"
+Kerns2: 512 -45 "kern" 501 -89 "kern" 477 -119 "kern" 461 -96 "kern" 445 -83 "kern" 407 -83 "kern" 390 -83 "kern" 372 -110 "kern" 351 -114 "kern" 293 -83 "kern" 83 -99 "kern" 77 -71 "kern" 73 -96 "kern" 71 -105 "kern" 70 -81 "kern" 55 -83 "kern" 49 -114 "kern" 15 -10 "kern" 517 -39 "kern" 478 -49 "kern" 462 -45 "kern" 373 -36 "kern" 353 -36 "kern" 21 -67 "kern" 10 -36 "kern"
 EndChar
 
 StartChar: uni013C
@@ -20488,7 +20590,7 @@ LayerCount: 2
 Fore
 Refer: 127 44 N 1 0 0 1 97.4965 -131 2
 Refer: 4 110 N 1 0 0 1 0 0 2
-Kerns2: 517 -21 "kern" 478 -30 "kern" 462 -26 "kern" 373 -14 "kern" 353 -19 "kern" 21 -26 "kern" 10 -19 "kern"
+Kerns2: 512 -42 "kern" 501 -79 "kern" 477 -75 "kern" 461 -62 "kern" 445 -72 "kern" 407 -72 "kern" 390 -72 "kern" 372 -49 "kern" 351 -59 "kern" 293 -72 "kern" 83 -52 "kern" 77 -26 "kern" 73 -45 "kern" 71 -54 "kern" 70 -35 "kern" 55 -72 "kern" 49 -59 "kern" 517 -21 "kern" 478 -30 "kern" 462 -26 "kern" 373 -14 "kern" 353 -19 "kern" 21 -26 "kern" 10 -19 "kern"
 EndChar
 
 StartChar: uni0157
@@ -20500,6 +20602,7 @@ LayerCount: 2
 Fore
 Refer: 127 44 N 1 0 0 1 121 -112 2
 Refer: 8 114 N 1 0 0 1 0 0 2
+Kerns2: 512 -96 "kern" 501 -79 "kern" 477 -115 "kern" 461 -104 "kern" 445 -68 "kern" 407 -68 "kern" 390 -68 "kern" 372 -66 "kern" 351 -94 "kern" 293 -68 "kern" 83 -98 "kern" 77 -94 "kern" 73 -97 "kern" 71 -93 "kern" 70 -78 "kern" 55 -68 "kern" 49 -94 "kern"
 EndChar
 
 StartChar: uni0218
@@ -20511,6 +20614,7 @@ LayerCount: 2
 Fore
 Refer: 127 44 N 1 0 0 1 139.5 -109 2
 Refer: 48 83 N 1 0 0 1 0 0 2
+Kerns2: 512 -39 "kern" 501 -43 "kern" 477 -50 "kern" 461 -45 "kern" 445 -38 "kern" 407 -38 "kern" 390 -38 "kern" 372 -30 "kern" 351 -36 "kern" 293 -38 "kern" 83 -42 "kern" 77 -26 "kern" 73 -31 "kern" 71 -33 "kern" 70 -30 "kern" 55 -37 "kern" 49 -36 "kern"
 EndChar
 
 StartChar: uni0219
@@ -20522,7 +20626,7 @@ LayerCount: 2
 Fore
 Refer: 127 44 N 1 0 0 1 93.5 -88 2
 Refer: 9 115 N 1 0 0 1 0 0 2
-Kerns2: 517 -29 "kern" 478 -39 "kern" 462 -36 "kern" 373 -17 "kern" 353 -28 "kern" 21 -39 "kern" 10 -28 "kern" 600 -12 "kern" 596 -12 "kern" 518 -45 "kern" 515 -12 "kern" 507 -29 "kern" 476 -12 "kern" 472 -15 "kern" 470 -12 "kern" 460 -11 "kern" 451 -29 "kern" 438 -46 "kern" 437 -12 "kern" 413 -29 "kern" 401 -29 "kern" 399 -8 "kern" 397 -12 "kern" 371 -13 "kern" 346 -12 "kern" 329 -47 "kern" 328 -8 "kern" 311 -46 "kern" 309 -8 "kern" 303 -9 "kern" 299 -29 "kern" 22 -11 "kern" 17 -42 "kern" 16 -27 "kern" 13 -18 "kern" 9 -8 "kern"
+Kerns2: 512 -68 "kern" 501 -93 "kern" 477 -86 "kern" 461 -77 "kern" 445 -85 "kern" 407 -85 "kern" 390 -85 "kern" 372 -54 "kern" 351 -68 "kern" 293 -85 "kern" 83 -65 "kern" 77 -45 "kern" 73 -59 "kern" 71 -63 "kern" 70 -47 "kern" 55 -85 "kern" 49 -68 "kern" 517 -29 "kern" 478 -39 "kern" 462 -36 "kern" 373 -17 "kern" 353 -28 "kern" 21 -39 "kern" 10 -28 "kern" 600 -12 "kern" 596 -12 "kern" 518 -45 "kern" 515 -12 "kern" 507 -29 "kern" 476 -12 "kern" 472 -15 "kern" 470 -12 "kern" 460 -11 "kern" 451 -29 "kern" 438 -46 "kern" 437 -12 "kern" 413 -29 "kern" 401 -29 "kern" 399 -8 "kern" 397 -12 "kern" 371 -13 "kern" 346 -12 "kern" 329 -47 "kern" 328 -8 "kern" 311 -46 "kern" 309 -8 "kern" 303 -9 "kern" 299 -29 "kern" 22 -11 "kern" 17 -42 "kern" 16 -27 "kern" 13 -18 "kern" 9 -8 "kern"
 EndChar
 
 StartChar: uni021A
@@ -20546,7 +20650,7 @@ LayerCount: 2
 Fore
 Refer: 127 44 N 1 0 0 1 77.5 -106 2
 Refer: 10 116 N 1 0 0 1 0 0 2
-Kerns2: 507 -24 "kern" 451 -21 "kern" 413 -27 "kern" 401 -26 "kern" 299 -26 "kern" 21 -14 "kern" 16 -18 "kern"
+Kerns2: 512 -72 "kern" 501 -66 "kern" 477 -90 "kern" 461 -78 "kern" 445 -61 "kern" 407 -61 "kern" 390 -61 "kern" 372 -77 "kern" 351 -78 "kern" 293 -61 "kern" 83 -72 "kern" 77 -48 "kern" 73 -66 "kern" 71 -72 "kern" 70 -58 "kern" 55 -60 "kern" 49 -78 "kern" 507 -24 "kern" 451 -21 "kern" 413 -27 "kern" 401 -26 "kern" 299 -26 "kern" 21 -14 "kern" 16 -18 "kern"
 EndChar
 
 StartChar: Amacron
@@ -20558,6 +20662,7 @@ LayerCount: 2
 Fore
 Refer: 257 -1 N 1 0 0 1 201.796 -95 2
 Refer: 39 65 N 1 0 0 1 0 0 2
+Kerns2: 512 -44 "kern" 501 -27 "kern" 477 -45 "kern" 461 -45 "kern" 445 -30 "kern" 407 -30 "kern" 390 -30 "kern" 372 -37 "kern" 351 -45 "kern" 293 -31 "kern" 83 -26 "kern" 77 -27 "kern" 73 -36 "kern" 71 -28 "kern" 70 -32 "kern" 55 -27 "kern" 49 -44 "kern"
 EndChar
 
 StartChar: Imacron
@@ -20569,6 +20674,7 @@ LayerCount: 2
 Fore
 Refer: 257 -1 N 1 0 0 1 68.7963 -119 2
 Refer: 64 73 N 1 0 0 1 0 0 2
+Kerns2: 512 -24 "kern" 501 -15 "kern" 477 -26 "kern" 461 -24 "kern" 407 -18 "kern" 372 -20 "kern" 351 -23 "kern" 293 -10 "kern" 83 -20 "kern" 77 -13 "kern" 73 -21 "kern" 71 -15 "kern" 70 -16 "kern" 55 -15 "kern" 49 -24 "kern"
 EndChar
 
 StartChar: Omacron
@@ -20592,6 +20698,7 @@ LayerCount: 2
 Fore
 Refer: 257 -1 N 1 0 0 1 217.796 -95 2
 Refer: 51 85 N 1 0 0 1 0 0 2
+Kerns2: 512 -8 "kern" 477 -8 "kern" 461 -8 "kern" 351 -7 "kern" 73 -7 "kern" 70 -9 "kern"
 EndChar
 
 StartChar: amacron
@@ -20603,7 +20710,7 @@ LayerCount: 2
 Fore
 Refer: 257 -1 N 1 0 0 1 192.296 -278 2
 Refer: 0 97 N 1 0 0 1 0 0 2
-Kerns2: 517 -38 "kern" 478 -38 "kern" 462 -38 "kern" 373 -34 "kern" 353 -38 "kern" 21 -45 "kern" 10 -38 "kern"
+Kerns2: 512 -63 "kern" 501 -21 "kern" 477 -70 "kern" 461 -65 "kern" 445 -21 "kern" 407 -21 "kern" 390 -21 "kern" 372 -57 "kern" 351 -68 "kern" 293 -21 "kern" 77 -21 "kern" 73 -43 "kern" 71 -8 "kern" 70 -40 "kern" 55 -21 "kern" 49 -68 "kern" 517 -38 "kern" 478 -38 "kern" 462 -38 "kern" 373 -34 "kern" 353 -38 "kern" 21 -45 "kern" 10 -38 "kern"
 EndChar
 
 StartChar: imacron
@@ -20615,6 +20722,7 @@ LayerCount: 2
 Fore
 Refer: 257 -1 N 1 0 0 1 88.2963 -366 2
 Refer: 262 305 N 1 0 0 1 0 0 2
+Kerns2: 512 -52 "kern" 501 -18 "kern" 477 -53 "kern" 461 -53 "kern" 445 -18 "kern" 407 -18 "kern" 390 -18 "kern" 372 -48 "kern" 351 -52 "kern" 293 -18 "kern" 83 -48 "kern" 77 -39 "kern" 73 -46 "kern" 71 -48 "kern" 70 -33 "kern" 55 -18 "kern" 49 -52 "kern"
 EndChar
 
 StartChar: omacron
@@ -20626,7 +20734,7 @@ LayerCount: 2
 Fore
 Refer: 257 -1 N 1 0 0 1 183.296 -269 2
 Refer: 5 111 N 1 0 0 1 0 0 2
-Kerns2: 517 -20 "kern" 478 -19 "kern" 462 -19 "kern" 373 -12 "kern" 353 -19 "kern" 21 -18 "kern" 10 -19 "kern"
+Kerns2: 512 -49 "kern" 501 -8 "kern" 477 -50 "kern" 461 -50 "kern" 445 -8 "kern" 407 -8 "kern" 390 -8 "kern" 372 -37 "kern" 351 -47 "kern" 293 -8 "kern" 77 -12 "kern" 73 -25 "kern" 70 -29 "kern" 55 -8 "kern" 49 -47 "kern" 517 -20 "kern" 478 -19 "kern" 462 -19 "kern" 373 -12 "kern" 353 -19 "kern" 21 -18 "kern" 10 -19 "kern"
 EndChar
 
 StartChar: umacron
@@ -20638,6 +20746,7 @@ LayerCount: 2
 Fore
 Refer: 257 -1 N 1 0 0 1 196.3 -263 2
 Refer: 12 117 N 1 0 0 1 0 0 2
+Kerns2: 512 -48 "kern" 501 -19 "kern" 477 -48 "kern" 461 -49 "kern" 445 -19 "kern" 407 -19 "kern" 390 -19 "kern" 372 -36 "kern" 351 -47 "kern" 293 -19 "kern" 83 -7 "kern" 77 -20 "kern" 73 -30 "kern" 71 -8 "kern" 70 -32 "kern" 55 -19 "kern" 49 -47 "kern"
 EndChar
 
 StartChar: emacron
@@ -20649,6 +20758,7 @@ LayerCount: 2
 Fore
 Refer: 257 -1 N 1 0 0 1 192.796 -241 2
 Refer: 20 101 N 1 0 0 1 0 0 2
+Kerns2: 512 -14 "kern" 477 -15 "kern" 461 -15 "kern" 372 -7 "kern" 351 -12 "kern" 83 -9 "kern" 70 -12 "kern" 49 -12 "kern"
 EndChar
 
 StartChar: Aogonek
@@ -20660,6 +20770,7 @@ LayerCount: 2
 Fore
 Refer: 127 44 N -1 0 0 -1 398 -89 2
 Refer: 39 65 N 1 0 0 1 0 0 2
+Kerns2: 512 -40 "kern" 501 -33 "kern" 477 -53 "kern" 461 -48 "kern" 445 -28 "kern" 407 -28 "kern" 390 -28 "kern" 372 -36 "kern" 351 -43 "kern" 293 -28 "kern" 83 -27 "kern" 77 -24 "kern" 73 -35 "kern" 71 -28 "kern" 70 -31 "kern" 55 -28 "kern" 49 -43 "kern"
 EndChar
 
 StartChar: Eogonek
@@ -20694,6 +20805,7 @@ LayerCount: 2
 Fore
 Refer: 127 44 N -1 0 0 -1 415 -89 2
 Refer: 51 85 N 1 0 0 1 0 0 2
+Kerns2: 512 -7 "kern" 477 -13 "kern" 461 -12 "kern" 70 -8 "kern"
 EndChar
 
 StartChar: aogonek
@@ -20705,7 +20817,7 @@ LayerCount: 2
 Fore
 Refer: 127 44 N -1 0 0 -1 374 -89 2
 Refer: 0 97 N 1 0 0 1 0 0 2
-Kerns2: 517 -30 "kern" 478 -45 "kern" 462 -45 "kern" 373 -32 "kern" 353 -36 "kern" 21 -42 "kern" 10 -36 "kern"
+Kerns2: 512 -50 "kern" 501 -92 "kern" 477 -83 "kern" 461 -68 "kern" 445 -86 "kern" 407 -86 "kern" 390 -86 "kern" 372 -57 "kern" 351 -71 "kern" 293 -86 "kern" 83 -61 "kern" 77 -33 "kern" 73 -54 "kern" 71 -64 "kern" 70 -43 "kern" 55 -86 "kern" 49 -71 "kern" 517 -30 "kern" 478 -45 "kern" 462 -45 "kern" 373 -32 "kern" 353 -36 "kern" 21 -42 "kern" 10 -36 "kern"
 EndChar
 
 StartChar: eogonek
@@ -20717,6 +20829,7 @@ LayerCount: 2
 Fore
 Refer: 127 44 N -1 0 0 -1 380 -89 2
 Refer: 20 101 N 1 0 0 1 0 0 2
+Kerns2: 512 -45 "kern" 501 -56 "kern" 477 -74 "kern" 461 -61 "kern" 445 -48 "kern" 407 -48 "kern" 390 -48 "kern" 372 -37 "kern" 351 -60 "kern" 293 -48 "kern" 83 -54 "kern" 77 -33 "kern" 73 -50 "kern" 71 -55 "kern" 70 -37 "kern" 55 -48 "kern" 49 -60 "kern"
 EndChar
 
 StartChar: iogonek
@@ -20728,6 +20841,7 @@ LayerCount: 2
 Fore
 Refer: 127 44 N -1 0 0 -1 179.077 -89 2
 Refer: 24 105 N 1 0 0 1 0 0 2
+Kerns2: 512 -54 "kern" 501 -9 "kern" 477 -84 "kern" 461 -72 "kern" 372 -66 "kern" 351 -72 "kern" 77 -28 "kern" 73 -53 "kern" 70 -47 "kern" 49 -72 "kern"
 EndChar
 
 StartChar: uogonek
@@ -20739,6 +20853,7 @@ LayerCount: 2
 Fore
 Refer: 127 44 N -1 0 0 -1 377.008 -89 2
 Refer: 12 117 N 1 0 0 1 0 0 2
+Kerns2: 512 -49 "kern" 501 -64 "kern" 477 -71 "kern" 461 -63 "kern" 445 -57 "kern" 407 -57 "kern" 390 -57 "kern" 372 -42 "kern" 351 -57 "kern" 293 -57 "kern" 83 -53 "kern" 77 -33 "kern" 73 -48 "kern" 71 -53 "kern" 70 -36 "kern" 55 -57 "kern" 49 -57 "kern"
 EndChar
 
 StartChar: uni1EA0
@@ -20750,6 +20865,7 @@ LayerCount: 2
 Fore
 Refer: 254 -1 N 1 0 0 1 201.5 -762 2
 Refer: 39 65 N 1 0 0 1 0 0 2
+Kerns2: 512 -45 "kern" 501 -31 "kern" 477 -48 "kern" 461 -49 "kern" 445 -27 "kern" 407 -27 "kern" 390 -28 "kern" 372 -36 "kern" 351 -43 "kern" 293 -27 "kern" 83 -27 "kern" 77 -26 "kern" 73 -35 "kern" 71 -28 "kern" 70 -32 "kern" 55 -27 "kern" 49 -43 "kern"
 EndChar
 
 StartChar: uni1EB8
@@ -20796,6 +20912,7 @@ LayerCount: 2
 Fore
 Refer: 254 -1 N 1 0 0 1 217.5 -810 2
 Refer: 51 85 N 1 0 0 1 0 0 2
+Kerns2: 512 -7 "kern" 477 -11 "kern" 461 -11 "kern" 73 -7 "kern" 70 -9 "kern"
 EndChar
 
 StartChar: uni1EF4
@@ -20807,6 +20924,7 @@ LayerCount: 2
 Fore
 Refer: 254 -1 N 1 0 0 1 230.5 -776 2
 Refer: 55 89 N 1 0 0 1 0 0 2
+Kerns2: 600 -80 "kern" 599 -29 "kern" 596 -72 "kern" 595 -29 "kern" 519 -81 "kern" 518 -82 "kern" 517 -46 "kern" 516 -85 "kern" 515 -20 "kern" 514 -108 "kern" 507 -102 "kern" 506 -85 "kern" 505 -100 "kern" 504 -18 "kern" 503 -95 "kern" 502 -109 "kern" 499 -38 "kern" 496 -58 "kern" 495 -85 "kern" 494 -21 "kern" 493 -96 "kern" 492 -111 "kern" 488 -60 "kern" 487 -19 "kern" 486 -29 "kern" 485 -24 "kern" 484 -27 "kern" 483 -42 "kern" 481 -33 "kern" 480 -9 "kern" 479 -53 "kern" 478 -48 "kern" 476 -78 "kern" 475 -10 "kern" 474 -86 "kern" 473 -87 "kern" 470 -84 "kern" 465 -35 "kern" 464 -96 "kern" 462 -48 "kern" 460 -78 "kern" 459 -11 "kern" 458 -95 "kern" 457 -52 "kern" 453 -49 "kern" 451 -63 "kern" 450 -20 "kern" 449 -10 "kern" 447 -18 "kern" 446 -25 "kern" 444 -33 "kern" 441 -53 "kern" 440 -80 "kern" 438 -77 "kern" 437 -67 "kern" 436 -79 "kern" 435 -73 "kern" 432 -29 "kern" 430 -47 "kern" 424 -13 "kern" 420 -33 "kern" 418 -53 "kern" 417 -69 "kern" 415 -82 "kern" 413 -84 "kern" 412 -71 "kern" 411 -75 "kern" 409 -82 "kern" 408 -80 "kern" 403 -53 "kern" 401 -59 "kern" 400 -54 "kern" 397 -12 "kern" 395 -30 "kern" 394 -21 "kern" 392 -28 "kern" 391 -34 "kern" 388 -7 "kern" 387 -81 "kern" 385 -29 "kern" 384 -47 "kern" 382 -33 "kern" 379 -53 "kern" 373 -42 "kern" 369 -102 "kern" 362 -94 "kern" 361 -33 "kern" 358 -7 "kern" 357 -12 "kern" 353 -42 "kern" 352 -108 "kern" 348 -36 "kern" 347 -26 "kern" 346 -20 "kern" 345 -48 "kern" 344 -33 "kern" 342 -33 "kern" 340 -29 "kern" 338 -53 "kern" 337 -47 "kern" 335 -50 "kern" 332 -51 "kern" 331 -44 "kern" 330 -49 "kern" 329 -24 "kern" 328 -42 "kern" 327 -56 "kern" 326 -40 "kern" 325 -60 "kern" 324 -58 "kern" 322 -33 "kern" 321 -53 "kern" 319 -7 "kern" 314 -47 "kern" 313 -75 "kern" 311 -68 "kern" 309 -49 "kern" 308 -7 "kern" 307 -68 "kern" 305 -59 "kern" 301 -59 "kern" 300 -47 "kern" 299 -93 "kern" 298 -66 "kern" 297 -70 "kern" 296 -39 "kern" 295 -69 "kern" 294 -79 "kern" 291 -33 "kern" 289 -53 "kern" 81 -48 "kern" 80 -39 "kern" 69 -45 "kern" 68 -38 "kern" 67 -21 "kern" 65 -81 "kern" 62 -29 "kern" 61 -27 "kern" 58 -47 "kern" 57 -10 "kern" 48 -7 "kern" 46 -33 "kern" 44 -33 "kern" 39 -53 "kern" 38 -92 "kern" 37 -90 "kern" 35 -42 "kern" 29 -72 "kern" 28 -33 "kern" 24 -12 "kern" 22 -84 "kern" 21 -63 "kern" 20 -87 "kern" 19 -108 "kern" 18 -85 "kern" 17 -79 "kern" 16 -102 "kern" 15 -62 "kern" 14 -79 "kern" 13 -63 "kern" 12 -76 "kern" 10 -42 "kern" 9 -69 "kern" 8 -78 "kern" 7 -114 "kern" 6 -71 "kern" 5 -92 "kern" 4 -81 "kern" 3 -75 "kern" 0 -100 "kern"
 EndChar
 
 StartChar: uni1EA1
@@ -20818,7 +20936,7 @@ LayerCount: 2
 Fore
 Refer: 254 -1 N 1 0 0 1 192 -780 2
 Refer: 0 97 N 1 0 0 1 0 0 2
-Kerns2: 517 -39 "kern" 478 -42 "kern" 462 -42 "kern" 373 -33 "kern" 353 -36 "kern" 21 -43 "kern" 10 -36 "kern"
+Kerns2: 512 -66 "kern" 501 -96 "kern" 477 -83 "kern" 461 -75 "kern" 445 -87 "kern" 407 -87 "kern" 390 -87 "kern" 372 -57 "kern" 351 -71 "kern" 293 -87 "kern" 83 -61 "kern" 77 -34 "kern" 73 -54 "kern" 71 -65 "kern" 70 -44 "kern" 55 -87 "kern" 49 -71 "kern" 517 -39 "kern" 478 -42 "kern" 462 -42 "kern" 373 -33 "kern" 353 -36 "kern" 21 -43 "kern" 10 -36 "kern"
 EndChar
 
 StartChar: uni1EB9
@@ -20830,6 +20948,7 @@ LayerCount: 2
 Fore
 Refer: 254 -1 N 1 0 0 1 192.5 -772 2
 Refer: 20 101 N 1 0 0 1 0 0 2
+Kerns2: 512 -69 "kern" 501 -59 "kern" 477 -78 "kern" 461 -75 "kern" 445 -51 "kern" 407 -51 "kern" 390 -51 "kern" 372 -39 "kern" 351 -65 "kern" 293 -51 "kern" 83 -63 "kern" 77 -54 "kern" 73 -61 "kern" 71 -62 "kern" 70 -48 "kern" 55 -51 "kern" 49 -65 "kern"
 EndChar
 
 StartChar: uni1ECB
@@ -20841,6 +20960,7 @@ LayerCount: 2
 Fore
 Refer: 254 -1 N 1 0 0 1 94.5383 -746 2
 Refer: 24 105 N 1 0 0 1 0 0 2
+Kerns2: 512 -58 "kern" 477 -84 "kern" 461 -78 "kern" 372 -69 "kern" 351 -76 "kern" 77 -39 "kern" 73 -60 "kern" 70 -57 "kern" 49 -76 "kern"
 EndChar
 
 StartChar: uni1ECD
@@ -20852,7 +20972,7 @@ LayerCount: 2
 Fore
 Refer: 254 -1 N 1 0 0 1 183 -787 2
 Refer: 5 111 N 1 0 0 1 0 0 2
-Kerns2: 517 -20 "kern" 478 -21 "kern" 462 -21 "kern" 373 -9 "kern" 353 -16 "kern" 21 -14 "kern" 10 -16 "kern"
+Kerns2: 512 -66 "kern" 501 -84 "kern" 477 -74 "kern" 461 -73 "kern" 445 -76 "kern" 407 -76 "kern" 390 -76 "kern" 372 -45 "kern" 351 -61 "kern" 293 -76 "kern" 83 -60 "kern" 77 -42 "kern" 73 -54 "kern" 71 -57 "kern" 70 -42 "kern" 55 -76 "kern" 49 -61 "kern" 517 -20 "kern" 478 -21 "kern" 462 -21 "kern" 373 -9 "kern" 353 -16 "kern" 21 -14 "kern" 10 -16 "kern"
 EndChar
 
 StartChar: uni1EE5
@@ -20864,6 +20984,7 @@ LayerCount: 2
 Fore
 Refer: 254 -1 N 1 0 0 1 196.004 -776 2
 Refer: 12 117 N 1 0 0 1 0 0 2
+Kerns2: 512 -63 "kern" 501 -67 "kern" 477 -70 "kern" 461 -69 "kern" 445 -59 "kern" 407 -59 "kern" 390 -59 "kern" 372 -43 "kern" 351 -60 "kern" 293 -59 "kern" 83 -57 "kern" 77 -42 "kern" 73 -53 "kern" 71 -55 "kern" 70 -41 "kern" 55 -59 "kern" 49 -60 "kern"
 EndChar
 
 StartChar: uni1EF5
@@ -20875,7 +20996,7 @@ LayerCount: 2
 Fore
 Refer: 254 -1 N 1 0 0 1 197.5 -942 2
 Refer: 16 121 N 1 0 0 1 0 0 2
-Kerns2: 517 -8 "kern" 478 -25 "kern" 462 -21 "kern" 373 -9 "kern" 353 -15 "kern" 21 -7 "kern" 10 -15 "kern"
+Kerns2: 512 -36 "kern" 501 -79 "kern" 477 -70 "kern" 461 -56 "kern" 445 -72 "kern" 407 -72 "kern" 390 -72 "kern" 372 -40 "kern" 351 -52 "kern" 293 -72 "kern" 83 -47 "kern" 77 -22 "kern" 73 -39 "kern" 71 -47 "kern" 70 -29 "kern" 55 -72 "kern" 49 -52 "kern" 517 -8 "kern" 478 -25 "kern" 462 -21 "kern" 373 -9 "kern" 353 -15 "kern" 21 -7 "kern" 10 -15 "kern"
 EndChar
 
 StartChar: uni1E0E
@@ -20887,6 +21008,7 @@ LayerCount: 2
 Fore
 Refer: 255 -1 N 1 0 0 1 235.569 -765.68 2
 Refer: 59 68 N 1 0 0 1 0 0 2
+Kerns2: 512 -54 "kern" 501 -28 "kern" 477 -62 "kern" 461 -61 "kern" 445 -26 "kern" 407 -26 "kern" 390 -26 "kern" 372 -45 "kern" 351 -57 "kern" 293 -26 "kern" 83 -30 "kern" 77 -45 "kern" 73 -51 "kern" 71 -35 "kern" 70 -46 "kern" 55 -25 "kern" 49 -57 "kern"
 EndChar
 
 StartChar: uni1E3A
@@ -20898,6 +21020,7 @@ LayerCount: 2
 Fore
 Refer: 255 -1 N 1 0 0 1 215.296 -793.68 2
 Refer: 41 76 N 1 0 0 1 0 0 2
+Kerns2: 512 -99 "kern" 501 -150 "kern" 477 -132 "kern" 461 -119 "kern" 445 -156 "kern" 407 -156 "kern" 390 -156 "kern" 372 -127 "kern" 351 -128 "kern" 293 -156 "kern" 83 -114 "kern" 77 -63 "kern" 73 -97 "kern" 71 -117 "kern" 70 -88 "kern" 55 -156 "kern" 49 -128 "kern"
 EndChar
 
 StartChar: uni1E48
@@ -20965,7 +21088,7 @@ LayerCount: 2
 Fore
 Refer: 255 -1 N 1 0 0 1 76.4325 -810.68 2
 Refer: 2 108 N 1 0 0 1 0 0 2
-Kerns2: 478 -23 "kern" 462 -26 "kern" 373 -24 "kern" 353 -26 "kern" 21 -40 "kern" 10 -26 "kern"
+Kerns2: 512 -12 "kern" 501 -14 "kern" 477 -25 "kern" 461 -12 "kern" 445 -15 "kern" 407 -16 "kern" 390 -15 "kern" 372 -18 "kern" 351 -21 "kern" 293 -15 "kern" 83 -23 "kern" 77 -14 "kern" 73 -23 "kern" 71 -15 "kern" 70 -16 "kern" 55 -13 "kern" 49 -21 "kern" 478 -23 "kern" 462 -26 "kern" 373 -24 "kern" 353 -26 "kern" 21 -40 "kern" 10 -26 "kern"
 EndChar
 
 StartChar: uni1E49
@@ -20977,7 +21100,7 @@ LayerCount: 2
 Fore
 Refer: 255 -1 N 1 0 0 1 176.793 -817.68 2
 Refer: 4 110 N 1 0 0 1 0 0 2
-Kerns2: 478 -24 "kern" 462 -24 "kern" 373 -15 "kern" 353 -19 "kern" 21 -27 "kern" 10 -19 "kern"
+Kerns2: 512 -40 "kern" 501 -75 "kern" 477 -67 "kern" 461 -55 "kern" 445 -72 "kern" 407 -72 "kern" 390 -72 "kern" 372 -49 "kern" 351 -59 "kern" 293 -72 "kern" 83 -52 "kern" 77 -26 "kern" 73 -45 "kern" 71 -54 "kern" 70 -34 "kern" 55 -72 "kern" 49 -59 "kern" 478 -24 "kern" 462 -24 "kern" 373 -15 "kern" 353 -19 "kern" 21 -27 "kern" 10 -19 "kern"
 EndChar
 
 StartChar: uni1E6F
@@ -20989,7 +21112,7 @@ LayerCount: 2
 Fore
 Refer: 255 -1 N 1 0 0 1 156.796 -792.68 2
 Refer: 10 116 N 1 0 0 1 0 0 2
-Kerns2: 37 -9 "kern" 21 -18 "kern"
+Kerns2: 512 -54 "kern" 501 -63 "kern" 477 -82 "kern" 461 -72 "kern" 445 -62 "kern" 407 -62 "kern" 390 -62 "kern" 372 -77 "kern" 351 -78 "kern" 293 -62 "kern" 83 -72 "kern" 77 -48 "kern" 73 -67 "kern" 71 -72 "kern" 70 -59 "kern" 55 -60 "kern" 49 -78 "kern" 37 -9 "kern" 21 -18 "kern"
 EndChar
 
 StartChar: uni1E95
@@ -21001,6 +21124,7 @@ LayerCount: 2
 Fore
 Refer: 255 -1 N 1 0 0 1 180.296 -779.68 2
 Refer: 17 122 N 1 0 0 1 0 0 2
+Kerns2: 512 -52 "kern" 501 -81 "kern" 477 -89 "kern" 461 -78 "kern" 445 -76 "kern" 407 -76 "kern" 390 -76 "kern" 372 -63 "kern" 351 -82 "kern" 293 -76 "kern" 83 -73 "kern" 77 -51 "kern" 73 -68 "kern" 71 -77 "kern" 70 -57 "kern" 55 -76 "kern" 49 -82 "kern"
 EndChar
 
 StartChar: uni1E5F
@@ -21012,6 +21136,7 @@ LayerCount: 2
 Fore
 Refer: 255 -1 N 1 0 0 1 200.296 -828.68 2
 Refer: 8 114 N 1 0 0 1 0 0 2
+Kerns2: 512 -99 "kern" 501 -72 "kern" 477 -103 "kern" 461 -87 "kern" 445 -68 "kern" 407 -68 "kern" 390 -68 "kern" 372 -66 "kern" 351 -94 "kern" 293 -68 "kern" 83 -98 "kern" 77 -94 "kern" 73 -97 "kern" 71 -93 "kern" 70 -78 "kern" 55 -68 "kern" 49 -94 "kern"
 EndChar
 
 StartChar: ij
@@ -23901,6 +24026,7 @@ LayerCount: 2
 Fore
 Refer: 258 -1 N 1 0 0 1 226 406.602 2
 Refer: 62 71 N 1 0 0 1 0 0 2
+Kerns2: 512 -8 "kern" 477 -9 "kern" 461 -9 "kern" 351 -16 "kern" 70 -8 "kern" 49 -8 "kern"
 EndChar
 
 StartChar: gcaron
@@ -23912,7 +24038,7 @@ LayerCount: 2
 Fore
 Refer: 258 -1 N 1 0 0 1 219 230.602 2
 Refer: 22 103 N 1 0 0 1 0 0 2
-Kerns2: 517 -8 "kern" 478 -30 "kern" 462 -28 "kern" 373 -17 "kern" 353 -23 "kern" 21 -24 "kern" 10 -23 "kern"
+Kerns2: 501 -27 "kern" 477 -15 "kern" 461 -12 "kern" 445 -24 "kern" 407 -25 "kern" 390 -24 "kern" 293 -25 "kern" 83 -42 "kern" 77 -14 "kern" 73 -18 "kern" 71 -24 "kern" 70 -11 "kern" 55 -22 "kern" 517 -8 "kern" 478 -30 "kern" 462 -28 "kern" 373 -17 "kern" 353 -23 "kern" 21 -24 "kern" 10 -23 "kern"
 EndChar
 
 StartChar: uni01E8
@@ -23924,6 +24050,7 @@ LayerCount: 2
 Fore
 Refer: 258 -1 N 1 0 0 1 210 416.602 2
 Refer: 40 75 N 1 0 0 1 0 0 2
+Kerns2: 512 -43 "kern" 501 -57 "kern" 477 -51 "kern" 461 -47 "kern" 445 -63 "kern" 407 -67 "kern" 390 -68 "kern" 372 -48 "kern" 351 -56 "kern" 293 -68 "kern" 83 -66 "kern" 77 -32 "kern" 73 -48 "kern" 71 -54 "kern" 70 -40 "kern" 55 -57 "kern" 49 -48 "kern"
 EndChar
 
 StartChar: uni01E9
@@ -23935,7 +24062,7 @@ LayerCount: 2
 Fore
 Refer: 258 -1 N 1 0 0 1 199.549 354.602 2
 Refer: 1 107 N 1 0 0 1 0 0 2
-Kerns2: 15 -10 "kern" 517 -42 "kern" 478 -41 "kern" 462 -41 "kern" 373 -39 "kern" 353 -39 "kern" 21 -70 "kern" 10 -39 "kern"
+Kerns2: 512 -50 "kern" 501 -84 "kern" 477 -111 "kern" 461 -93 "kern" 445 -83 "kern" 407 -91 "kern" 390 -85 "kern" 372 -109 "kern" 351 -106 "kern" 293 -93 "kern" 83 -102 "kern" 77 -75 "kern" 73 -100 "kern" 71 -106 "kern" 70 -84 "kern" 55 -84 "kern" 49 -112 "kern" 15 -10 "kern" 517 -42 "kern" 478 -41 "kern" 462 -41 "kern" 373 -39 "kern" 353 -39 "kern" 21 -70 "kern" 10 -39 "kern"
 EndChar
 
 StartChar: uni01F4
@@ -23947,6 +24074,7 @@ LayerCount: 2
 Fore
 Refer: 249 -1 N 1 0 0 1 226 -80 2
 Refer: 62 71 N 1 0 0 1 0 0 2
+Kerns2: 512 -8 "kern" 477 -9 "kern" 461 -9 "kern" 351 -14 "kern" 70 -8 "kern" 49 -8 "kern"
 EndChar
 
 StartChar: uni01F5
@@ -23958,7 +24086,7 @@ LayerCount: 2
 Fore
 Refer: 249 -1 N 1 0 0 1 219 -244 2
 Refer: 22 103 N 1 0 0 1 0 0 2
-Kerns2: 517 -7 "kern" 478 -30 "kern" 462 -27 "kern" 373 -16 "kern" 353 -22 "kern" 21 -24 "kern" 10 -22 "kern"
+Kerns2: 512 -34 "kern" 501 -62 "kern" 477 -58 "kern" 461 -49 "kern" 445 -59 "kern" 407 -59 "kern" 390 -58 "kern" 372 -41 "kern" 351 -46 "kern" 293 -59 "kern" 83 -55 "kern" 77 -30 "kern" 73 -44 "kern" 71 -49 "kern" 70 -35 "kern" 55 -57 "kern" 49 -46 "kern" 517 -7 "kern" 478 -30 "kern" 462 -27 "kern" 373 -16 "kern" 353 -22 "kern" 21 -24 "kern" 10 -22 "kern"
 EndChar
 
 StartChar: Aringacute
