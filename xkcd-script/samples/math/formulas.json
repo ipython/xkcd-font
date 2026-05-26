@@ -1,0 +1,27 @@
+[
+  { "name": "inline-sum",            "tex": "\\sum_{k=1}^{n} k" },
+  { "name": "inline-int",            "tex": "\\int_0^1 x^2\\,dx" },
+  { "name": "inline-prod",           "tex": "\\prod_{k=1}^{n} k" },
+
+  { "name": "display-sum-closed",    "tex": "\\sum_{k=1}^{n} k = \\frac{n(n+1)}{2}",                "display": true },
+  { "name": "display-int-exp",       "tex": "\\int_0^\\infty e^{-x}\\,dx = 1",                       "display": true },
+  { "name": "display-euler-product", "tex": "\\prod_{p\\;\\text{prime}} \\frac{1}{1-p^{-s}} = \\sum_{n=1}^{\\infty} \\frac{1}{n^s}", "display": true },
+
+  { "name": "quadratic-formula",     "tex": "x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}",             "display": true },
+  { "name": "pythagoras",            "tex": "a^2 + b^2 = c^2" },
+  { "name": "binomial-theorem",      "tex": "\\sum_{k=0}^{n} \\binom{n}{k} x^k y^{n-k} = (x + y)^n", "display": true },
+
+  { "name": "derivative-definition", "tex": "f'(x) = \\lim_{h \\to 0} \\frac{f(x+h) - f(x)}{h}",      "display": true },
+  { "name": "gaussian-integral",     "tex": "\\int_{-\\infty}^{\\infty} e^{-x^2}\\,dx = \\sqrt{\\pi}", "display": true },
+  { "name": "product-rule",          "tex": "\\dfrac{d}{dx}\\bigl[f(x)\\,g(x)\\bigr] = f'(x)\\,g(x) + f(x)\\,g'(x)" },
+
+  { "name": "eulers-identity",       "tex": "e^{i\\pi} + 1 = 0" },
+  { "name": "greek-letters",         "tex": "\\alpha,\\ \\beta,\\ \\gamma,\\ \\delta,\\ \\varepsilon,\\ \\zeta,\\ \\eta,\\ \\theta,\\ \\iota,\\ \\kappa,\\ \\lambda,\\ \\mu,\\ \\nu,\\ \\xi,\\ \\pi,\\ \\rho,\\ \\sigma,\\ \\tau,\\ \\upsilon,\\ \\phi,\\ \\chi,\\ \\psi,\\ \\omega" },
+  { "name": "fourier-transform",     "tex": "\\hat{f}(\\xi) = \\int_{-\\infty}^{\\infty} f(x)\\,e^{-2\\pi i x \\xi}\\,dx",                  "display": true },
+
+  { "name": "schrodinger",           "tex": "i\\hbar\\frac{\\partial\\psi}{\\partial t} = \\hat{H}\\psi",                                    "display": true },
+  { "name": "maxwell-free-space",    "tex": "\\nabla \\cdot \\mathbf{E} = 0 \\qquad \\nabla \\times \\mathbf{E} = -\\frac{\\partial \\mathbf{B}}{\\partial t}", "display": true },
+
+  { "name": "deeply-nested-sqrt",    "tex": "\\sqrt{\\frac{b^2}{\\frac{b^2}{\\frac{b^2}{\\frac{b^2}{4ac}}}}}",                               "display": true },
+  { "name": "sqrt-pi-short",         "tex": "\\sqrt{\\pi}" }
+]

@@ -5,15 +5,6 @@
 <title>xkcd-script + MathJax</title>
 
 <style>
-@font-face {
-    font-family: 'xkcd-script-math';
-    src: url('xkcd-script/font/xkcd-script-mathjax.woff') format('woff');
-}
-@font-face {
-    font-family: 'xkcd-script';
-    src: url('xkcd-script/font/xkcd-script.woff') format('woff');
-}
-
 body {
     font-family: 'xkcd-script', sans-serif;
     font-size: 1.25em;
@@ -28,10 +19,6 @@ body {
 h1 { font-size: 2.2em; margin-bottom: 0.2em; }
 h2 { font-size: 1.5em; margin-top: 2em; border-bottom: 1px solid #ccc; padding-bottom: 0.2em; }
 p  { margin: 0.8em 0; }
-
-/* MathJax CHTML renders characters via ::before pseudo-elements.
-   Font override is injected dynamically after MathJax's CSS loads so that
-   our !important comes later in the cascade and wins. See injectFontOverride(). */
 
 /* ── Editor ── */
 .editor-wrap {
@@ -63,317 +50,16 @@ p  { margin: 0.8em 0; }
 </style>
 
 <script>
-// ── Hand-drawn bar / vinculum (mirror approach from sqrt-extend-demo.html) ──
-// The rightmost half of the sqrt bar path is mirrored to produce a symmetric
-// hand-drawn bar of any width.  BAR_VB_H is the viewBox height that exposes
-// just the bar strip (SVG y ≈ 1–7 pt out of the full 61 pt path height).
-
-const BAR_ORIGINAL_PATH = `M408 592
-c-52 -2 -90 -8 -96 -15
--5 -7 -20 -48 -32 -92
--12 -44 -35 -123 -51 -175
--15 -52 -35 -121 -44 -153
--9 -31 -20 -57 -23 -57
--4 0 -18 23 -31 51
--35 73 -60 102 -76 89
--18 -15 88 -225 113 -225
-13 0 25 24 49 100
-47 149 68 219 99 331
-l28 102
-400 5
-c221 3 522 6 670 6
-148 0 271 2 273 5
-3 3 3 12 -1 21
--5 14 -65 16 -598 13
--326 -2 -632 -4 -680 -6
-z`;
-
-const BAR_BASE_W  = 170;   // natural path width in SVG pt
-const BAR_PATH_H  = 61;    // natural path height in SVG pt
-const BAR_LEFT_X  = 79;    // x where flat bar begins in SVG pt
-const BAR_VB_H    = 8;     // viewBox height to expose just the bar strip
-
-function buildBarPath(delta) {
-    const d       = delta * 10;
-    const forward = 400 + d;
-    const r       = (1278 + d) / 1278;
-    const f1      = x => +(x * r).toFixed(1);
-    return BAR_ORIGINAL_PATH
-        .replace(/400 5/, `${forward} 5`)
-        .replace(/-5 14 -65 16 -598 13/, `${f1(-5)} 14 ${f1(-65)} 16 ${f1(-598)} 13`)
-        .replace(/-326 -2 -632 -4 -680 -6/, `${f1(-326)} -2 ${f1(-632)} -4 ${f1(-680)} -6`);
-}
-
-// Return an SVG for a mirrored hand-drawn bar of the given pixel dimensions.
-// Each half is a nested <svg> that clips to its own viewport, preventing the
-// surd checkmark portion of the path from bleeding into the join area.
-// Both nested elements share one outer <svg>, so there is no inter-HTML-element
-// boundary that could produce a sub-pixel seam.
-//
-// Transform derivation (path units -> nested-SVG px):
-//   gGroup:   path (x,y) -> SVG pt (x/10, BAR_PATH_H - y/10)
-//   viewport: SVG pt u -> nested px (u - cx) * sx   [right half]
-//                         nested px (cx + halfPt - u) * sx  [left half, mirrored]
-function mirrorBarHTML(pixelWidth, pixelHeight) {
-    const Sx      = pixelHeight / BAR_VB_H;
-    const halfPt  = pixelWidth / 2 / Sx / 3;
-    const maxHalf = BAR_BASE_W - BAR_LEFT_X;
-    const delta   = Math.max(0, halfPt - maxHalf);
-    const totalW  = BAR_BASE_W + delta;
-    const cx      = totalW - halfPt;
-    const path    = buildBarPath(delta);
-    const svgH    = pixelHeight * 3;
-    const hw      = pixelWidth / 2;
-    const sx      = hw / halfPt;
-    const sy      = svgH / BAR_VB_H;
-    const a       =  0.1 * sx;
-    const d       = -0.1 * sy;
-    const e       = -cx * sx;          // right half: path x=cx*10 -> nested px 0
-    const f       =  BAR_PATH_H * sy;
-    const matR    = `matrix(${a},0,0,${d},${e},${f})`;
-    const matL    = `matrix(${-a},0,0,${d},${hw - e},${f})`;  // mirror: path x=cx*10 -> nested px hw
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="${pixelWidth}px" height="${svgH}px" style="display:block">
-      <svg x="0" y="0" width="${hw}" height="${svgH}">
-        <path transform="${matL}" d="${path}" fill="currentColor" stroke="none"/>
-      </svg>
-      <svg x="${hw}" y="0" width="${hw}" height="${svgH}">
-        <path transform="${matR}" d="${path}" fill="currentColor" stroke="none"/>
-      </svg>
-    </svg>`;
-}
-
-// ── Hand-drawn sqrt surd (from sqrt_vertical.svg) ─────────────────────────
-//
-// Positioning constants (SVG units at dh=0; g transform matrix(0.1,0,0,-0.1,0,370)):
-//   BAR_TOP_SVG_Y   = 1     — visual bar top = the z-close line, which lands at SVG_y≈0.9
-//                             (the return cubics bring path_y back to 3691 → SVG_y=0.9,
-//                              then z closes horizontally to the start: that IS the bar top)
-//   SURD_HEIGHT_SVG = 656   — visual height: bar top (SVG_y≈1) → surd tip (SVG_y≈657)
-//   BAR_JUNC_SVG_X  = 150.4 — x where bar meets surd (bottom-left of bar / surd junction)
-//   BAR_NAT_SVG_W   = 188.2 — bar width at dw=0
-//   SURD_GAP_SVG    = 60    — extra SVG units added left of bar junction for padding
-//                             between the surd body and the first radicand character
-//
-// Sx = font-size / SURD_HEIGHT_SVG — uniform scale; keeps stroke weight consistent.
-// dh extends the path's two vertical cubics so the surd body reaches the pixel height
-//    without non-uniform SVG scaling.  dw extends the bar cubics to span the radicand.
-
-const BAR_TOP_SVG_Y   = 1;
-const SURD_HEIGHT_SVG = 656;   // natural surd height in SVG units (at dh=0)
-const SVG_CONTENT_H   = 659;   // surd bottom SVG y at dh=0
-const BAR_JUNC_SVG_X  = 150.4;
-const BAR_NAT_SVG_W   = 188.2;
-const SURD_GAP_SVG       = 60; // extra padding between surd body and first radicand character
-const SURD_BAR_NUDGE_SVG = 40; // proportional downward bar shift (SVG units, scales with Sx)
-const SURD_BAR_NUDGE_PX  =  2; // fixed extra downward shift (px); has more relative impact on small sqrts
-
-const SURD_PATH = `m 1320,3691 c -8,-6 -17,-8 -21,-6 -6,4 -140,-124 -164,-156 -5,-8 -23,-31 -38,-52 -32,-43 -46.3589,-214.6662 -67,-412 -21,-234 -89,-3429 -124,-3680 -30.43312,-217.37946 -45.22736,-513.5633 -54,-690 -34.12704,-184.7142 -42.94822,-375.7902 -82,-560 -5,-22 -16,-96 -26,-165 -9,-69 -20,-133 -23,-143 -5,-13 -19,12 -50,87 -24,58 -46,106 -50,108 -5,2 -25,48 -46,103 -51.37238,134.5467 -85,187.2366 -85,214 0,30 -132,155 -240,228 -76,51 -117,30 -215,-112 -40,-57 -44,-94 -16,-145 11,-19 28,-53 40,-76 36.056956,-72.1139 54.23868,-33.8922 165,-319 26,-66 59,-149 73,-185 33,-81 136,-281 173,-335 26,-39 94,-151 159,-265 98.64586,-208.7933 330.01201,-101.8829 368,-19 41,87 69,230 162,804 5,33 30,177 54,320 25,143 45,274 45,290 1,17 9,77 20,135 11,58 8,136 11,175 15,164 36,553 60,690 16,89 67,3152 76,3300 3,55 10,173 17,261 l 11,161 51,-13 c 124,-31 1699,-37 1882,-24 186,13 237,7 310,-15 37,-11 47,-10 85,7 24,10 46,22 49,26 3,5 26,21 52,37 34,21 52,42 63,69 16,38 15,41 -9,89 -14,27 -26,60 -26,73 0,28 -37,84 -56,84 -6,0 -31,9 -54,19 -39,17 -66,19 -359,16 -451,-4 -1904,7 -2091,79 -8,3 -22,2 -30,-3 z`;
-
-function _f(x) { return +x.toFixed(1); }
-
-function buildSurdPath(dw, dh) {
-    const hDownScale = (3680 + dh) / 3680;
-    const hUpScale   = (3300 + dh) / 3300;
-    const wFwdScale  = (1882 + dw) / 1882;
-    const wRetScale  = (2091 + dw) / 2091;
-    return SURD_PATH
-        // Surd descent: scale all y-values
-        .replace(`-21,-234 -89,-3429 -124,-3680`,
-                 `-21,${_f(-234*hDownScale)} -89,${_f(-3429*hDownScale)} -124,${_f(-3680*hDownScale)}`)
-        // Surd ascent: scale all y-values
-        .replace(`16,89 67,3152 76,3300`,
-                 `16,${_f(89*hUpScale)} 67,${_f(3152*hUpScale)} 76,${_f(3300*hUpScale)}`)
-        // Bar forward: scale all x-values
-        .replace(`124,-31 1699,-37 1882,-24`,
-                 `${_f(124*wFwdScale)},-31 ${_f(1699*wFwdScale)},-37 ${_f(1882*wFwdScale)},-24`)
-        // Bar return: scale all x-values
-        .replace(`-451,-4 -1904,7 -2091,79`,
-                 `${_f(-451*wRetScale)},-4 ${_f(-1904*wRetScale)},7 ${_f(-2091*wRetScale)},79`);
-}
-
-// Overlay a path-generated SVG on each \sqrt, hiding the MathJax surd glyph
-// and vinculum border while preserving MathJax's layout and spacing.
-function replaceSqrtSymbols(root) {
-    const scope = root || document;
-    scope.querySelectorAll('mjx-msqrt').forEach(msqrt => {
-        if (msqrt.dataset.sqrtReplaced) return;
-        msqrt.dataset.sqrtReplaced = '1';
-
-        const surd = msqrt.querySelector('mjx-surd');
-        if (!surd) return;
-
-        let vinculumEl = null;
-        for (const el of msqrt.querySelectorAll('*')) {
-            // Skip the surd glyph and fraction bars nested *inside* the radicand.
-            // Must use msqrt.contains() rather than a bare el.closest('mjx-mfrac') check:
-            // when the sqrt itself is inside a fraction, every element here has an
-            // mjx-mfrac ancestor, so the bare check would skip everything and miss our vinculum.
-            if (el.closest('mjx-surd')) continue;
-            const nearestFrac = el.closest('mjx-mfrac');
-            if (nearestFrac && msqrt.contains(nearestFrac)) continue;
-            const cs = getComputedStyle(el);
-            if (cs.borderTopStyle === 'solid' && parseFloat(cs.borderTopWidth) > 0) {
-                vinculumEl = el; break;
-            }
-        }
-
-        const surdRect     = surd.getBoundingClientRect();
-        const msqrtRect    = msqrt.getBoundingClientRect();
-        const vinculumRect = vinculumEl ? vinculumEl.getBoundingClientRect() : null;
-
-        // Sx: uniform scale based on font size — keeps stroke weight consistent.
-        // ×1.5 thickens strokes; dw/dh are recomputed at the new Sx so the bar
-        // width and overall surd height stay matched to the radicand.
-        const Sx     = parseFloat(getComputedStyle(msqrt).fontSize) / SURD_HEIGHT_SVG * 1.5;
-        const W_bar  = vinculumRect ? vinculumRect.width : surdRect.height;
-        // SURD_GAP_SVG pushes the bar junction left of the vinculum edge, adding
-        // whitespace between the surd body and the first character of the radicand.
-        const dh     = (surdRect.height / Sx - SURD_HEIGHT_SVG) * 10;
-        const dw     = (W_bar / Sx + SURD_GAP_SVG - BAR_NAT_SVG_W) * 10;
-
-        const vbW = 400 + dw * 0.1;
-        const vbH = SVG_CONTENT_H + dh * 0.1 + 20;
-
-        const vincLeft = vinculumRect
-            ? vinculumRect.left - msqrtRect.left
-            : surdRect.right   - msqrtRect.left;
-        const svgLeft = vincLeft - (BAR_JUNC_SVG_X + SURD_GAP_SVG) * Sx;
-        const svgTop  = (surdRect.top - msqrtRect.top) - (BAR_TOP_SVG_Y - SURD_BAR_NUDGE_SVG) * Sx + SURD_BAR_NUDGE_PX;
-
-        surd.dataset.xkcdHidden = '1';
-        surd.style.visibility = 'hidden';
-        if (vinculumEl) { vinculumEl.dataset.xkcdHidden = '1'; vinculumEl.style.borderTopColor = 'transparent'; }
-        if (getComputedStyle(msqrt).position === 'static') { msqrt.dataset.xkcdPos = '1'; msqrt.style.position = 'relative'; }
-
-        msqrt.insertAdjacentHTML('beforeend',
-            `<svg class="xkcd-overlay" xmlns="http://www.w3.org/2000/svg"
-                width="${vbW * Sx}px" height="${vbH * Sx}px" viewBox="0 0 ${vbW} ${vbH}"
-                style="position:absolute;overflow:visible;left:${svgLeft}px;top:${svgTop}px;pointer-events:none;">
-              <g transform="matrix(0.1,0,0,-0.1,0,370)" fill="currentColor" stroke="none">
-                <path d="${buildSurdPath(dw, dh)}"/>
-              </g>
-            </svg>`);
-    });
-}
-
-// MathJax 3 CHTML renders characters via CSS ::before pseudo-elements.
-// Injecting our font-family override *after* MathJax's CSS ensures we're
-// later in the cascade and our !important beats MathJax's for equal specificity.
-let _fontOverrideInjected = false;
-function injectFontOverride() {
-    if (_fontOverrideInjected) return;
-    _fontOverrideInjected = true;
-    const STACK = "'xkcd-script-math', MJXTEX, MJXTEX-I, MJXTEX-B, MJXTEX-BI, MJXTEX-S1, MJXTEX-S2, MJXTEX-S3, MJXTEX-S4, MJXTEX-A";
-    const s = document.createElement('style');
-    s.textContent = `
-        mjx-container[jax="CHTML"] *,
-        mjx-container[jax="CHTML"] *::before {
-            font-family: ${STACK} !important;
-        }
-        /* MathJax positions inline limits using pre-baked JS metrics, ignoring
-           the font's advance width.  Adding margin-right to the mo wrapper is
-           the only way to push inline scripts further right for our wider ∏ and
-           ∫ glyphs.  Restricted to non-display containers: in display mode the
-           limits are above/below (∑) or upper/lower-right (∫) and the extra gap
-           looks wrong. */
-        mjx-container[jax="CHTML"]:not([display="true"]) mjx-mo:has(.mjx-c220F),
-        mjx-container[jax="CHTML"]:not([display="true"]) mjx-mo:has(.mjx-c222B) {
-            margin-right: 0.4em !important;
-        }
-        /* MathJax's italic correction for ∑ was designed for the slanted MJXTEX
-           glyph; our upright version inherits it, pushing the over-script too far
-           right in display mode.  Nudge it back. */
-        mjx-container[jax="CHTML"][display="true"] mjx-munderover:has(.mjx-c2211) mjx-over {
-            margin-left: -0.15em !important;
-        }
-        /* xkcd capitals are ~0.20em narrower than MJXTEX-I metrics so MathJax
-           centres \hat (U+02C6) too far right.  Nudge it back; tune visually. */
-        mjx-container[jax="CHTML"] mjx-mover mjx-over:has(.mjx-c2C6) {
-            margin-left: -0.10em !important;
-        }
-        /* MJXTEX-I applies ~0.133em italic-correction padding to f (U+1D453) as
-           the superscript base, positioning the prime too far right for xkcd's
-           upright f shape.  Zeroing it closes the equal gap on both sides of '. */
-        mjx-container[jax="CHTML"] mjx-msup mjx-base mjx-mi:has(.mjx-c1D453) {
-            padding-right: 0 !important;
-        }
-        /* xkcd italic g (U+1D454) descender crowds the following '(' — add a
-           small nudge after it.  Tune visually if needed. */
-        mjx-container[jax="CHTML"] mjx-mi:has(.mjx-c1D454) {
-            margin-right: 0.05em;
-        }
-    `;
-    document.head.appendChild(s);
-}
-
-// Remove all overlays and restore hidden/transparent elements so the
-// replacement functions can run again with fresh BCR measurements.
-function resetOverlays(scope) {
-    const root = scope || document;
-    root.querySelectorAll('.xkcd-overlay').forEach(el => el.remove());
-    root.querySelectorAll('[data-xkcd-hidden]').forEach(el => {
-        el.style.visibility = '';
-        el.style.borderTopColor = '';
-        delete el.dataset.xkcdHidden;
-    });
-    root.querySelectorAll('[data-xkcd-pos]').forEach(el => {
-        el.style.position = '';
-        delete el.dataset.xkcdPos;
-    });
-    root.querySelectorAll('[data-sqrt-replaced]').forEach(el => {
-        delete el.dataset.sqrtReplaced;
-    });
-}
-
-// Replace non-sqrt border-top vinculums (fraction bars) with hand-drawn SVG.
-// Must be called after each typesetPromise() resolves.
-function replaceVinculums(root) {
-    const scope = root || document;
-    scope.querySelectorAll('mjx-container[jax="CHTML"]').forEach(container => {
-        container.querySelectorAll('*').forEach(el => {
-            if (el.closest('mjx-msqrt')) return;  // handled by replaceSqrtSymbols
-            const cs = getComputedStyle(el);
-            if (cs.borderTopStyle !== 'solid' || parseFloat(cs.borderTopWidth) <= 0) return;
-            const barH = Math.max(parseFloat(cs.borderTopWidth), 1);
-            el.dataset.xkcdHidden = '1';
-            el.style.borderTopColor = 'transparent';
-
-            if (getComputedStyle(container).position === 'static')
-                { container.dataset.xkcdPos = '1'; container.style.position = 'relative'; }
-
-            const containerRect = container.getBoundingClientRect();
-            const elRect        = el.getBoundingClientRect();
-            const left = elRect.left - containerRect.left;
-            const top  = elRect.top  - containerRect.top - 1.5 * barH;
-
-            container.insertAdjacentHTML('beforeend',
-                `<div class="xkcd-overlay" style="position:absolute;left:${left}px;top:${top}px;pointer-events:none;">${mirrorBarHTML(elRect.width, barH)}</div>`);
-        });
-    });
-}
-</script>
-
-<script>
+// MathJax TeX-input config (delimiters).  Must be set BEFORE xkcd-mathjax.js
+// (which then merges in its startup hook) and BEFORE MathJax itself loads.
 MathJax = {
     tex: {
-        inlineMath:   [['$', '$'], ['\\(', '\\)']],
-        displayMath:  [['$$', '$$'], ['\\[', '\\]']],
+        inlineMath:  [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
     },
-    startup: {
-        typeset: false,
-        ready() {
-            MathJax.startup.defaultReady();
-            document.fonts.load("1em 'xkcd-script-math'").then(() => {
-                MathJax.typesetPromise().then(() => {
-                    injectFontOverride();
-                    replaceSqrtSymbols();
-                    replaceVinculums();
-                });
-            });
-        }
-    }
 };
 </script>
+<script src="xkcd-script/xkcd-mathjax.js"></script>
 <script id="MathJax-script" async
         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
 
@@ -401,41 +87,26 @@ const input   = document.getElementById('latex-input');
 const preview = document.getElementById('latex-preview');
 let renderTimer;
 
-function renderMath() {
+function renderPreview() {
     MathJax.typesetClear([preview]);
     preview.textContent = input.value;
-    MathJax.typesetPromise([preview]).then(() => {
-        injectFontOverride();
-        replaceSqrtSymbols(preview);
-        replaceVinculums(preview);
-    });
+    MathJax.typesetPromise([preview]).then(() => XkcdMathJax.refresh(preview));
 }
 
 input.addEventListener('input', () => {
     clearTimeout(renderTimer);
-    renderTimer = setTimeout(renderMath, 350);
+    renderTimer = setTimeout(renderPreview, 350);
 });
 
-// Render initial content once MathJax + font are both ready.
-document.fonts.load("1em 'xkcd-script-math'").then(() => {
-    if (window.MathJax && MathJax.startup && MathJax.startup.promise) {
-        MathJax.startup.promise.then(renderMath);
-    } else {
-        document.addEventListener('mathjax-ready', renderMath);
-    }
-});
+// Initial preview render fires once MathJax + xkcd-mathjax finish setup.
+XkcdMathJax.ready.then(renderPreview);
 
-// Reposition overlays on resize/zoom (BCR coordinates change).
+// On resize the library already re-places overlays on the static formulae;
+// we additionally re-render the live preview so its layout stays in sync.
 let resizeTimer;
 window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => {
-        resetOverlays();
-        replaceSqrtSymbols();
-        replaceVinculums();
-        // Also re-render the live preview with fresh layout.
-        renderMath();
-    }, 150);
+    resizeTimer = setTimeout(renderPreview, 150);
 });
 </script>
 
@@ -492,10 +163,10 @@ $$\nabla \cdot \mathbf{E} = 0 \qquad \nabla \times \mathbf{E} = -\frac{\partial 
 
 
 <p>Deeply nested sqrt fractions:
-$$\sqrt{b^2 - 4ac} 
-\sqrt{\frac{b^2}{x}}{2a} 
-\sqrt{\frac{b^2}{\frac{b^2}{x}}}{2a} 
-\sqrt{\frac{b^2}{\frac{b^2}{\frac{b^2}{x}}}}{2a} 
+$$\sqrt{b^2 - 4ac}
+\sqrt{\frac{b^2}{x}}{2a}
+\sqrt{\frac{b^2}{\frac{b^2}{x}}}{2a}
+\sqrt{\frac{b^2}{\frac{b^2}{\frac{b^2}{x}}}}{2a}
 \sqrt{\frac{b^2}{\frac{b^2}{\frac{b^2}{\frac{b^2}{4ac}}}}}{2a}$$
 </p>
 </body>

@@ -1299,6 +1299,122 @@ for _cp, _left, _right in [
 
 
 # ---------------------------------------------------------------------------
+# Math cmap aliases (for MathJax / pasted Unicode math text)
+# ---------------------------------------------------------------------------
+# MathJax CHTML references math italic / bold / Greek codepoints directly
+# (U+1D400-block).  Rather than ship dedicated glyphs, we add cmap aliases so
+# each math codepoint resolves to the existing Latin/Greek letterform.  The
+# aliases attach via glyph.altuni so no extra glyph entries are created — the
+# size cost is only the additional cmap entries.
+
+def _add_altuni(glyph, codepoint):
+    cur = list(glyph.altuni) if glyph.altuni else []
+    cur.append((codepoint, -1, 0))
+    glyph.altuni = tuple(cur)
+
+
+# Greek codepoint sequences for the U+1D6A8.. and U+1D6E2.. math blocks.
+# Position 17 is the "capital theta symbol" slot, aliased back to plain Θ.
+# 0x03A2 is a Unicode hole in the Greek block; the math block uses Σ in that slot.
+_GREEK_UPPER = [
+    0x0391, 0x0392, 0x0393, 0x0394, 0x0395, 0x0396, 0x0397, 0x0398,
+    0x0399, 0x039A, 0x039B, 0x039C, 0x039D, 0x039E, 0x039F, 0x03A0,
+    0x03A1, 0x0398, 0x03A3, 0x03A4, 0x03A5, 0x03A6, 0x03A7, 0x03A8, 0x03A9,
+]
+_GREEK_LOWER = [
+    0x03B1, 0x03B2, 0x03B3, 0x03B4, 0x03B5, 0x03B6, 0x03B7, 0x03B8,
+    0x03B9, 0x03BA, 0x03BB, 0x03BC, 0x03BD, 0x03BE, 0x03BF, 0x03C0,
+    0x03C1, 0x03C2, 0x03C3, 0x03C4, 0x03C5, 0x03C6, 0x03C7, 0x03C8, 0x03C9,
+]
+
+_math_aliases = {}  # src_cp -> dst_cp
+
+# Math Italic Latin: U+1D434–U+1D467 (U+1D455 is a Unicode hole)
+for _i in range(26):
+    _math_aliases[0x1D434 + _i] = 0x0041 + _i
+for _i in range(26):
+    _src = 0x1D44E + _i
+    if _src != 0x1D455:
+        _math_aliases[_src] = 0x0061 + _i
+
+# TeX italic substitutes that fill the U+1D455 hole and similar
+_math_aliases[0x210E] = ord('h')   # ℎ PLANCK CONSTANT
+_math_aliases[0x210F] = ord('h')   # ℏ PLANCK CONSTANT OVER TWO PI (no ħ in math italic)
+_math_aliases[0x2113] = ord('l')   # ℓ SCRIPT SMALL L
+_math_aliases[0x03D5] = 0x03C6     # ϕ GREEK PHI SYMBOL → φ
+
+# Math Bold Latin: U+1D400–U+1D433
+for _i in range(26):
+    _math_aliases[0x1D400 + _i] = 0x0041 + _i
+for _i in range(26):
+    _math_aliases[0x1D41A + _i] = 0x0061 + _i
+
+# Math Bold Italic Latin: U+1D468–U+1D49B
+for _i in range(26):
+    _math_aliases[0x1D468 + _i] = 0x0041 + _i
+for _i in range(26):
+    _math_aliases[0x1D482 + _i] = 0x0061 + _i
+
+# Math Bold digits: U+1D7CE–U+1D7D7
+for _i in range(10):
+    _math_aliases[0x1D7CE + _i] = 0x0030 + _i
+
+# Math Italic Greek capitals: U+1D6E2–U+1D6FA, small: U+1D6FC–U+1D714
+for _i, _cp in enumerate(_GREEK_UPPER):
+    _math_aliases[0x1D6E2 + _i] = _cp
+for _i, _cp in enumerate(_GREEK_LOWER):
+    _math_aliases[0x1D6FC + _i] = _cp
+
+# Math Italic Greek variants
+_math_aliases[0x1D715] = 0x2202  # ∂ partial differential
+_math_aliases[0x1D716] = 0x03F5  # ϵ epsilon symbol
+_math_aliases[0x1D717] = 0x03B8  # θ theta symbol
+_math_aliases[0x1D718] = 0x03BA  # κ kappa symbol
+_math_aliases[0x1D719] = 0x03C6  # φ phi symbol
+_math_aliases[0x1D71A] = 0x03C1  # ρ rho symbol
+_math_aliases[0x1D71B] = 0x03C0  # π pi symbol
+
+# Math Bold Greek capitals: U+1D6A8–U+1D6C0, small: U+1D6C2–U+1D6DA
+for _i, _cp in enumerate(_GREEK_UPPER):
+    _math_aliases[0x1D6A8 + _i] = _cp
+for _i, _cp in enumerate(_GREEK_LOWER):
+    _math_aliases[0x1D6C2 + _i] = _cp
+
+_added = 0
+_skipped = 0
+for _src_cp, _dst_cp in sorted(_math_aliases.items()):
+    try:
+        _g = font[_dst_cp]
+    except TypeError:
+        _skipped += 1
+        continue
+    _add_altuni(_g, _src_cp)
+    _added += 1
+print(f"  math aliases: added {_added}, skipped {_skipped} (no source glyph)")
+
+
+# ---------------------------------------------------------------------------
+# ⋅ U+22C5 DOT OPERATOR — period scaled to 75%, centred on the math axis.
+# Used inline in math contexts (e.g. "5⋅3"); math-axis centring lines it up
+# with operators like +/− rather than the baseline-hugging period dot.
+# ---------------------------------------------------------------------------
+_MATH_AXIS = 260
+_CDOT_WIDTH = 220
+_period_g = font[ord('.')]
+_period_bb = _period_g.boundingBox()
+_period_cx = (_period_bb[0] + _period_bb[2]) / 2
+_period_cy = (_period_bb[1] + _period_bb[3]) / 2
+_cdot = font.createMappedChar(0x22C5)
+_cdot.clear()
+_cdot.addReference(_period_g.glyphname, psMat.compose(
+    psMat.scale(0.75),
+    psMat.translate(_CDOT_WIDTH / 2 - _period_cx * 0.75,
+                    _MATH_AXIS - _period_cy * 0.75),
+))
+_cdot.width = _CDOT_WIDTH
+
+
+# ---------------------------------------------------------------------------
 # Save
 # ---------------------------------------------------------------------------
 
