@@ -60,16 +60,22 @@ def add_mathjax_operators(ff_font):
                affects non-MathJax uses.  Inline limit spacing in MathJax is
                controlled via CSS margin-right in xkcd-mathjax.js instead.
         """
-        ff_font.selection.select(src_cp)
-        ff_font.copy()
+        # Snapshot outlines + width before touching dst; src and dst point to
+        # the same glyph when src_cp == dst_cp (e.g. ∫ scaled in place).
+        src = ff_font[src_cp]
+        src_layer = fontforge.layer()
+        for c in src.foreground:
+            src_layer += c
+        src_width = src.width
+
         try:
             g = ff_font[dst_cp]
             g.clear()
         except TypeError:
             g = ff_font.createChar(dst_cp, dst_name)
-        ff_font.selection.select(dst_cp)
-        ff_font.paste()
-        g = ff_font[dst_cp]
+
+        g.foreground = src_layer
+        g.width = src_width
 
         bb = g.boundingBox()
         scale = target_h / (bb[3] - bb[1])

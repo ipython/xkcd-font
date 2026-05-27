@@ -61,7 +61,7 @@ Lookup: 260 0 0 "below" { "below_sub"  } ['mark' ('latn' <'dflt' > ) ]
 Lookup: 260 0 0 "above" { "above_sub"  } ['mark' ('latn' <'dflt' > ) ]
 Lookup: 258 0 0 "kerning" { "kern"  } ['kern' ('latn' <'dflt' > ) ]
 DEI: 91125
-Encoding: UnicodeFull
+Encoding: Custom
 UnicodeInterp: none
 NameList: AGL For New Fonts
 DisplaySize: -48
@@ -78,10 +78,11 @@ StemSnapH 30 [53 61 70 74 78 83 87 172 220]
 StemSnapV 16 [60 70 76 80 85]
 EndPrivate
 AnchorClass2: "below" "below_sub" "above" "above_sub"
-BeginChars: 1114203 613
+BeginChars: 1114203 614
 
 StartChar: a
 Encoding: 97 97 0
+AltUni2: 01d482.ffffffff.0 01d44e.ffffffff.0 01d41a.ffffffff.0
 Width: 389
 VWidth: 527
 Flags: HW
@@ -128,6 +129,7 @@ EndChar
 
 StartChar: k
 Encoding: 107 107 1
+AltUni2: 01d48c.ffffffff.0 01d458.ffffffff.0 01d424.ffffffff.0
 Width: 409
 VWidth: 715
 Flags: HW
@@ -177,6 +179,7 @@ EndChar
 
 StartChar: l
 Encoding: 108 108 2
+AltUni2: 01d48d.ffffffff.0 01d459.ffffffff.0 01d425.ffffffff.0 002113.ffffffff.0
 Width: 157
 VWidth: 810
 Flags: HW
@@ -209,6 +212,7 @@ EndChar
 
 StartChar: m
 Encoding: 109 109 3
+AltUni2: 01d48e.ffffffff.0 01d45a.ffffffff.0 01d426.ffffffff.0
 Width: 569
 VWidth: 609
 Flags: HW
@@ -267,6 +271,7 @@ EndChar
 
 StartChar: n
 Encoding: 110 110 4
+AltUni2: 01d48f.ffffffff.0 01d45b.ffffffff.0 01d427.ffffffff.0
 Width: 358
 VWidth: 565
 Flags: HW
@@ -312,6 +317,7 @@ EndChar
 
 StartChar: o
 Encoding: 111 111 5
+AltUni2: 01d490.ffffffff.0 01d45c.ffffffff.0 01d428.ffffffff.0
 Width: 381
 VWidth: 542
 Flags: HW
@@ -357,6 +363,7 @@ EndChar
 
 StartChar: p
 Encoding: 112 112 6
+AltUni2: 01d491.ffffffff.0 01d45d.ffffffff.0 01d429.ffffffff.0
 Width: 407
 VWidth: 639
 Flags: HW
@@ -410,6 +417,7 @@ EndChar
 
 StartChar: q
 Encoding: 113 113 7
+AltUni2: 01d492.ffffffff.0 01d45e.ffffffff.0 01d42a.ffffffff.0
 Width: 388
 VWidth: 568
 Flags: HW
@@ -468,6 +476,7 @@ EndChar
 
 StartChar: r
 Encoding: 114 114 8
+AltUni2: 01d493.ffffffff.0 01d45f.ffffffff.0 01d42b.ffffffff.0
 Width: 405
 VWidth: 554
 Flags: HW
@@ -502,6 +511,7 @@ EndChar
 
 StartChar: s
 Encoding: 115 115 9
+AltUni2: 01d494.ffffffff.0 01d460.ffffffff.0 01d42c.ffffffff.0
 Width: 365
 VWidth: 579
 Flags: HW
@@ -555,6 +565,7 @@ EndChar
 
 StartChar: t
 Encoding: 116 116 10
+AltUni2: 01d495.ffffffff.0 01d461.ffffffff.0 01d42d.ffffffff.0
 Width: 333
 VWidth: 788
 Flags: HW
@@ -604,6 +615,7 @@ EndChar
 
 StartChar: b
 Encoding: 98 98 11
+AltUni2: 01d483.ffffffff.0 01d44f.ffffffff.0 01d41b.ffffffff.0
 Width: 364
 VWidth: 789
 Flags: HW
@@ -648,6 +660,7 @@ EndChar
 
 StartChar: u
 Encoding: 117 117 12
+AltUni2: 01d496.ffffffff.0 01d462.ffffffff.0 01d42e.ffffffff.0
 Width: 412
 VWidth: 546
 Flags: HW
@@ -688,6 +701,7 @@ EndChar
 
 StartChar: v
 Encoding: 118 118 13
+AltUni2: 01d497.ffffffff.0 01d463.ffffffff.0 01d42f.ffffffff.0
 Width: 367
 VWidth: 559
 Flags: HW
@@ -726,6 +740,7 @@ EndChar
 
 StartChar: w
 Encoding: 119 119 14
+AltUni2: 01d498.ffffffff.0 01d464.ffffffff.0 01d430.ffffffff.0
 Width: 480
 VWidth: 608
 Flags: HW
@@ -779,6 +794,7 @@ EndChar
 
 StartChar: x
 Encoding: 120 120 15
+AltUni2: 01d499.ffffffff.0 01d465.ffffffff.0 01d431.ffffffff.0
 Width: 392
 VWidth: 542
 Flags: HW
@@ -829,6 +845,7 @@ EndChar
 
 StartChar: y
 Encoding: 121 121 16
+AltUni2: 01d49a.ffffffff.0 01d466.ffffffff.0 01d432.ffffffff.0
 Width: 429
 VWidth: 513
 Flags: HW
@@ -882,6 +899,7 @@ EndChar
 
 StartChar: z
 Encoding: 122 122 17
+AltUni2: 01d49b.ffffffff.0 01d467.ffffffff.0 01d433.ffffffff.0
 Width: 380
 VWidth: 497
 Flags: HW
@@ -958,6 +976,7 @@ EndChar
 
 StartChar: c
 Encoding: 99 99 18
+AltUni2: 01d484.ffffffff.0 01d450.ffffffff.0 01d41c.ffffffff.0
 Width: 358
 VWidth: 608
 Flags: HW
@@ -998,6 +1017,7 @@ EndChar
 
 StartChar: d
 Encoding: 100 100 19
+AltUni2: 01d485.ffffffff.0 01d451.ffffffff.0 01d41d.ffffffff.0
 Width: 401
 VWidth: 842
 Flags: HW
@@ -1043,6 +1063,7 @@ EndChar
 
 StartChar: e
 Encoding: 101 101 20
+AltUni2: 01d486.ffffffff.0 01d452.ffffffff.0 01d41e.ffffffff.0
 Width: 385
 VWidth: 574
 Flags: HW
@@ -1087,6 +1108,7 @@ EndChar
 
 StartChar: f
 Encoding: 102 102 21
+AltUni2: 01d487.ffffffff.0 01d453.ffffffff.0 01d41f.ffffffff.0
 Width: 327
 VWidth: 769
 Flags: HW
@@ -1137,6 +1159,7 @@ EndChar
 
 StartChar: g
 Encoding: 103 103 22
+AltUni2: 01d488.ffffffff.0 01d454.ffffffff.0 01d420.ffffffff.0
 Width: 389
 VWidth: 615
 Flags: HW
@@ -1198,6 +1221,7 @@ EndChar
 
 StartChar: h
 Encoding: 104 104 23
+AltUni2: 01d489.ffffffff.0 01d421.ffffffff.0 00210f.ffffffff.0 00210e.ffffffff.0
 Width: 369
 VWidth: 759
 Flags: HW
@@ -1241,6 +1265,7 @@ EndChar
 
 StartChar: i
 Encoding: 105 105 24
+AltUni2: 01d48a.ffffffff.0 01d456.ffffffff.0 01d422.ffffffff.0
 Width: 209
 VWidth: 625
 Flags: HW
@@ -1281,6 +1306,7 @@ EndChar
 
 StartChar: j
 Encoding: 106 106 25
+AltUni2: 01d48b.ffffffff.0 01d457.ffffffff.0 01d423.ffffffff.0
 Width: 256
 VWidth: 751
 Flags: HW
@@ -2107,6 +2133,7 @@ EndChar
 
 StartChar: A
 Encoding: 65 65 39
+AltUni2: 01d468.ffffffff.0 01d434.ffffffff.0 01d400.ffffffff.0
 Width: 438
 VWidth: 771
 Flags: HW
@@ -2152,6 +2179,7 @@ EndChar
 
 StartChar: K
 Encoding: 75 75 40
+AltUni2: 01d472.ffffffff.0 01d43e.ffffffff.0 01d40a.ffffffff.0
 Width: 435
 VWidth: 771
 Flags: HW
@@ -2199,6 +2227,7 @@ EndChar
 
 StartChar: L
 Encoding: 76 76 41
+AltUni2: 01d473.ffffffff.0 01d43f.ffffffff.0 01d40b.ffffffff.0
 Width: 430
 VWidth: 723
 Flags: HW
@@ -2231,6 +2260,7 @@ EndChar
 
 StartChar: M
 Encoding: 77 77 42
+AltUni2: 01d474.ffffffff.0 01d440.ffffffff.0 01d40c.ffffffff.0
 Width: 513
 VWidth: 788
 Flags: HW
@@ -2287,6 +2317,7 @@ EndChar
 
 StartChar: N
 Encoding: 78 78 43
+AltUni2: 01d475.ffffffff.0 01d441.ffffffff.0 01d40d.ffffffff.0
 Width: 445
 VWidth: 809
 Flags: HW
@@ -2331,6 +2362,7 @@ EndChar
 
 StartChar: O
 Encoding: 79 79 44
+AltUni2: 01d476.ffffffff.0 01d442.ffffffff.0 01d40e.ffffffff.0
 Width: 479
 VWidth: 759
 Flags: HW
@@ -2380,6 +2412,7 @@ EndChar
 
 StartChar: P
 Encoding: 80 80 45
+AltUni2: 01d477.ffffffff.0 01d443.ffffffff.0 01d40f.ffffffff.0
 Width: 429
 VWidth: 786
 Flags: HW
@@ -2430,6 +2463,7 @@ EndChar
 
 StartChar: Q
 Encoding: 81 81 46
+AltUni2: 01d478.ffffffff.0 01d444.ffffffff.0 01d410.ffffffff.0
 Width: 549
 VWidth: 795
 Flags: HW
@@ -2499,6 +2533,7 @@ EndChar
 
 StartChar: R
 Encoding: 82 82 47
+AltUni2: 01d479.ffffffff.0 01d445.ffffffff.0 01d411.ffffffff.0
 Width: 422
 VWidth: 788
 Flags: HW
@@ -2561,6 +2596,7 @@ EndChar
 
 StartChar: S
 Encoding: 83 83 48
+AltUni2: 01d47a.ffffffff.0 01d446.ffffffff.0 01d412.ffffffff.0
 Width: 452
 VWidth: 768
 Flags: HW
@@ -2613,6 +2649,7 @@ EndChar
 
 StartChar: T
 Encoding: 84 84 49
+AltUni2: 01d47b.ffffffff.0 01d447.ffffffff.0 01d413.ffffffff.0
 Width: 446
 VWidth: 795
 Flags: HW
@@ -2648,6 +2685,7 @@ EndChar
 
 StartChar: B
 Encoding: 66 66 50
+AltUni2: 01d469.ffffffff.0 01d435.ffffffff.0 01d401.ffffffff.0
 Width: 412
 VWidth: 759
 Flags: HW
@@ -2710,6 +2748,7 @@ EndChar
 
 StartChar: U
 Encoding: 85 85 51
+AltUni2: 01d47c.ffffffff.0 01d448.ffffffff.0 01d414.ffffffff.0
 Width: 450
 VWidth: 776
 Flags: HW
@@ -2754,6 +2793,7 @@ EndChar
 
 StartChar: V
 Encoding: 86 86 52
+AltUni2: 01d47d.ffffffff.0 01d449.ffffffff.0 01d415.ffffffff.0
 Width: 387
 VWidth: 747
 Flags: HW
@@ -2795,6 +2835,7 @@ EndChar
 
 StartChar: W
 Encoding: 87 87 53
+AltUni2: 01d47e.ffffffff.0 01d44a.ffffffff.0 01d416.ffffffff.0
 Width: 597
 VWidth: 813
 Flags: HW
@@ -2847,6 +2888,7 @@ EndChar
 
 StartChar: X
 Encoding: 88 88 54
+AltUni2: 01d47f.ffffffff.0 01d44b.ffffffff.0 01d417.ffffffff.0
 Width: 431
 VWidth: 777
 Flags: HW
@@ -2894,6 +2936,7 @@ EndChar
 
 StartChar: Y
 Encoding: 89 89 55
+AltUni2: 01d480.ffffffff.0 01d44c.ffffffff.0 01d418.ffffffff.0
 Width: 481
 VWidth: 734
 Flags: HW
@@ -2935,6 +2978,7 @@ EndChar
 
 StartChar: Z
 Encoding: 90 90 56
+AltUni2: 01d481.ffffffff.0 01d44d.ffffffff.0 01d419.ffffffff.0
 Width: 469
 VWidth: 750
 Flags: HW
@@ -3028,6 +3072,7 @@ EndChar
 
 StartChar: C
 Encoding: 67 67 58
+AltUni2: 01d46a.ffffffff.0 01d436.ffffffff.0 01d402.ffffffff.0
 Width: 443
 VWidth: 802
 Flags: HW
@@ -3069,6 +3114,7 @@ EndChar
 
 StartChar: D
 Encoding: 68 68 59
+AltUni2: 01d46b.ffffffff.0 01d437.ffffffff.0 01d403.ffffffff.0
 Width: 486
 VWidth: 767
 Flags: HW
@@ -3124,6 +3170,7 @@ EndChar
 
 StartChar: E
 Encoding: 69 69 60
+AltUni2: 01d46c.ffffffff.0 01d438.ffffffff.0 01d404.ffffffff.0
 Width: 440
 VWidth: 752
 Flags: HW
@@ -3180,6 +3227,7 @@ EndChar
 
 StartChar: F
 Encoding: 70 70 61
+AltUni2: 01d46d.ffffffff.0 01d439.ffffffff.0 01d405.ffffffff.0
 Width: 458
 VWidth: 746
 Flags: HW
@@ -3220,6 +3268,7 @@ EndChar
 
 StartChar: G
 Encoding: 71 71 62
+AltUni2: 01d46e.ffffffff.0 01d43a.ffffffff.0 01d406.ffffffff.0
 Width: 457
 VWidth: 750
 Flags: HW
@@ -3282,6 +3331,7 @@ EndChar
 
 StartChar: H
 Encoding: 72 72 63
+AltUni2: 01d46f.ffffffff.0 01d43b.ffffffff.0 01d407.ffffffff.0
 Width: 417
 VWidth: 710
 Flags: HW
@@ -3325,6 +3375,7 @@ EndChar
 
 StartChar: I
 Encoding: 73 73 64
+AltUni2: 01d470.ffffffff.0 01d43c.ffffffff.0 01d408.ffffffff.0
 Width: 147
 VWidth: 731
 Flags: HW
@@ -3348,6 +3399,7 @@ EndChar
 
 StartChar: J
 Encoding: 74 74 65
+AltUni2: 01d471.ffffffff.0 01d43d.ffffffff.0 01d409.ffffffff.0
 Width: 512
 VWidth: 759
 Flags: HW
@@ -5781,6 +5833,7 @@ EndChar
 
 StartChar: Sigma
 Encoding: 931 931 106
+AltUni2: 01d6f4.ffffffff.0 01d6ba.ffffffff.0
 Width: 524
 Flags: HW
 AnchorPoint: "above" 262.007 620.195 basechar 0
@@ -6368,6 +6421,7 @@ EndChar
 
 StartChar: one
 Encoding: 49 49 114
+AltUni2: 01d7cf.ffffffff.0
 Width: 146
 VWidth: 733
 Flags: W
@@ -7063,6 +7117,7 @@ EndChar
 
 StartChar: two
 Encoding: 50 50 125
+AltUni2: 01d7d0.ffffffff.0
 Width: 421
 VWidth: 797
 Flags: W
@@ -7289,6 +7344,7 @@ EndChar
 
 StartChar: three
 Encoding: 51 51 132
+AltUni2: 01d7d1.ffffffff.0
 Width: 455
 VWidth: 786
 Flags: W
@@ -7414,6 +7470,7 @@ EndChar
 
 StartChar: four
 Encoding: 52 52 135
+AltUni2: 01d7d2.ffffffff.0
 Width: 419
 VWidth: 775
 Flags: W
@@ -7459,6 +7516,7 @@ EndChar
 
 StartChar: five
 Encoding: 53 53 136
+AltUni2: 01d7d3.ffffffff.0
 Width: 482
 VWidth: 800
 Flags: W
@@ -7518,6 +7576,7 @@ EndChar
 
 StartChar: six
 Encoding: 54 54 137
+AltUni2: 01d7d4.ffffffff.0
 Width: 436
 VWidth: 804
 Flags: W
@@ -7563,6 +7622,7 @@ EndChar
 
 StartChar: seven
 Encoding: 55 55 138
+AltUni2: 01d7d5.ffffffff.0
 Width: 402
 VWidth: 783
 Flags: W
@@ -7602,6 +7662,7 @@ EndChar
 
 StartChar: eight
 Encoding: 56 56 139
+AltUni2: 01d7d6.ffffffff.0
 Width: 396
 VWidth: 787
 Flags: W
@@ -7664,6 +7725,7 @@ EndChar
 
 StartChar: nine
 Encoding: 57 57 140
+AltUni2: 01d7d7.ffffffff.0
 Width: 405
 VWidth: 811
 Flags: W
@@ -7713,6 +7775,7 @@ EndChar
 
 StartChar: zero
 Encoding: 48 48 141
+AltUni2: 01d7ce.ffffffff.0
 Width: 464
 VWidth: 774
 Flags: W
@@ -8124,6 +8187,7 @@ EndChar
 
 StartChar: pi
 Encoding: 960 960 148
+AltUni2: 01d71b.ffffffff.0 01d70b.ffffffff.0 01d6d1.ffffffff.0
 Width: 512
 Flags: HW
 AnchorPoint: "above" 255.937 426.209 basechar 0
@@ -8342,6 +8406,7 @@ EndChar
 
 StartChar: uni0394
 Encoding: 916 916 150
+AltUni2: 01d6e5.ffffffff.0 01d6ab.ffffffff.0
 Width: 646
 Flags: HW
 AnchorPoint: "above" 323.847 620.195 basechar 0
@@ -8601,6 +8666,7 @@ EndChar
 
 StartChar: delta
 Encoding: 948 948 152
+AltUni2: 01d6ff.ffffffff.0 01d6c5.ffffffff.0
 Width: 361
 Flags: HW
 AnchorPoint: "above" 180.449 632 basechar 0
@@ -8833,6 +8899,7 @@ EndChar
 
 StartChar: theta
 Encoding: 952 952 154
+AltUni2: 01d717.ffffffff.0 01d703.ffffffff.0 01d6c9.ffffffff.0
 Width: 469
 Flags: HW
 AnchorPoint: "above" 234.684 632 basechar 0
@@ -9040,6 +9107,7 @@ EndChar
 
 StartChar: phi
 Encoding: 966 966 156
+AltUni2: 01d719.ffffffff.0 01d711.ffffffff.0 01d6d7.ffffffff.0 0003d5.ffffffff.0
 Width: 319
 Flags: HW
 AnchorPoint: "above" 159.468 426.209 basechar 0
@@ -9209,6 +9277,7 @@ EndChar
 
 StartChar: uni03F5
 Encoding: 1013 1013 158
+AltUni2: 01d716.ffffffff.0
 Width: 411
 Flags: HW
 AnchorPoint: "above" 205.494 426.209 basechar 0
@@ -9355,6 +9424,7 @@ EndChar
 
 StartChar: epsilon
 Encoding: 949 949 160
+AltUni2: 01d700.ffffffff.0 01d6c6.ffffffff.0
 Width: 293
 Flags: HW
 AnchorPoint: "above" 146.625 426.209 basechar 0
@@ -9507,6 +9577,7 @@ EndChar
 
 StartChar: upsilon
 Encoding: 965 965 162
+AltUni2: 01d710.ffffffff.0 01d6d6.ffffffff.0
 Width: 426
 Flags: HW
 AnchorPoint: "above" 213.074 426.209 basechar 0
@@ -9673,6 +9744,7 @@ EndChar
 
 StartChar: nu
 Encoding: 957 957 164
+AltUni2: 01d708.ffffffff.0 01d6ce.ffffffff.0
 Width: 474
 Flags: HW
 AnchorPoint: "above" 237.027 426.209 basechar 0
@@ -9855,6 +9927,7 @@ EndChar
 
 StartChar: uni03BC
 Encoding: 956 956 166
+AltUni2: 01d707.ffffffff.0 01d6cd.ffffffff.0
 Width: 583
 Flags: HW
 AnchorPoint: "above" 291.513 426.209 basechar 0
@@ -10144,6 +10217,7 @@ EndChar
 
 StartChar: Pi
 Encoding: 928 928 169
+AltUni2: 01d6f1.ffffffff.0 01d6b7.ffffffff.0
 Width: 661
 Flags: HW
 AnchorPoint: "above" 330.662 620.195 basechar 0
@@ -10325,6 +10399,7 @@ EndChar
 
 StartChar: zeta
 Encoding: 950 950 171
+AltUni2: 01d701.ffffffff.0 01d6c7.ffffffff.0
 Width: 392
 Flags: HW
 AnchorPoint: "above" 195.966 632 basechar 0
@@ -10539,6 +10614,7 @@ EndChar
 
 StartChar: beta
 Encoding: 946 946 173
+AltUni2: 01d6fd.ffffffff.0 01d6c3.ffffffff.0
 Width: 462
 Flags: HW
 AnchorPoint: "above" 230.764 632 basechar 0
@@ -10750,6 +10826,7 @@ EndChar
 
 StartChar: alpha
 Encoding: 945 945 175
+AltUni2: 01d6fc.ffffffff.0 01d6c2.ffffffff.0
 Width: 518
 Flags: HW
 AnchorPoint: "above" 258.954 426.209 basechar 0
@@ -10978,6 +11055,7 @@ EndChar
 
 StartChar: uni03A9
 Encoding: 937 937 177
+AltUni2: 01d6fa.ffffffff.0 01d6c0.ffffffff.0
 Width: 652
 Flags: HW
 AnchorPoint: "above" 326.169 620.195 basechar 0
@@ -11234,6 +11312,7 @@ EndChar
 
 StartChar: omega
 Encoding: 969 969 179
+AltUni2: 01d714.ffffffff.0 01d6da.ffffffff.0
 Width: 645
 Flags: HW
 AnchorPoint: "above" 322.678 426.209 basechar 0
@@ -11455,6 +11534,7 @@ EndChar
 
 StartChar: sigma
 Encoding: 963 963 181
+AltUni2: 01d70e.ffffffff.0 01d6d4.ffffffff.0
 Width: 471
 Flags: HW
 AnchorPoint: "above" 235.559 426.209 basechar 0
@@ -11666,6 +11746,7 @@ EndChar
 
 StartChar: xi
 Encoding: 958 958 183
+AltUni2: 01d709.ffffffff.0 01d6cf.ffffffff.0
 Width: 296
 Flags: HW
 AnchorPoint: "above" 148.339 632.09 basechar 0
@@ -11870,6 +11951,7 @@ EndChar
 
 StartChar: gamma
 Encoding: 947 947 185
+AltUni2: 01d6fe.ffffffff.0 01d6c4.ffffffff.0
 Width: 437
 Flags: HW
 AnchorPoint: "above" 218.545 426.209 basechar 0
@@ -12064,6 +12146,7 @@ EndChar
 
 StartChar: rho
 Encoding: 961 961 187
+AltUni2: 01d71a.ffffffff.0 01d70c.ffffffff.0 01d6d2.ffffffff.0
 Width: 475
 Flags: HW
 AnchorPoint: "above" 237.261 426.209 basechar 0
@@ -12294,6 +12377,7 @@ EndChar
 
 StartChar: Xi
 Encoding: 926 926 189
+AltUni2: 01d6ef.ffffffff.0 01d6b5.ffffffff.0
 Width: 489
 Flags: HW
 AnchorPoint: "above" 242.891 620.195 basechar 0
@@ -12515,6 +12599,7 @@ EndChar
 
 StartChar: psi
 Encoding: 968 968 191
+AltUni2: 01d713.ffffffff.0 01d6d9.ffffffff.0
 Width: 376
 Flags: HW
 AnchorPoint: "above" 187.893 426.209 basechar 0
@@ -12701,6 +12786,7 @@ EndChar
 
 StartChar: lambda
 Encoding: 955 955 193
+AltUni2: 01d706.ffffffff.0 01d6cc.ffffffff.0
 Width: 471
 Flags: HW
 AnchorPoint: "above" 235.59 632 basechar 0
@@ -12854,6 +12940,7 @@ EndChar
 
 StartChar: tau
 Encoding: 964 964 195
+AltUni2: 01d70f.ffffffff.0 01d6d5.ffffffff.0
 Width: 443
 Flags: HW
 AnchorPoint: "above" 221.424 426.209 basechar 0
@@ -12988,6 +13075,7 @@ EndChar
 
 StartChar: sigma1
 Encoding: 962 962 197
+AltUni2: 01d70d.ffffffff.0 01d6d3.ffffffff.0
 Width: 245
 Flags: HW
 AnchorPoint: "above" 122.599 426.209 basechar 0
@@ -13142,6 +13230,7 @@ EndChar
 
 StartChar: Lambda
 Encoding: 923 923 199
+AltUni2: 01d6ec.ffffffff.0 01d6b2.ffffffff.0
 Width: 547
 Flags: HW
 AnchorPoint: "above" 273.378 620.195 basechar 0
@@ -15643,6 +15732,7 @@ EndChar
 
 StartChar: partialdiff
 Encoding: 8706 8706 217
+AltUni2: 01d715.ffffffff.0
 Width: 467
 Flags: W
 LayerCount: 2
@@ -20835,6 +20925,7 @@ EndChar
 
 StartChar: Alpha
 Encoding: 913 913 522
+AltUni2: 01d6e2.ffffffff.0 01d6a8.ffffffff.0
 Width: 438
 Flags: HW
 AnchorPoint: "above" 201.545 620.195 basechar 0
@@ -20845,6 +20936,7 @@ EndChar
 
 StartChar: Beta
 Encoding: 914 914 523
+AltUni2: 01d6e3.ffffffff.0 01d6a9.ffffffff.0
 Width: 412
 Flags: HW
 AnchorPoint: "above" 190.471 600.414 basechar 0
@@ -20855,6 +20947,7 @@ EndChar
 
 StartChar: Epsilon
 Encoding: 917 917 524
+AltUni2: 01d6e6.ffffffff.0 01d6ac.ffffffff.0
 Width: 440
 Flags: HW
 AnchorPoint: "above" 212.364 592.868 basechar 0
@@ -20865,6 +20958,7 @@ EndChar
 
 StartChar: Zeta
 Encoding: 918 918 525
+AltUni2: 01d6e7.ffffffff.0 01d6ad.ffffffff.0
 Width: 469
 Flags: HW
 AnchorPoint: "above" 224.947 603.747 basechar 0
@@ -20875,6 +20969,7 @@ EndChar
 
 StartChar: Eta
 Encoding: 919 919 526
+AltUni2: 01d6e8.ffffffff.0 01d6ae.ffffffff.0
 Width: 417
 Flags: HW
 AnchorPoint: "above" 196.971 568 basechar 0
@@ -20885,6 +20980,7 @@ EndChar
 
 StartChar: Iota
 Encoding: 921 921 527
+AltUni2: 01d6ea.ffffffff.0 01d6b0.ffffffff.0
 Width: 147
 Flags: HW
 AnchorPoint: "above" 68.3051 585 basechar 0
@@ -20895,6 +20991,7 @@ EndChar
 
 StartChar: Kappa
 Encoding: 922 922 528
+AltUni2: 01d6eb.ffffffff.0 01d6b1.ffffffff.0
 Width: 435
 Flags: HW
 AnchorPoint: "above" 209.816 611.375 basechar 0
@@ -20905,6 +21002,7 @@ EndChar
 
 StartChar: Mu
 Encoding: 924 924 529
+AltUni2: 01d6ed.ffffffff.0 01d6b3.ffffffff.0
 Width: 513
 Flags: HW
 AnchorPoint: "above" 248.972 622.444 basechar 0
@@ -20915,6 +21013,7 @@ EndChar
 
 StartChar: Nu
 Encoding: 925 925 530
+AltUni2: 01d6ee.ffffffff.0 01d6b4.ffffffff.0
 Width: 445
 Flags: HW
 AnchorPoint: "above" 217.833 649.872 basechar 0
@@ -20925,6 +21024,7 @@ EndChar
 
 StartChar: Omicron
 Encoding: 927 927 531
+AltUni2: 01d6f0.ffffffff.0 01d6b6.ffffffff.0
 Width: 479
 Flags: HW
 AnchorPoint: "above" 229.549 602.188 basechar 0
@@ -20935,6 +21035,7 @@ EndChar
 
 StartChar: Rho
 Encoding: 929 929 532
+AltUni2: 01d6f2.ffffffff.0 01d6b8.ffffffff.0
 Width: 429
 Flags: HW
 AnchorPoint: "above" 209.308 624.605 basechar 0
@@ -20945,6 +21046,7 @@ EndChar
 
 StartChar: Tau
 Encoding: 932 932 533
+AltUni2: 01d6f5.ffffffff.0 01d6bb.ffffffff.0
 Width: 446
 Flags: HW
 AnchorPoint: "above" 212.727 643 basechar 0
@@ -20955,6 +21057,7 @@ EndChar
 
 StartChar: Upsilon
 Encoding: 933 933 534
+AltUni2: 01d6f6.ffffffff.0 01d6bc.ffffffff.0
 Width: 481
 Flags: HW
 AnchorPoint: "above" 230.6 586.562 basechar 0
@@ -20965,6 +21068,7 @@ EndChar
 
 StartChar: Chi
 Encoding: 935 935 535
+AltUni2: 01d6f8.ffffffff.0 01d6be.ffffffff.0
 Width: 400
 Flags: HW
 AnchorPoint: "above" 189.949 617.817 basechar 0
@@ -21021,6 +21125,7 @@ EndChar
 
 StartChar: iota
 Encoding: 953 953 536
+AltUni2: 01d704.ffffffff.0 01d6ca.ffffffff.0
 Width: 209
 Flags: HW
 AnchorPoint: "above" 87.7024 338 basechar 0
@@ -21031,6 +21136,7 @@ EndChar
 
 StartChar: omicron
 Encoding: 959 959 537
+AltUni2: 01d70a.ffffffff.0 01d6d0.ffffffff.0
 Width: 381
 Flags: HW
 AnchorPoint: "above" 178.164 435.253 basechar 0
@@ -21041,6 +21147,7 @@ EndChar
 
 StartChar: kappa
 Encoding: 954 954 538
+AltUni2: 01d718.ffffffff.0 01d705.ffffffff.0 01d6cb.ffffffff.0
 Width: 409
 Flags: HW
 AnchorPoint: "above" 199.58 560.497 basechar 0
@@ -21051,6 +21158,7 @@ EndChar
 
 StartChar: chi
 Encoding: 967 967 539
+AltUni2: 01d712.ffffffff.0 01d6d8.ffffffff.0
 Width: 392
 Flags: HW
 AnchorPoint: "above" 188.5 441 basechar 0
@@ -21202,6 +21310,7 @@ EndChar
 
 StartChar: Theta
 Encoding: 920 920 542
+AltUni2: 01d6f3.ffffffff.0 01d6e9.ffffffff.0 01d6b9.ffffffff.0 01d6af.ffffffff.0
 Width: 458
 VWidth: 836
 Flags: HW
@@ -21319,6 +21428,7 @@ EndChar
 
 StartChar: Phi
 Encoding: 934 934 543
+AltUni2: 01d6f7.ffffffff.0 01d6bd.ffffffff.0
 Width: 395
 VWidth: 1237
 Flags: HW
@@ -21411,6 +21521,7 @@ EndChar
 
 StartChar: Psi
 Encoding: 936 936 544
+AltUni2: 01d6f9.ffffffff.0 01d6bf.ffffffff.0
 Width: 506
 VWidth: 1263
 Flags: HW
@@ -21514,6 +21625,7 @@ EndChar
 
 StartChar: Gamma
 Encoding: 915 915 545
+AltUni2: 01d6e4.ffffffff.0 01d6aa.ffffffff.0
 Width: 430
 Flags: HW
 AnchorPoint: "above" 214.991 580.001 basechar 0
@@ -21546,6 +21658,7 @@ EndChar
 
 StartChar: eta
 Encoding: 951 951 547
+AltUni2: 01d702.ffffffff.0 01d6c8.ffffffff.0
 Width: 358
 Flags: HW
 AnchorPoint: "above" 179.122 448.61 basechar 0
@@ -23914,6 +24027,15 @@ LayerCount: 2
 Fore
 Refer: 329 382 N 1 0 0 1 401 0 2
 Refer: 19 100 N 1 0 0 1 0 0 2
+EndChar
+
+StartChar: NameMe.8901
+Encoding: 8901 -1 613
+Width: 220
+Flags: HW
+LayerCount: 2
+Fore
+Refer: 126 46 N 0.75 0 0 0.75 66.3431 228.161 2
 EndChar
 EndChars
 EndSplineFont
