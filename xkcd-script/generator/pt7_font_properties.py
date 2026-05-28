@@ -77,7 +77,7 @@ def autokern(font):
     font.addLookup('kerning', 'gpos_pair', (), [['kern', [['latn', ['dflt']]]]])
     font.addLookupSubtable('kerning', 'kern')
 
-    def kern(sep, left, right, **kwargs):
+    def kern(sep, left, right, damper=None, **kwargs):
         """Wraps font.autoKern: expands accented variants and leading/trailing ligatures."""
         def expand(chars, left_side):
             expanded = _expand_with_variants(font, chars)
@@ -94,7 +94,16 @@ def autokern(font):
                     expanded.append(name)
                     seen.add(name)
             return expanded
-        font.autoKern('kern', sep, expand(left, left_side=True), expand(right, left_side=False), **kwargs)
+        lefts = expand(left, left_side=True)
+        rights = expand(right, left_side=False)
+        font.autoKern('kern', sep, lefts, rights, **kwargs)
+        if damper and damper != 1.0:
+            for l in lefts:
+                tuples = font[l].getPosSub('kern')
+                new_table = []
+                for tup in tuples:
+                    if tup[1] == 'Pair' and tup[2] in rights:
+                        font[l].addPosSub('kern', *(tup[2:5] + (int(tup[5] * damper),) + tup[6:]))
 
     def getkern(left, right):
         c = font[left]
@@ -111,23 +120,26 @@ def autokern(font):
     # autoKern looks at the outline, so even if you change the padding, it absorbs all of it.
     # Use `+a` when you want to link the spacing after kerning to the padding.
     kern(150, ['/', '\\'], ['/', '\\'])
-    kern(60+a, ['s'], set(lower) - {'j', 'f'}, minKern=50)
+    # lowercase-lowercase
+    kern(60+a, ['s'], set(lower) - {'j', 'f'}, onlyCloser=True, damper=0.75) # loosen by damper (especially st)
     # x has diagonal strokes that leave visual space on its left side.
-    kern(90+a, set(lower) - {'f'}, ['x'], minKern=40)
+    kern(90+a, set(lower) - {'f'}, ['x'], onlyCloser=True, damper=0.75) # only ix and kx, loosen
+    # including uppercase
     # F/E are separated from T/J so they can use a tighter target gap.
-    kern(130, ['F'], set(roman) - {'f', 'j'}, onlyCloser=True)
+    kern(110, ['F'], set(roman) - {'f', 'j'}, onlyCloser=True, damper=0.75) # keep FO≈-60
     # Since F and z mesh together and the kerning becomes too large,
-    # reuse the kerning value of the round letterforms.
+    # reuse the kerning value of one of the round letterforms.
     diff_Fo_Fz = getkern('F', 'o') - getkern('F', 'z')
-    kern(130 + diff_Fo_Fz, ['F'], ['z'])
-    kern(100, ['E'], set(roman) - {'f', 'j'}, onlyCloser=True)
-    kern(140, ['E'], ['V', 'W', 'Y'], onlyCloser=True)
-    kern(150, ['T', 'J'], set(roman) - {'f', 'j'}, onlyCloser=True)
-    kern(120, ['T', 'J'], ['R'], onlyCloser=True)
+    kern(110 + int(diff_Fo_Fz / 0.75), ['F'], ['z'], onlyCloser=True, damper=0.75)
+    kern(90, ['E'], set(roman) - {'f', 'j'}, onlyCloser=True, damper=0.75) # keep ES≈-30
+    kern(45, ['E'], ['V'], onlyCloser=True, touch=True)
+    kern(115, ['T', 'J'], set(roman) - {'f', 'j'}, onlyCloser=True, damper=0.75) # keep Tr≈-105
     # C: loosen from the default (was too tight for Ct/Cf/Cj).
-    kern(65, ['C'], set(roman) - {'f', 'j'})
-    kern(105, ['C'], ['V'])
-    kern(60, ['O'], set(roman) - {'f', 'j'})
+    # Compared to E, the lower curve of C tends to come close to the next character,
+    # but this is considered an intentional design.
+    kern(60, ['C'], set(roman) - {'f', 'j'}, onlyCloser=True, damper=0.75) # keep CK≈-15
+    kern(25, ['C'], ['V'], onlyCloser=True, touch=True)
+    kern(60, ['O'], set(roman) - {'f', 'j'}, onlyCloser=True, damper=0.75) # loosen
 
 
 autokern(font)
