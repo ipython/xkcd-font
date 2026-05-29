@@ -802,10 +802,10 @@ for _cont in _tri_src.foreground:
 _ch.width = _tri_src.width
 
 
-# Hand-drawn vertical surd at PUA U+E000, sized like a display-mode operator
-# (1.4 × em, centred on the math axis).  Reached by xkcd-mathjax.js as a
-# real font glyph instead of the inline SVG path.
-_import_math_centered('sqrt_vertical', 0xE000, 1.4 * font.em, weight_delta=0)
+# Hand-drawn surd at PUA U+E000 with a near-vertical stem, picked up by
+# xkcd-mathjax.js for tall radicands where extending the natural √'s
+# (U+221A) diagonal would lean too far.
+_import_math_centered('sqrt_vertical', 0xE000, 1.12 * font.em, weight_delta=0)
 
 
 # ---------------------------------------------------------------------------

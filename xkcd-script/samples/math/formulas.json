@@ -23,5 +23,11 @@
   { "name": "maxwell-free-space",    "tex": "\\nabla \\cdot \\mathbf{E} = 0 \\qquad \\nabla \\times \\mathbf{E} = -\\frac{\\partial \\mathbf{B}}{\\partial t}", "display": true },
 
   { "name": "deeply-nested-sqrt",    "tex": "\\sqrt{\\frac{b^2}{\\frac{b^2}{\\frac{b^2}{\\frac{b^2}{4ac}}}}}",                               "display": true },
-  { "name": "sqrt-pi-short",         "tex": "\\sqrt{\\pi}" }
+  { "name": "sqrt-pi-short",         "tex": "\\sqrt{\\pi}" },
+
+  { "name": "piecewise-abs",         "tex": "|x| = \\begin{cases} x,  & \\text{if } x \\geq 0 \\\\ -x, & \\text{if } x < 0 \\end{cases}", "display": true },
+  { "name": "piecewise-big",         "tex": "f(x) = \\begin{cases} \\dfrac{\\sin x}{x},                              & \\text{if } x > 0 \\\\[6pt] \\displaystyle\\sum_{k=0}^{\\infty} \\frac{(-1)^k x^{2k}}{(2k+1)!}, & \\text{if } x = 0 \\\\[6pt] -\\sqrt{|x|},                                   & \\text{if } -1 \\leq x < 0 \\\\[4pt] \\infty,                                        & \\text{otherwise} \\end{cases}", "display": true },
+
+  { "name": "tall-integral-frac",    "tex": "\\int_0^1 \\frac{\\frac{a^2 + b^2}{c^2 + d^2}}{\\frac{x^2 + y^2}{u^2 + v^2}}\\,dx", "display": true },
+  { "name": "tall-integral-sum",     "tex": "\\int_{-\\infty}^{\\infty} \\sum_{n=1}^{\\infty} \\frac{f_n(x)}{n^2}\\,dx = \\sum_{n=1}^{\\infty} \\frac{1}{n^2} \\int_{-\\infty}^{\\infty} f_n(x)\\,dx", "display": true }
 ]

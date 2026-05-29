@@ -135,182 +135,182 @@
                 ],
             },
             uniE000: {
-                advance: 1020,
-                bbox: {xmin: 20.0, ymin: -625.3, xmax: 1000.0, ymax: 1031.7},
+                advance: 824,
+                bbox: {xmin: 20.0, ymin: -458.7, xmax: 804.0, ymax: 865.3},
                 config: {cutXPct: 56, cutYPct: 45, leanDeg: -2.0, unitsPerSeg: 45, amp: 3},
                 commands: [
-                    ["M", 346.0, 1029.7],
-                    ["C", 348.0, 1031.7, 356.0, 1030.7, 363.0, 1028.7],
-                    ["C", 366.0, 1027.7, 373.0, 1026.7, 388.0, 1025.7],
-                    ["C", 399.0, 1024.7, 412.0, 1024.7, 417.0, 1023.7],
-                    ["C", 436.0, 1020.7, 444.0, 1020.7, 469.0, 1018.7],
-                    ["C", 485.0, 1017.7, 548.0, 1015.7, 630.0, 1014.7],
-                    ["C", 721.0, 1013.7, 785.0, 1012.7, 793.0, 1011.7],
-                    ["C", 797.0, 1011.2, 810.0, 1011.0, 822.9, 1011.0],
-                    ["C", 835.8, 1011.0, 848.5, 1011.2, 852.0, 1011.7],
-                    ["C", 858.4, 1012.4, 892.2, 1013.2, 914.7, 1013.2],
-                    ["C", 924.0, 1013.2, 931.4, 1013.0, 934.0, 1012.7],
-                    ["C", 946.0, 1011.7, 971.0, 1004.7, 975.0, 1002.7],
-                    ["C", 976.0, 1001.7, 979.0, 1000.7, 980.0, 998.7],
-                    ["C", 982.0, 995.7, 988.0, 981.7, 991.0, 972.7],
-                    ["C", 993.0, 966.7, 996.0, 958.7, 998.0, 953.7],
-                    ["L", 1000.0, 949.7],
-                    ["L", 996.0, 941.7],
-                    ["C", 992.0, 932.7, 987.0, 926.7, 980.0, 923.7],
-                    ["C", 978.0, 922.7, 974.0, 920.7, 973.0, 919.7],
-                    ["C", 972.0, 918.7, 968.0, 915.7, 965.0, 913.7],
-                    ["C", 962.0, 911.7, 958.0, 909.7, 956.0, 908.7],
-                    ["C", 952.0, 905.7, 951.0, 905.7, 943.0, 905.7],
-                    ["C", 935.0, 905.7, 933.0, 905.7, 926.0, 908.7],
-                    ["C", 917.8, 912.2, 907.7, 913.7, 895.8, 913.7],
-                    ["C", 890.3, 913.7, 884.3, 913.4, 878.0, 912.7],
-                    ["C", 873.0, 912.7, 857.0, 910.7, 842.0, 910.7],
-                    ["C", 827.0, 910.7, 809.0, 909.7, 803.0, 909.7],
-                    ["C", 796.0, 909.2, 760.5, 909.0, 723.9, 909.0],
-                    ["C", 687.2, 909.0, 649.5, 909.2, 638.0, 909.7],
-                    ["C", 628.0, 909.7, 590.0, 910.7, 554.0, 910.7],
-                    ["C", 518.0, 910.7, 488.0, 912.7, 487.0, 912.7],
-                    ["C", 486.0, 912.7, 467.0, 913.7, 443.0, 913.7],
-                    ["C", 409.0, 914.7, 398.0, 914.7, 394.0, 915.7],
-                    ["C", 388.0, 917.7, 386.0, 916.7, 383.0, 913.7],
-                    ["C", 381.0, 911.7, 381.0, 910.7, 380.0, 904.7],
-                    ["C", 380.0, 900.7, 378.0, 894.7, 378.0, 891.7],
-                    ["C", 377.0, 881.7, 376.0, 852.7, 375.0, 804.7],
-                    ["C", 375.0, 779.7, 374.0, 741.7, 373.0, 721.7],
-                    ["C", 372.0, 701.7, 370.0, 667.7, 370.0, 647.7],
-                    ["C", 370.0, 627.7, 368.0, 605.7, 368.0, 598.7],
-                    ["C", 367.0, 586.7, 367.0, 553.7, 365.0, 349.7],
-                    ["C", 364.0, 294.7, 364.0, 258.7, 363.0, 235.7],
-                    ["C", 362.0, 216.7, 361.0, 190.7, 361.0, 177.7],
-                    ["C", 361.0, 164.7, 360.0, 143.7, 359.0, 130.7],
-                    ["C", 358.0, 117.7, 357.0, 84.7, 357.0, 57.7],
-                    ["C", 356.0, 5.7, 355.0, -12.3, 353.0, -23.3],
-                    ["C", 351.0, -34.3, 348.0, -56.3, 348.0, -63.3],
-                    ["C", 348.0, -66.3, 347.0, -84.3, 346.0, -103.3],
-                    ["C", 345.0, -123.3, 344.0, -142.3, 343.0, -147.3],
-                    ["C", 341.0, -161.3, 341.0, -166.3, 340.0, -175.3],
-                    ["C", 340.0, -180.3, 339.0, -192.3, 338.0, -202.3],
-                    ["C", 337.0, -212.3, 336.0, -227.3, 335.0, -235.3],
-                    ["C", 334.0, -246.3, 333.0, -253.3, 331.0, -261.3],
-                    ["C", 328.0, -272.3, 328.0, -276.3, 326.0, -298.3],
-                    ["C", 325.0, -309.3, 324.0, -315.3, 321.0, -325.3],
-                    ["C", 320.0, -330.3, 318.0, -336.3, 317.0, -348.3],
-                    ["C", 315.0, -366.3, 314.0, -373.3, 311.0, -383.3],
-                    ["C", 309.0, -388.3, 308.0, -393.3, 307.0, -406.3],
-                    ["C", 305.0, -427.3, 305.0, -431.3, 302.0, -441.3],
-                    ["C", 299.0, -449.3, 299.0, -450.3, 297.0, -469.3],
-                    ["C", 295.0, -486.3, 295.0, -490.3, 292.0, -499.3],
-                    ["C", 290.0, -504.3, 288.0, -510.3, 287.0, -524.3],
-                    ["C", 285.0, -540.3, 285.0, -544.3, 282.0, -550.3],
-                    ["C", 280.0, -555.3, 279.0, -561.3, 278.0, -568.3],
-                    ["C", 276.0, -582.3, 275.0, -584.3, 272.0, -588.3],
-                    ["C", 271.0, -590.3, 269.0, -594.3, 268.0, -597.3],
-                    ["C", 267.0, -601.3, 265.0, -603.3, 259.0, -608.3],
-                    ["C", 253.0, -613.3, 252.0, -615.3, 248.0, -616.3],
-                    ["C", 245.0, -617.3, 241.0, -619.3, 238.0, -620.3],
-                    ["C", 231.0, -624.3, 226.0, -625.3, 218.0, -624.3],
-                    ["C", 211.0, -624.3, 207.0, -622.3, 203.0, -619.3],
-                    ["C", 202.0, -618.3, 199.0, -616.3, 196.0, -615.3],
-                    ["C", 193.0, -613.3, 189.0, -612.3, 188.0, -610.3],
-                    ["C", 187.0, -608.3, 184.0, -604.3, 182.0, -601.3],
-                    ["C", 180.0, -598.3, 177.0, -593.3, 176.0, -591.3],
-                    ["C", 175.0, -589.3, 173.0, -586.3, 172.0, -585.3],
-                    ["C", 171.0, -584.3, 169.0, -579.3, 167.0, -576.3],
-                    ["C", 165.0, -573.3, 163.0, -568.3, 161.0, -566.3],
-                    ["C", 159.0, -564.3, 158.0, -562.3, 158.0, -562.3],
-                    ["C", 158.0, -560.3, 152.0, -551.3, 150.0, -548.3],
-                    ["C", 149.0, -546.3, 147.0, -544.3, 146.0, -541.3],
-                    ["C", 145.0, -538.3, 142.0, -535.3, 141.0, -534.3],
-                    ["C", 140.0, -533.3, 137.0, -529.3, 136.0, -526.3],
-                    ["C", 135.0, -523.3, 132.0, -520.3, 131.0, -518.3],
-                    ["C", 130.0, -516.3, 128.0, -513.3, 127.0, -510.3],
-                    ["C", 126.0, -507.3, 124.0, -502.3, 122.0, -500.3],
-                    ["C", 120.0, -498.3, 117.0, -493.3, 116.0, -490.3],
-                    ["C", 115.0, -487.3, 114.0, -483.3, 112.0, -481.3],
-                    ["C", 111.0, -479.3, 108.0, -474.3, 107.0, -471.3],
-                    ["C", 106.0, -468.3, 104.0, -462.3, 102.0, -460.3],
-                    ["C", 100.0, -457.3, 98.0, -454.3, 95.0, -443.3],
-                    ["C", 95.0, -442.3, 93.0, -441.3, 92.0, -439.3],
-                    ["C", 91.0, -437.3, 89.0, -433.3, 87.0, -427.3],
-                    ["C", 86.0, -422.3, 83.0, -416.3, 82.0, -414.3],
-                    ["C", 79.0, -410.3, 79.0, -406.3, 77.0, -399.3],
-                    ["C", 76.0, -397.3, 74.0, -392.3, 73.0, -390.3],
-                    ["C", 71.0, -388.3, 69.0, -382.3, 68.0, -378.3],
-                    ["C", 67.0, -373.3, 65.0, -368.3, 64.0, -367.3],
-                    ["C", 62.0, -364.3, 59.0, -360.3, 57.0, -355.3],
-                    ["C", 56.0, -353.3, 55.0, -349.3, 54.0, -348.3],
-                    ["C", 53.0, -347.3, 51.0, -343.3, 49.0, -340.3],
-                    ["C", 47.0, -337.3, 45.0, -333.3, 43.0, -331.3],
-                    ["C", 41.0, -329.3, 39.0, -326.3, 38.0, -324.3],
-                    ["C", 37.0, -322.3, 35.0, -318.3, 33.0, -315.3],
-                    ["C", 31.0, -312.3, 29.0, -307.3, 28.0, -305.3],
-                    ["C", 27.0, -303.3, 25.0, -299.3, 24.0, -297.3],
-                    ["C", 23.0, -295.3, 22.0, -291.3, 21.0, -289.3],
-                    ["C", 20.0, -285.3, 20.0, -284.3, 21.0, -281.3],
-                    ["C", 22.0, -279.3, 23.0, -277.3, 24.0, -275.3],
-                    ["C", 25.0, -273.3, 27.0, -269.3, 29.0, -266.3],
-                    ["C", 31.0, -262.3, 33.0, -259.3, 34.0, -258.3],
-                    ["C", 35.0, -257.3, 37.0, -255.3, 38.0, -253.3],
-                    ["C", 40.0, -248.3, 56.0, -233.3, 61.0, -231.3],
-                    ["C", 64.0, -230.3, 65.0, -229.3, 70.0, -230.3],
-                    ["C", 76.0, -231.3, 79.0, -232.3, 81.0, -235.3],
-                    ["C", 82.0, -236.3, 84.0, -237.3, 86.0, -238.3],
-                    ["C", 88.0, -239.3, 92.0, -242.3, 94.0, -244.3],
-                    ["C", 96.0, -246.3, 101.0, -249.3, 103.0, -250.3],
-                    ["C", 105.0, -252.3, 107.0, -254.3, 108.0, -255.3],
-                    ["C", 109.0, -256.3, 111.0, -258.3, 113.0, -259.3],
-                    ["C", 115.0, -260.3, 119.0, -264.3, 121.0, -266.3],
-                    ["C", 136.0, -281.3, 138.0, -283.3, 140.0, -289.3],
-                    ["C", 141.0, -292.3, 143.0, -296.3, 144.0, -297.3],
-                    ["C", 145.0, -298.3, 147.0, -303.3, 149.0, -308.3],
-                    ["C", 151.0, -313.3, 153.0, -319.3, 155.0, -322.3],
-                    ["C", 158.0, -327.3, 159.0, -332.3, 160.0, -337.3],
-                    ["C", 160.0, -339.3, 162.0, -342.3, 163.0, -344.3],
-                    ["C", 164.0, -346.3, 167.0, -351.3, 168.0, -355.3],
-                    ["C", 171.0, -364.3, 171.0, -364.3, 174.0, -368.3],
-                    ["C", 175.0, -370.3, 178.0, -374.3, 179.0, -378.3],
-                    ["C", 180.0, -382.3, 182.0, -387.3, 183.0, -388.3],
-                    ["C", 184.0, -389.3, 187.0, -394.3, 189.0, -399.3],
-                    ["L", 192.0, -409.3],
-                    ["L", 197.0, -409.3],
-                    ["C", 202.0, -409.3, 202.0, -409.3, 202.0, -407.3],
-                    ["C", 203.0, -403.3, 205.0, -392.3, 205.0, -383.3],
-                    ["C", 206.0, -373.3, 208.0, -358.3, 210.0, -350.3],
-                    ["C", 213.0, -341.3, 213.0, -339.3, 214.0, -325.3],
-                    ["C", 215.0, -318.3, 216.0, -309.3, 217.0, -306.3],
-                    ["C", 218.0, -303.3, 218.0, -298.3, 218.0, -296.3],
-                    ["C", 218.0, -294.3, 219.0, -291.3, 220.0, -289.3],
-                    ["C", 221.0, -286.3, 224.0, -269.3, 225.0, -248.3],
-                    ["C", 226.0, -236.3, 228.0, -220.3, 231.0, -211.3],
-                    ["C", 232.0, -206.3, 233.0, -186.3, 234.0, -152.3],
-                    ["C", 234.0, -139.3, 235.0, -124.3, 235.0, -120.3],
-                    ["C", 235.0, -116.3, 236.0, -108.3, 237.0, -102.3],
-                    ["C", 237.0, -96.3, 238.0, -88.3, 239.0, -83.3],
-                    ["C", 241.0, -72.3, 243.0, -54.3, 244.0, -38.3],
-                    ["C", 244.0, -31.3, 245.0, -19.3, 246.0, -10.3],
-                    ["C", 247.0, -1.3, 248.0, 12.7, 248.0, 19.7],
-                    ["C", 248.0, 26.7, 249.0, 37.7, 250.0, 43.7],
-                    ["C", 252.0, 57.7, 252.0, 83.7, 253.0, 159.7],
-                    ["C", 253.0, 193.7, 255.0, 235.7, 256.0, 253.7],
-                    ["C", 257.0, 271.7, 258.0, 296.7, 258.0, 308.7],
-                    ["C", 258.0, 320.7, 258.0, 336.7, 259.0, 344.7],
-                    ["C", 261.0, 362.7, 262.0, 399.7, 263.0, 495.7],
-                    ["C", 264.0, 544.7, 264.0, 580.7, 265.0, 603.7],
-                    ["C", 266.0, 622.7, 268.0, 650.7, 268.0, 665.7],
-                    ["C", 268.0, 680.7, 270.0, 697.7, 270.0, 701.7],
-                    ["C", 271.0, 709.7, 272.0, 744.7, 273.0, 821.7],
-                    ["C", 274.0, 855.7, 274.0, 873.7, 275.0, 880.7],
-                    ["C", 276.0, 885.7, 277.0, 892.7, 277.0, 895.7],
-                    ["C", 277.0, 898.7, 278.0, 905.7, 279.0, 909.7],
-                    ["C", 280.0, 913.7, 281.0, 925.7, 282.0, 934.7],
-                    ["C", 284.0, 956.7, 285.0, 963.7, 289.0, 971.7],
-                    ["C", 291.0, 975.7, 293.0, 979.7, 294.0, 981.7],
-                    ["C", 295.0, 983.7, 297.0, 985.7, 298.0, 986.7],
-                    ["C", 299.0, 987.7, 301.0, 989.7, 302.0, 990.7],
-                    ["C", 303.0, 991.7, 309.0, 998.7, 316.0, 1005.7],
-                    ["C", 323.0, 1012.7, 330.0, 1019.7, 332.0, 1021.7],
-                    ["C", 335.0, 1023.7, 337.0, 1025.7, 340.0, 1026.7],
-                    ["C", 342.0, 1027.7, 345.0, 1028.7, 346.0, 1029.7],
+                    ["M", 281.0, 864.3],
+                    ["C", 283.0, 865.3, 288.0, 865.3, 294.0, 863.3],
+                    ["C", 297.0, 862.3, 302.0, 862.3, 314.0, 861.3],
+                    ["C", 323.0, 860.3, 334.0, 860.3, 338.0, 859.3],
+                    ["C", 353.0, 857.3, 359.0, 856.3, 379.0, 855.3],
+                    ["C", 392.0, 854.3, 442.0, 853.3, 508.0, 852.3],
+                    ["C", 581.0, 851.3, 631.0, 850.3, 638.0, 849.3],
+                    ["C", 641.5, 848.8, 652.0, 848.5, 662.4, 848.5],
+                    ["C", 672.8, 848.5, 683.0, 848.8, 686.0, 849.3],
+                    ["C", 691.0, 850.0, 717.9, 850.7, 735.7, 850.7],
+                    ["C", 743.1, 850.7, 749.0, 850.6, 751.0, 850.3],
+                    ["C", 761.0, 849.3, 781.0, 844.3, 784.0, 842.3],
+                    ["C", 785.0, 841.3, 787.0, 840.3, 788.0, 839.3],
+                    ["C", 790.0, 837.3, 795.0, 825.3, 797.0, 818.3],
+                    ["C", 799.0, 813.3, 801.0, 807.3, 803.0, 803.3],
+                    ["L", 804.0, 800.3],
+                    ["L", 801.0, 793.3],
+                    ["C", 797.0, 786.3, 793.0, 782.3, 788.0, 779.3],
+                    ["C", 786.0, 778.3, 784.0, 776.3, 783.0, 775.3],
+                    ["C", 782.0, 774.3, 779.0, 772.3, 776.0, 771.3],
+                    ["C", 774.0, 770.3, 771.0, 768.3, 769.0, 767.3],
+                    ["C", 766.0, 765.3, 765.0, 765.3, 758.0, 765.3],
+                    ["C", 752.0, 765.3, 751.0, 765.3, 745.0, 767.3],
+                    ["C", 738.3, 769.9, 730.3, 771.3, 721.0, 771.3],
+                    ["C", 716.3, 771.3, 711.3, 770.9, 706.0, 770.3],
+                    ["C", 702.0, 770.3, 689.0, 769.3, 677.0, 769.3],
+                    ["C", 665.0, 769.3, 652.0, 768.3, 647.0, 768.3],
+                    ["C", 641.0, 767.8, 612.5, 767.5, 583.2, 767.5],
+                    ["C", 554.0, 767.5, 524.0, 767.8, 515.0, 768.3],
+                    ["C", 507.0, 768.3, 477.0, 769.3, 448.0, 769.3],
+                    ["C", 419.0, 769.3, 395.0, 770.3, 394.0, 770.3],
+                    ["C", 393.0, 770.3, 377.0, 771.3, 358.0, 771.3],
+                    ["C", 331.0, 772.3, 322.0, 771.3, 319.0, 772.3],
+                    ["C", 314.0, 773.3, 312.0, 774.3, 310.0, 771.3],
+                    ["C", 308.0, 769.3, 308.0, 768.3, 308.0, 763.3],
+                    ["C", 308.0, 760.3, 307.0, 756.3, 307.0, 753.3],
+                    ["C", 306.0, 745.3, 305.0, 722.3, 304.0, 683.3],
+                    ["C", 304.0, 663.3, 303.0, 634.3, 302.0, 618.3],
+                    ["C", 301.0, 602.3, 300.0, 574.3, 300.0, 558.3],
+                    ["C", 300.0, 542.3, 299.0, 524.3, 299.0, 518.3],
+                    ["C", 298.0, 509.3, 298.0, 483.3, 296.0, 320.3],
+                    ["C", 295.0, 276.3, 295.0, 247.3, 294.0, 228.3],
+                    ["C", 293.0, 213.3, 293.0, 193.3, 293.0, 182.3],
+                    ["C", 293.0, 171.3, 292.0, 154.3, 291.0, 144.3],
+                    ["C", 291.0, 134.3, 290.0, 108.3, 290.0, 86.3],
+                    ["C", 289.0, 44.3, 289.0, 30.3, 287.0, 21.3],
+                    ["C", 285.0, 12.3, 282.0, -4.7, 282.0, -9.7],
+                    ["C", 282.0, -12.7, 282.0, -27.7, 281.0, -42.7],
+                    ["C", 280.0, -58.7, 280.0, -73.7, 279.0, -77.7],
+                    ["C", 277.0, -88.7, 276.0, -91.7, 276.0, -99.7],
+                    ["C", 276.0, -103.7, 276.0, -113.7, 275.0, -121.7],
+                    ["C", 274.0, -129.7, 273.0, -141.7, 272.0, -147.7],
+                    ["C", 271.0, -156.7, 271.0, -161.7, 269.0, -168.7],
+                    ["C", 267.0, -177.7, 267.0, -179.7, 265.0, -197.7],
+                    ["C", 264.0, -206.7, 262.0, -211.7, 260.0, -219.7],
+                    ["C", 259.0, -223.7, 259.0, -228.7, 258.0, -237.7],
+                    ["C", 257.0, -251.7, 256.0, -257.7, 253.0, -265.7],
+                    ["C", 252.0, -269.7, 251.0, -274.7, 250.0, -284.7],
+                    ["C", 248.0, -300.7, 247.0, -304.7, 245.0, -312.7],
+                    ["C", 243.0, -319.7, 243.0, -319.7, 242.0, -334.7],
+                    ["C", 241.0, -347.7, 239.0, -352.7, 237.0, -359.7],
+                    ["C", 236.0, -363.7, 235.0, -368.7, 234.0, -379.7],
+                    ["C", 233.0, -392.7, 232.0, -394.7, 230.0, -399.7],
+                    ["C", 229.0, -403.7, 227.0, -408.7, 226.0, -414.7],
+                    ["C", 224.0, -425.7, 224.0, -427.7, 222.0, -430.7],
+                    ["C", 221.0, -432.7, 219.0, -435.7, 218.0, -437.7],
+                    ["C", 217.0, -441.7, 216.0, -442.7, 211.0, -446.7],
+                    ["C", 207.0, -450.7, 205.0, -451.7, 202.0, -452.7],
+                    ["C", 200.0, -453.7, 196.0, -454.7, 194.0, -455.7],
+                    ["C", 189.0, -458.7, 184.0, -458.7, 178.0, -458.7],
+                    ["C", 173.0, -458.7, 170.0, -457.7, 167.0, -455.7],
+                    ["C", 166.0, -454.7, 163.0, -452.7, 161.0, -451.7],
+                    ["C", 158.0, -450.7, 155.0, -448.7, 154.0, -447.7],
+                    ["C", 153.0, -446.7, 151.0, -442.7, 149.0, -440.7],
+                    ["C", 147.0, -438.7, 145.0, -435.7, 144.0, -433.7],
+                    ["C", 143.0, -431.7, 142.0, -428.7, 141.0, -427.7],
+                    ["C", 140.0, -426.7, 138.0, -423.7, 137.0, -420.7],
+                    ["C", 136.0, -417.7, 133.0, -414.7, 132.0, -412.7],
+                    ["C", 131.0, -410.7, 130.0, -409.7, 130.0, -409.7],
+                    ["C", 130.0, -408.7, 126.0, -400.7, 124.0, -398.7],
+                    ["C", 123.0, -397.7, 122.0, -394.7, 121.0, -392.7],
+                    ["C", 120.0, -390.7, 118.0, -387.7, 117.0, -386.7],
+                    ["C", 116.0, -385.7, 114.0, -382.7, 113.0, -380.7],
+                    ["C", 112.0, -378.7, 110.0, -374.7, 109.0, -373.7],
+                    ["C", 108.0, -372.7, 106.0, -369.7, 105.0, -367.7],
+                    ["C", 104.0, -365.7, 102.0, -362.7, 101.0, -360.7],
+                    ["C", 100.0, -358.7, 98.0, -354.7, 97.0, -352.7],
+                    ["C", 96.0, -349.7, 94.0, -346.7, 93.0, -344.7],
+                    ["C", 92.0, -342.7, 90.0, -339.7, 89.0, -336.7],
+                    ["C", 88.0, -333.7, 86.0, -330.7, 85.0, -328.7],
+                    ["C", 83.0, -325.7, 82.0, -322.7, 80.0, -314.7],
+                    ["C", 80.0, -313.7, 79.0, -312.7, 78.0, -311.7],
+                    ["C", 77.0, -309.7, 75.0, -306.7, 74.0, -301.7],
+                    ["C", 73.0, -297.7, 71.0, -293.7, 70.0, -291.7],
+                    ["C", 68.0, -287.7, 66.0, -283.7, 65.0, -278.7],
+                    ["C", 65.0, -276.7, 63.0, -273.7, 62.0, -271.7],
+                    ["C", 61.0, -269.7, 59.0, -265.7, 58.0, -261.7],
+                    ["C", 57.0, -257.7, 56.0, -254.7, 55.0, -253.7],
+                    ["C", 53.0, -251.7, 51.0, -247.7, 50.0, -243.7],
+                    ["C", 49.0, -241.7, 48.0, -239.7, 47.0, -238.7],
+                    ["C", 46.0, -237.7, 44.0, -233.7, 43.0, -231.7],
+                    ["C", 42.0, -228.7, 39.0, -225.7, 38.0, -224.7],
+                    ["C", 36.0, -223.7, 35.0, -220.7, 34.0, -218.7],
+                    ["C", 33.0, -216.7, 32.0, -213.7, 30.0, -211.7],
+                    ["C", 28.0, -209.7, 27.0, -206.7, 26.0, -204.7],
+                    ["C", 25.0, -202.7, 25.0, -199.7, 24.0, -197.7],
+                    ["C", 23.0, -195.7, 22.0, -193.7, 21.0, -191.7],
+                    ["C", 20.0, -188.7, 20.0, -187.7, 21.0, -185.7],
+                    ["C", 22.0, -183.7, 22.0, -180.7, 23.0, -179.7],
+                    ["C", 24.0, -178.7, 26.0, -175.7, 27.0, -172.7],
+                    ["C", 28.0, -169.7, 30.0, -167.7, 31.0, -166.7],
+                    ["C", 32.0, -165.7, 33.0, -164.7, 34.0, -162.7],
+                    ["C", 36.0, -158.7, 49.0, -146.7, 53.0, -144.7],
+                    ["C", 55.0, -143.7, 56.0, -143.7, 60.0, -144.7],
+                    ["C", 65.0, -145.7, 67.0, -145.7, 69.0, -147.7],
+                    ["C", 70.0, -148.7, 72.0, -149.7, 73.0, -150.7],
+                    ["C", 75.0, -151.7, 77.0, -152.7, 79.0, -154.7],
+                    ["C", 81.0, -156.7, 84.0, -159.7, 86.0, -160.7],
+                    ["C", 88.0, -161.7, 89.0, -162.7, 90.0, -163.7],
+                    ["C", 91.0, -164.7, 92.0, -166.7, 94.0, -167.7],
+                    ["C", 96.0, -168.7, 98.0, -170.7, 100.0, -172.7],
+                    ["C", 112.0, -184.7, 114.0, -186.7, 116.0, -191.7],
+                    ["C", 117.0, -193.7, 118.0, -196.7, 119.0, -197.7],
+                    ["C", 120.0, -198.7, 122.0, -202.7, 123.0, -206.7],
+                    ["C", 124.0, -210.7, 127.0, -215.7, 128.0, -217.7],
+                    ["C", 130.0, -221.7, 131.0, -225.7, 132.0, -229.7],
+                    ["C", 132.0, -230.7, 134.0, -233.7, 135.0, -235.7],
+                    ["C", 136.0, -237.7, 137.0, -240.7, 138.0, -243.7],
+                    ["C", 140.0, -250.7, 141.0, -251.7, 143.0, -254.7],
+                    ["C", 144.0, -255.7, 146.0, -259.7, 147.0, -262.7],
+                    ["C", 148.0, -265.7, 150.0, -268.7, 151.0, -269.7],
+                    ["C", 152.0, -270.7, 154.0, -275.7, 155.0, -279.7],
+                    ["L", 157.0, -286.7],
+                    ["L", 161.0, -287.7],
+                    ["C", 165.0, -287.7, 166.0, -286.7, 166.0, -285.7],
+                    ["C", 167.0, -282.7, 168.0, -273.7, 168.0, -266.7],
+                    ["C", 168.0, -258.7, 170.0, -246.7, 172.0, -239.7],
+                    ["C", 174.0, -232.7, 175.0, -231.7, 176.0, -220.7],
+                    ["C", 177.0, -214.7, 177.0, -207.7, 177.0, -204.7],
+                    ["C", 178.0, -201.7, 179.0, -198.7, 179.0, -196.7],
+                    ["C", 179.0, -194.7, 180.0, -192.7, 180.0, -191.7],
+                    ["C", 181.0, -188.7, 183.0, -175.7, 184.0, -158.7],
+                    ["C", 185.0, -148.7, 187.0, -135.7, 189.0, -128.7],
+                    ["C", 190.0, -124.7, 190.0, -108.7, 191.0, -81.7],
+                    ["C", 191.0, -70.7, 192.0, -59.7, 192.0, -56.7],
+                    ["C", 192.0, -53.7, 194.0, -46.7, 194.0, -41.7],
+                    ["C", 194.0, -36.7, 195.0, -30.7, 196.0, -26.7],
+                    ["C", 198.0, -17.7, 198.0, -3.7, 199.0, 9.3],
+                    ["C", 199.0, 14.3, 200.0, 25.3, 201.0, 32.3],
+                    ["C", 202.0, 39.3, 202.0, 49.3, 202.0, 55.3],
+                    ["C", 202.0, 61.3, 203.0, 70.3, 204.0, 75.3],
+                    ["C", 205.0, 86.3, 206.0, 106.3, 207.0, 167.3],
+                    ["C", 207.0, 195.3, 208.0, 228.3, 209.0, 243.3],
+                    ["C", 210.0, 258.3, 210.0, 278.3, 210.0, 287.3],
+                    ["C", 210.0, 296.3, 211.0, 309.3, 212.0, 315.3],
+                    ["C", 213.0, 329.3, 213.0, 359.3, 214.0, 436.3],
+                    ["C", 215.0, 475.3, 215.0, 505.3, 216.0, 523.3],
+                    ["C", 217.0, 538.3, 218.0, 561.3, 218.0, 573.3],
+                    ["C", 218.0, 585.3, 220.0, 598.3, 220.0, 601.3],
+                    ["C", 221.0, 608.3, 221.0, 637.3, 222.0, 698.3],
+                    ["C", 223.0, 725.3, 223.0, 739.3, 224.0, 744.3],
+                    ["C", 225.0, 748.3, 226.0, 753.3, 226.0, 756.3],
+                    ["C", 226.0, 759.3, 227.0, 764.3, 228.0, 768.3],
+                    ["C", 229.0, 772.3, 229.0, 781.3, 230.0, 788.3],
+                    ["C", 231.0, 805.3, 233.0, 810.3, 236.0, 817.3],
+                    ["C", 238.0, 820.3, 238.0, 823.3, 239.0, 825.3],
+                    ["C", 240.0, 827.3, 242.0, 828.3, 243.0, 829.3],
+                    ["C", 244.0, 830.3, 245.0, 831.3, 246.0, 832.3],
+                    ["C", 247.0, 833.3, 252.0, 839.3, 257.0, 844.3],
+                    ["C", 262.0, 849.3, 268.0, 855.3, 270.0, 857.3],
+                    ["C", 272.0, 859.3, 274.0, 861.3, 276.0, 862.3],
+                    ["C", 278.0, 863.3, 280.0, 863.3, 281.0, 864.3],
                     ["Z"],
                 ],
             },
@@ -522,36 +522,36 @@
     // character at normal size, avoiding the visual collapse at large size.
     const TALL_SURD_RATIO = 1.6;
 
-    // Per-glyph Sx multiplier (relative to the base SURD_NATURAL_SCALE).
-    // uniE000 is drawn with thicker strokes than radical; rendering at a
-    // smaller Sx thins them AND shrinks the natural pixel height, so Ny
-    // extension has somewhere to grow into for in-between surd heights.
-    const SURD_SX_FACTOR_PER_GLYPH = {
-        radical: 1.0,
-        uniE000: 0.80,
-    };
-    // Downward nudge for the bar (fraction of fontSize), from
-    // vinculumRect.top.  Only safe for SHORT single-line radicands
-    // (sqrt(π)) that have no superscript/ascender near the bar: there
-    // vinculumRect.top leaves the bar floating high, so we pull it down to
-    // the character.  For taller radicands (b² superscript, fractions)
-    // vinculumRect.top already clears the content and nudging down would
-    // drive the bar into the superscript, so the nudge is 0.  uniE000 is
-    // always tall; it gets a tiny fixed nudge.
-    //
-    // The "short" test keys off the VINCULUM height (the radicand box),
-    // NOT surdRect.height — the latter is always ≈1.0×fontSize regardless
-    // of the radicand, so it can't tell sqrt(π) from sqrt(b²).  Measured
-    // ratios: sqrt(π)≈0.77, sqrt(b²)≈0.93, sqrt(b²−4ac)≈0.97 → 0.85 splits
-    // the no-ascender case from the superscript cases.
+    // The "short" test keys off the VINCULUM height (the radicand box).
+    // surdRect.height is always ≈1.0×fontSize regardless of the radicand,
+    // so it can't tell sqrt(π) from sqrt(b²).  Measured ratios:
+    // sqrt(π)≈0.77, sqrt(b²)≈0.93, sqrt(b²−4ac)≈0.97 → 0.85 splits the
+    // no-ascender case from the superscript cases.
     const SURD_SHORT_THRESHOLD_FRAC = 0.85;
-    const SURD_SHORT_NUDGE_FRAC = 0.28;  // radical, short radicands (down)
-    // Tall radicals (b² superscript etc): our hand-drawn bar is thicker than
-    // MathJax's 1px border, so anchored at vinculumRect.top its lower edge
-    // dips into the superscript.  Lift it slightly (negative = up) so the
-    // bar clears the ascender.
-    const SURD_TALL_NUDGE_FRAC  = 0.10; // radical, tall radicands (down)
-    const SURD_E000_NUDGE_FRAC  = 0.10;  // uniE000, any height
+
+    // Per-glyph parameters.  nudgeFrac is the downward bar offset (fraction
+    // of fontSize) from vinculumRect.top — pulls a high-floating bar down
+    // to a short radicand, or lifts a thick bar clear of a superscript.
+    // leadingPx is the gap between the surd's stem corner and the start of
+    // the radicand.
+    const SURD_PARAMS = {
+        radical: {
+            // Short radicands (sqrt(π)) need a big downward nudge to hug
+            // the character; tall ones (b² superscript) only need a small
+            // one to keep our thicker bar clear of the ascender.
+            nudgeFrac: ({isShort}) => isShort ? 0.28 : 0.10,
+            leadingPx: ({fontSizePx}) => fontSizePx * 0.16,
+        },
+        uniE000: {
+            nudgeFrac: () => 0.10,
+            // Taper leading DOWN as the surd grows: a moderately tall
+            // radicand (quadratic formula) crowds with too little lead-in,
+            // but a very tall one looks over-spaced with a big gap.
+            leadingPx: ({fontSizePx, radicandH}) =>
+                Math.max(fontSizePx * 0.05,
+                         fontSizePx * 0.22 - radicandH * 0.045),
+        },
+    };
 
     function _pickSurd(targetH_units_at_naturalRadicalScale) {
         const natH = EXTENSIBLE_GLYPHS.radical.bbox.ymax -
@@ -580,14 +580,10 @@
     // want the rendered glyph to be (bar-top to tick-bottom).  No more
     // implicit descender compensation — the caller sizes around the
     // radicand and a target descender directly.
-    function buildSurdSvg(barWidthPx, renderedHeightPx, name, baseSx) {
+    function buildSurdSvg(barWidthPx, renderedHeightPx, name, Sx) {
         const g    = EXTENSIBLE_GLYPHS[name];
         const bb   = g.bbox;
         const natH = bb.ymax - bb.ymin;
-        const natW = bb.xmax - bb.xmin;
-        // Per-glyph Sx — thinner-stroke glyphs (uniE000) render at a smaller
-        // px-per-unit so their drawn strokes don't dominate visually.
-        const Sx = baseSx * (SURD_SX_FACTOR_PER_GLYPH[name] || 1.0);
         const targetH_units = renderedHeightPx / Sx;
 
         // Bar width: the natural bar extends from the source-glyph junction
@@ -656,20 +652,6 @@
     // Floor on the rendered surd height (fraction of fontSize) — safety
     // for very small radicands.
     const SURD_MIN_HEIGHT_FRAC = 1.0;
-    // Horizontal lead-in between the surd's stem corner and the start of
-    // the radicand.  For the radical glyph it scales with surd height (the
-    // corner region grows with the glyph, so taller radicands like the
-    // quadratic formula crowd a fixed gap) but never drops below a
-    // fontSize-based floor for short cases.  uniE000's shallow stem needs
-    // only a small fixed gap.
-    const SURD_LEADING_RADICAL_FRAC = 0.16; // × fontSize
-    // uniE000: a moderately tall radicand (quadratic formula) crowds the
-    // stem with too little lead-in, but a very tall one (deeply nested)
-    // looks over-spaced with a big gap.  So taper leading DOWN as the surd
-    // grows: leading = BASE×fontSize − TAPER×surdHeight, clamped at FLOOR.
-    const SURD_LEADING_E000_BASE_FRAC   = 0.22; // × fontSize
-    const SURD_LEADING_E000_TAPER_FRAC  = 0.045; // × surd height
-    const SURD_LEADING_E000_FLOOR_FRAC  = 0.05; // × fontSize
     // Extra bar length past the radicand's right edge for short single-line
     // radicands (fraction of fontSize), so e.g. sqrt(π)'s bar doesn't end
     // abruptly at the glyph.
@@ -680,6 +662,47 @@
     // density of the previous hand-drawn bar visually.
     const BAR_PIXEL_MULT = 2;
 
+    // The radicand's vinculum (a CSS border-top in MathJax's CHTML) gives
+    // us the bar's intended width and left edge.
+    function _findVinculum(msqrt) {
+        for (const el of msqrt.querySelectorAll('*')) {
+            if (el.closest('mjx-surd')) continue;
+            const nearestFrac = el.closest('mjx-mfrac');
+            if (nearestFrac && msqrt.contains(nearestFrac)) continue;
+            const cs = getComputedStyle(el);
+            if (cs.borderTopStyle === 'solid' && parseFloat(cs.borderTopWidth) > 0) {
+                return el;
+            }
+        }
+        return null;
+    }
+
+    // Resolve everything the surd builder needs: which glyph, base Sx,
+    // bar width, rendered height, leading gap, and downward nudge.  All
+    // size decisions key off the radicand height (the vinculum box) and
+    // fontSize.
+    function _planSurd({fontSizePx, radicandH, vinculumWidth}) {
+        const Sx = fontSizePx / SURD_NATURAL_SCALE;
+        const glyphName = _pickSurd(radicandH / Sx);
+        const params = SURD_PARAMS[glyphName];
+        const isShort = radicandH <= fontSizePx * SURD_SHORT_THRESHOLD_FRAC;
+
+        const leadingPx  = params.leadingPx({fontSizePx, radicandH});
+        const trailingPx = isShort ? fontSizePx * SURD_TRAILING_FRAC : 0;
+        const barWidthPx = vinculumWidth + leadingPx + trailingPx;
+        const nudgePx    = fontSizePx * params.nudgeFrac({isShort});
+
+        // Surd's full rendered height — bar top to tick bottom.  We want
+        // the tick to land DESCENDER_FRAC×fontSize below the radicand's
+        // bottom for all cases; since the bar is at vincTop + nudge,
+        // that means rendered = radicandH + descender − nudge.
+        const renderedHeightPx = Math.max(
+            radicandH + fontSizePx * SURD_DESCENDER_FRAC - nudgePx,
+            fontSizePx * SURD_MIN_HEIGHT_FRAC);
+
+        return {glyphName, Sx, barWidthPx, renderedHeightPx, leadingPx, nudgePx};
+    }
+
     function replaceSqrtSymbols(root) {
         const scope = root || document;
         scope.querySelectorAll('mjx-msqrt').forEach(msqrt => {
@@ -687,85 +710,37 @@
             msqrt.dataset.sqrtReplaced = '1';
 
             const surd = msqrt.querySelector('mjx-surd');
-            if (!surd) return;
+            const vinculumEl = surd && _findVinculum(msqrt);
+            if (!surd || !vinculumEl) return;
 
-            // The radicand's vinculum (a CSS border-top in MathJax's CHTML)
-            // gives us the bar's intended width and left edge.
-            let vinculumEl = null;
-            for (const el of msqrt.querySelectorAll('*')) {
-                if (el.closest('mjx-surd')) continue;
-                const nearestFrac = el.closest('mjx-mfrac');
-                if (nearestFrac && msqrt.contains(nearestFrac)) continue;
-                const cs = getComputedStyle(el);
-                if (cs.borderTopStyle === 'solid' && parseFloat(cs.borderTopWidth) > 0) {
-                    vinculumEl = el; break;
-                }
-            }
-
-            const surdRect     = surd.getBoundingClientRect();
             const msqrtRect    = msqrt.getBoundingClientRect();
-            const vinculumRect = vinculumEl ? vinculumEl.getBoundingClientRect() : null;
+            const vinculumRect = vinculumEl.getBoundingClientRect();
+            const fontSizePx   = parseFloat(getComputedStyle(msqrt).fontSize);
 
-            const fontSizePx = parseFloat(getComputedStyle(msqrt).fontSize);
-            const Sx = fontSizePx / SURD_NATURAL_SCALE;
-
-            // Glyph pick is based on the radicand height (vincH) in units
-            // at the radical's base scale, so deeply-nested expressions
-            // (tall vincH) switch to uniE000 while inline/superscript
-            // cases stay on radical.
-            const _radicandH_initial = vinculumRect ? vinculumRect.height : surdRect.height;
-            const glyphName = _pickSurd(_radicandH_initial / Sx);
-            const leadingPx  = glyphName === 'radical'
-                ? fontSizePx * SURD_LEADING_RADICAL_FRAC
-                : Math.max(fontSizePx * SURD_LEADING_E000_FLOOR_FRAC,
-                           fontSizePx * SURD_LEADING_E000_BASE_FRAC
-                             - _radicandH_initial * SURD_LEADING_E000_TAPER_FRAC);
-            // Radicand height comes from the vinculum box; surdRect.height
-            // is a constant ≈1.0×fontSize and useless as a height signal.
-            const radicandH = _radicandH_initial;
-            const isShort    = radicandH <= fontSizePx * SURD_SHORT_THRESHOLD_FRAC;
-            const trailingPx = isShort ? fontSizePx * SURD_TRAILING_FRAC : 0;
-            const barWidthPx = (vinculumRect ? vinculumRect.width : surdRect.height)
-                             + leadingPx + trailingPx;
-
-            // Nudge depends on glyph + isShort.  Compute it before sizing
-            // the surd so we can target a uniform tick-below-radicand
-            // distance regardless of how far down the bar is nudged.
-            const nudgeFrac = glyphName === 'uniE000'
-                ? SURD_E000_NUDGE_FRAC
-                : (isShort ? SURD_SHORT_NUDGE_FRAC : SURD_TALL_NUDGE_FRAC);
-            const nudgePx = fontSizePx * nudgeFrac;
-
-            // Surd's full rendered height — bar top to tick bottom.  We want
-            // the tick to land DESCENDER_FRAC×fontSize below the radicand's
-            // bottom for all cases; since the bar is at vincTop + nudge,
-            // that means rendered = radicandH + descender − nudge.
-            const renderedHeightPx = Math.max(
-                radicandH + fontSizePx * SURD_DESCENDER_FRAC - nudgePx,
-                fontSizePx * SURD_MIN_HEIGHT_FRAC);
-
-            const built = buildSurdSvg(barWidthPx, renderedHeightPx, glyphName, Sx);
+            const plan = _planSurd({
+                fontSizePx,
+                radicandH: vinculumRect.height,
+                vinculumWidth: vinculumRect.width,
+            });
+            const built = buildSurdSvg(plan.barWidthPx, plan.renderedHeightPx,
+                                       plan.glyphName, plan.Sx);
 
             // Anchor the bar-corner junction `leadingPx` to the left of the
             // bar's intended start, and vertically at vinculumRect.top —
-            // i.e. where MathJax actually draws the bar.  surdRect.top is
-            // a few px above this because the surd character has empty
-            // space above its visible bar, and using it put our bar too
-            // high above the radicand on inline expressions.
-            const barLeft = vinculumRect
-                ? vinculumRect.left - msqrtRect.left
-                : surdRect.right   - msqrtRect.left;
-            const barTop  = vinculumRect
-                ? vinculumRect.top  - msqrtRect.top
-                : surdRect.top      - msqrtRect.top;
-            // nudgePx was already computed above (needed for height calc).
-            const svgLeft = barLeft - leadingPx - built.junctionPx.x;
-            const svgTop  = barTop  - built.junctionPx.y + nudgePx;
+            // i.e. where MathJax actually draws the bar.
+            const barLeft = vinculumRect.left - msqrtRect.left;
+            const barTop  = vinculumRect.top  - msqrtRect.top;
+            const svgLeft = barLeft - plan.leadingPx - built.junctionPx.x;
+            const svgTop  = barTop  - built.junctionPx.y + plan.nudgePx;
 
             surd.dataset.xkcdHidden = '1';
             surd.style.visibility = 'hidden';
-            if (vinculumEl) { vinculumEl.dataset.xkcdHidden = '1'; vinculumEl.style.borderTopColor = 'transparent'; }
-            if (getComputedStyle(msqrt).position === 'static') { msqrt.dataset.xkcdPos = '1'; msqrt.style.position = 'relative'; }
+            vinculumEl.dataset.xkcdHidden = '1';
+            vinculumEl.style.borderTopColor = 'transparent';
+            if (getComputedStyle(msqrt).position === 'static') {
+                msqrt.dataset.xkcdPos = '1';
+                msqrt.style.position = 'relative';
+            }
 
             msqrt.insertAdjacentHTML('beforeend',
                 `<div class="xkcd-overlay" style="position:absolute;left:${svgLeft}px;top:${svgTop}px;pointer-events:none;">${built.svg}</div>`);
