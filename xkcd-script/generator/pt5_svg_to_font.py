@@ -332,6 +332,9 @@ font.createChar(-1, '_pad_space')
 _per_char_operation = {
     ('q',): psMat.compose(psMat.scale(0.92), psMat.translate(0, 20)),
     ('x',): psMat.translate(0, 20),
+    ('j',): psMat.translate(0, -20),
+    ('A',): psMat.translate(0, -10),
+    ('N',): psMat.translate(0, -10),
 }
 
 # Per-character weight nudge applied after the per-line scale correction.
@@ -409,7 +412,11 @@ for line, position, bbox, fname, chars in characters:
     # Per-character size adjustments: scale about the baseline (origin) to reduce
     # overall size while preserving stroke weight gained from changeWeight above.
     _operation_matrix = _per_char_operation.get(chars)
-    if _operation_matrix is not None:
+    if chars == ('A',) and c.boundingBox()[1] < 25:
+        pass
+    elif chars == ('N',) and c.boundingBox()[1] < 25:
+        pass
+    elif _operation_matrix is not None:
         c.transform(_operation_matrix)
 
     # Apply padding afterward so that it is not affected by scaling.
