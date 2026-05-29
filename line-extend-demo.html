@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Generic line-glyph extender</title>
+<style>
+  body { font-family: monospace; padding: 20px; background: #f4f4f4; color: #222; }
+  h1 { font-size: 1.15em; margin: 0 0 10px; }
+  .row { display: flex; align-items: center; gap: 10px; margin: 6px 0; }
+  .row label { min-width: 170px; }
+  .row input[type=range] { width: 420px; }
+  .row .v { min-width: 56px; text-align: right; font-variant-numeric: tabular-nums; }
+  #stage { background: white; border: 1px solid #ccc; margin-top: 12px; overflow-x: auto; }
+  #stage svg { display: block; }
+  .info { font-size: 0.85em; color: #555; }
+  .legend span { display: inline-block; padding: 2px 6px; margin-right: 6px; border-radius: 2px; }
+  .leg-orig { background: #eee; color: #444; }
+  .leg-cut  { background: #fde; color: #a04; }
+  .leg-fill { background: #222; color: white; }
+  pre { background: #fafafa; border: 1px solid #ddd; padding: 8px; font-size: 0.8em; max-height: 160px; overflow: auto; }
+</style>
+</head>
+<body>
+<h1>Generic line-glyph extender (font-driven coordinates)</h1>
+
+<div class="info">
+  Loads <code>xkcd-script/font/xkcd-script.otf</code>, pulls the chosen glyph's
+  outline straight from the font, then applies one rule:
+  <em>every coordinate with x &gt; cut threshold is translated by +N; any segment
+  that straddles the cut is subdivided into jittered sub-segments spanning the gap.</em>
+  No special path data is embedded in this page.
+</div>
+
+<div class="row">
+  <label>Glyph</label>
+  <select id="glyphSel">
+    <option value="emdash">— emdash (U+2014)</option>
+    <option value="endash">– endash (U+2013)</option>
+    <option value="minus">− minus (U+2212)</option>
+    <option value="hyphen">- hyphen (U+002D)</option>
+    <option value="underscore">_ underscore (U+005F)</option>
+    <option value="radical">√ radical (U+221A)</option>
+    <option value="uniE000">⎷-ish stem (U+E000, PUA)</option>
+    <option value="integral">∫ integral (U+222B)</option>
+    <option value="bracketleft">[ bracket left (U+005B)</option>
+    <option value="bracketright">] bracket right (U+005D)</option>
+    <option value="parenleft">( paren left (U+0028)</option>
+    <option value="parenright">) paren right (U+0029)</option>
+  </select>
+</div>
+<div class="row">
+  <label>X extension Nx</label>
+  <input type="range" id="extSlider" min="0" max="6000" value="1500" step="10">
+  <span class="v" id="extVal">1500</span>
+</div>
+<div class="row">
+  <label>X cut threshold</label>
+  <input type="range" id="cutSlider" min="0" max="100" value="50" step="1">
+  <span class="v" id="cutVal">50</span>
+  <span class="info">(% of glyph width)</span>
+</div>
+<div class="row">
+  <label>Y extension Ny</label>
+  <input type="range" id="extYSlider" min="0" max="6000" value="0" step="10">
+  <span class="v" id="extYVal">0</span>
+</div>
+<div class="row">
+  <label>Y axis lean (deg)</label>
+  <input type="range" id="leanSlider" min="-20" max="20" value="0" step="0.5">
+  <span class="v" id="leanVal">0</span>
+  <span class="info">tilt the Y-extension axis from vertical — set to match the stem angle of U+E000</span>
+</div>
+<div class="row">
+  <label>Y cut threshold</label>
+  <input type="range" id="cutYSlider" min="0" max="100" value="50" step="1">
+  <span class="v" id="cutYVal">50</span>
+  <span class="info">(% of glyph height)</span>
+</div>
+<div class="row">
+  <label>Font units per sub-segment</label>
+  <input type="range" id="segSlider" min="20" max="400" value="120" step="5">
+  <span class="v" id="segVal">120</span>
+</div>
+<div class="row">
+  <label>Jitter amplitude</label>
+  <input type="range" id="ampSlider" min="0" max="40" value="8" step="0.5">
+  <span class="v" id="ampVal">8</span>
+</div>
+<div class="row">
+  <label>Output rotation (degrees)</label>
+  <input type="range" id="rotSlider" min="-180" max="180" value="0" step="1">
+  <span class="v" id="rotVal">0</span>
+</div>
+<div class="row legend">
+  <span class="leg-orig">grey ghost = original glyph</span>
+  <span class="leg-cut">pink line = cut threshold</span>
+  <span class="leg-fill">black = extended glyph</span>
+</div>
+
+<div id="stage">…loading font…</div>
+<pre id="dump"></pre>
+
+<script src="https://cdn.jsdelivr.net/npm/opentype.js@1.3.4/dist/opentype.min.js"></script>
+<script>
+const FONT_URL = 'xkcd-script/font/xkcd-script.woff';
+
+// Per-glyph extension parameters. In a production setup these would travel
+// with the font (OpenType MATH table, anchor points, or a side-car JSON keyed
+// by glyph name). For now they live here so the demo can pick sensible
+// defaults when you switch glyph.
+//   cutXPct / cutYPct — cut threshold as % of bbox width/height
+//   leanDeg           — extension axis lean from vertical (Y pass only)
+//   unitsPerSeg       — sub-segment density along the gap
+//   amp               — jitter amplitude in font units
+const GLYPH_CONFIG = {
+  uniE000:      { cutXPct: 56, cutYPct: 45, leanDeg: -2,  unitsPerSeg: 45,  amp: 3 },
+  radical:      { cutXPct: 70, cutYPct: 50, leanDeg:  0,  unitsPerSeg: 60,  amp: 5 },
+  emdash:       { cutXPct: 50, cutYPct: 50, leanDeg:  0,  unitsPerSeg: 120, amp: 8 },
+  endash:       { cutXPct: 50, cutYPct: 50, leanDeg:  0,  unitsPerSeg: 120, amp: 8 },
+  minus:        { cutXPct: 50, cutYPct: 50, leanDeg:  0,  unitsPerSeg: 120, amp: 8 },
+  hyphen:       { cutXPct: 50, cutYPct: 50, leanDeg:  0,  unitsPerSeg: 120, amp: 8 },
+  underscore:   { cutXPct: 50, cutYPct: 50, leanDeg:  0,  unitsPerSeg: 120, amp: 8 },
+  // Tall vertical glyphs — extension on the Y axis. Brackets stay vertical
+  // (lean=0). The integral has a slight italic lean; tune the slider if
+  // your font's ∫ slants differently.
+  integral:     { cutXPct: 50, cutYPct: 50, leanDeg: -9.5, unitsPerSeg: 60, amp: 4 },
+  bracketleft:  { cutXPct: 50, cutYPct: 50, leanDeg:  0,  unitsPerSeg: 60,  amp: 4 },
+  bracketright: { cutXPct: 50, cutYPct: 50, leanDeg:  0,  unitsPerSeg: 60,  amp: 4 },
+  // Parens curve their entire length — the cut at 50% lands on the locally-
+  // near-vertical midpoint, so lean=0 is correct, but the extension will
+  // visibly straighten the middle. Real curved brackets want a multi-piece
+  // (top + extender + bottom) assembly to stay curve-consistent when tall.
+  // The native parenleft outline has a bezier arrangement that the linear-
+  // interp cut handles badly. Cleaner to derive it by horizontally mirroring
+  // parenright (works perfectly), so the renderer only needs one parens
+  // source asset.
+  parenleft:    { cutXPct: 50, cutYPct: 50, leanDeg:  0,  unitsPerSeg: 60,  amp: 4,
+                  sourceGlyph: 'parenright', mirrorX: true },
+  parenright:   { cutXPct: 50, cutYPct: 50, leanDeg:  0,  unitsPerSeg: 60,  amp: 4 },
+};
+
+const els = {
+  sel:  document.getElementById('glyphSel'),
+  ext:  document.getElementById('extSlider'),
+  extV: document.getElementById('extVal'),
+  cut:  document.getElementById('cutSlider'),
+  cutV: document.getElementById('cutVal'),
+  extY: document.getElementById('extYSlider'),
+  extYV:document.getElementById('extYVal'),
+  cutY: document.getElementById('cutYSlider'),
+  cutYV:document.getElementById('cutYVal'),
+  lean: document.getElementById('leanSlider'),
+  leanV:document.getElementById('leanVal'),
+  seg:  document.getElementById('segSlider'),
+  segV: document.getElementById('segVal'),
+  amp:  document.getElementById('ampSlider'),
+  ampV: document.getElementById('ampVal'),
+  rot:  document.getElementById('rotSlider'),
+  rotV: document.getElementById('rotVal'),
+  stage:document.getElementById('stage'),
+  dump: document.getElementById('dump'),
+};
+
+let FONT = null;
+
+opentype.load(FONT_URL, (err, font) => {
+  if (err) { els.stage.textContent = 'font load error: ' + err; return; }
+  FONT = font;
+  els.sel.addEventListener('change', () => {
+    const cfg = GLYPH_CONFIG[els.sel.value];
+    if (cfg) {
+      els.cut.value  = cfg.cutXPct;
+      els.cutY.value = cfg.cutYPct;
+      els.lean.value = cfg.leanDeg;
+      els.seg.value  = cfg.unitsPerSeg;
+      els.amp.value  = cfg.amp;
+    }
+    redraw();
+  });
+  ['change','input'].forEach(ev => {
+    els.sel.addEventListener(ev, redraw);
+    els.ext.addEventListener(ev, redraw);
+    els.cut.addEventListener(ev, redraw);
+    els.extY.addEventListener(ev, redraw);
+    els.cutY.addEventListener(ev, redraw);
+    els.lean.addEventListener(ev, redraw);
+    els.seg.addEventListener(ev, redraw);
+    els.amp.addEventListener(ev, redraw);
+    els.rot.addEventListener(ev, redraw);
+  });
+  els.sel.dispatchEvent(new Event('change'));
+});
+
+// Smooth pseudo-noise indexed by *x position* (not by segment index), so that
+// top and bottom edges of the bar wobble in unison at any given x — the bar's
+// thickness stays roughly constant and the result looks like a single shaky
+// pen-stroke instead of two unrelated wiggles.
+// Wibble has the spectrum of a hand-drawn line, not of the sample grid.
+// Frequencies in cycles/font-unit: 0.009 ≈ 700-unit period (slow drift),
+// 0.021 ≈ 300-unit period (medium wobble). No high-frequency term — adding
+// one only becomes visible at high subdivision and looks like jitter, not
+// pen wobble.
+function noiseAt(x, seed) {
+  return Math.sin(x * 0.009 + seed)
+       + Math.sin(x * 0.021 + seed * 1.7) * 0.45;
+}
+
+// Catmull-Rom → cubic bezier. Returns a list of {type:'C', from, to, ctrl} so
+// the jittered gap is a smooth pen-stroke, not a polyline.
+function anchorsToCubics(anchors) {
+  const out = [];
+  const n = anchors.length;
+  for (let i = 0; i < n - 1; i++) {
+    const P0 = anchors[Math.max(0, i - 1)];
+    const P1 = anchors[i];
+    const P2 = anchors[i + 1];
+    const P3 = anchors[Math.min(n - 1, i + 2)];
+    const c1 = [P1[0] + (P2[0] - P0[0]) / 6, P1[1] + (P2[1] - P0[1]) / 6];
+    const c2 = [P2[0] - (P3[0] - P1[0]) / 6, P2[1] - (P3[1] - P1[1]) / 6];
+    out.push({ type: 'C', from: P1, to: P2, ctrl: [c1, c2] });
+  }
+  return out;
+}
+
+// Rotate every coordinate by theta (radians) around origin. The path is
+// authored in horizontal-bar space; rotation is baked into the output points
+// so the SVG itself has no <g transform>.
+function rotateSegs(segs, theta, origin) {
+  if (!theta) return segs;
+  const cs = Math.cos(theta), sn = Math.sin(theta);
+  const rot = p => [
+    origin[0] + (p[0] - origin[0]) * cs - (p[1] - origin[1]) * sn,
+    origin[1] + (p[0] - origin[0]) * sn + (p[1] - origin[1]) * cs,
+  ];
+  return segs.map(s => {
+    const r = { type: s.type, from: rot(s.from), to: rot(s.to) };
+    if (s.ctrl) r.ctrl = s.ctrl.map(rot);
+    return r;
+  });
+}
+
+// Walk an opentype.js Path's commands, returning a normalized list of
+// segments. Each segment is { from:[x,y], to:[x,y], type:'L'|'C'|'Q'|'M'|'Z',
+// ctrl?:[[x1,y1],[x2,y2]] }. Coordinates are absolute font units.
+function segmentize(path) {
+  const segs = [];
+  let cx = 0, cy = 0, sx = 0, sy = 0;
+  for (const c of path.commands) {
+    if (c.type === 'M') {
+      sx = cx = c.x; sy = cy = c.y;
+      segs.push({ type:'M', from:[cx,cy], to:[cx,cy] });
+    } else if (c.type === 'L') {
+      segs.push({ type:'L', from:[cx,cy], to:[c.x,c.y] });
+      cx = c.x; cy = c.y;
+    } else if (c.type === 'C') {
+      segs.push({ type:'C', from:[cx,cy], to:[c.x,c.y],
+                  ctrl:[[c.x1,c.y1],[c.x2,c.y2]] });
+      cx = c.x; cy = c.y;
+    } else if (c.type === 'Q') {
+      segs.push({ type:'Q', from:[cx,cy], to:[c.x,c.y],
+                  ctrl:[[c.x1,c.y1]] });
+      cx = c.x; cy = c.y;
+    } else if (c.type === 'Z') {
+      segs.push({ type:'L', from:[cx,cy], to:[sx,sy] });
+      segs.push({ type:'Z', from:[sx,sy], to:[sx,sy] });
+      cx = sx; cy = sy;
+    }
+  }
+  return segs;
+}
+
+// The extension rule.
+//   shift(x) = x + N if x > cut else x
+// For any segment whose endpoints straddle the cut (one ≤ cut, the other > cut),
+// replace it with N+2 line segments spanning the inserted gap, with y jittered.
+function extend(segs, cut, N, subN, amp, seed) {
+  const shift = x => (x > cut ? x + N : x);
+  // Jitter as a pure function of (post-shift) x position. Window tapers to 0
+  // at both ends of the gap so the bezier joins cleanly to the cap geometry.
+  const gapJitter = x => {
+    const t = (x - cut) / N;
+    if (t <= 0 || t >= 1) return 0;
+    return Math.sin(Math.PI * t) * amp * noiseAt(x, seed);
+  };
+  const out = [];
+  for (const s of segs) {
+    if (s.type === 'M' || s.type === 'Z') {
+      out.push({ type: s.type, from: [shift(s.from[0]), s.from[1]],
+                                 to:   [shift(s.to[0]),   s.to[1]] });
+      continue;
+    }
+    const crosses  = (s.from[0] <= cut && s.to[0] >  cut)
+                  || (s.from[0] >  cut && s.to[0] <= cut);
+
+    if (!crosses) {
+      // Whole segment is on one side. Shift control points too if cubic/quad.
+      const seg = { type: s.type,
+                    from: [shift(s.from[0]), s.from[1]],
+                    to:   [shift(s.to[0]),   s.to[1]] };
+      if (s.ctrl) seg.ctrl = s.ctrl.map(p => [shift(p[0]), p[1]]);
+      out.push(seg);
+      continue;
+    }
+
+    // Straddling segment. Direction matters: left→right or right→left.
+    const goingRight = s.from[0] < s.to[0];
+    const xL = goingRight ? s.from[0] : s.to[0];
+    const xR = goingRight ? s.to[0]   : s.from[0];
+    const yL = goingRight ? s.from[1] : s.to[1];
+    const yR = goingRight ? s.to[1]   : s.from[1];
+
+    // Where the segment hits the cut in the *original* coords, by linear interp
+    // (ignoring curve control points — fine for the near-straight stretches of
+    // a horizontal line glyph).
+    const tCut = (cut - xL) / (xR - xL);
+    const yCut = yL + tCut * (yR - yL);
+    // After shifting, the right anchor lands at (xR + N).
+    const gapStartX = cut;
+    const gapEndX   = cut + N;
+
+    // Build an anchor list from `from` across the gap to `to`. The gap anchors
+    // are evenly spaced in x; jitter is read from gapJitter(x), which is a pure
+    // function of x — so the matching anchors on the opposite edge of the bar
+    // (which visits the same x values when going the other way) get the same
+    // wobble, preserving thickness.
+    const fromP = [shift(s.from[0]), s.from[1]];
+    const toP   = [shift(s.to[0]),   s.to[1]];
+    const anchors = [fromP];
+    if (goingRight) {
+      for (let i = 0; i <= subN; i++) {
+        const x = gapStartX + (i / subN) * N;
+        anchors.push([x, yCut + gapJitter(x)]);
+      }
+    } else {
+      for (let i = 0; i <= subN; i++) {
+        const x = gapEndX - (i / subN) * N;
+        anchors.push([x, yCut + gapJitter(x)]);
+      }
+    }
+    anchors.push(toP);
+    for (const c of anchorsToCubics(anchors)) out.push(c);
+  }
+  return out;
+}
+
+function segsToPath(segs) {
+  const f = n => +n.toFixed(2);
+  const out = [];
+  for (const s of segs) {
+    if (s.type === 'M')      out.push(`M${f(s.to[0])} ${f(s.to[1])}`);
+    else if (s.type === 'L') out.push(`L${f(s.to[0])} ${f(s.to[1])}`);
+    else if (s.type === 'C') out.push(`C${f(s.ctrl[0][0])} ${f(s.ctrl[0][1])} ${f(s.ctrl[1][0])} ${f(s.ctrl[1][1])} ${f(s.to[0])} ${f(s.to[1])}`);
+    else if (s.type === 'Q') out.push(`Q${f(s.ctrl[0][0])} ${f(s.ctrl[0][1])} ${f(s.to[0])} ${f(s.to[1])}`);
+    else if (s.type === 'Z') out.push('Z');
+  }
+  return out.join(' ');
+}
+
+function bbox(segs) {
+  let xmin=Infinity, ymin=Infinity, xmax=-Infinity, ymax=-Infinity;
+  for (const s of segs) {
+    for (const p of [s.from, s.to, ...(s.ctrl || [])]) {
+      if (p[0] < xmin) xmin = p[0]; if (p[0] > xmax) xmax = p[0];
+      if (p[1] < ymin) ymin = p[1]; if (p[1] > ymax) ymax = p[1];
+    }
+  }
+  return { xmin, ymin, xmax, ymax };
+}
+
+function redraw() {
+  if (!FONT) return;
+  const name = els.sel.value;
+  const cfg = GLYPH_CONFIG[name] || {};
+  const sourceName = cfg.sourceGlyph || name;
+  const glyph = FONT.glyphs.glyphs[Object.keys(FONT.glyphs.glyphs)
+                  .find(k => FONT.glyphs.glyphs[k].name === sourceName)];
+  if (!glyph) { els.stage.textContent = 'glyph not found: ' + sourceName; return; }
+
+  const path = glyph.getPath(0, 0, 1000); // fontSize=1000 → font units * 1000/upm? actually getPath uses px
+  // We want raw font units. opentype.js Glyph.path is in font units directly.
+  const rawPath = glyph.path;
+  let segs = segmentize(rawPath);
+  if (cfg.mirrorX) {
+    const bbSrc = bbox(segs);
+    const cx = (bbSrc.xmin + bbSrc.xmax) / 2;
+    segs = segs.map(s => {
+      const m = p => [2 * cx - p[0], p[1]];
+      const r = { type: s.type, from: m(s.from), to: m(s.to) };
+      if (s.ctrl) r.ctrl = s.ctrl.map(m);
+      return r;
+    });
+  }
+  const bb = bbox(segs);
+  const glyphW = bb.xmax - bb.xmin;
+
+  const glyphH = bb.ymax - bb.ymin;
+  const cutPct = +els.cut.value;  els.cutV.textContent  = cutPct + '%';
+  const cutYPct= +els.cutY.value; els.cutYV.textContent = cutYPct + '%';
+  const cutX = bb.xmin + glyphW * (cutPct / 100);
+  const cutY = bb.ymin + glyphH * (cutYPct / 100);
+
+  const Nx = +els.ext.value;  els.extV.textContent  = Nx;
+  const Ny = +els.extY.value; els.extYV.textContent = Ny;
+  const unitsPerSeg = +els.seg.value; els.segV.textContent = unitsPerSeg;
+  const amp = +els.amp.value; els.ampV.textContent = amp;
+  const subNx = Math.max(2, Math.round(Nx / unitsPerSeg));
+  const subNy = Math.max(2, Math.round(Ny / unitsPerSeg));
+
+  const thetaDeg = +els.rot.value; els.rotV.textContent = thetaDeg;
+  const theta = thetaDeg * Math.PI / 180;
+  const rotOrigin = [bb.xmin, (bb.ymin + bb.ymax) / 2];
+
+  const leanDeg = +els.lean.value; els.leanV.textContent = leanDeg;
+
+  // X then "tilted Y". The Y pass is the X algorithm in a rotated frame:
+  // rotate so the extension axis (vertical, tilted by `lean` from world-Y)
+  // becomes the rotated frame's +x. lean=0 reproduces the previous 90° map
+  //   fwd: (x,y) → (y,-x);  inv: (x,y) → (-y,x).
+  let extendedRaw = segs;
+  if (Nx > 0) extendedRaw = extend(extendedRaw, cutX, Nx, subNx, amp, 7);
+  if (Ny > 0) {
+    const lr = leanDeg * Math.PI / 180;
+    const sL = Math.sin(lr), cL = Math.cos(lr);
+    const mapSegs = (ss, fn) => ss.map(s => {
+      const r = { type: s.type, from: fn(s.from), to: fn(s.to) };
+      if (s.ctrl) r.ctrl = s.ctrl.map(fn);
+      return r;
+    });
+    const fwd = p => [-sL * p[0] + cL * p[1], -cL * p[0] - sL * p[1]];
+    const inv = p => [-sL * p[0] - cL * p[1],  cL * p[0] - sL * p[1]];
+    // Cut value in rotated x-coord, taken through a reference point on the
+    // glyph's x-centre at the original cutY — keeps the cut where the user
+    // intuitively expects regardless of the axis tilt.
+    const refX = (bb.xmin + bb.xmax) / 2;
+    const cutRot = fwd([refX, cutY])[0];
+    extendedRaw = mapSegs(extendedRaw, fwd);
+    extendedRaw = extend(extendedRaw, cutRot, Ny, subNy, amp, 19);
+    extendedRaw = mapSegs(extendedRaw, inv);
+  }
+  const extended = rotateSegs(extendedRaw, theta, rotOrigin);
+  const origRot  = rotateSegs(segs, theta, rotOrigin);
+  const pathD = segsToPath(extended);
+  const origD = segsToPath(origRot);
+
+  // Rotated bbox via the extended-segment endpoints.
+  const bbR = bbox(extended);
+  const margin = 80;
+  const vbX = bbR.xmin - margin;
+  const vbY = bbR.ymin - margin;
+  const vbW = bbR.xmax - bbR.xmin + 2 * margin;
+  const vbH = bbR.ymax - bbR.ymin + 2 * margin;
+
+  // Rotated cut-line endpoints (drawn in baseline-up coords; flipped below).
+  const cs = Math.cos(theta), sn = Math.sin(theta);
+  const rot = (x, y) => [
+    rotOrigin[0] + (x - rotOrigin[0]) * cs - (y - rotOrigin[1]) * sn,
+    rotOrigin[1] + (x - rotOrigin[0]) * sn + (y - rotOrigin[1]) * cs,
+  ];
+  const [cA, cB] = [rot(cutX, bb.ymin - 40), rot(cutX, bb.ymax + 40)];
+  const [eA, eB] = [rot(cutX + Nx, bb.ymin - 40), rot(cutX + Nx, bb.ymax + 40)];
+  // Cut perpendicular to the (possibly leaning) Y-extension axis: it passes
+  // through the bbox centre at y=cutY, with direction (cos lean, sin lean).
+  const lrad = leanDeg * Math.PI / 180;
+  const cxRef = (bb.xmin + bb.xmax) / 2;
+  const halfLen = (bb.xmax - bb.xmin) / 2 + Nx + 40;
+  const px = Math.cos(lrad), py = Math.sin(lrad);
+  // Shift along extension axis = (-sin lean, cos lean) * Ny for the post-cut line.
+  const ax = -Math.sin(lrad), ay = Math.cos(lrad);
+  const [cyA, cyB] = [rot(cxRef - halfLen * px, cutY - halfLen * py),
+                      rot(cxRef + halfLen * px, cutY + halfLen * py)];
+  const [eyA, eyB] = [rot(cxRef - halfLen * px + ax * Ny, cutY - halfLen * py + ay * Ny),
+                      rot(cxRef + halfLen * px + ax * Ny, cutY + halfLen * py + ay * Ny)];
+
+  const scale = 0.5; // display px per font unit
+  els.stage.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg"
+       width="${vbW * scale}" height="${vbH * scale}"
+       viewBox="${vbX} ${-vbY - vbH} ${vbW} ${vbH}">
+    <g transform="scale(1,-1)">
+      <path d="${origD}" fill="#ddd" stroke="#bbb" stroke-width="2"/>
+      <path d="${pathD}" fill="#222"/>
+      <line x1="${cA[0]}" y1="${cA[1]}" x2="${cB[0]}" y2="${cB[1]}"
+            stroke="#d24" stroke-width="3" stroke-dasharray="10 6"/>
+      <line x1="${eA[0]}" y1="${eA[1]}" x2="${eB[0]}" y2="${eB[1]}"
+            stroke="#d24" stroke-width="2" stroke-dasharray="4 6" opacity="0.5"/>
+      ${Ny > 0 ? `
+      <line x1="${cyA[0]}" y1="${cyA[1]}" x2="${cyB[0]}" y2="${cyB[1]}"
+            stroke="#2a4" stroke-width="3" stroke-dasharray="10 6"/>
+      <line x1="${eyA[0]}" y1="${eyA[1]}" x2="${eyB[0]}" y2="${eyB[1]}"
+            stroke="#2a4" stroke-width="2" stroke-dasharray="4 6" opacity="0.5"/>` : ''}
+    </g>
+  </svg>`;
+
+  els.dump.textContent =
+    `glyph: ${name}   advance: ${glyph.advanceWidth}   bbox: ${JSON.stringify(bb)}\n` +
+    `x-cut=${cutX.toFixed(1)} Nx=${Nx} (subs=${subNx})   y-cut=${cutY.toFixed(1)} Ny=${Ny} (subs=${subNy})   amp=${amp}\n\n` +
+    `extended path d=\n${pathD}`;
+}
+</script>
+</body>
+</html>

@@ -68,17 +68,23 @@ def _clean_potrace_svg(raw_svg_path, clean_svg_path):
     os.remove(clean_svg_path + '.sfd')
 
 
-def extract_symbol(arr, y0, y1, x0, x1, name, exclude=None):
+def extract_symbol(arr, y0, y1, x0, x1, name, exclude=None, pad=0):
     """Crop glyph region, upsample, binarise, run potrace, clean, save SVG.
 
     exclude: optional list of (y0, y1, x0, x1) regions in full-image coordinates
              to blank out (set to background) before potrace, for removing
              artefacts that cannot be separated by tightening the main crop.
+    pad: white-pixel border added around the crop before upsampling.  Use
+         when the source PNG is tightly cropped and ink touches the edge —
+         potrace otherwise produces edge artefacts where contours run into
+         the canvas boundary.
     """
     crop = arr[y0:y1, x0:x1].copy()
     if exclude:
         for ey0, ey1, ex0, ex1 in exclude:
             crop[ey0 - y0:ey1 - y0, ex0 - x0:ex1 - x0] = 255
+    if pad:
+        crop = np.pad(crop, pad, mode='constant', constant_values=255)
     big = Image.fromarray(crop).resize(
         (crop.shape[1] * UPSAMPLE, crop.shape[0] * UPSAMPLE),
         Image.BILINEAR)
@@ -170,6 +176,7 @@ EXTRAS = [
     ('right_half_arrow', '2343_mathematical_symbol_fight_2x__right_half_arrow'),      # ⇀ U+21C0 source
     ('right_lim_arrow', '2343_mathematical_symbol_fight_2x__right_lim_arrow'),        # → U+2192 source
     ('triangle', '2343_mathematical_symbol_fight_2x__triangle'),              # △ U+25B3 source
+    ('sqrt_vertical', 'sqrt_vertical'),                                       # √ vertical surd, PUA U+E000
 ]
 
 print('Extracting hand-drawn extras...')
@@ -177,7 +184,7 @@ for name, filename in EXTRAS:
     src_path = os.path.join(EXTRAS_DIR, f'{filename}.png')
     arr_extra = np.array(Image.open(src_path).convert('L'))
     h, w = arr_extra.shape
-    extract_symbol(arr_extra, 0, h, 0, w, name)
+    extract_symbol(arr_extra, 0, h, 0, w, name, pad=10)
 
 
 # ---------------------------------------------------------------------------

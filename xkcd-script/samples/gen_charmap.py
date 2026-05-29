@@ -69,6 +69,7 @@ EXTRAS_ORDER = [
     0x20E4,  #  b⃤ COMBINING ENCLOSING UPWARD POINTING TRIANGLE
     0x25B3,  # △ WHITE UP-POINTING TRIANGLE
     0x25BD,  # ▽ WHITE DOWN-POINTING TRIANGLE
+    0xE000,  #  PUA: hand-drawn vertical surd (√) for xkcd-mathjax
 ]
 
 # Codepoints we deliberately omit from the charmap.  These exist in the font
