@@ -73,8 +73,15 @@ ${readyScript()}`;
 }
 
 function renderGrid(formulas, cellW, cellH) {
+    // Each cell wraps its content in an inner <div> so the flex container has
+    // a single flex item.  Without the wrapper, flex blockifies the cell's
+    // direct children — text runs and the <mjx-container> become separate
+    // flex items each centered independently by `align-items: center`, which
+    // discards MathJax's `vertical-align` and drops the math baseline below
+    // the text baseline.  The wrapper preserves a normal inline formatting
+    // context inside, so baselines align as they do in a real browser page.
     const cells = formulas
-        .map((_, i) => `<div class="cell" id="c${i}"></div>`)
+        .map((_, i) => `<div class="cell"><div class="content" id="c${i}"></div></div>`)
         .join('\n');
     const idToTex = Object.fromEntries(formulas.map((f, i) => [`c${i}`, f.tex]));
     return `${HEAD}
@@ -86,6 +93,7 @@ function renderGrid(formulas, cellW, cellH) {
     #grid .cell { padding: 0 32px; box-sizing: border-box;
                   display: flex; align-items: center;
                   overflow: visible; }
+    #grid .content { width: 100%; }
 </style>
 <div id="grid">${cells}</div>
 ${setTextScript(idToTex)}
