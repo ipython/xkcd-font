@@ -48,4 +48,4 @@ fi
 
 ${RUN_CTXT} python3 gen_charmap.py
 
-./math/run.sh
+./mathjax3/run.sh

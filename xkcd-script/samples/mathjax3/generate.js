@@ -3,17 +3,24 @@
  * Render PNG samples of MathJax CHTML formulae through xkcd-mathjax3.js.
  * Overwrites the committed PNGs in this directory.  Use `git diff` /
  * `git status` to see what changed.
+ *
+ * formulas.yaml shape: top-level keys are output-PNG basenames; each maps
+ * to `{ formulas: [...], cellWidth?, cellHeight? }`.  Single-formula
+ * groups render with a tight bbox (as before).  Multi-formula groups
+ * render in a fixed-size CSS grid so that editing one formula does not
+ * shift the rendered position of its siblings.
  */
 
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
 const url = require('url');
+const yaml = require('js-yaml');
 const { chromium } = require('playwright');
 
 const HERE = __dirname;
 const REPO_ROOT = path.resolve(HERE, '..', '..', '..');
-const FORMULAS = JSON.parse(fs.readFileSync(path.join(HERE, 'formulas.json'), 'utf8'));
+const GROUPS = yaml.load(fs.readFileSync(path.join(HERE, 'formulas.yaml'), 'utf8'));
 
 // Pixels of whitespace padding around each formula (CSS pixels; effective
 // raster padding is PAD * DEVICE_SCALE).
@@ -21,17 +28,16 @@ const PAD = 16;
 // Output raster density.  Layout (font-size, line-height, clip box) stays
 // identical to a real 22px render; only the bitmap resolution doubles.
 const DEVICE_SCALE = 2;
+// Grid-cell defaults for multi-formula groups (override per group in yaml).
+const DEFAULT_CELL_W = 560;
+const DEFAULT_CELL_H = 72;
 
-// ── Per-formula HTML (served inline; no separate template file) ─────────────
-function renderTemplate(tex, display) {
-    const json = s => JSON.stringify(s);
-    return `<!DOCTYPE html>
+const HEAD = `<!DOCTYPE html>
 <html><head><meta charset="utf-8">
 <style>
     html, body { margin:0; padding:0; background:#fff;
                  font-family:'xkcd-script', sans-serif;
                  font-size:22px; line-height:1.6; color:#111; }
-    #m { display:inline-block; padding:4px; }
 </style>
 <script>
     MathJax = { tex: { inlineMath:  [['$','$'], ['\\\\(','\\\\)']],
@@ -39,15 +45,60 @@ function renderTemplate(tex, display) {
 </script>
 <script src="/xkcd-script/xkcd-mathjax3.js"></script>
 <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
-</head><body>
-<div id="m"></div>
-<script>
-    document.getElementById('m').textContent =
-        ${display ? `'$$' + ${json(tex)} + '$$'` : `'$' + ${json(tex)} + '$'`};
+</head><body>`;
+
+function readyScript() {
+    return `<script>
     window.__xkcdReady = false;
     XkcdMathJax.ready.then(() => { window.__xkcdReady = true; });
 </script>
 </body></html>`;
+}
+
+// Set each cell's text content via DOM rather than embedding LaTeX directly
+// in HTML — avoids any quirks around how MathJax's TeX input scanner reads
+// entity-encoded characters (&, <, >) that appear naturally in math.
+function setTextScript(idToTex) {
+    const lines = Object.entries(idToTex).map(
+        ([id, tex]) => `    document.getElementById(${JSON.stringify(id)}).textContent = ${JSON.stringify(tex)};`
+    );
+    return `<script>\n${lines.join('\n')}\n</script>`;
+}
+
+function renderSingle(formula) {
+    return `${HEAD}
+<div id="m" style="display:inline-block;padding:4px"></div>
+${setTextScript({m: formula.tex})}
+${readyScript()}`;
+}
+
+function renderGrid(formulas, cellW, cellH) {
+    const cells = formulas
+        .map((_, i) => `<div class="cell" id="c${i}"></div>`)
+        .join('\n');
+    const idToTex = Object.fromEntries(formulas.map((f, i) => [`c${i}`, f.tex]));
+    return `${HEAD}
+<style>
+    #grid { display: grid;
+            grid-template-columns: ${cellW}px;
+            grid-template-rows: repeat(${formulas.length}, ${cellH}px);
+            width: ${cellW}px; }
+    #grid .cell { padding: 0 32px; box-sizing: border-box;
+                  display: flex; align-items: center;
+                  overflow: visible; }
+</style>
+<div id="grid">${cells}</div>
+${setTextScript(idToTex)}
+${readyScript()}`;
+}
+
+function renderGroup(group) {
+    if (group.formulas.length === 1 && !group.cellHeight && !group.cellWidth) {
+        return { html: renderSingle(group.formulas[0]), selector: 'mjx-container' };
+    }
+    const cellW = group.cellWidth  || DEFAULT_CELL_W;
+    const cellH = group.cellHeight || DEFAULT_CELL_H;
+    return { html: renderGrid(group.formulas, cellW, cellH), selector: '#grid' };
 }
 
 // ── Static server: inline HTML at /sample, files from repo root elsewhere ────
@@ -65,10 +116,13 @@ function startServer() {
         const server = http.createServer((req, res) => {
             const parsed = url.parse(req.url, true);
             if (parsed.pathname === '/sample') {
+                const key = parsed.query.key;
+                const group = GROUPS[key];
+                if (!group) { res.writeHead(404); res.end('unknown group'); return; }
+                const { html } = renderGroup(group);
                 res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8',
                                      'Cache-Control': 'no-store' });
-                res.end(renderTemplate(parsed.query.tex || '',
-                                       parsed.query.display === '1'));
+                res.end(html);
                 return;
             }
             const safe = path.normalize(decodeURIComponent(parsed.pathname))
@@ -91,16 +145,16 @@ function startServer() {
     });
 }
 
-// ── Render one formula → PNG buffer ──────────────────────────────────────────
-async function renderOne(page, baseUrl, entry) {
-    const display = entry.display ? '1' : '0';
-    await page.goto(`${baseUrl}/sample?tex=${encodeURIComponent(entry.tex)}&display=${display}`,
+// ── Render one group → PNG buffer ────────────────────────────────────────────
+async function renderOne(page, baseUrl, key, group) {
+    await page.goto(`${baseUrl}/sample?key=${encodeURIComponent(key)}`,
                     { waitUntil: 'load' });
     await page.waitForFunction(() => window.__xkcdReady === true, null,
                                { timeout: 15000 });
     await page.evaluate(() => document.fonts.ready);
 
-    const box = await page.locator('mjx-container').first().boundingBox();
+    const { selector } = renderGroup(group);
+    const box = await page.locator(selector).first().boundingBox();
     const clip = {
         x: Math.max(0, Math.floor(box.x) - PAD),
         y: Math.max(0, Math.floor(box.y) - PAD),
@@ -122,13 +176,14 @@ async function renderOne(page, baseUrl, entry) {
     });
     const page = await context.newPage();
 
-    for (const entry of FORMULAS) {
-        const buf = await renderOne(page, baseUrl, entry);
-        fs.writeFileSync(path.join(HERE, `${entry.name}.png`), buf);
-        console.log(`wrote ${entry.name}.png`);
+    const keys = Object.keys(GROUPS);
+    for (const key of keys) {
+        const buf = await renderOne(page, baseUrl, key, GROUPS[key]);
+        fs.writeFileSync(path.join(HERE, `${key}.png`), buf);
+        console.log(`wrote ${key}.png`);
     }
 
     await browser.close();
     server.close();
-    console.log(`\n${FORMULAS.length} sample${FORMULAS.length === 1 ? '' : 's'} written.`);
+    console.log(`\n${keys.length} group${keys.length === 1 ? '' : 's'} written.`);
 })().catch(e => { console.error(e); process.exit(2); });

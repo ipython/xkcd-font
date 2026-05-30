@@ -1,0 +1,99 @@
+# Each top-level key is the output PNG name.  `formulas` is always a list;
+# a single-formula group renders with a tight bbox.  A multi-formula
+# group renders as a fixed-size CSS grid of cellHeight x cellWidth cells
+# so that editing one formula's tex does not shift the rendered position
+# of the others in the same PNG.
+#
+# Each formula's `tex` is the full text snippet — write the $…$ or $$…$$
+# delimiters yourself.  Plain sentences containing inline math also work.
+
+inline-ops:
+  cellHeight: 72
+  cellWidth: 560
+  formulas:
+    - tex: '$\sum_{k=1}^{n} k$'
+    - tex: '$\prod_{k=1}^{n} k$'
+    - tex: '$\int_0^1 x^2\,dx$'
+    - tex: 'We sum as $\sum_{i=1}^{N} a_i$ over the index.'
+    - tex: 'The product $\prod_{k=1}^{n} (1-p_k)$ converges.'
+    - tex: 'Define $F(x) = \int_0^x f(t)\,dt$ as antiderivative.'
+
+display-sum-closed:
+  formulas:
+    - tex: '$$\sum_{k=1}^{n} k = \frac{n(n+1)}{2}$$'
+
+display-int-exp:
+  formulas:
+    - tex: '$$\int_0^\infty e^{-x}\,dx = 1$$'
+
+display-euler-product:
+  formulas:
+    - tex: '$$\prod_{p\;\text{prime}} \frac{1}{1-p^{-s}} = \sum_{n=1}^{\infty} \frac{1}{n^s}$$'
+
+quadratic-formula:
+  formulas:
+    - tex: '$$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$'
+
+pythagoras:
+  formulas:
+    - tex: '$a^2 + b^2 = c^2$'
+
+binomial-theorem:
+  formulas:
+    - tex: '$$\sum_{k=0}^{n} \binom{n}{k} x^k y^{n-k} = (x + y)^n$$'
+
+derivative-definition:
+  formulas:
+    - tex: '$$f''(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}$$'
+
+gaussian-integral:
+  formulas:
+    - tex: '$$\int_{-\infty}^{\infty} e^{-x^2}\,dx = \sqrt{\pi}$$'
+
+product-rule:
+  formulas:
+    - tex: '$\dfrac{d}{dx}\bigl[f(x)\,g(x)\bigr] = f''(x)\,g(x) + f(x)\,g''(x)$'
+
+eulers-identity:
+  formulas:
+    - tex: '$e^{i\pi} + 1 = 0$'
+
+greek-letters:
+  formulas:
+    - tex: '$\alpha,\ \beta,\ \gamma,\ \delta,\ \varepsilon,\ \zeta,\ \eta,\ \theta,\ \iota,\ \kappa,\ \lambda,\ \mu,\ \nu,\ \xi,\ \pi,\ \rho,\ \sigma,\ \tau,\ \upsilon,\ \phi,\ \chi,\ \psi,\ \omega$'
+
+fourier-transform:
+  formulas:
+    - tex: '$$\hat{f}(\xi) = \int_{-\infty}^{\infty} f(x)\,e^{-2\pi i x \xi}\,dx$$'
+
+schrodinger:
+  formulas:
+    - tex: '$$i\hbar\frac{\partial\psi}{\partial t} = \hat{H}\psi$$'
+
+maxwell-free-space:
+  formulas:
+    - tex: '$$\nabla \cdot \mathbf{E} = 0 \qquad \nabla \times \mathbf{E} = -\frac{\partial \mathbf{B}}{\partial t}$$'
+
+deeply-nested-sqrt:
+  formulas:
+    - tex: '$$\sqrt{\frac{b^2}{\frac{b^2}{\frac{b^2}{\frac{b^2}{4ac}}}}}$$'
+
+sqrt-pi-short:
+  formulas:
+    - tex: '$\sqrt{\pi}$'
+
+piecewise-abs:
+  formulas:
+    - tex: '$$|x| = \begin{cases} x,  & \text{if } x \geq 0 \\ -x, & \text{if } x < 0 \end{cases}$$'
+
+piecewise-big:
+  formulas:
+    - tex: '$$f(x) = \begin{cases} \dfrac{\sin x}{x},                              & \text{if } x > 0 \\[6pt] \displaystyle\sum_{k=0}^{\infty} \frac{(-1)^k x^{2k}}{(2k+1)!}, & \text{if } x = 0 \\[6pt] -\sqrt{|x|},                                   & \text{if } -1 \leq x < 0 \\[4pt] \infty,                                        & \text{otherwise} \end{cases}$$'
+
+tall-integral-frac:
+  formulas:
+    - tex: '$$\int_0^1 \frac{\frac{a^2 + b^2}{c^2 + d^2}}{\frac{x^2 + y^2}{u^2 + v^2}}\,dx$$'
+
+tall-integral-sum:
+  formulas:
+    - tex: '$$\int_{-\infty}^{\infty} \sum_{n=1}^{\infty} \frac{f_n(x)}{n^2}\,dx = \sum_{n=1}^{\infty} \frac{1}{n^2} \int_{-\infty}^{\infty} f_n(x)\,dx$$'

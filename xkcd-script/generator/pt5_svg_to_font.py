@@ -766,13 +766,20 @@ _cap_h = font['A'].boundingBox()[3]
 _math_axis = _xh / 2
 
 
-def _import_math_centered(name, cp, target_top, weight_delta=0):
-    """Import a math symbol SVG, then centre it at the math axis."""
+def _import_math_centered(name, cp, target_top, weight_delta=0, dst_name=None):
+    """Import a math symbol SVG, then centre it at the math axis.
+
+    cp=None creates an unencoded glyph at dst_name (defaults to name);
+    otherwise the centred copy is mapped to cp.
+    """
     svg = os.path.join(_COMIC_CHARS_DIR, f'{name}.svg')
     g = _import_comic_glyph(font, name, svg, target_top=target_top, weight_delta=weight_delta)
     bb = g.boundingBox()
     g.transform(psMat.translate(0, _math_axis - (bb[1] + bb[3]) / 2))
-    ch = font.createMappedChar(cp)
+    if cp is None:
+        ch = font.createChar(-1, dst_name or name)
+    else:
+        ch = font.createMappedChar(cp)
     ch.clear()
     for cont in g.foreground:
         ch.foreground += cont
@@ -802,10 +809,12 @@ for _cont in _tri_src.foreground:
 _ch.width = _tri_src.width
 
 
-# Hand-drawn surd at PUA U+E000 with a near-vertical stem, for math
-# renderers to use on tall radicands where extending the natural √'s
-# (U+221A) diagonal would lean too far.
-_import_math_centered('sqrt_vertical', 0xE000, 1.12 * font.em, weight_delta=0)
+# Hand-drawn near-vertical surd as the unencoded glyph `radical.tall`,
+# for math renderers to use on tall radicands where extending the natural
+# √'s (U+221A) diagonal would lean too far.  Reached via the runtime
+# cut-and-extend renderer in xkcd-mathjax3.js, not via a cmap entry.
+_import_math_centered('sqrt_vertical', None, 1.12 * font.em, weight_delta=0,
+                      dst_name='radical.tall')
 
 
 # ---------------------------------------------------------------------------

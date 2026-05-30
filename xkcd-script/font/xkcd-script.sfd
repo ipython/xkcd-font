@@ -56,7 +56,7 @@ OS2StrikeYPos: 221
 OS2CapHeight: 592
 OS2XHeight: 338
 OS2Vendor: 'PfEd'
-Lookup: 1 0 0 "ss01-display-operators" { "ss01-display-operators-1"  } ['ss01' ('latn' <'dflt' > 'math' <'dflt' > ) ]
+Lookup: 1 0 0 "ss01-display-operators" { "ss01-display-operators-1"  } ['ss01' ('DFLT' <'dflt' > 'latn' <'dflt' > 'math' <'dflt' > ) ]
 Lookup: 4 0 1 "ligatures" { "liga"  } ['liga' ('latn' <'dflt' > ) ]
 Lookup: 260 0 0 "below" { "below_sub"  } ['mark' ('latn' <'dflt' > ) ]
 Lookup: 260 0 0 "above" { "above_sub"  } ['mark' ('latn' <'dflt' > ) ]
@@ -79,7 +79,7 @@ StemSnapH 30 [53 61 70 74 78 83 87 172 220]
 StemSnapV 16 [60 70 76 80 85]
 EndPrivate
 AnchorClass2: "below" "below_sub" "above" "above_sub"
-BeginChars: 1114209 621
+BeginChars: 1114210 621
 
 StartChar: a
 Encoding: 97 97 0
@@ -17144,9 +17144,10 @@ EndSplineSet
 Kerns2: 15 -483 "kern"
 EndChar
 
-StartChar: uniE000
-Encoding: 57344 57344 229
+StartChar: radical.tall
+Encoding: 1114180 -1 229
 Width: 824
+VWidth: 0
 Flags: W
 LayerCount: 2
 Fore
@@ -17504,7 +17505,7 @@ EndSplineSet
 EndChar
 
 StartChar: I.sansserif
-Encoding: 1114180 -1 232
+Encoding: 1114181 -1 232
 Width: 147
 VWidth: 0
 Flags: HW
@@ -17748,7 +17749,7 @@ EndSplineSet
 EndChar
 
 StartChar: _acute_mark
-Encoding: 1114181 -1 251
+Encoding: 1114182 -1 251
 Width: 0
 VWidth: 0
 Flags: HW
@@ -17773,7 +17774,7 @@ Kerns2: 15 166 "kern"
 EndChar
 
 StartChar: _grave_mark
-Encoding: 1114182 -1 252
+Encoding: 1114183 -1 252
 Width: 0
 VWidth: 0
 Flags: HW
@@ -17798,7 +17799,7 @@ Kerns2: 15 166 "kern"
 EndChar
 
 StartChar: _ring_above_mark
-Encoding: 1114183 -1 253
+Encoding: 1114184 -1 253
 Width: 0
 VWidth: 0
 Flags: HW
@@ -17839,7 +17840,7 @@ Kerns2: 15 191 "kern"
 EndChar
 
 StartChar: _diaeresis_mark
-Encoding: 1114184 -1 254
+Encoding: 1114185 -1 254
 Width: 0
 VWidth: 0
 Flags: HW
@@ -17870,7 +17871,7 @@ Kerns2: 15 232 "kern"
 EndChar
 
 StartChar: _dot_above_mark
-Encoding: 1114185 -1 255
+Encoding: 1114186 -1 255
 Width: 0
 VWidth: 0
 Flags: HW
@@ -17892,7 +17893,7 @@ Kerns2: 15 135 "kern"
 EndChar
 
 StartChar: _dot_below_mark
-Encoding: 1114186 -1 256
+Encoding: 1114187 -1 256
 Width: 0
 VWidth: 0
 Flags: HW
@@ -17914,7 +17915,7 @@ Kerns2: 15 135 "kern"
 EndChar
 
 StartChar: _macron_below_mark
-Encoding: 1114187 -1 257
+Encoding: 1114188 -1 257
 Width: 0
 VWidth: 0
 Flags: HW
@@ -17943,7 +17944,7 @@ Kerns2: 15 245 "kern"
 EndChar
 
 StartChar: _hook_cedilla_mark
-Encoding: 1114188 -1 258
+Encoding: 1114189 -1 258
 Width: 0
 VWidth: 0
 Flags: HW
@@ -17983,7 +17984,7 @@ Kerns2: 15 132 "kern"
 EndChar
 
 StartChar: _macron_mark
-Encoding: 1114189 -1 259
+Encoding: 1114190 -1 259
 Width: 0
 VWidth: 0
 Flags: HW
@@ -18012,7 +18013,7 @@ Kerns2: 15 245 "kern"
 EndChar
 
 StartChar: _caron_mark
-Encoding: 1114190 -1 260
+Encoding: 1114191 -1 260
 Width: 0
 VWidth: 608
 Flags: HW
@@ -18041,7 +18042,7 @@ Kerns2: 15 208 "kern"
 EndChar
 
 StartChar: _circumflex_mark
-Encoding: 1114191 -1 261
+Encoding: 1114192 -1 261
 Width: 0
 VWidth: 0
 Flags: HW
@@ -18071,7 +18072,7 @@ Kerns2: 15 163 "kern"
 EndChar
 
 StartChar: _tilde_mark
-Encoding: 1114192 -1 262
+Encoding: 1114193 -1 262
 Width: 0
 VWidth: 0
 Flags: HW
@@ -18105,7 +18106,7 @@ Kerns2: 15 223 "kern"
 EndChar
 
 StartChar: _breve_mark
-Encoding: 1114193 -1 263
+Encoding: 1114194 -1 263
 Width: -132
 VWidth: 0
 Flags: HW
@@ -18281,7 +18282,7 @@ EndSplineSet
 EndChar
 
 StartChar: _double_acute_mark
-Encoding: 1114194 -1 267
+Encoding: 1114195 -1 267
 Width: 0
 VWidth: 0
 Flags: HW
@@ -19270,7 +19271,7 @@ Refer: 41 76 N 1 0 0 1 0 0 2
 EndChar
 
 StartChar: _l_crossbar
-Encoding: 1114195 -1 358
+Encoding: 1114196 -1 358
 Width: 0
 VWidth: -272
 Flags: HW
@@ -19315,7 +19316,7 @@ Kerns2: 15 41 "kern"
 EndChar
 
 StartChar: _cap_o_crossbar
-Encoding: 1114196 -1 361
+Encoding: 1114197 -1 361
 Width: 0
 VWidth: -274
 Flags: HW
@@ -19337,7 +19338,7 @@ Kerns2: 15 235 "kern"
 EndChar
 
 StartChar: _lc_o_crossbar
-Encoding: 1114197 -1 362
+Encoding: 1114198 -1 362
 Width: 0
 VWidth: -273
 Flags: HW
@@ -19404,7 +19405,7 @@ Refer: 2 108 N 1 0 0 1 0 0 2
 EndChar
 
 StartChar: _bar_300
-Encoding: 1114198 -1 367
+Encoding: 1114199 -1 367
 Width: 0
 VWidth: -271
 Flags: HW
@@ -19426,7 +19427,7 @@ Kerns2: 15 208 "kern"
 EndChar
 
 StartChar: _bar_220
-Encoding: 1114199 -1 368
+Encoding: 1114200 -1 368
 Width: 0
 VWidth: -271
 Flags: HW
@@ -19448,7 +19449,7 @@ Kerns2: 15 172 "kern"
 EndChar
 
 StartChar: _bar_480
-Encoding: 1114200 -1 369
+Encoding: 1114201 -1 369
 Width: 0
 VWidth: -271
 Flags: HW
@@ -19549,7 +19550,7 @@ Refer: 59 68 N 1 0 0 1 0 0 2
 EndChar
 
 StartChar: _eng_comma_uc
-Encoding: 1114201 -1 377
+Encoding: 1114202 -1 377
 Width: 0
 VWidth: 84
 Flags: HW
@@ -19574,7 +19575,7 @@ Kerns2: 15 228 "kern"
 EndChar
 
 StartChar: _eng_comma_lc
-Encoding: 1114202 -1 378
+Encoding: 1114203 -1 378
 Width: 0
 VWidth: 50
 Flags: HW
@@ -21956,7 +21957,7 @@ Refer: 41 76 N 1 0 0 -1 0 555.001 2
 EndChar
 
 StartChar: _eta_bar
-Encoding: 1114203 -1 548
+Encoding: 1114204 -1 548
 Width: 0
 VWidth: -270
 Flags: HW
@@ -24344,7 +24345,7 @@ Refer: 126 46 N 0.75 0 0 0.75 66.3431 228.161 2
 EndChar
 
 StartChar: summation
-Encoding: 1114204 8721 616
+Encoding: 1114205 8721 616
 Width: 524
 VWidth: 0
 Flags: HW
@@ -24457,7 +24458,7 @@ Substitution2: "ss01-display-operators-1" summation.disp
 EndChar
 
 StartChar: product
-Encoding: 1114205 8719 617
+Encoding: 1114206 8719 617
 Width: 661
 VWidth: 0
 Flags: HW
@@ -24536,7 +24537,7 @@ Substitution2: "ss01-display-operators-1" product.disp
 EndChar
 
 StartChar: summation.disp
-Encoding: 1114206 -1 618
+Encoding: 1114207 -1 618
 Width: 720
 VWidth: -157
 Flags: HW
@@ -24657,7 +24658,7 @@ EndSplineSet
 EndChar
 
 StartChar: product.disp
-Encoding: 1114207 -1 619
+Encoding: 1114208 -1 619
 Width: 5891
 VWidth: -154
 Flags: HW
@@ -24730,7 +24731,7 @@ EndSplineSet
 EndChar
 
 StartChar: integral.disp
-Encoding: 1114208 -1 620
+Encoding: 1114209 -1 620
 Width: 5664
 VWidth: -121
 Flags: HW

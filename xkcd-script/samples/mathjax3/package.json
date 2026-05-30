@@ -4,6 +4,7 @@
   "private": true,
   "description": "Reference renders of MathJax CHTML formulae through xkcd-mathjax3.js.",
   "devDependencies": {
+    "js-yaml": "^4.1.0",
     "playwright": "1.49.1"
   }
 }

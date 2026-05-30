@@ -36,9 +36,9 @@ MATHJAX_JS = '../xkcd-mathjax3.js'
 # unitsPerSeg       : sub-segment density along the inserted gap
 # amp               : jitter amplitude in font units
 EXTENSIBLE_CONFIG = {
-    'emdash':  {'cutXPct': 50, 'cutYPct': 50, 'leanDeg':  0.0, 'unitsPerSeg': 120, 'amp':  4},
-    'radical': {'cutXPct': 70, 'cutYPct': 50, 'leanDeg':  0.0, 'unitsPerSeg':  60, 'amp':  5},
-    'uniE000': {'cutXPct': 56, 'cutYPct': 45, 'leanDeg': -2.0, 'unitsPerSeg':  45, 'amp':  3},
+    'emdash':       {'cutXPct': 50, 'cutYPct': 50, 'leanDeg':  0.0, 'unitsPerSeg': 120, 'amp':  4},
+    'radical':      {'cutXPct': 70, 'cutYPct': 50, 'leanDeg':  0.0, 'unitsPerSeg':  60, 'amp':  5},
+    'radical.tall': {'cutXPct': 56, 'cutYPct': 45, 'leanDeg': -2.0, 'unitsPerSeg':  45, 'amp':  3},
 }
 
 
@@ -96,7 +96,7 @@ def _as_js(data):
     for name, g in data.items():
         bb  = g['bbox']
         cfg = g['config']
-        lines.append('        %s: {' % name)
+        lines.append('        %s: {' % json.dumps(name))
         lines.append('            advance: %s,' % g['advance'])
         lines.append('            bbox: {xmin: %s, ymin: %s, xmax: %s, ymax: %s},'
                      % (bb['xmin'], bb['ymin'], bb['xmax'], bb['ymax']))
