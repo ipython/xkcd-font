@@ -1415,6 +1415,85 @@ _cdot.width = _CDOT_WIDTH
 
 
 # ---------------------------------------------------------------------------
+# ∑ U+2211 / ∏ U+220F — inline-sized large operators.
+# The base font carries the Greek capitals Σ/Π for letter use; we mint
+# separate `summation`/`product` glyphs at the math codepoints so the
+# ss01 substitution (wired up in pt7) doesn't also affect Greek text.
+# Outlines are copied (not referenced) so the .disp variants below can
+# scale and thin them independently of the source letters.
+# ---------------------------------------------------------------------------
+
+def _copy_glyph_at(font, src_name, cp, dst_name):
+    src = font[src_name]
+    layer = fontforge.layer()
+    for c in src.foreground:
+        layer += c
+    g = font.createChar(cp, dst_name)
+    g.clear()
+    g.foreground = layer
+    g.width = src.width
+    return g
+
+_copy_glyph_at(font, 'Sigma', 0x2211, 'summation')
+_copy_glyph_at(font, 'Pi',    0x220F, 'product')
+
+
+# ---------------------------------------------------------------------------
+# Display-sized large operators (∑ ∏ ∫) as stylistic alternates.
+#
+# Unencoded glyphs reached via the OpenType ss01 feature (wired up in pt7).
+# The base U+2211 / U+220F / U+222B forms stay at inline size; ss01 swaps
+# them for these enlarged variants in display contexts (MathJax uses a
+# font-feature-settings CSS rule scoped to display-mode <mjx-mo>).
+# ---------------------------------------------------------------------------
+
+def make_display_operator(font, src_name, dst_name, target_h, weight=0, rbear=0):
+    """Scale src to target_h, optionally thin strokes, centre on MATH_AXIS.
+
+    Creates an unencoded glyph named dst_name.  rbear sets the right
+    bearing in font units (advance = right glyph edge + rbear); MathJax
+    CHTML ignores font advances anyway, so the oversized rbears used for
+    ∏/∫ only matter for non-MathJax consumers.
+    """
+    src = font[src_name]
+    src_layer = fontforge.layer()
+    for c in src.foreground:
+        src_layer += c
+    src_width = src.width
+
+    g = font.createChar(-1, dst_name)
+    g.clear()
+    g.foreground = src_layer
+    g.width = src_width
+
+    bb = g.boundingBox()
+    scale = target_h / (bb[3] - bb[1])
+    g.transform(psMat.scale(scale))
+
+    if weight != 0:
+        g.correctDirection()
+        g.removeOverlap()
+        g.changeWeight(weight)
+        g.correctDirection()
+        g.addExtrema()
+
+    bb2 = g.boundingBox()
+    g.transform(psMat.translate(0, _MATH_AXIS - (bb2[3] + bb2[1]) / 2))
+
+    bb3 = g.boundingBox()
+    g.width = round(bb3[2] + rbear)
+
+    print(f"  {dst_name}: scale={scale:.3f} weight={weight} "
+          f"bounds={g.boundingBox()} advance={g.width}")
+
+
+_upem = font.em
+make_display_operator(font, 'Sigma',    'summation.disp', _upem,                 weight=-20, rbear=20)
+make_display_operator(font, 'Pi',       'product.disp',   _upem,                 weight=-20, rbear=5000)
+make_display_operator(font, 'integral', 'integral.disp',  round(1.4 * _upem),    weight=-15, rbear=5000)
+
+
+# ---------------------------------------------------------------------------
 # Save
 # ---------------------------------------------------------------------------
 

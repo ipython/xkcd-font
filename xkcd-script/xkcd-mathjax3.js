@@ -3,7 +3,7 @@
  * hand-drawn sqrt / fraction-bar overlays.
  *
  * Drop this script on a page that already loads MathJax 3 (CHTML).  It loads
- * the two woff files from URLs resolved relative to its own src, injects the
+ * xkcd-script.woff from a URL resolved relative to its own src, injects the
  * font-override CSS, and hooks MathJax's startup so the initial typeset is
  * post-processed.  Works whether MathJax loads before or after this script.
  *
@@ -60,10 +60,6 @@
     function _injectFontFaces() {
         const s = document.createElement('style');
         s.textContent = `
-            @font-face {
-                font-family: 'xkcd-script-math';
-                src: url('${FONT_BASE}xkcd-script-mathjax3.woff') format('woff');
-            }
             @font-face {
                 font-family: 'xkcd-script';
                 src: url('${FONT_BASE}xkcd-script.woff') format('woff');
@@ -797,16 +793,21 @@
     function injectFontOverride() {
         if (_fontOverrideInjected) return;
         _fontOverrideInjected = true;
-        // 'xkcd-script-math' carries only the display-sized large operators
-        // (∑, ∏, ∫).  Everything else — letters, Greek, the math italic/bold
-        // codepoint aliases, the cdot — lives in 'xkcd-script', which sits
-        // next in the fallback chain so MathJax can resolve those codepoints.
-        const STACK = "'xkcd-script-math', 'xkcd-script', MJXTEX, MJXTEX-I, MJXTEX-B, MJXTEX-BI, MJXTEX-S1, MJXTEX-S2, MJXTEX-S3, MJXTEX-S4, MJXTEX-A";
+        const STACK = "'xkcd-script', MJXTEX, MJXTEX-I, MJXTEX-B, MJXTEX-BI, MJXTEX-S1, MJXTEX-S2, MJXTEX-S3, MJXTEX-S4, MJXTEX-A";
         const s = document.createElement('style');
         s.textContent = `
             mjx-container[jax="CHTML"] *,
             mjx-container[jax="CHTML"] *::before {
                 font-family: ${STACK} !important;
+            }
+            /* Display-mode large operators (∑ ∏ ∫): swap in the .disp
+               stylistic alternates from xkcd-script via ss01.  Inline
+               operators keep the base letter-sized glyphs.  !important
+               because the font-family override above is !important and a
+               plain font-feature-settings would otherwise lose to MathJax's
+               CHTML defaults. */
+            mjx-container[jax="CHTML"][display="true"] mjx-mo {
+                font-feature-settings: "ss01" on !important;
             }
             /* Inline limits on ∏ and ∫ need extra right margin — MathJax uses
                pre-baked metrics that ignore our wider glyphs. */

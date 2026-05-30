@@ -1,135 +1,18 @@
 # -*- coding: utf-8 -*-
 """
-MathJax 3 delta-overlay font.  Starts from the base SFD produced by pt7 and
-writes ../generated/xkcd-script-mathjax3-pt8.sfd, which pt9 then subsets to
-the WOFF that's loaded alongside xkcd-script in the browser font-stack.
+Extracts extensible-glyph outline data (emdash, radical, uniE000) from
+pt7's SFD and splices it into ../xkcd-mathjax3.js between the GENERATED
+markers.  The browser-side cut-and-extend renderer uses those outlines at
+runtime, so they have to travel with the font.
 
-Targets MathJax 3 specifically.  MathJax 4 has additional font-handling
-extensibility hooks that may reduce the need for the CSS overrides in
-xkcd-mathjax3.js — a separate pt8b_mathjax4.py / xkcd-mathjax4.js pair
-would supersede this if/when that work happens.
-
-Does two things:
-
-  1. Overrides ∑ / ∏ / ∫ with display-sized large operators (the inline
-     forms in the base font are too small for MathJax display mode).
-  2. Extracts extensible-glyph outline data (emdash, radical, uniE000)
-     from the SFD and splices it into ../xkcd-mathjax3.js between the
-     GENERATED markers.  The browser-side cut-and-extend renderer uses
-     those outlines at runtime, so they have to travel with the font.
-
-The U+1D400-block math cmap aliases (math italic / bold / Greek) are NOT
-here — they live in pt6 (base font), reached via the font-fallback chain.
-Putting them here instead would force this WOFF to ship the source
-Latin/Greek outlines too, bloating it.
-
-This file deliberately does NOT carry per-codepoint metric tweaks.
-MathJax 3 CHTML uses pre-baked per-codepoint metric tables in its own JS;
-it ignores the font's advance widths and OT MATH italic-correction values
-at runtime.  Verified empirically: a +400 font-unit advance bump on
-math-italic g produced zero visible change in product-rule.png.  All
-positional adjustments for MathJax-rendered math therefore live as CSS
-overrides in xkcd-mathjax3.js, not here.
+Reserves the pt8a_ slot for future MathJax-3-specific derivative work.
 """
 import fontforge
-import psMat
 import json
 import re
 
 
 BASE_SFD = '../generated/xkcd-script-pt7.sfd'
-OUT_SFD  = '../generated/xkcd-script-mathjax3-pt8.sfd'
-
-# y-position of the math axis (fraction-bar centre) in xkcd-script font units.
-MATH_AXIS = 260
-
-
-# ---------------------------------------------------------------------------
-# MathJax: display-sized large operators
-# ---------------------------------------------------------------------------
-
-def add_mathjax_operators(ff_font):
-    """Override ∑, ∏, ∫ with display-mode-sized glyphs.
-
-    MathJax CHTML uses the same Unicode codepoints for both inline and
-    display-mode large operators — display-mode sizing is achieved via CSS
-    font-size scaling plus different glyph metrics in MJXTEX-S1.  Our
-    !important font-family override intercepts Size1 usage, so we supply
-    glyphs with appropriate metrics here.
-
-    Tuning knobs (adjust and rebuild to iterate):
-      MATH_AXIS   — module-level constant; y-position of the math axis.
-      OP_WEIGHT   — stroke thinning for ∑/∏ after scale-up (negative = thinner).
-      INTEGRAL_H  — display-mode ∫ height in font units.  Current xkcd ∫ is
-                    951 (≈1.11 × UPM); Size1 fonts target ≈1.4–1.6 × UPM.
-    """
-    upem = ff_font.em  # 856
-
-    OP_WEIGHT = -20
-    INTEGRAL_H = round(1.4 * upem)  # ≈ 1198
-
-    def _make_largeop(src_cp, dst_cp, dst_name, target_h, weight=0, rbear=0):
-        """Scale src to target_h, optionally thin strokes, centre on MATH_AXIS.
-
-        rbear: right bearing in font units (advance = right glyph edge + rbear).
-               Note: MathJax CHTML ignores the font advance width — it pre-bakes
-               character widths from its own JS metric tables, so rbear only
-               affects non-MathJax uses.  Inline limit spacing in MathJax is
-               controlled via CSS margin-right in xkcd-mathjax3.js instead.
-        """
-        # Snapshot outlines + width before touching dst; src and dst point to
-        # the same glyph when src_cp == dst_cp (e.g. ∫ scaled in place).
-        src = ff_font[src_cp]
-        src_layer = fontforge.layer()
-        for c in src.foreground:
-            src_layer += c
-        src_width = src.width
-
-        try:
-            g = ff_font[dst_cp]
-            g.clear()
-        except TypeError:
-            g = ff_font.createChar(dst_cp, dst_name)
-
-        g.foreground = src_layer
-        g.width = src_width
-
-        bb = g.boundingBox()
-        scale = target_h / (bb[3] - bb[1])
-        g.transform(psMat.scale(scale))
-
-        if weight != 0:
-            g.correctDirection()
-            g.removeOverlap()
-            g.changeWeight(weight)
-            g.correctDirection()
-            g.addExtrema()
-
-        # Centre the glyph's y-midpoint on MATH_AXIS so display-mode operators
-        # straddle the text baseline and MathJax places limits at expected positions.
-        bb2 = g.boundingBox()
-        g.transform(psMat.translate(0, MATH_AXIS - (bb2[3] + bb2[1]) / 2))
-
-        bb3 = g.boundingBox()
-        g.width = round(bb3[2] + rbear)
-
-        print(f"  U+{dst_cp:04X} ({dst_name}): scale={scale:.3f} weight={weight} "
-              f"bounds={g.boundingBox()} advance={g.width}")
-
-    # ∑ (U+2211): Σ scaled to 1.0 × UPM, strokes thinned, centred on math axis
-    _make_largeop(0x03A3, 0x2211, 'summation', upem, weight=OP_WEIGHT, rbear=20)
-    # ∏ (U+220F): Π scaled to 1.0 × UPM, strokes thinned, centred on math axis
-    _make_largeop(0x03A0, 0x220F, 'product',   upem, weight=OP_WEIGHT, rbear=5000)
-    # ∫ (U+222B): existing xkcd ∫ scaled to INTEGRAL_H, strokes thinned, centred
-    _make_largeop(0x222B, 0x222B, 'integral', INTEGRAL_H, weight=-15,  rbear=5000)
-
-
-print(f"=== Building {OUT_SFD} ===")
-font = fontforge.open(BASE_SFD)
-add_mathjax_operators(font)
-font.save(OUT_SFD)
-font.close()
-print(f"  saved {OUT_SFD}")
 
 
 # ---------------------------------------------------------------------------

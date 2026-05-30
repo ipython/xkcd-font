@@ -1,21 +1,14 @@
 """
-Produce reproducible binary fonts (OTF / TTF / WOFF) from the SFDs left in
-generated/ by earlier pipeline steps.
+Produce reproducible binary fonts (OTF / TTF / WOFF) for xkcd-script from
+the pt7 SFD.
 
-Each variant in VARIANTS is processed independently:
   1. Scrub timestamps + XUID from the input SFD so FontForge can't bake
      build-time metadata into the output.
-  2. Save the scrubbed SFD (canonical for the main font; intermediate for
-     derivative variants).
-  3. Open with FontForge, pin sfnt UniqueID + XUID, generate the requested
-     output formats.
-  4. (OTF only, when freeze_cff is set) inline the committed reference
-     OTF's charstrings byte-for-byte for any glyph whose outline is
-     unchanged — keeps subpixel hint rendering stable across rebuilds
-     even when other glyphs are added.
-
-To add a new derivative font: append a new entry to VARIANTS pointing at
-the SFD that the corresponding pt8X_*.py wrote.
+  2. Save the scrubbed SFD as the canonical committed copy.
+  3. Open with FontForge, pin sfnt UniqueID + XUID, generate OTF/TTF/WOFF.
+  4. (OTF) inline the committed reference OTF's charstrings byte-for-byte
+     for any glyph whose outline is unchanged — keeps subpixel hint
+     rendering stable across rebuilds even when other glyphs are added.
 """
 import datetime
 import os
@@ -25,7 +18,6 @@ from pathlib import Path
 import fontforge
 from fontTools.ttLib import TTFont as _TTFont
 from fontTools.pens.recordingPen import RecordingPen as _RecordingPen
-from fontTools.subset import Subsetter as _Subsetter
 
 
 GENERATED = '../generated/'
@@ -35,30 +27,9 @@ _then_str  = 'Sat Jan 1 00:00:00 2000'
 _then_unix = calendar.timegm(datetime.datetime(2000, 1, 1, 0, 0).timetuple())
 
 
-VARIANTS = [
-    {
-        'name': 'xkcd-script',
-        'sfd_in':   GENERATED + 'xkcd-script-pt7.sfd',
-        'sfd_out':  FONT_DIR  + 'xkcd-script.sfd',          # canonical, committed
-        'formats':  ['otf', 'ttf', 'woff'],
-        'freeze_cff':       True,
-        # Full font: FontForge generates WOFF directly so the CFF stays
-        # subroutinized and the woff stays small.
-        'subset_unicodes':  None,
-    },
-    {
-        'name': 'xkcd-script-mathjax3',
-        'sfd_in':   GENERATED + 'xkcd-script-mathjax3-pt8.sfd',
-        'sfd_out':  GENERATED + 'xkcd-script-mathjax3.sfd',  # intermediate, not committed
-        'formats':  ['woff'],
-        'freeze_cff':       False,
-        # Delta font: WOFF wraps a fontforge-generated intermediate OTF then
-        # subsets to just the codepoints this derivative actually overrides.
-        # Everything else MathJax needs falls through to xkcd-script via the
-        # font-face stack in xkcd-mathjax3.js.
-        'subset_unicodes':  [0x2211, 0x220F, 0x222B],
-    },
-]
+NAME    = 'xkcd-script'
+SFD_IN  = GENERATED + 'xkcd-script-pt7.sfd'
+SFD_OUT = FONT_DIR  + 'xkcd-script.sfd'   # canonical, committed
 
 
 # ---------------------------------------------------------------------------
@@ -180,69 +151,41 @@ def freeze_cff(otf_path, name, ref_otf):
 
 
 # ---------------------------------------------------------------------------
-# Per-variant build
+# Build
 # ---------------------------------------------------------------------------
 
 Path(FONT_DIR).mkdir(exist_ok=True)
 
-for v in VARIANTS:
-    name = v['name']
-    print(f"=== {name} ===")
+print(f"=== {NAME} ===")
 
-    scrub_sfd(v['sfd_in'], v['sfd_out'])
+scrub_sfd(SFD_IN, SFD_OUT)
 
-    font = fontforge.open(v['sfd_out'])
-    font.sfnt_names = (('English (US)', 'UniqueID', name),)
-    font.xuid = "-1"
+font = fontforge.open(SFD_OUT)
+font.sfnt_names = (('English (US)', 'UniqueID', NAME),)
+font.xuid = "-1"
 
-    out_base = FONT_DIR + name
-    formats  = set(v['formats'])
-    subset_unicodes = v.get('subset_unicodes')
+out_base  = FONT_DIR + NAME
+otf_path  = out_base + '.otf'
+ttf_path  = out_base + '.ttf'
+woff_path = out_base + '.woff'
 
-    # OTF: committed if 'otf' in formats, else a temp file (needed as the
-    # source for the subset+wrap WOFF path).
-    keep_otf = 'otf' in formats
-    otf_path = (out_base + '.otf') if keep_otf else (GENERATED + name + '-intermediate.otf')
+# Snapshot the existing OTF (if any) before overwriting, for CFF freezing.
+ref_otf = _TTFont(otf_path) if os.path.exists(otf_path) else None
 
-    # Snapshot the existing OTF (if any) before overwriting, for CFF freezing.
-    ref_otf = None
-    if v['freeze_cff'] and keep_otf and os.path.exists(otf_path):
-        ref_otf = _TTFont(otf_path)
+font.generate(otf_path, flags=('opentype',))
+print(f"  generated {otf_path}")
 
-    font.generate(otf_path, flags=('opentype',))
-    print(f"  generated {otf_path}" + ('' if keep_otf else '  (intermediate)'))
+font.generate(ttf_path)
+print(f"  generated {ttf_path}")
 
-    if 'ttf' in formats:
-        ttf_path = out_base + '.ttf'
-        font.generate(ttf_path)
-        print(f"  generated {ttf_path}")
+# FontForge produces WOFF directly so the CFF stays subroutinized.
+# Wrapping the desubroutinized post-freeze OTF instead would inflate
+# the woff by ~40% with no functional gain.
+font.generate(woff_path)
+print(f"  generated {woff_path}")
 
-    # Full-font WOFF: let FontForge produce it directly so the CFF stays
-    # subroutinized.  Wrapping the desubroutinized post-freeze OTF instead
-    # would inflate the woff by ~40% with no functional gain.
-    if 'woff' in formats and subset_unicodes is None:
-        woff_path = out_base + '.woff'
-        font.generate(woff_path)
-        print(f"  generated {woff_path}")
+font.close()
 
-    font.close()
-
-    if ref_otf is not None:
-        freeze_cff(otf_path, name, ref_otf)
-        print(f"  froze CFF for {otf_path}")
-
-    # Delta WOFF: wrap the intermediate OTF and subset to just the codepoints
-    # this variant overrides.  Subsetter drops unreachable glyphs, tables and
-    # CFF subroutines so the output is tiny (a few hundred bytes per glyph).
-    if 'woff' in formats and subset_unicodes is not None:
-        woff_path = out_base + '.woff'
-        wrapped = _TTFont(otf_path, recalcTimestamp=False)
-        subsetter = _Subsetter()
-        subsetter.populate(unicodes=subset_unicodes)
-        subsetter.subset(wrapped)
-        wrapped.flavor = 'woff'
-        wrapped.save(woff_path)
-        print(f"  generated {woff_path}  (subset to {len(subset_unicodes)} codepoints)")
-
-    if not keep_otf:
-        os.unlink(otf_path)
+if ref_otf is not None:
+    freeze_cff(otf_path, NAME, ref_otf)
+    print(f"  froze CFF for {otf_path}")
