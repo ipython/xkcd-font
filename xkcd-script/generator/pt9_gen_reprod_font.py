@@ -15,7 +15,7 @@ Each variant in VARIANTS is processed independently:
      even when other glyphs are added.
 
 To add a new derivative font: append a new entry to VARIANTS pointing at
-the SFD that pt8_derivative_fonts.py wrote.
+the SFD that the corresponding pt8X_*.py wrote.
 """
 import datetime
 import os
@@ -47,15 +47,15 @@ VARIANTS = [
         'subset_unicodes':  None,
     },
     {
-        'name': 'xkcd-script-mathjax',
-        'sfd_in':   GENERATED + 'xkcd-script-mathjax-pt8.sfd',
-        'sfd_out':  GENERATED + 'xkcd-script-mathjax.sfd',  # intermediate, not committed
+        'name': 'xkcd-script-mathjax3',
+        'sfd_in':   GENERATED + 'xkcd-script-mathjax3-pt8.sfd',
+        'sfd_out':  GENERATED + 'xkcd-script-mathjax3.sfd',  # intermediate, not committed
         'formats':  ['woff'],
         'freeze_cff':       False,
         # Delta font: WOFF wraps a fontforge-generated intermediate OTF then
         # subsets to just the codepoints this derivative actually overrides.
         # Everything else MathJax needs falls through to xkcd-script via the
-        # font-face stack in xkcd-mathjax.js.
+        # font-face stack in xkcd-mathjax3.js.
         'subset_unicodes':  [0x2211, 0x220F, 0x222B],
     },
 ]

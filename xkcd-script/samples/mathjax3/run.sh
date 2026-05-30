@@ -8,7 +8,7 @@
 #   NO_BUILD=1      Skip `docker build` (use only if the image exists locally)
 #
 # The repo root is bind-mounted into the container so generate.js can serve
-# the live xkcd-mathjax.js and woff files via its embedded static server.
+# the live xkcd-mathjax3.js and woff files via its embedded static server.
 
 set -euo pipefail
 
@@ -26,5 +26,5 @@ fi
 docker run --rm \
     -u "$(id -u):$(id -g)" \
     -v "${REPO_ROOT}:/work" \
-    -w /work/xkcd-script/samples/math \
+    -w /work/xkcd-script/samples/mathjax3 \
     "${IMAGE}" "$@"

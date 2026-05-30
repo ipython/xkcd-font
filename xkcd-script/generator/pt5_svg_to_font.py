@@ -802,8 +802,8 @@ for _cont in _tri_src.foreground:
 _ch.width = _tri_src.width
 
 
-# Hand-drawn surd at PUA U+E000 with a near-vertical stem, picked up by
-# xkcd-mathjax.js for tall radicands where extending the natural √'s
+# Hand-drawn surd at PUA U+E000 with a near-vertical stem, for math
+# renderers to use on tall radicands where extending the natural √'s
 # (U+221A) diagonal would lean too far.
 _import_math_centered('sqrt_vertical', 0xE000, 1.12 * font.em, weight_delta=0)
 

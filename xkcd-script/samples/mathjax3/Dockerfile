@@ -10,9 +10,9 @@
 FROM mcr.microsoft.com/playwright:v1.49.1-noble
 
 # Everything happens under /work; the runner script bind-mounts the repo
-# root here so the static server can serve xkcd-mathjax.js and the woff
+# root here so the static server can serve xkcd-mathjax3.js and the woff
 # files from the live working tree.
-WORKDIR /work/xkcd-script/samples/math
+WORKDIR /work/xkcd-script/samples/mathjax3
 
 # Pre-warm node_modules in the image so cold runs don't re-fetch every time.
 # The COPY brings in only the install manifests so this layer is invalidated

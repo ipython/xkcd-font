@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Render PNG samples of MathJax CHTML formulae through xkcd-mathjax.js.
+ * Render PNG samples of MathJax CHTML formulae through xkcd-mathjax3.js.
  * Overwrites the committed PNGs in this directory.  Use `git diff` /
  * `git status` to see what changed.
  */
@@ -37,7 +37,7 @@ function renderTemplate(tex, display) {
     MathJax = { tex: { inlineMath:  [['$','$'], ['\\\\(','\\\\)']],
                        displayMath: [['$$','$$'], ['\\\\[','\\\\]']] } };
 </script>
-<script src="/xkcd-script/xkcd-mathjax.js"></script>
+<script src="/xkcd-script/xkcd-mathjax3.js"></script>
 <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
 </head><body>
 <div id="m"></div>

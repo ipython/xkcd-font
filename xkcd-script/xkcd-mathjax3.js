@@ -1,5 +1,5 @@
 /**
- * xkcd-mathjax — render MathJax 3 CHTML output with xkcd-script fonts and
+ * xkcd-mathjax3 — render MathJax 3 CHTML output with xkcd-script fonts and
  * hand-drawn sqrt / fraction-bar overlays.
  *
  * Drop this script on a page that already loads MathJax 3 (CHTML).  It loads
@@ -11,13 +11,13 @@
  *   <!-- 1. Optional MathJax config (tex delimiters, etc) — set FIRST -->
  *   <script>MathJax = { tex: { inlineMath: [['$','$']] } };</script>
  *   <!-- 2. Then this script: it merges its startup hook into MathJax config -->
- *   <script src="path/to/xkcd-mathjax.js"></script>
+ *   <script src="path/to/xkcd-mathjax3.js"></script>
  *   <!-- 3. Then MathJax itself, async -->
  *   <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
  *
  * ── Usage (Jupyter / JupyterLab, which ships its own MathJax 3) ─────────────
  *   from IPython.display import HTML, display
- *   display(HTML('<script src="https://your-host/xkcd-mathjax.js"></script>'))
+ *   display(HTML('<script src="https://your-host/xkcd-mathjax3.js"></script>'))
  *   # Then any subsequent Markdown / Latex cells render with xkcd-script.
  *
  * ── Public API on window.XkcdMathJax ────────────────────────────────────────
@@ -46,9 +46,9 @@
         if (cur && cur.src) {
             return cur.src.replace(/[^/]*$/, '') + 'font/';
         }
-        // Fallback: locate any <script> whose src ends in xkcd-mathjax.js
+        // Fallback: locate any <script> whose src ends in xkcd-mathjax3.js
         for (const s of document.scripts) {
-            if (s.src && /xkcd-mathjax(\.min)?\.js(\?|$)/.test(s.src)) {
+            if (s.src && /xkcd-mathjax3(\.min)?\.js(\?|$)/.test(s.src)) {
                 return s.src.replace(/[^/]*$/, '') + 'font/';
             }
         }
@@ -62,7 +62,7 @@
         s.textContent = `
             @font-face {
                 font-family: 'xkcd-script-math';
-                src: url('${FONT_BASE}xkcd-script-mathjax.woff') format('woff');
+                src: url('${FONT_BASE}xkcd-script-mathjax3.woff') format('woff');
             }
             @font-face {
                 font-family: 'xkcd-script';

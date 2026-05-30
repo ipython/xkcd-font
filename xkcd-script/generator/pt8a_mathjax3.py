@@ -1,30 +1,44 @@
 # -*- coding: utf-8 -*-
 """
-Build derivative font variants by mutating the base SFD produced by pt7.
+MathJax 3 delta-overlay font.  Starts from the base SFD produced by pt7 and
+writes ../generated/xkcd-script-mathjax3-pt8.sfd, which pt9 then subsets to
+the WOFF that's loaded alongside xkcd-script in the browser font-stack.
 
-Each variant gets its own SFD output in ../generated/, which pt9 then
-normalises and converts into the committed binary font files.
+Targets MathJax 3 specifically.  MathJax 4 has additional font-handling
+extensibility hooks that may reduce the need for the CSS overrides in
+xkcd-mathjax3.js — a separate pt8b_mathjax4.py / xkcd-mathjax4.js pair
+would supersede this if/when that work happens.
 
-Currently produces:
-  xkcd-script-mathjax-pt8.sfd
-    — pt7 + three display-sized large operators (∑, ∏, ∫) overriding the
-      inline forms.  Everything else MathJax needs (math italic / bold cmap
-      aliases, the cdot, the hand-drawn √ surd) lives in the main
-      xkcd-script font (added in pt6) and is reached via font-fallback in
-      xkcd-mathjax.js.
+Does two things:
 
-To add a new derivative font: write a builder function that mutates an
-open SFD in place, then append it to VARIANTS.  pt9 will pick it up
-automatically as long as its sfd_in matches what's written here.
+  1. Overrides ∑ / ∏ / ∫ with display-sized large operators (the inline
+     forms in the base font are too small for MathJax display mode).
+  2. Extracts extensible-glyph outline data (emdash, radical, uniE000)
+     from the SFD and splices it into ../xkcd-mathjax3.js between the
+     GENERATED markers.  The browser-side cut-and-extend renderer uses
+     those outlines at runtime, so they have to travel with the font.
+
+The U+1D400-block math cmap aliases (math italic / bold / Greek) are NOT
+here — they live in pt6 (base font), reached via the font-fallback chain.
+Putting them here instead would force this WOFF to ship the source
+Latin/Greek outlines too, bloating it.
+
+This file deliberately does NOT carry per-codepoint metric tweaks.
+MathJax 3 CHTML uses pre-baked per-codepoint metric tables in its own JS;
+it ignores the font's advance widths and OT MATH italic-correction values
+at runtime.  Verified empirically: a +400 font-unit advance bump on
+math-italic g produced zero visible change in product-rule.png.  All
+positional adjustments for MathJax-rendered math therefore live as CSS
+overrides in xkcd-mathjax3.js, not here.
 """
 import fontforge
 import psMat
 import json
-import os
 import re
 
 
 BASE_SFD = '../generated/xkcd-script-pt7.sfd'
+OUT_SFD  = '../generated/xkcd-script-mathjax3-pt8.sfd'
 
 # y-position of the math axis (fraction-bar centre) in xkcd-script font units.
 MATH_AXIS = 260
@@ -61,7 +75,7 @@ def add_mathjax_operators(ff_font):
                Note: MathJax CHTML ignores the font advance width — it pre-bakes
                character widths from its own JS metric tables, so rbear only
                affects non-MathJax uses.  Inline limit spacing in MathJax is
-               controlled via CSS margin-right in xkcd-mathjax.js instead.
+               controlled via CSS margin-right in xkcd-mathjax3.js instead.
         """
         # Snapshot outlines + width before touching dst; src and dst point to
         # the same glyph when src_cp == dst_cp (e.g. ∫ scaled in place).
@@ -110,30 +124,19 @@ def add_mathjax_operators(ff_font):
     _make_largeop(0x222B, 0x222B, 'integral', INTEGRAL_H, weight=-15,  rbear=5000)
 
 
-# ---------------------------------------------------------------------------
-# Variants table
-# ---------------------------------------------------------------------------
-
-VARIANTS = [
-    ('xkcd-script-mathjax-pt8.sfd', add_mathjax_operators),
-]
-
-
-for out_name, builder in VARIANTS:
-    out_path = '../generated/' + out_name
-    print(f"=== Building {out_name} ===")
-    font = fontforge.open(BASE_SFD)
-    builder(font)
-    font.save(out_path)
-    font.close()
-    print(f"  saved {out_path}")
+print(f"=== Building {OUT_SFD} ===")
+font = fontforge.open(BASE_SFD)
+add_mathjax_operators(font)
+font.save(OUT_SFD)
+font.close()
+print(f"  saved {OUT_SFD}")
 
 
 # ---------------------------------------------------------------------------
-# Extensible-glyph data for xkcd-mathjax.js
+# Extensible-glyph data for xkcd-mathjax3.js
 # ---------------------------------------------------------------------------
 #
-# The runtime renderer in xkcd-mathjax.js takes each glyph's outline, applies
+# The runtime renderer in xkcd-mathjax3.js takes each glyph's outline, applies
 # a coordinate-threshold extension (shift points past cutX by Nx, splice
 # jittered cubic sub-segments across the gap; same for cutY along an axis
 # optionally tilted by leanDeg), and produces an SVG path sized to the
@@ -143,7 +146,7 @@ for out_name, builder in VARIANTS:
 
 EXTENSIBLE_MARKER_BEGIN = '// ── BEGIN GENERATED GLYPH DATA ──'
 EXTENSIBLE_MARKER_END   = '// ── END GENERATED GLYPH DATA ──'
-MATHJAX_JS = '../xkcd-mathjax.js'
+MATHJAX_JS = '../xkcd-mathjax3.js'
 
 # cutXPct / cutYPct : cut threshold as % of bbox along that axis
 # leanDeg           : Y-extension axis lean from vertical (deg)

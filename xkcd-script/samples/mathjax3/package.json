@@ -2,7 +2,7 @@
   "name": "xkcd-mathjax-samples",
   "version": "0.0.0",
   "private": true,
-  "description": "Reference renders of MathJax CHTML formulae through xkcd-mathjax.js.",
+  "description": "Reference renders of MathJax CHTML formulae through xkcd-mathjax3.js.",
   "devDependencies": {
     "playwright": "1.49.1"
   }
