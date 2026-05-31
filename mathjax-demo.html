@@ -162,6 +162,22 @@ $$i\hbar\frac{\partial\psi}{\partial t} = \hat{H}\psi$$</p>
 $$\nabla \cdot \mathbf{E} = 0 \qquad \nabla \times \mathbf{E} = -\frac{\partial \mathbf{B}}{\partial t}$$</p>
 
 
+<h2>Piecewise definitions (stretchy <code>{</code>)</h2>
+
+<p>One row (no stretch — MathJax uses an inline <code>{</code> and we leave it alone):
+$$y = \begin{cases} x & \text{if } x > 0 \end{cases}$$</p>
+
+<p>Two rows (short brace):
+$$|x| = \begin{cases} x,  & \text{if } x \geq 0 \\ -x, & \text{if } x < 0 \end{cases}$$</p>
+
+<p>Four rows (tall brace):
+$$f(x) = \begin{cases}
+    \dfrac{\sin x}{x},                                              & \text{if } x > 0 \\[6pt]
+    \displaystyle\sum_{k=0}^{\infty} \frac{(-1)^k x^{2k}}{(2k+1)!}, & \text{if } x = 0 \\[6pt]
+    -\sqrt{|x|},                                                    & \text{if } -1 \leq x < 0 \\[4pt]
+    \infty,                                                         & \text{otherwise}
+\end{cases}$$</p>
+
 <p>Deeply nested sqrt fractions:
 $$\sqrt{b^2 - 4ac}
 \sqrt{\frac{b^2}{x}}{2a}

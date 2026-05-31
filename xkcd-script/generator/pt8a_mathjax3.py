@@ -39,6 +39,11 @@ EXTENSIBLE_CONFIG = {
     'emdash':       {'cutXPct': 50, 'cutYPct': 50, 'leanDeg':  0.0, 'unitsPerSeg': 120, 'amp':  4},
     'radical':      {'cutXPct': 70, 'cutYPct': 50, 'leanDeg':  0.0, 'unitsPerSeg':  60, 'amp':  5},
     'radical.tall': {'cutXPct': 56, 'cutYPct': 45, 'leanDeg': -2.0, 'unitsPerSeg':  45, 'amp':  3},
+    # tall { — two Y cuts (above and below the central joint) so stretch is
+    # symmetric and the joint shape stays fixed.  Used for any \begin{cases}
+    # with 2+ rows; xkcd-mathjax3.js always overlays this glyph, never the
+    # basic braceleft.
+    'braceleft.tall': {'cutXPct': 50, 'cutYPct': [33, 67], 'leanDeg':  0.0, 'unitsPerSeg':  45, 'amp':  3},
 }
 
 

@@ -817,6 +817,17 @@ _import_math_centered('sqrt_vertical', None, 1.12 * font.em, weight_delta=0,
                       dst_name='radical.tall')
 
 
+# Hand-drawn tall left brace as the unencoded glyph `braceleft.tall`, used
+# by xkcd-mathjax3.js's overlay pass for \begin{cases} and other stretchy
+# braces that MathJax CHTML would otherwise assemble from missing U+23A7-AA
+# pieces.  Reached via the runtime cut-and-extend renderer, not via cmap.
+# Target_top is sized to keep the imported pen-weight close to the source's
+# natural stroke: shortened source is 276 px tall, so ≈0.7×em scales the
+# strokes at ~2.5×, similar to other math glyphs from this comic.
+_import_math_centered('braceleft_tall', None, 0.7 * font.em, weight_delta=20,
+                      dst_name='braceleft.tall')
+
+
 # ---------------------------------------------------------------------------
 # Save
 # ---------------------------------------------------------------------------

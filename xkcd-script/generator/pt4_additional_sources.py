@@ -177,6 +177,7 @@ EXTRAS = [
     ('right_lim_arrow', '2343_mathematical_symbol_fight_2x__right_lim_arrow'),        # → U+2192 source
     ('triangle', '2343_mathematical_symbol_fight_2x__triangle'),              # △ U+25B3 source
     ('sqrt_vertical', 'sqrt_vertical'),                                       # √ vertical surd, PUA U+E000
+    ('braceleft_tall', '2435_geothmetic_meandian_2x__brace__shortened'),      # { tall brace for MathJax stretchy assembly
 ]
 
 print('Extracting hand-drawn extras...')

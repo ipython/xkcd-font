@@ -310,6 +310,111 @@
                     ["Z"],
                 ],
             },
+            "braceleft.tall": {
+                advance: 135,
+                bbox: {xmin: 10.0, ymin: -214.4, xmax: 115.0, ymax: 620.6},
+                config: {cutXPct: 50, cutYPct: [33, 67], leanDeg: 0.0, unitsPerSeg: 45, amp: 3},
+                commands: [
+                    ["M", 69.0, 156.6],
+                    ["C", 73.0, 146.6, 76.0, 105.6, 76.0, 65.6],
+                    ["C", 76.0, 59.6, 76.0, 54.6, 76.0, 50.6],
+                    ["C", 77.0, 46.6, 78.0, 43.6, 78.0, 40.6],
+                    ["C", 78.0, 33.6, 76.0, 31.6, 76.0, 28.6],
+                    ["C", 76.0, 24.6, 77.0, 21.6, 77.0, 12.6],
+                    ["C", 77.0, 10.6, 77.0, -1.4, 77.0, -1.4],
+                    ["C", 77.0, -1.4, 78.0, -14.4, 78.0, -45.4],
+                    ["C", 78.0, -55.4, 78.0, -64.4, 77.0, -69.4],
+                    ["C", 77.0, -70.4, 77.0, -71.4, 77.0, -71.4],
+                    ["C", 78.0, -79.4, 79.0, -119.4, 79.0, -119.4],
+                    ["C", 79.0, -128.4, 80.0, -122.4, 81.0, -129.4],
+                    ["C", 82.0, -138.4, 81.0, -143.4, 83.0, -149.4],
+                    ["C", 85.0, -154.4, 84.0, -157.4, 85.0, -160.4],
+                    ["C", 86.0, -163.4, 87.0, -165.4, 88.0, -167.4],
+                    ["C", 89.0, -168.4, 90.0, -170.4, 90.0, -171.4],
+                    ["C", 90.0, -171.4, 97.0, -178.4, 98.0, -179.4],
+                    ["C", 99.0, -180.4, 99.0, -180.4, 100.0, -181.4],
+                    ["C", 112.0, -186.4, 114.0, -193.4, 115.0, -201.4],
+                    ["C", 110.0, -211.4, 108.0, -214.4, 100.0, -214.4],
+                    ["C", 95.0, -214.4, 85.0, -208.4, 84.0, -207.4],
+                    ["C", 76.0, -204.4, 61.0, -188.4, 58.0, -175.4],
+                    ["C", 57.0, -172.4, 55.0, -171.4, 54.0, -160.4],
+                    ["C", 53.0, -153.4, 52.0, -157.4, 51.0, -144.4],
+                    ["C", 51.0, -135.4, 50.0, -136.4, 48.0, -128.4],
+                    ["L", 48.0, -120.4],
+                    ["C", 47.0, -89.4, 46.0, -72.4, 46.0, -72.4],
+                    ["C", 46.0, -65.4, 47.0, -56.4, 47.0, -53.4],
+                    ["C", 46.0, -48.4, 46.0, -3.4, 46.0, 10.6],
+                    ["C", 46.0, 11.6, 46.0, 11.6, 46.0, 12.6],
+                    ["L", 46.0, 14.6],
+                    ["C", 46.0, 16.6, 45.0, 19.6, 45.0, 25.6],
+                    ["C", 45.0, 26.6, 45.0, 28.6, 45.0, 29.6],
+                    ["C", 45.0, 104.6, 43.0, 117.6, 43.0, 118.6],
+                    ["C", 41.0, 124.6, 42.0, 141.6, 41.0, 143.6],
+                    ["C", 38.0, 149.6, 40.0, 155.6, 32.0, 173.6],
+                    ["C", 31.0, 175.6, 30.0, 178.6, 26.0, 182.6],
+                    ["C", 24.0, 183.6, 16.0, 189.6, 14.0, 191.6],
+                    ["C", 12.0, 193.6, 10.0, 196.6, 10.0, 201.6],
+                    ["C", 10.0, 202.6, 10.0, 202.6, 10.0, 203.6],
+                    ["C", 10.0, 204.6, 10.0, 204.6, 10.0, 205.6],
+                    ["C", 10.0, 212.6, 14.0, 214.6, 21.0, 219.6],
+                    ["C", 24.0, 221.6, 27.0, 225.6, 27.0, 225.6],
+                    ["C", 29.0, 228.6, 30.0, 227.6, 30.0, 228.6],
+                    ["C", 31.0, 230.6, 32.0, 231.6, 32.0, 232.6],
+                    ["C", 33.0, 237.6, 35.0, 238.6, 35.0, 240.6],
+                    ["C", 37.0, 248.6, 37.0, 245.6, 38.0, 251.6],
+                    ["C", 39.0, 261.6, 41.0, 260.6, 41.0, 266.6],
+                    ["C", 43.0, 296.6, 44.0, 281.6, 45.0, 320.6],
+                    ["C", 45.3, 333.3, 45.4, 342.8, 45.4, 350.1],
+                    ["C", 45.4, 364.6, 45.0, 369.9, 45.0, 372.6],
+                    ["C", 45.0, 376.6, 45.0, 377.6, 45.0, 380.6],
+                    ["C", 45.0, 386.6, 46.0, 390.6, 46.0, 392.6],
+                    ["L", 46.0, 393.6],
+                    ["C", 46.0, 394.6, 46.0, 394.6, 46.0, 395.6],
+                    ["C", 46.0, 409.6, 46.0, 454.6, 47.0, 460.6],
+                    ["C", 47.0, 463.6, 46.0, 471.6, 46.0, 478.6],
+                    ["C", 46.0, 478.6, 48.0, 512.6, 48.0, 527.6],
+                    ["L", 48.0, 534.6],
+                    ["C", 50.5, 542.5, 50.9, 547.3, 50.9, 550.9],
+                    ["C", 50.9, 556.0, 50.1, 558.8, 53.0, 564.6],
+                    ["C", 53.0, 564.6, 54.0, 565.6, 54.0, 567.6],
+                    ["C", 56.0, 582.6, 55.0, 574.6, 57.0, 581.6],
+                    ["C", 58.0, 587.6, 61.0, 589.6, 61.0, 590.6],
+                    ["C", 61.0, 591.6, 62.0, 593.6, 64.0, 595.6],
+                    ["C", 65.0, 596.6, 65.0, 597.6, 66.0, 598.6],
+                    ["C", 70.0, 604.6, 79.0, 612.6, 84.0, 614.6],
+                    ["C", 84.0, 614.6, 93.0, 620.6, 101.0, 620.6],
+                    ["C", 108.0, 620.6, 110.0, 616.6, 115.0, 607.6],
+                    ["C", 113.0, 598.6, 113.0, 594.6, 106.0, 591.6],
+                    ["C", 105.0, 590.6, 103.0, 589.6, 100.0, 588.6],
+                    ["C", 98.0, 587.6, 92.0, 579.6, 90.0, 577.6],
+                    ["C", 88.0, 574.6, 88.0, 574.6, 87.0, 572.6],
+                    ["C", 86.0, 570.6, 86.0, 569.6, 85.0, 567.6],
+                    ["C", 84.0, 564.6, 85.0, 560.6, 83.0, 556.6],
+                    ["C", 82.0, 553.6, 81.0, 543.6, 81.0, 542.6],
+                    ["C", 81.0, 541.6, 81.0, 541.6, 81.0, 540.6],
+                    ["C", 81.0, 540.6, 80.0, 533.6, 79.0, 530.6],
+                    ["C", 79.0, 529.6, 79.0, 527.6, 79.0, 525.6],
+                    ["C", 79.0, 516.6, 77.0, 483.6, 77.0, 475.6],
+                    ["C", 77.0, 475.6, 78.0, 465.6, 78.0, 451.6],
+                    ["C", 78.0, 450.6, 78.0, 451.6, 77.0, 404.6],
+                    ["C", 77.0, 394.6, 77.0, 393.6, 77.0, 391.6],
+                    ["C", 77.0, 385.6, 76.0, 382.6, 76.0, 378.6],
+                    ["C", 76.0, 375.6, 78.0, 373.6, 78.0, 366.6],
+                    ["C", 78.0, 363.6, 77.0, 359.6, 76.0, 355.6],
+                    ["C", 76.0, 351.6, 76.0, 346.6, 76.0, 340.6],
+                    ["C", 76.0, 317.6, 76.0, 288.6, 74.0, 281.6],
+                    ["C", 73.0, 275.6, 73.0, 260.6, 69.0, 250.6],
+                    ["C", 69.0, 250.6, 68.0, 233.6, 63.0, 224.6],
+                    ["C", 62.0, 222.6, 61.0, 219.6, 59.0, 216.6],
+                    ["C", 57.0, 211.6, 57.0, 210.6, 55.0, 208.6],
+                    ["C", 54.0, 207.6, 53.0, 205.6, 51.0, 203.6],
+                    ["C", 53.0, 201.6, 58.0, 195.6, 59.0, 190.6],
+                    ["C", 60.0, 188.6, 61.0, 187.6, 62.0, 183.6],
+                    ["C", 62.0, 183.6, 66.0, 174.6, 67.0, 167.6],
+                    ["C", 68.0, 164.6, 68.0, 160.6, 69.0, 156.6],
+                    ["Z"],
+                ],
+            },
         };
     // ── END GENERATED GLYPH DATA ──
 
@@ -453,9 +558,11 @@
         const bb = g.bbox;
         const w = bb.xmax - bb.xmin, h = bb.ymax - bb.ymin;
         const cutX = bb.xmin + w * (cfg.cutXPct / 100);
-        const cutY = bb.ymin + h * (cfg.cutYPct / 100);
+        // cutYPct may be a scalar (single cut) or an array (multi-cut, e.g.
+        // [33, 67] for a brace that should stretch both above and below a
+        // central joint).  Total Ny is divided evenly between the cuts.
+        const cutYPcts = Array.isArray(cfg.cutYPct) ? cfg.cutYPct : [cfg.cutYPct];
         const subNx = Math.max(2, Math.round(Nx / cfg.unitsPerSeg));
-        const subNy = Math.max(2, Math.round(Ny / cfg.unitsPerSeg));
 
         let out = segs0;
         if (Nx > 0) out = _extend(out, cutX, Nx, subNx, cfg.amp, seed);
@@ -465,9 +572,19 @@
             const fwd = p => [-sL * p[0] + cL * p[1], -cL * p[0] - sL * p[1]];
             const inv = p => [-sL * p[0] - cL * p[1],  cL * p[0] - sL * p[1]];
             const refX = (bb.xmin + bb.xmax) / 2;
-            const cutRot = fwd([refX, cutY])[0];
+            // Apply cuts from highest Y (lowest rotated-x) to lowest, so each
+            // subsequent cut's threshold isn't shifted by an earlier pass.
+            // After fwd (lean=0): (x,y) → (y,-x), so larger y → larger rot-x.
+            // Sort descending in original Y so we extend the top first.
+            const sortedPcts = [...cutYPcts].sort((a, b) => b - a);
+            const Nper = Ny / sortedPcts.length;
+            const subNper = Math.max(2, Math.round(Nper / cfg.unitsPerSeg));
             out = _mapSegs(out, fwd);
-            out = _extend(out, cutRot, Ny, subNy, cfg.amp, seed + 19);
+            sortedPcts.forEach((pct, i) => {
+                const cutY = bb.ymin + h * (pct / 100);
+                const cutRot = fwd([refX, cutY])[0];
+                out = _extend(out, cutRot, Nper, subNper, cfg.amp, seed + 19 + i * 7);
+            });
             out = _mapSegs(out, inv);
         }
         return out;
@@ -749,6 +866,10 @@
             container.querySelectorAll('*').forEach(el => {
                 if (el.dataset.xkcdHidden) return;
                 if (el.closest('mjx-surd')) return;
+                // Brace extenders use border-top to draw their stroke too —
+                // skip anything inside a stretchy-vertical assembly so we
+                // don't paint emdash bars across the brace.
+                if (el.closest('mjx-stretchy-v')) return;
                 const cs = getComputedStyle(el);
                 if (cs.borderTopStyle !== 'solid' || parseFloat(cs.borderTopWidth) <= 0) return;
                 const barH = Math.max(parseFloat(cs.borderTopWidth), 1);
@@ -771,6 +892,105 @@
         });
     }
 
+    // ── Stretchy braces (\begin{cases}, \left\{ ... \right\}) ──────────────
+    // MathJax CHTML stacks U+23A7/8/9/A glyphs in <mjx-stretchy-v> to build a
+    // tall { — xkcd-script doesn't ship those codepoints so the result is the
+    // mismatched-pieces salad we want to avoid.  We replace the assembly with
+    // a single hand-drawn brace, stretched on the Y axis by the same cut-and-
+    // extend renderer used for the surd.
+    //
+    // We always render the hand-drawn tall variant; MathJax only ever
+    // invokes us for braces that need stretching (2+ rows), and at any of
+    // those heights the .tall artwork stretches more gracefully than the
+    // basic letter-size {.
+    const BRACE_GLYPH = 'braceleft.tall';
+    // Visible brace width as a fraction of fontSize.  Anchoring Sx to the
+    // glyph's natural width (rather than MathJax's MJXTEX-derived reserved
+    // metrics) keeps stroke thickness consistent regardless of stretch.
+    const BRACE_WIDTH_EM = 0.40;
+    // How much further the rendered brace reaches than MathJax's reserved
+    // height — fraction of fontSize added below.  The arm tips need a bit
+    // of overrun so they visually enclose the cases content rather than
+    // ending flush with the topmost / bottommost row.
+    const BRACE_EXTRA_EM = 0.45;
+
+    function replaceStretchyBraces(root) {
+        const scope = root || document;
+        // MathJax CHTML draws a left brace in one of two ways depending on
+        // requested height:
+        //   • short (2–3 row cases) — single <mjx-c class="mjx-c7B TEX-Sn">
+        //     inside an <mjx-mo>, with MathJax picking size-n (TEX-S1..S4).
+        //     MJXTEX's TEX-Sn variants are engineered to be tall; xkcd-
+        //     script's basic { has letter metrics, so it stays small even
+        //     when scaled — hence the visible undersizing.
+        //   • tall (4+ row cases, \left\{...\right\} when very tall) —
+        //     <mjx-stretchy-v class="mjx-c7B"> assembly with pieces stacked.
+        // Both get replaced the same way: measure the visible source rect,
+        // build a stretched overlay, hide the original.
+        const targets = [];
+        scope.querySelectorAll('mjx-stretchy-v.mjx-c7B').forEach(stretchy => {
+            const mo = stretchy.closest('mjx-mo') || stretchy.parentElement;
+            if (mo) targets.push({ mo, hide: stretchy, sizeFrom: stretchy });
+        });
+        scope.querySelectorAll('mjx-c.mjx-c7B').forEach(c => {
+            const isSized = [...c.classList].some(cls => /^TEX-S\d+$/.test(cls));
+            if (!isSized) return;  // skip inline letter-size {
+            const mo = c.closest('mjx-mo');
+            if (mo) targets.push({ mo, hide: c, sizeFrom: mo });
+        });
+
+        for (const { mo, hide, sizeFrom } of targets) {
+            if (mo.dataset.braceReplaced) continue;
+            mo.dataset.braceReplaced = '1';
+
+            const moRect     = mo.getBoundingClientRect();
+            const sourceRect = sizeFrom.getBoundingClientRect();
+            if (sourceRect.height < 1 || sourceRect.width < 1) continue;
+
+            const fontSizePx = parseFloat(getComputedStyle(mo).fontSize);
+            const g = EXTENSIBLE_GLYPHS[BRACE_GLYPH];
+            const natW = g.bbox.xmax - g.bbox.xmin;
+            const natH = g.bbox.ymax - g.bbox.ymin;
+            const Sx = (BRACE_WIDTH_EM * fontSizePx) / natW;
+            const targetH_units = (sourceRect.height + BRACE_EXTRA_EM * fontSizePx) / Sx;
+            const Ny = Math.max(0, targetH_units - natH);
+
+            const segs = buildExtendedSegs(BRACE_GLYPH, 0, Ny, 11);
+            const d    = _segsToPath(segs);
+            const eb   = _bboxOf(segs);
+            const margin = 20;
+            const vbX = eb.xmin - margin;
+            const vbY = -(eb.ymax + margin);
+            const vbW = (eb.xmax - eb.xmin) + 2 * margin;
+            const vbH = (eb.ymax - eb.ymin) + 2 * margin;
+            const widthPx  = vbW * Sx;
+            const heightPx = vbH * Sx;
+
+            // SVG's CSS top-left corresponds to glyph-bbox top-left minus the
+            // margin in CSS pixels — back that out so the visible glyph lands
+            // exactly on the source rect.
+            const left = sourceRect.left - moRect.left - margin * Sx;
+            const top  = sourceRect.top  - moRect.top  - margin * Sx;
+
+            hide.dataset.xkcdHidden = '1';
+            hide.style.visibility = 'hidden';
+            if (getComputedStyle(mo).position === 'static') {
+                mo.dataset.xkcdPos = '1';
+                mo.style.position = 'relative';
+            }
+
+            const svg = `<svg class="xkcd-overlay" xmlns="http://www.w3.org/2000/svg"
+                width="${widthPx}px" height="${heightPx}px" viewBox="${vbX} ${vbY} ${vbW} ${vbH}"
+                style="display:block;overflow:visible;pointer-events:none;">
+              <g transform="scale(1,-1)" fill="currentColor" stroke="none">
+                <path d="${d}"/>
+              </g>
+            </svg>`;
+            mo.insertAdjacentHTML('beforeend',
+                `<div class="xkcd-overlay" style="position:absolute;left:${left}px;top:${top}px;pointer-events:none;">${svg}</div>`);
+        }
+    }
+
     function resetOverlays(scope) {
         const root = scope || document;
         root.querySelectorAll('.xkcd-overlay').forEach(el => el.remove());
@@ -785,6 +1005,9 @@
         });
         root.querySelectorAll('[data-sqrt-replaced]').forEach(el => {
             delete el.dataset.sqrtReplaced;
+        });
+        root.querySelectorAll('[data-brace-replaced]').forEach(el => {
+            delete el.dataset.braceReplaced;
         });
     }
 
@@ -875,6 +1098,7 @@
         injectFontOverride();
         replaceSqrtSymbols(root);
         replaceVinculums(root);
+        replaceStretchyBraces(root);
     }
 
     // ── Startup orchestration ──────────────────────────────────────────────
@@ -944,5 +1168,12 @@
     });
 
     // ── Public API ──────────────────────────────────────────────────────────
-    window.XkcdMathJax = { refresh, resetOverlays, ready };
+    window.XkcdMathJax = {
+        refresh, resetOverlays, ready,
+        // Cut-and-extend primitives + embedded glyph data — surfaced so other
+        // pages can reuse them directly.  Stable enough for in-repo use; not
+        // a versioned external API.
+        EXTENSIBLE_GLYPHS, buildExtendedSegs,
+        _segmentize, _extend, _mapSegs, _segsToPath, _bboxOf,
+    };
 })();

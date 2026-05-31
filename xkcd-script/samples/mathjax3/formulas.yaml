@@ -82,6 +82,10 @@ sqrt-pi-short:
   formulas:
     - tex: '$\sqrt{\pi}$'
 
+piecewise-single:
+  formulas:
+    - tex: '$$y = \begin{cases} x & \text{if } x > 0 \end{cases}$$'
+
 piecewise-abs:
   formulas:
     - tex: '$$|x| = \begin{cases} x,  & \text{if } x \geq 0 \\ -x, & \text{if } x < 0 \end{cases}$$'
