@@ -113,3 +113,18 @@ matrix-3x3:
 column-vector:
   formulas:
     - tex: '$$\vec{v} = \begin{pmatrix} v_1 \\ v_2 \\ v_3 \\ v_4 \\ v_5 \end{pmatrix} \qquad \begin{bmatrix} v_1 \\ v_2 \\ v_3 \\ v_4 \\ v_5 \end{bmatrix}$$'
+
+# Tracks combining-accent placement across base-letter widths and accent kinds.
+# All simple cases (single-letter base) should ideally be shaped by the browser
+# via the font's GPOS mark anchors.  The final \widehat{xyz} row is the wide-base
+# case which legitimately needs MathJax's stretchy extender — it must keep working.
+accents-zoo:
+  cellHeight: 80
+  cellWidth: 280
+  formulas:
+    - tex: '$\hat{i},\ \hat{f},\ \hat{x},\ \hat{H},\ \hat{A},\ \hat{M}$'
+    - tex: '$\vec{v},\ \vec{x},\ \vec{b},\ \vec{F},\ \vec{A},\ \vec{p}$'
+    - tex: '$\bar{x},\ \bar{y},\ \bar{f},\ \bar{H},\ \bar{A},\ \bar{M}$'
+    - tex: '$\tilde{n},\ \tilde{x},\ \tilde{f},\ \tilde{H},\ \tilde{A},\ \tilde{M}$'
+    - tex: '$\dot{x},\ \ddot{x},\ \check{c},\ \breve{u},\ \acute{e},\ \grave{e}$'
+    - tex: '$\widehat{xyz} \qquad \widetilde{abc} \qquad \overline{a+b+c}$'
