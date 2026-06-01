@@ -159,7 +159,23 @@ async function renderOne(page, baseUrl, key, group) {
                     { waitUntil: 'load' });
     await page.waitForFunction(() => window.__xkcdReady === true, null,
                                { timeout: 15000 });
-    await page.evaluate(() => document.fonts.ready);
+    // Iterate document.fonts.ready until the set stops growing.  MathJax CHTML
+    // requests fallback fonts (MJXTEX-* for codepoints xkcd-script doesn't
+    // cover) lazily during paint — a single fonts.ready check resolves before
+    // those late requests start, leaving operators like =, ≥, ≤ unrendered
+    // when we screenshot.  Poll across rAF until the FontFaceSet size is
+    // stable across two consecutive ticks.
+    await page.evaluate(async () => {
+        const raf = () => new Promise(r => requestAnimationFrame(r));
+        let prev = -1;
+        for (let i = 0; i < 20; i++) {
+            await document.fonts.ready;
+            await raf();
+            const size = document.fonts.size;
+            if (size === prev) return;
+            prev = size;
+        }
+    });
 
     const { selector } = renderGroup(group);
     const box = await page.locator(selector).first().boundingBox();

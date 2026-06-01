@@ -415,6 +415,166 @@
                     ["Z"],
                 ],
             },
+            "parenleft.tall": {
+                advance: 208,
+                bbox: {xmin: 20.2, ymin: -243.0, xmax: 188.0, ymax: 649.0},
+                config: {cutXPct: 50, cutYPct: 50, leanDeg: 0.0, unitsPerSeg: 45, amp: 3},
+                commands: [
+                    ["M", 118.0, 645.0],
+                    ["C", 124.0, 648.0, 125.0, 649.0, 132.0, 646.0],
+                    ["C", 139.0, 643.0, 141.0, 641.0, 142.0, 635.0],
+                    ["C", 143.0, 630.0, 140.0, 621.0, 137.0, 617.0],
+                    ["C", 136.0, 616.0, 135.0, 613.0, 134.0, 612.0],
+                    ["C", 133.0, 611.0, 132.0, 606.0, 130.0, 601.0],
+                    ["C", 128.0, 596.0, 125.0, 590.0, 124.0, 588.0],
+                    ["C", 123.0, 586.0, 122.0, 581.0, 121.0, 577.0],
+                    ["C", 119.0, 570.0, 117.0, 566.0, 115.0, 564.0],
+                    ["C", 114.0, 563.0, 113.0, 559.0, 112.0, 555.0],
+                    ["C", 111.0, 551.0, 109.0, 544.0, 107.0, 540.0],
+                    ["C", 105.0, 535.0, 103.0, 530.0, 102.0, 525.0],
+                    ["C", 101.0, 516.0, 98.0, 506.0, 96.0, 502.0],
+                    ["C", 95.0, 500.0, 94.0, 492.0, 92.0, 482.0],
+                    ["C", 90.0, 471.0, 88.0, 463.0, 86.0, 459.0],
+                    ["C", 83.0, 452.0, 84.0, 451.0, 82.0, 437.0],
+                    ["C", 81.0, 425.0, 80.0, 421.0, 77.0, 414.0],
+                    ["C", 75.0, 409.0, 74.0, 402.0, 73.0, 390.0],
+                    ["C", 73.0, 387.0, 72.0, 379.0, 71.0, 373.0],
+                    ["C", 70.0, 367.0, 68.0, 358.0, 68.0, 353.0],
+                    ["C", 68.0, 348.0, 66.0, 338.0, 65.0, 332.0],
+                    ["C", 63.0, 323.0, 63.0, 317.0, 63.0, 303.0],
+                    ["C", 61.0, 250.0, 60.0, 233.0, 59.0, 221.0],
+                    ["C", 58.5, 212.5, 58.2, 199.8, 58.2, 187.9],
+                    ["C", 58.2, 176.0, 58.5, 165.0, 59.0, 160.0],
+                    ["C", 60.0, 152.0, 62.0, 126.0, 63.0, 94.0],
+                    ["C", 64.0, 78.0, 64.0, 67.0, 67.0, 57.0],
+                    ["C", 68.0, 55.0, 68.0, 50.0, 69.0, 46.0],
+                    ["C", 72.0, 29.0, 75.0, 20.0, 78.0, 14.0],
+                    ["C", 81.0, 8.0, 81.0, 4.0, 83.0, -8.0],
+                    ["C", 83.0, -11.0, 84.0, -14.0, 85.0, -15.0],
+                    ["C", 88.0, -19.0, 90.0, -24.0, 92.0, -31.0],
+                    ["C", 93.0, -35.0, 95.0, -40.0, 97.0, -44.0],
+                    ["C", 99.0, -48.0, 101.0, -54.0, 102.0, -59.0],
+                    ["C", 103.0, -64.0, 105.0, -68.0, 106.0, -70.0],
+                    ["C", 107.0, -72.0, 110.0, -77.0, 111.0, -82.0],
+                    ["C", 112.0, -87.0, 114.0, -91.0, 116.0, -94.0],
+                    ["C", 118.0, -96.0, 121.0, -102.0, 122.0, -106.0],
+                    ["C", 123.0, -110.0, 125.0, -115.0, 126.0, -117.0],
+                    ["C", 127.0, -119.0, 130.0, -123.0, 131.0, -127.0],
+                    ["C", 132.0, -131.0, 134.0, -135.0, 136.0, -137.0],
+                    ["C", 138.0, -139.0, 140.0, -143.0, 141.0, -146.0],
+                    ["C", 142.0, -149.0, 145.0, -153.0, 146.0, -154.0],
+                    ["C", 148.0, -156.0, 152.0, -165.0, 152.0, -167.0],
+                    ["C", 152.0, -167.0, 153.0, -169.0, 155.0, -171.0],
+                    ["C", 157.0, -173.0, 159.0, -177.0, 161.0, -181.0],
+                    ["C", 163.0, -185.0, 164.0, -187.0, 165.0, -188.0],
+                    ["C", 166.0, -189.0, 168.0, -191.0, 169.0, -193.0],
+                    ["C", 170.0, -195.0, 173.0, -200.0, 175.0, -202.0],
+                    ["C", 177.0, -204.0, 182.0, -208.0, 184.0, -211.0],
+                    ["L", 188.0, -215.0],
+                    ["L", 188.0, -221.0],
+                    ["C", 188.0, -226.0, 187.0, -227.0, 184.0, -230.0],
+                    ["C", 182.0, -232.0, 180.0, -234.0, 179.0, -236.0],
+                    ["C", 175.0, -242.0, 165.0, -243.0, 157.0, -240.0],
+                    ["C", 153.0, -238.0, 152.0, -238.0, 147.0, -232.0],
+                    ["C", 141.0, -224.0, 139.0, -221.0, 138.0, -217.0],
+                    ["C", 138.0, -216.0, 136.0, -212.0, 134.0, -210.0],
+                    ["C", 132.0, -208.0, 129.0, -204.0, 128.0, -201.0],
+                    ["C", 127.0, -198.0, 125.0, -194.0, 124.0, -193.0],
+                    ["C", 123.0, -192.0, 121.0, -188.0, 119.0, -184.0],
+                    ["C", 117.0, -180.0, 114.0, -176.0, 113.0, -175.0],
+                    ["C", 112.0, -174.0, 110.0, -170.0, 109.0, -167.0],
+                    ["C", 108.0, -164.0, 106.0, -160.0, 104.0, -158.0],
+                    ["C", 102.0, -156.0, 100.0, -152.0, 99.0, -148.0],
+                    ["C", 97.0, -141.0, 95.0, -137.0, 93.0, -135.0],
+                    ["C", 92.0, -134.0, 90.0, -131.0, 89.0, -126.0],
+                    ["C", 88.0, -122.0, 86.0, -118.0, 85.0, -117.0],
+                    ["C", 83.0, -116.0, 82.0, -112.0, 79.0, -104.0],
+                    ["C", 78.0, -100.0, 76.0, -95.0, 75.0, -94.0],
+                    ["C", 73.0, -91.0, 72.0, -90.0, 69.0, -80.0],
+                    ["C", 68.0, -76.0, 65.0, -70.0, 64.0, -68.0],
+                    ["C", 63.0, -66.0, 61.0, -60.0, 60.0, -56.0],
+                    ["C", 59.0, -52.0, 57.0, -47.0, 56.0, -45.0],
+                    ["C", 51.0, -36.0, 51.0, -33.0, 49.0, -25.0],
+                    ["C", 48.0, -20.0, 46.0, -13.0, 44.0, -9.0],
+                    ["C", 42.0, -5.0, 41.0, 1.0, 40.0, 6.0],
+                    ["C", 39.0, 12.0, 37.0, 16.0, 35.0, 21.0],
+                    ["C", 32.0, 28.0, 31.0, 32.0, 30.0, 42.0],
+                    ["C", 30.0, 45.0, 29.0, 53.0, 28.0, 59.0],
+                    ["C", 27.0, 65.0, 26.0, 72.0, 26.0, 74.0],
+                    ["C", 26.0, 76.0, 25.0, 79.0, 25.0, 81.0],
+                    ["C", 25.0, 83.0, 24.0, 92.0, 23.0, 101.0],
+                    ["C", 22.0, 110.0, 21.0, 121.0, 21.0, 125.0],
+                    ["C", 20.5, 129.0, 20.2, 160.8, 20.2, 193.0],
+                    ["C", 20.2, 225.3, 20.5, 258.0, 21.0, 264.0],
+                    ["C", 21.0, 269.0, 22.0, 279.0, 22.0, 287.0],
+                    ["C", 22.0, 295.0, 23.0, 306.0, 24.0, 310.0],
+                    ["C", 25.0, 314.0, 26.0, 322.0, 27.0, 327.0],
+                    ["C", 28.0, 332.0, 29.0, 338.0, 29.0, 341.0],
+                    ["C", 29.0, 344.0, 30.0, 349.0, 30.0, 353.0],
+                    ["C", 30.0, 363.0, 32.0, 383.0, 33.0, 389.0],
+                    ["C", 34.0, 392.0, 35.0, 396.0, 36.0, 399.0],
+                    ["C", 38.0, 404.0, 39.0, 412.0, 40.0, 426.0],
+                    ["C", 40.0, 432.0, 42.0, 438.0, 44.0, 444.0],
+                    ["C", 46.0, 449.0, 48.0, 459.0, 49.0, 466.0],
+                    ["C", 51.0, 480.0, 54.0, 489.0, 56.0, 494.0],
+                    ["C", 58.0, 498.0, 59.0, 503.0, 60.0, 513.0],
+                    ["C", 61.0, 521.0, 62.0, 527.0, 65.0, 530.0],
+                    ["C", 66.0, 531.0, 68.0, 536.0, 69.0, 542.0],
+                    ["C", 71.0, 553.0, 72.0, 555.0, 75.0, 559.0],
+                    ["C", 76.0, 560.0, 77.0, 565.0, 78.0, 568.0],
+                    ["C", 79.0, 571.0, 80.0, 576.0, 81.0, 578.0],
+                    ["C", 82.0, 580.0, 84.0, 584.0, 85.0, 586.0],
+                    ["C", 87.0, 588.0, 87.0, 592.0, 88.0, 596.0],
+                    ["C", 89.0, 604.0, 91.0, 607.0, 94.0, 611.0],
+                    ["C", 95.0, 612.0, 98.0, 616.0, 99.0, 619.0],
+                    ["C", 100.0, 622.0, 102.0, 625.0, 103.0, 627.0],
+                    ["C", 104.0, 629.0, 107.0, 632.0, 109.0, 636.0],
+                    ["C", 112.0, 643.0, 113.0, 643.0, 118.0, 645.0],
+                    ["Z"],
+                ],
+            },
+            "bracketleft": {
+                advance: 301,
+                bbox: {xmin: 12.0, ymin: -102.0, xmax: 283.0, ymax: 637.0},
+                config: {cutXPct: 50, cutYPct: 32, leanDeg: 0.0, unitsPerSeg: 45, amp: 3},
+                commands: [
+                    ["M", 31.0, 619.0],
+                    ["C", 35.0, 627.0, 59.0, 637.0, 64.0, 636.0],
+                    ["C", 86.0, 631.0, 110.0, 630.0, 110.0, 633.0],
+                    ["C", 110.0, 635.0, 132.0, 635.0, 132.0, 630.0],
+                    ["C", 132.0, 627.0, 133.0, 628.0, 144.0, 629.0],
+                    ["C", 151.0, 630.0, 180.0, 630.0, 210.0, 630.0],
+                    ["C", 283.0, 629.0, 283.0, 630.0, 281.0, 592.0],
+                    ["C", 280.0, 567.0, 277.0, 558.0, 270.0, 558.0],
+                    ["C", 268.0, 558.0, 265.0, 558.0, 265.0, 557.0],
+                    ["C", 264.0, 555.0, 137.0, 549.0, 117.0, 551.0],
+                    ["L", 103.0, 553.0],
+                    ["L", 101.0, 512.0],
+                    ["C", 99.0, 453.0, 100.0, 370.0, 103.0, 366.0],
+                    ["C", 105.0, 364.0, 105.0, 341.0, 105.0, 262.0],
+                    ["C", 105.0, 260.0, 109.0, 53.0, 107.0, 50.0],
+                    ["C", 106.0, 49.0, 105.0, 35.0, 105.0, 19.0],
+                    ["L", 105.0, -10.0],
+                    ["L", 129.0, -10.0],
+                    ["C", 142.0, -10.0, 153.0, -10.0, 153.0, -9.0],
+                    ["C", 153.0, -7.0, 169.0, -10.0, 170.0, -7.0],
+                    ["C", 172.0, -3.0, 213.0, -4.0, 222.0, -8.0],
+                    ["C", 239.0, -15.0, 245.0, -5.0, 258.0, -19.0],
+                    ["C", 265.0, -26.0, 265.0, -28.0, 266.0, -45.0],
+                    ["C", 268.0, -74.0, 269.0, -75.0, 262.0, -82.0],
+                    ["C", 258.0, -86.0, 254.0, -88.0, 251.0, -88.0],
+                    ["C", 244.0, -88.0, 268.0, -92.0, 143.0, -89.0],
+                    ["C", 114.0, -88.0, 66.0, -102.0, 42.0, -89.0],
+                    ["C", 12.0, -74.0, 12.0, -55.0, 18.0, -25.0],
+                    ["C", 18.0, -23.0, 34.0, 127.0, 26.0, 153.0],
+                    ["C", 24.0, 160.0, 23.0, 170.0, 23.0, 187.0],
+                    ["C", 24.0, 248.0, 25.0, 312.0, 20.0, 357.0],
+                    ["C", 13.0, 422.0, 22.0, 486.0, 18.0, 577.0],
+                    ["L", 17.0, 601.0],
+                    ["C", 23.0, 607.0, 28.0, 613.0, 31.0, 619.0],
+                    ["Z"],
+                ],
+            },
         };
     // ── END GENERATED GLYPH DATA ──
 
@@ -933,7 +1093,11 @@
             if (mo) targets.push({ mo, hide: stretchy, sizeFrom: stretchy });
         });
         scope.querySelectorAll('mjx-c.mjx-c7B').forEach(c => {
-            const isSized = [...c.classList].some(cls => /^TEX-S\d+$/.test(cls));
+            // Skip TEX-S1 — that's MathJax's \big size (e.g. \bigl[...\bigr]),
+            // which the user explicitly sized; overlaying a tall variant would
+            // ignore that intent.  Catch S2-S4 (\Big, \bigg, \Bigg, \left...
+            // \right at moderate-to-tall heights).
+            const isSized = [...c.classList].some(cls => /^TEX-S[2-4]$/.test(cls));
             if (!isSized) return;  // skip inline letter-size {
             const mo = c.closest('mjx-mo');
             if (mo) targets.push({ mo, hide: c, sizeFrom: mo });
@@ -991,6 +1155,246 @@
         }
     }
 
+    // ── Shared sizing for stretchy ( ) and [ ] ─────────────────────────────
+    // Same shape of problem as braces: MathJax CHTML either picks a sized
+    // variant (mjx-c.<code> with TEX-Sn class) for moderate heights or builds
+    // an mjx-stretchy-v.<code> assembly from missing tall-piece codepoints
+    // for very tall cases.  Both render as letter-height glyphs inside an
+    // oversized box because xkcd-script's basic ( and [ have no matching
+    // stretch metrics.  We overlay a stretched outline via cut-and-extend;
+    // the right side is the same overlay with a CSS scaleX(-1).
+    //
+    // Shared field meaning (each delim object below picks its own subset):
+    //   widthEm     : visible width fraction of fontSize.  Used by bracket
+    //                 (its source is near-vertical so anchoring by width is
+    //                 stable; height follows from the source aspect).
+    //   heightEm    : visible height fraction of fontSize at the natural
+    //                 design size — i.e., the "2-row" target.  Used by paren
+    //                 so the imported source artwork renders natively for
+    //                 \binom without any cut-and-extend stretching; cases
+    //                 smaller than 2-row uniformly shrink, taller cases
+    //                 extend.
+    //   extraEm     : extra reach past MathJax's reserved height — lands
+    //                 below the source after the SVG y-flip + top-anchor.
+    //   leftBiasEm  : rightward shift for opening delim.  Per-delim because
+    //                 the curved paren needs more nudge to feel close to
+    //                 content than the near-vertical bracket.
+    //   rightBiasEm : rightward shift for closing delim.
+    const STRETCHY_PAREN = {
+        // 2-row binom target ≈ 2.5em source + 1.0em extra = 3.5em; pin
+        // heightEm here so binom stays in the no-stretch branch.
+        heightEm:    3.5,
+        extraEm:     1.0,
+        // Uniform shrink applied to Sx — both X and Y scale down by this
+        // factor, then cut-and-extend stretches Y back to the required
+        // target.  Net effect: strokes are proportionally thinner (and the
+        // paren is correspondingly narrower) at the cost of always running
+        // a small Ny pass.  Set to 1.0 to disable.
+        thicknessScale: 0.65,
+        leftBiasEm:  0.15,
+        rightBiasEm: 0.05,
+        // Paren-only compact mode (\binom).  MathJax wraps \binom parens in
+        // an mjx-texatom that \left(...\right) doesn't use, so we override
+        // the overhang for that context — bracket has no equivalent and
+        // never reads this sub-object.
+        //   extraEm         : bottom overhang below source.bottom (compact)
+        //   topCropEm       : amount cropped from the top — visible top sits
+        //                     this far *below* source.top so the paren feels
+        //                     proportional to the short binomial stack.
+        //   thicknessScale  : override the global thicknessScale; binom is
+        //                     structurally smaller than fraction/matrix and
+        //                     so renders at smaller Sx, making its strokes
+        //                     visibly thinner.  Values >1.0 thicken strokes
+        //                     at the cost of the natural glyph overshooting
+        //                     `extraEm` (extra hangs further below source).
+        compact: {
+            extraEm:        0.3,
+            topCropEm:      0.6,
+            thicknessScale: 1.0,
+        },
+    };
+    const STRETCHY_BRACKET = {
+        widthEm:     0.30,
+        extraEm:     1.0,
+        leftBiasEm:  0.12,
+        rightBiasEm: 0.05,
+    };
+
+    // ── Stretchy parentheses (\binom, \left(...\right), pmatrix) ───────────
+    const PAREN_GLYPH = 'parenleft.tall';
+
+    function replaceStretchyParens(root) {
+        const scope = root || document;
+        const targets = [];
+        // Stretchy-v assembly (tall path)
+        scope.querySelectorAll('mjx-stretchy-v.mjx-c28, mjx-stretchy-v.mjx-c29').forEach(stretchy => {
+            const mo = stretchy.closest('mjx-mo') || stretchy.parentElement;
+            const isRight = stretchy.classList.contains('mjx-c29');
+            if (mo) targets.push({ mo, hide: stretchy, sizeFrom: stretchy, isRight });
+        });
+        // Sized variant (short path)
+        scope.querySelectorAll('mjx-c.mjx-c28, mjx-c.mjx-c29').forEach(c => {
+            // Skip TEX-S1 — that's MathJax's \big size (e.g. \bigl[...\bigr]),
+            // which the user explicitly sized; overlaying a tall variant would
+            // ignore that intent.  Catch S2-S4 (\Big, \bigg, \Bigg, \left...
+            // \right at moderate-to-tall heights).
+            const isSized = [...c.classList].some(cls => /^TEX-S[2-4]$/.test(cls));
+            if (!isSized) return;
+            const mo = c.closest('mjx-mo');
+            const isRight = c.classList.contains('mjx-c29');
+            if (mo) targets.push({ mo, hide: c, sizeFrom: mo, isRight });
+        });
+
+        for (const { mo, hide, sizeFrom, isRight } of targets) {
+            if (mo.dataset.parenReplaced) continue;
+            mo.dataset.parenReplaced = '1';
+
+            const moRect     = mo.getBoundingClientRect();
+            const sourceRect = sizeFrom.getBoundingClientRect();
+            if (sourceRect.height < 1 || sourceRect.width < 1) continue;
+
+            const fontSizePx = parseFloat(getComputedStyle(mo).fontSize);
+            const g = EXTENSIBLE_GLYPHS[PAREN_GLYPH];
+            const natW = g.bbox.xmax - g.bbox.xmin;
+            const natH = g.bbox.ymax - g.bbox.ymin;
+            // Height-anchored Sx with uniform thinning: Sx is shrunk by
+            // thicknessScale so both X and Y of the natural glyph come in
+            // smaller, then cut-and-extend stretches Y back to the target.
+            // Result: proportionally thinner strokes across the whole paren
+            // at the cost of a small Ny pass even on the "design-size" cases.
+            const inCompact = !!mo.closest('mjx-texatom');
+            const extraEm   = inCompact ? STRETCHY_PAREN.compact.extraEm
+                                        : STRETCHY_PAREN.extraEm;
+            const topCropEm = inCompact ? STRETCHY_PAREN.compact.topCropEm : 0;
+            // Compact crops the top by `topCropEm` — shrink targetH to match
+            // and (further below) shift the overlay's top down by the same
+            // amount so the bottom stays anchored where it would be without
+            // the crop.
+            const ts = inCompact ? STRETCHY_PAREN.compact.thicknessScale
+                                 : STRETCHY_PAREN.thicknessScale;
+            const designedH_px = STRETCHY_PAREN.heightEm * fontSizePx;
+            const targetH_px   = sourceRect.height + (extraEm - topCropEm) * fontSizePx;
+            const SxFull = (targetH_px <= designedH_px)
+                ? targetH_px   / natH
+                : designedH_px / natH;
+            const Sx = ts * SxFull;
+            const Ny = Math.max(0, (targetH_px - natH * Sx) / Sx);
+
+            const segs = buildExtendedSegs(PAREN_GLYPH, 0, Ny, 13);
+            const d    = _segsToPath(segs);
+            const eb   = _bboxOf(segs);
+            const margin = 20;
+            const vbX = eb.xmin - margin;
+            const vbY = -(eb.ymax + margin);
+            const vbW = (eb.xmax - eb.xmin) + 2 * margin;
+            const vbH = (eb.ymax - eb.ymin) + 2 * margin;
+            const widthPx  = vbW * Sx;
+            const heightPx = vbH * Sx;
+
+            const biasEm = isRight ? STRETCHY_PAREN.rightBiasEm : STRETCHY_PAREN.leftBiasEm;
+            const left = sourceRect.left - moRect.left - margin * Sx + biasEm * fontSizePx;
+            const top  = sourceRect.top  - moRect.top  - margin * Sx + topCropEm * fontSizePx;
+
+            hide.dataset.xkcdHidden = '1';
+            hide.style.visibility = 'hidden';
+            if (getComputedStyle(mo).position === 'static') {
+                mo.dataset.xkcdPos = '1';
+                mo.style.position = 'relative';
+            }
+
+            const svg = `<svg class="xkcd-overlay" xmlns="http://www.w3.org/2000/svg"
+                width="${widthPx}px" height="${heightPx}px" viewBox="${vbX} ${vbY} ${vbW} ${vbH}"
+                style="display:block;overflow:visible;pointer-events:none;">
+              <g transform="scale(1,-1)" fill="currentColor" stroke="none">
+                <path d="${d}"/>
+              </g>
+            </svg>`;
+            // For the right paren, the same left-paren artwork is reflected
+            // about its vertical centre via a CSS transform on the wrapper.
+            const mirror = isRight ? 'transform:scaleX(-1);' : '';
+            mo.insertAdjacentHTML('beforeend',
+                `<div class="xkcd-overlay" style="position:absolute;left:${left}px;top:${top}px;${mirror}pointer-events:none;">${svg}</div>`);
+        }
+    }
+
+    // ── Stretchy square brackets (\left[...\right], bmatrix) ──────────────
+    // Same overlay machinery as parens; xkcd-script's regular `[` is straight
+    // enough that we don't ship a .tall variant — the natural bracketleft
+    // outline extends cleanly via a single mid-Y cut.  Right bracket is the
+    // X-mirror of left, applied via CSS transform.
+    const BRACKET_GLYPH = 'bracketleft';
+
+    function replaceStretchyBrackets(root) {
+        const scope = root || document;
+        const targets = [];
+        scope.querySelectorAll('mjx-stretchy-v.mjx-c5B, mjx-stretchy-v.mjx-c5D').forEach(stretchy => {
+            const mo = stretchy.closest('mjx-mo') || stretchy.parentElement;
+            const isRight = stretchy.classList.contains('mjx-c5D');
+            if (mo) targets.push({ mo, hide: stretchy, sizeFrom: stretchy, isRight });
+        });
+        scope.querySelectorAll('mjx-c.mjx-c5B, mjx-c.mjx-c5D').forEach(c => {
+            // Skip TEX-S1 — that's MathJax's \big size (e.g. \bigl[...\bigr]),
+            // which the user explicitly sized; overlaying a tall variant would
+            // ignore that intent.  Catch S2-S4 (\Big, \bigg, \Bigg, \left...
+            // \right at moderate-to-tall heights).
+            const isSized = [...c.classList].some(cls => /^TEX-S[2-4]$/.test(cls));
+            if (!isSized) return;
+            const mo = c.closest('mjx-mo');
+            const isRight = c.classList.contains('mjx-c5D');
+            if (mo) targets.push({ mo, hide: c, sizeFrom: mo, isRight });
+        });
+
+        for (const { mo, hide, sizeFrom, isRight } of targets) {
+            if (mo.dataset.bracketReplaced) continue;
+            mo.dataset.bracketReplaced = '1';
+
+            const moRect     = mo.getBoundingClientRect();
+            const sourceRect = sizeFrom.getBoundingClientRect();
+            if (sourceRect.height < 1 || sourceRect.width < 1) continue;
+
+            const fontSizePx = parseFloat(getComputedStyle(mo).fontSize);
+            const g = EXTENSIBLE_GLYPHS[BRACKET_GLYPH];
+            const natW = g.bbox.xmax - g.bbox.xmin;
+            const natH = g.bbox.ymax - g.bbox.ymin;
+            const Sx = (STRETCHY_BRACKET.widthEm * fontSizePx) / natW;
+            const targetH_units = (sourceRect.height + STRETCHY_BRACKET.extraEm * fontSizePx) / Sx;
+            const Ny = Math.max(0, targetH_units - natH);
+
+            const segs = buildExtendedSegs(BRACKET_GLYPH, 0, Ny, 17);
+            const d    = _segsToPath(segs);
+            const eb   = _bboxOf(segs);
+            const margin = 20;
+            const vbX = eb.xmin - margin;
+            const vbY = -(eb.ymax + margin);
+            const vbW = (eb.xmax - eb.xmin) + 2 * margin;
+            const vbH = (eb.ymax - eb.ymin) + 2 * margin;
+            const widthPx  = vbW * Sx;
+            const heightPx = vbH * Sx;
+
+            const biasEm = isRight ? STRETCHY_BRACKET.rightBiasEm : STRETCHY_BRACKET.leftBiasEm;
+            const left = sourceRect.left - moRect.left - margin * Sx + biasEm * fontSizePx;
+            const top  = sourceRect.top  - moRect.top  - margin * Sx;
+
+            hide.dataset.xkcdHidden = '1';
+            hide.style.visibility = 'hidden';
+            if (getComputedStyle(mo).position === 'static') {
+                mo.dataset.xkcdPos = '1';
+                mo.style.position = 'relative';
+            }
+
+            const svg = `<svg class="xkcd-overlay" xmlns="http://www.w3.org/2000/svg"
+                width="${widthPx}px" height="${heightPx}px" viewBox="${vbX} ${vbY} ${vbW} ${vbH}"
+                style="display:block;overflow:visible;pointer-events:none;">
+              <g transform="scale(1,-1)" fill="currentColor" stroke="none">
+                <path d="${d}"/>
+              </g>
+            </svg>`;
+            const mirror = isRight ? 'transform:scaleX(-1);' : '';
+            mo.insertAdjacentHTML('beforeend',
+                `<div class="xkcd-overlay" style="position:absolute;left:${left}px;top:${top}px;${mirror}pointer-events:none;">${svg}</div>`);
+        }
+    }
+
     function resetOverlays(scope) {
         const root = scope || document;
         root.querySelectorAll('.xkcd-overlay').forEach(el => el.remove());
@@ -1008,6 +1412,12 @@
         });
         root.querySelectorAll('[data-brace-replaced]').forEach(el => {
             delete el.dataset.braceReplaced;
+        });
+        root.querySelectorAll('[data-paren-replaced]').forEach(el => {
+            delete el.dataset.parenReplaced;
+        });
+        root.querySelectorAll('[data-bracket-replaced]').forEach(el => {
+            delete el.dataset.bracketReplaced;
         });
     }
 
@@ -1099,6 +1509,8 @@
         replaceSqrtSymbols(root);
         replaceVinculums(root);
         replaceStretchyBraces(root);
+        replaceStretchyParens(root);
+        replaceStretchyBrackets(root);
     }
 
     // ── Startup orchestration ──────────────────────────────────────────────

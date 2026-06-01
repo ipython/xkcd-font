@@ -178,6 +178,31 @@ $$f(x) = \begin{cases}
     \infty,                                                         & \text{otherwise}
 \end{cases}$$</p>
 
+<h2>Stretchy delimiters (parens and brackets, side-by-side)</h2>
+
+<p>Two-high (<code>\binom</code>):
+$$\binom{n}{k}$$</p>
+
+<p>Around a fraction (<code>\left(\dfrac{...}{...}\right)^n</code> / <code>\left[...\right]^n</code>):
+$$\left( \dfrac{\frac{a}{b}}{\frac{c}{d}} \right)^{n} \qquad
+   \left[ \dfrac{\frac{a}{b}}{\frac{c}{d}} \right]^{n}$$</p>
+
+<p>3×3 matrix (<code>pmatrix</code> / <code>bmatrix</code>):
+$$\begin{pmatrix}
+    a_{11} & a_{12} & a_{13} \\
+    a_{21} & a_{22} & a_{23} \\
+    a_{31} & a_{32} & a_{33}
+\end{pmatrix} \qquad
+\begin{bmatrix}
+    a_{11} & a_{12} & a_{13} \\
+    a_{21} & a_{22} & a_{23} \\
+    a_{31} & a_{32} & a_{33}
+\end{bmatrix}$$</p>
+
+<p>Five-row column vector (extreme stretch):
+$$\begin{pmatrix} v_1 \\ v_2 \\ v_3 \\ v_4 \\ v_5 \end{pmatrix} \qquad
+   \begin{bmatrix} v_1 \\ v_2 \\ v_3 \\ v_4 \\ v_5 \end{bmatrix}$$</p>
+
 <p>Deeply nested sqrt fractions:
 $$\sqrt{b^2 - 4ac}
 \sqrt{\frac{b^2}{x}}{2a}

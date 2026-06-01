@@ -178,6 +178,7 @@ EXTRAS = [
     ('triangle', '2343_mathematical_symbol_fight_2x__triangle'),              # △ U+25B3 source
     ('sqrt_vertical', 'sqrt_vertical'),                                       # √ vertical surd, PUA U+E000
     ('braceleft_tall', '2435_geothmetic_meandian_2x__brace__shortened'),      # { tall brace for MathJax stretchy assembly
+    ('parenleft_tall', '2059_modified_bayes_theorem_2x__lparen'),             # ( tall paren for MathJax stretchy assembly (\binom, \left(, pmatrix); right paren is mirrored in pt5
 ]
 
 print('Extracting hand-drawn extras...')
