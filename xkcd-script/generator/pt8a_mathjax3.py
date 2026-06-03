@@ -55,6 +55,10 @@ EXTENSIBLE_CONFIG = {
     # jittered stroke through the middle.  bracketright is X-mirrored at
     # render time in xkcd-mathjax3.js, so it isn't listed here.
     'bracketleft':   {'cutXPct': 50, 'cutYPct': 32, 'leanDeg':  0.0, 'unitsPerSeg':  45, 'amp':  3},
+    # → (U+2192).  Cut early in the X axis (in the tail, before the head) so
+    # extension lengthens the shaft and the arrowhead shape is preserved.
+    # Y cut not used — \overrightarrow / \vec only ever stretches in X.
+    'arrowright':    {'cutXPct': 39, 'cutYPct': 50, 'leanDeg':  0.0, 'unitsPerSeg': 120, 'amp':  4},
 }
 
 

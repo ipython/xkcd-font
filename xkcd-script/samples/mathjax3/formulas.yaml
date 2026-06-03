@@ -139,6 +139,23 @@ accents-zoo:
     - tex: '$\dot{x},\ \ddot{x},\ \check{c},\ \breve{u},\ \acute{e},\ \grave{e}$'
     - tex: '$\widehat{xyz} \qquad \widetilde{abc} \qquad \overline{a+b+c}$'
 
+stretchy-arrows:
+  cellHeight: 90
+  cellWidth: 360
+  formulas:
+    - tex: '$A \xrightarrow{f} B$'
+    - tex: '$A \xrightarrow{n+\mu-1} B$'
+    - tex: '$A \xleftarrow{g} B$'
+    - tex: '$\overrightarrow{ABC} \qquad \overleftarrow{ABC}$'
+    - tex: '$\vec{v},\ \vec{ABC},\ \vec{xyzw}$'
+
+amscd-commutative-diagram:
+  cellHeight: 180
+  cellWidth: 220
+  formulas:
+    - tex: '$$\begin{CD} A @>f>> B \\ @VgVV @VVhV \\ C @>>k> D \end{CD}$$'
+    - tex: '$$\begin{CD} A @>f>> B \\ @AAA @VVV \\ C @<<< D \end{CD}$$'
+
 sqrt-digit-radicand:
   cellHeight: 80
   cellWidth: 280

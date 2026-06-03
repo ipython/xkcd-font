@@ -53,9 +53,11 @@ p  { margin: 0.8em 0; }
 // MathJax TeX-input config (delimiters).  Must be set BEFORE xkcd-mathjax3.js
 // (which then merges in its startup hook) and BEFORE MathJax itself loads.
 MathJax = {
+    loader: { load: ['[tex]/amscd'] },
     tex: {
         inlineMath:  [['$', '$'], ['\\(', '\\)']],
         displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        packages:    {'[+]': ['amscd']},
     },
 };
 </script>
@@ -202,6 +204,23 @@ $$\begin{pmatrix}
 <p>Five-row column vector (extreme stretch):
 $$\begin{pmatrix} v_1 \\ v_2 \\ v_3 \\ v_4 \\ v_5 \end{pmatrix} \qquad
    \begin{bmatrix} v_1 \\ v_2 \\ v_3 \\ v_4 \\ v_5 \end{bmatrix}$$</p>
+
+<h2>Stretchy arrows</h2>
+
+<p>Vector accents (<code>\vec</code>, <code>\overrightarrow</code>, <code>\overleftarrow</code>):
+$\vec{v},\ \vec{F},\ \vec{p},\ \vec{\mathbf{0}},\ \vec{\mathbf{B}},\ \vec{ABC},\ \overrightarrow{ABC},\ \overleftarrow{ABC}$</p>
+
+<p>Stretchy operators with labels (<code>\xrightarrow</code>, <code>\xleftarrow</code>):
+$A \xrightarrow{f} B \xrightarrow{n+\mu-1} C \qquad X \xleftarrow{g} Y$</p>
+
+<p>Inline arrows (should NOT be replaced — xkcd-script's own glyph):
+$\lim_{h \to 0} f(h) \qquad x \to \infty \qquad a \leftarrow b$</p>
+
+<p>AMScd commutative diagram:
+$$\begin{CD} A @>f>> B \\ @VgVV @VVhV \\ C @>>k> D \end{CD}$$</p>
+
+<p>AMScd four-direction:
+$$\begin{CD} A @>f>> B \\ @AAA @VVV \\ C @<<< D \end{CD}$$</p>
 
 <p>Deeply nested sqrt fractions:
 $$\sqrt{b^2 - 4ac}

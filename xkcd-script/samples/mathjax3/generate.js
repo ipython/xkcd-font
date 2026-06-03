@@ -40,8 +40,10 @@ const HEAD = `<!DOCTYPE html>
                  font-size:22px; line-height:1.6; color:#111; }
 </style>
 <script>
-    MathJax = { tex: { inlineMath:  [['$','$'], ['\\\\(','\\\\)']],
-                       displayMath: [['$$','$$'], ['\\\\[','\\\\]']] } };
+    MathJax = { loader: { load: ['[tex]/amscd'] },
+                tex:    { inlineMath:  [['$','$'], ['\\\\(','\\\\)']],
+                          displayMath: [['$$','$$'], ['\\\\[','\\\\]']],
+                          packages:    {'[+]': ['amscd']} } };
 </script>
 <script src="/xkcd-script/xkcd-mathjax3.js"></script>
 <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
