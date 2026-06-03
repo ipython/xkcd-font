@@ -2495,6 +2495,7 @@ SplineSet
  251 324 298 347 312 367 c 0
  324 383 333 406 333 416 c 0
 EndSplineSet
+Kerns2: 503 -39 "kern" 493 -39 "kern" 487 -18 "kern" 464 -39 "kern" 447 -33 "kern" 436 -45 "kern" 409 -48 "kern" 392 -35 "kern" 345 -43 "kern" 325 -45 "kern" 295 -45 "kern" 20 -39 "kern" 600 -65 "kern" 596 -60 "kern" 519 -7 "kern" 514 -75 "kern" 513 -7 "kern" 507 -49 "kern" 505 -39 "kern" 502 -57 "kern" 496 -15 "kern" 492 -57 "kern" 488 -15 "kern" 479 -15 "kern" 474 -7 "kern" 470 -58 "kern" 458 -32 "kern" 451 -13 "kern" 449 -9 "kern" 446 -18 "kern" 441 -15 "kern" 437 -49 "kern" 435 -37 "kern" 434 -7 "kern" 418 -15 "kern" 413 -54 "kern" 412 -10 "kern" 411 -48 "kern" 408 -64 "kern" 403 -15 "kern" 401 -24 "kern" 397 -8 "kern" 396 -24 "kern" 394 -15 "kern" 391 -26 "kern" 387 -106 "kern" 379 -15 "kern" 369 -73 "kern" 362 -42 "kern" 352 -75 "kern" 348 -9 "kern" 347 -32 "kern" 346 -24 "kern" 344 -42 "kern" 338 -15 "kern" 337 -9 "kern" 335 -46 "kern" 332 -9 "kern" 331 -37 "kern" 330 -49 "kern" 327 -15 "kern" 324 -36 "kern" 321 -15 "kern" 320 -7 "kern" 310 -7 "kern" 307 -15 "kern" 301 -36 "kern" 299 -50 "kern" 298 -9 "kern" 297 -41 "kern" 294 -56 "kern" 289 -15 "kern" 65 -106 "kern" 57 -60 "kern" 54 -20 "kern" 39 -15 "kern" 38 -32 "kern" 37 -31 "kern" 29 -37 "kern" 22 -58 "kern" 19 -75 "kern" 18 -32 "kern" 16 -49 "kern" 8 -7 "kern" 7 -61 "kern" 5 -39 "kern" 3 -7 "kern" 0 -57 "kern"
 EndChar
 
 StartChar: Q

@@ -147,6 +147,9 @@ def autokern(font):
     kern(60, ['C'], set(roman) - {'j'}, onlyCloser=True, damper=0.75) # keep CK≈-15
     kern(25, ['C'], ['V'], onlyCloser=True, touch=True)
     kern(60, ['O'], set(roman) - {'j'}, onlyCloser=True, damper=0.75) # loosen
+    kern(100, ['P'], set(roman) - {'j'}, onlyCloser=True, damper=0.75)
+    diff_Po_Pe = getkern('P', 'o') - getkern('P', 'e')
+    kern(100 + int(diff_Po_Pe / 0.75), ['P'], ['e'], onlyCloser=True, damper=0.75)
 
 
 autokern(font)
