@@ -1020,35 +1020,136 @@
         });
     }
 
+    // ── Vinculums + array rules (border-top/left/right → hand-drawn lines) ─
+    //
+    // MathJax CHTML expresses three different things as CSS borders:
+    //   • fraction bars            — `border-top` on the mjx-mfrac element
+    //   • `\hline`                 — `border-top` on every MJX-MTD in a row
+    //   • column rules from `|`    — `border-left/right` on every MJX-MTD in a column
+    //
+    // We replace all of them with the hand-drawn emdash extender.  The naïve
+    // per-element approach (draw one segment per cell) was producing visibly
+    // segmented vertical lines because each MJX-MTD only spans its own cell
+    // height.  Instead we group: cells in the same table that share an edge
+    // coordinate become one rule, and we draw a single continuous line
+    // spanning the bounding box of the group.  Non-table elements (fraction
+    // bars) form their own singleton groups, preserving previous behaviour.
+    function _collectRuleGroups(container, side) {
+        // Map<groupKey, { side, w, cells: [...] }>.  Group key encodes the
+        // enclosing table (so two tables in one container don't merge) plus
+        // the edge's rounded coordinate.  Elements outside any mjx-mtable
+        // get a singleton key based on their own identity.
+        const groups = new Map();
+        const tableIds = new WeakMap();
+        let nextId = 1;
+        const idOf = el => {
+            if (!tableIds.has(el)) tableIds.set(el, nextId++);
+            return tableIds.get(el);
+        };
+        const flag = 'xkcdRule' + side;
+        container.querySelectorAll('*').forEach(el => {
+            if (el.dataset[flag]) return;
+            // xkcdHidden is set by replaceSqrtSymbols on the sqrt's
+            // vinculum (top edge) and by replaceVinculums on \hline cells —
+            // both are top-edge-only, so skip only when grouping Top rules.
+            // The Left/Right passes still see these cells (\hline cells
+            // also carry vertical column borders that need replacing).
+            if (side === 'Top' && el.dataset.xkcdHidden) return;
+            if (el.closest('mjx-surd') || el.closest('mjx-stretchy-v')) return;
+            const cs = getComputedStyle(el);
+            if (cs['border' + side + 'Style'] !== 'solid') return;
+            const w = parseFloat(cs['border' + side + 'Width']);
+            if (w <= 0) return;
+            const r = el.getBoundingClientRect();
+            const coord = side === 'Top'  ? r.top
+                        : side === 'Left' ? r.left
+                        :                   r.right;
+            const table = (el.tagName === 'MJX-MTD') ? el.closest('mjx-mtable') : null;
+            const key = table
+                ? 'tbl' + idOf(table) + '|' + side + '|' + Math.round(coord)
+                : 'el'  + idOf(el)    + '|' + side;
+            let g = groups.get(key);
+            if (!g) { g = { side, w, cells: [] }; groups.set(key, g); }
+            g.cells.push(el);
+        });
+        return groups;
+    }
+
+    function _bboxOfCells(cells) {
+        let left = Infinity, top = Infinity, right = -Infinity, bottom = -Infinity;
+        for (const c of cells) {
+            const r = c.getBoundingClientRect();
+            if (r.left < left)     left = r.left;
+            if (r.top < top)       top = r.top;
+            if (r.right > right)   right = r.right;
+            if (r.bottom > bottom) bottom = r.bottom;
+        }
+        return { left, top, right, bottom };
+    }
+
+    function _ensureRelative(container) {
+        if (getComputedStyle(container).position === 'static') {
+            container.dataset.xkcdPos = '1';
+            container.style.position = 'relative';
+        }
+    }
+
     function replaceVinculums(root) {
         const scope = root || document;
         scope.querySelectorAll('mjx-container[jax="CHTML"]').forEach(container => {
-            container.querySelectorAll('*').forEach(el => {
-                if (el.dataset.xkcdHidden) return;
-                if (el.closest('mjx-surd')) return;
-                // Brace extenders use border-top to draw their stroke too —
-                // skip anything inside a stretchy-vertical assembly so we
-                // don't paint emdash bars across the brace.
-                if (el.closest('mjx-stretchy-v')) return;
-                const cs = getComputedStyle(el);
-                if (cs.borderTopStyle !== 'solid' || parseFloat(cs.borderTopWidth) <= 0) return;
-                const barH = Math.max(parseFloat(cs.borderTopWidth), 1);
-                el.dataset.xkcdHidden = '1';
-                el.style.borderTopColor = 'transparent';
-
-                if (getComputedStyle(container).position === 'static')
-                    { container.dataset.xkcdPos = '1'; container.style.position = 'relative'; }
-
-                const containerRect = container.getBoundingClientRect();
-                const elRect        = el.getBoundingClientRect();
+            const groups = _collectRuleGroups(container, 'Top');
+            if (!groups.size) return;
+            _ensureRelative(container);
+            const containerRect = container.getBoundingClientRect();
+            for (const g of groups.values()) {
+                const bb = _bboxOfCells(g.cells);
+                for (const c of g.cells) {
+                    c.style.borderTopColor = 'transparent';
+                    c.dataset.xkcdRuleTop = '1';
+                    c.dataset.xkcdHidden = '1';  // legacy flag for resetOverlays
+                }
+                const barH = Math.max(g.w, 1);
                 const renderedH = barH * BAR_PIXEL_MULT;
-                // Centre the rendered bar on the original border-top line.
-                const left = elRect.left - containerRect.left;
-                const top  = (elRect.top - containerRect.top) + (barH / 2) - (renderedH / 2);
-
+                const left = bb.left - containerRect.left;
+                const top  = (bb.top - containerRect.top) + (barH / 2) - (renderedH / 2);
+                const width = bb.right - bb.left;
                 container.insertAdjacentHTML('beforeend',
-                    `<div class="xkcd-overlay" style="position:absolute;left:${left}px;top:${top}px;pointer-events:none;">${mirrorBarHTML(elRect.width, renderedH)}</div>`);
-            });
+                    `<div class="xkcd-overlay" style="position:absolute;left:${left}px;top:${top}px;pointer-events:none;">${mirrorBarHTML(width, renderedH)}</div>`);
+            }
+        });
+    }
+
+    function replaceVerticalRules(root) {
+        const scope = root || document;
+        scope.querySelectorAll('mjx-container[jax="CHTML"]').forEach(container => {
+            for (const side of ['Left', 'Right']) {
+                const groups = _collectRuleGroups(container, side);
+                if (!groups.size) continue;
+                _ensureRelative(container);
+                const containerRect = container.getBoundingClientRect();
+                for (const g of groups.values()) {
+                    const bb = _bboxOfCells(g.cells);
+                    for (const c of g.cells) {
+                        c.style['border' + side + 'Color'] = 'transparent';
+                        c.dataset['xkcdRule' + side] = '1';
+                        c.dataset['xkcdVrule' + side] = '1';  // legacy flag for resetOverlays
+                    }
+                    const barW = Math.max(g.w, 1);
+                    const renderedW = barW * BAR_PIXEL_MULT;
+                    const lineX = (side === 'Left' ? bb.left : bb.right) - containerRect.left;
+                    const x = lineX - renderedW / 2;
+                    const y = bb.top - containerRect.top;
+                    const lineH = bb.bottom - bb.top;
+                    // CSS rotate(90deg) around the overlay's top-left corner
+                    // pivots a horizontal-emdash SVG of (length=lineH,
+                    // thickness=renderedW) into a vertical line.  After the
+                    // rotation, content originally x∈[0,h], y∈[0,w] lands at
+                    // page x∈[anchorX-w, anchorX], y∈[anchorY, anchorY+h], so
+                    // we anchor at (x + renderedW, y).
+                    container.insertAdjacentHTML('beforeend',
+                        `<div class="xkcd-overlay" style="position:absolute;left:${x + renderedW}px;top:${y}px;transform:rotate(90deg);transform-origin:0 0;pointer-events:none;">${mirrorBarHTML(lineH, renderedW)}</div>`);
+                }
+            }
         });
     }
 
@@ -1403,6 +1504,14 @@
             el.style.borderTopColor = '';
             delete el.dataset.xkcdHidden;
         });
+        root.querySelectorAll('[data-xkcd-vrule-left]').forEach(el => {
+            el.style.borderLeftColor = '';
+            delete el.dataset.xkcdVruleLeft;
+        });
+        root.querySelectorAll('[data-xkcd-vrule-right]').forEach(el => {
+            el.style.borderRightColor = '';
+            delete el.dataset.xkcdVruleRight;
+        });
         root.querySelectorAll('[data-xkcd-pos]').forEach(el => {
             el.style.position = '';
             delete el.dataset.xkcdPos;
@@ -1464,7 +1573,10 @@
             /* Render \text{} content as a natural shaped run rather than
                per-character mjx-c boxes — MathJax CHTML's pre-baked widths
                are calibrated for MJXTEX and produce wrong gaps / fake
-               ligature-looking overlaps when the actual font is xkcd-script. */
+               ligature-looking overlaps when the actual font is xkcd-script.
+               Same treatment for mjx-mn (numbers): MJXTEX reserves a wide
+               box for '1' that leaves a huge gap right of every '1' in
+               xkcd-script (very visible in columns of numbers). */
             mjx-container[jax="CHTML"] mjx-mtext mjx-c {
                 display: inline !important;
                 padding: 0 !important;
@@ -1473,6 +1585,14 @@
                 display: inline !important;
                 width: auto !important;
                 padding: 0 !important;
+            }
+            /* mjx-mn: kill horizontal padding only — keep vertical
+               padding so the mjx-c's inline-block height stays correct
+               (else mjx-base / mjx-msqrt vinculum rects collapse). */
+            mjx-container[jax="CHTML"] mjx-mn mjx-c::before {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+                width: auto !important;
             }
             /* Inline limits on ∑ ∏ ∫ need extra right margin — MathJax uses
                pre-baked metrics that ignore our wider .disp glyphs. */
@@ -1557,7 +1677,7 @@
             const accentGlyphs = over.querySelectorAll('[class*="mjx-c"]');
             const baseGlyphs   = base.querySelectorAll('[class*="mjx-c"]');
             // Single accent over single letter only — leave \widehat{xyz},
-            // \overline{a+b}, \vec (U+20D7) etc. to the default path.
+            // \overline{a+b}, \vec etc. to the wide-mover path below.
             if (accentGlyphs.length !== 1 || baseGlyphs.length !== 1) continue;
             const combining = _ACCENT_SPACING_TO_COMBINING[_glyphClassCp(accentGlyphs[0])];
             if (!combining) continue;
@@ -1570,12 +1690,116 @@
         }
     }
 
+    // ── Wide-base / arrow movers (\overline, \vec) ────────────────────────
+    // \overline{a+b+c} is an mjx-mover whose over is one or more U+2013 en-
+    // dashes — MathJax stretches them along the base width.  We swap the
+    // en-dash strip for our hand-drawn emdash overlay sized to match.
+    //
+    // \vec is an mjx-mover with U+20D7 (combining right arrow above) in the
+    // over.  xkcd-script doesn't ship U+20D7 so the browser falls back to a
+    // tiny system-font glyph next to the letter.  We hide the fallback and
+    // overlay a hand-drawn arrow: emdash shaft + a triangular tip on the
+    // right end.
+    //
+    // Both run AFTER replaceCombiningAccents — that pass strips out the
+    // single-letter accents we handle differently, leaving these wide / vec
+    // cases as the surviving mjx-mover candidates.
+    function _hideOver(over) {
+        over.style.visibility = 'hidden';
+        over.dataset.xkcdHidden = '1';
+    }
+
+    function replaceWideMovers(scope) {
+        const root = scope || document;
+        const movers = root.querySelectorAll('mjx-container[jax="CHTML"] mjx-mover');
+        for (const mover of movers) {
+            if (mover.dataset.xkcdWide) continue;
+            const over = mover.querySelector(':scope > mjx-over');
+            const base = mover.querySelector(':scope > mjx-base');
+            if (!over || !base) continue;
+            const overCps = [...over.querySelectorAll('[class*="mjx-c"]')]
+                .map(_glyphClassCp).filter(Boolean);
+            if (!overCps.length) continue;
+            // Detect: all-en-dash strip (\overline / \widetilde uses 2013/2DC),
+            // single-glyph U+20D7 (\vec), or a wide-hat/wide-tilde (\widehat
+            // = single 2C6, \widetilde = single 2DC over multi-char base).
+            // Wide hat/tilde isn't fully replaced — see TODO below — we just
+            // centre them; replacing the shape would mean extending the font
+            // with stretchable caret / wave glyphs.
+            const allEndash = overCps.every(cp => cp === '2013');
+            const isVec     = overCps.length === 1 && overCps[0] === '20D7';
+            const isWideHat = overCps.length === 1 && (overCps[0] === '2C6' || overCps[0] === '2DC');
+            if (!allEndash && !isVec && !isWideHat) continue;
+
+            if (isWideHat) {
+                // The over's layout box already spans the base width — MathJax
+                // pads it for the stretched-accent slot — but the actual ^/~
+                // ink renders at the LEFT of that padded box.  text-align:
+                // center on the over centres the inline-block accent within
+                // its padded box.  An extra ~0.15em left nudge corrects for
+                // the trailing italic-correction padding MathJax adds to the
+                // over's right side, which would otherwise pull the centred
+                // accent slightly past the base's centre.
+                over.style.textAlign = 'center';
+                over.style.transform = 'translateX(-0.15em)';
+                mover.dataset.xkcdWide = '1';
+                continue;
+            }
+
+            const container = mover.closest('mjx-container[jax="CHTML"]');
+            if (!container) continue;
+            if (getComputedStyle(container).position === 'static') {
+                container.dataset.xkcdPos = '1';
+                container.style.position = 'relative';
+            }
+            const containerRect = container.getBoundingClientRect();
+            const baseRect = base.getBoundingClientRect();
+            const overRect = over.getBoundingClientRect();
+            const fontSizePx = parseFloat(getComputedStyle(mover).fontSize) || 22;
+            // Thickness comparable to the font's combining macron — anything
+            // under ~2px reads as a CSS border rather than a pen stroke.
+            const barH = Math.max(2, fontSizePx * 0.10);
+            // Width / position: anchor to the base so the bar tracks the
+            // letters it's covering, not the fallback over glyph.
+            const left = baseRect.left - containerRect.left;
+            const width = Math.max(baseRect.width, fontSizePx * 0.4);
+            // Vertical: just above the base's top; nudge so the bar/tip sits
+            // where the font's natural overline would.
+            const top = overRect.top - containerRect.top - barH * 0.5;
+
+            _hideOver(over);
+            mover.dataset.xkcdWide = '1';
+
+            if (isVec) {
+                // Use the font's own arrowright (U+2192) so the overlay is
+                // genuinely xkcd-script's pen.  Size it to fontSize and
+                // anchor over the base's horizontal centre.
+                const cx = (baseRect.left + baseRect.right) / 2 - containerRect.left;
+                const arrowFontSize = fontSizePx * 0.85;
+                // Centre the rendered arrow horizontally above the base.
+                // top is just above the base; small lift so the arrow doesn't
+                // overlap the letter's ascender.
+                const arrowTop = baseRect.top - containerRect.top - arrowFontSize * 0.55;
+                // xkcd-script is single-weight; thicken the rendered arrow
+                // by painting an outline stroke in the same colour as the
+                // fill, so the visible stroke is roughly stroke + glyph.
+                container.insertAdjacentHTML('beforeend',
+                    `<div class="xkcd-overlay" style="position:absolute;left:${cx}px;top:${arrowTop}px;transform:translateX(-50%);font-family:'xkcd-script',sans-serif;font-size:${arrowFontSize}px;line-height:1;-webkit-text-stroke:0.025em currentColor;pointer-events:none;">→</div>`);
+            } else {
+                container.insertAdjacentHTML('beforeend',
+                    `<div class="xkcd-overlay" style="position:absolute;left:${left}px;top:${top}px;pointer-events:none;">${mirrorBarHTML(width, barH)}</div>`);
+            }
+        }
+    }
+
     // ── Public refresh: idempotent overlay pass ─────────────────────────────
     function refresh(root) {
         injectFontOverride();
         replaceCombiningAccents(root);
+        replaceWideMovers(root);
         replaceSqrtSymbols(root);
         replaceVinculums(root);
+        replaceVerticalRules(root);
         replaceStretchyBraces(root);
         replaceStretchyParens(root);
         replaceStretchyBrackets(root);
@@ -1606,11 +1830,60 @@
     let _resolveReady;
     const ready = new Promise(res => { _resolveReady = res; });
 
+    function _wrapTypeset() {
+        // Wrap MathJax's public CHTML-producing entry points so any caller
+        // (host page, Jupyter, interactive demos) gets overlays re-applied
+        // after their re-typeset / conversion.  Idempotent via _xkcdWrapped.
+        const mj = window.MathJax;
+        if (!mj) return;
+        // typesetPromise(elements?) / typeset(elements?): operate on the
+        // page's existing math.  Reset overlays in the targeted subtree
+        // first so we don't double-paint, then refresh after.
+        const wrapSubtree = function (name, async) {
+            const fn = mj[name];
+            if (!fn || fn._xkcdWrapped) return;
+            const orig = fn.bind(mj);
+            const wrapped = function (...args) {
+                const root = (args[0] && args[0][0]) || document;
+                resetOverlays(root);
+                if (async) return orig(...args).then(r => { refresh(root); return r; });
+                const r = orig(...args); refresh(root); return r;
+            };
+            wrapped._xkcdWrapped = true;
+            mj[name] = wrapped;
+        };
+        wrapSubtree('typesetPromise', true);
+        wrapSubtree('typeset', false);
+        // tex2chtml / mathml2chtml (+ Promise variants): return a detached
+        // <mjx-container> the caller inserts somewhere.  We don't know
+        // where, so defer the refresh to a microtask after the return —
+        // by then the caller has typically appended it.  Refresh runs on
+        // document so newly inserted nodes get picked up.
+        const wrapNode = function (name, async) {
+            const fn = mj[name];
+            if (!fn || fn._xkcdWrapped) return;
+            const orig = fn.bind(mj);
+            const schedule = () => Promise.resolve().then(() => refresh());
+            const wrapped = function (...args) {
+                if (async) return orig(...args).then(node => { schedule(); return node; });
+                const node = orig(...args); schedule(); return node;
+            };
+            wrapped._xkcdWrapped = true;
+            mj[name] = wrapped;
+        };
+        wrapNode('tex2chtml', false);
+        wrapNode('tex2chtmlPromise', true);
+        wrapNode('mathml2chtml', false);
+        wrapNode('mathml2chtmlPromise', true);
+        wrapNode('asciimath2chtml', false);
+        wrapNode('asciimath2chtmlPromise', true);
+    }
+
     function _afterInitialTypeset() {
         return Promise.all([_waitForFont(), _waitForDom()])
             .then(() => { injectFontOverride(); })  // before typeset so ss01 + STACK affect MathJax's box metrics
             .then(() => MathJax.typesetPromise())
-            .then(() => { refresh(); _resolveReady(); });
+            .then(() => { _wrapTypeset(); refresh(); _resolveReady(); });
     }
 
     function _hookStartup() {
