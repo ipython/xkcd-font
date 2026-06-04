@@ -1404,7 +1404,7 @@ _period_g = font[ord('.')]
 _period_bb = _period_g.boundingBox()
 _period_cx = (_period_bb[0] + _period_bb[2]) / 2
 _period_cy = (_period_bb[1] + _period_bb[3]) / 2
-_cdot = font.createMappedChar(0x22C5)
+_cdot = font.createChar(0x22C5, 'uni22C5')
 _cdot.clear()
 _cdot.addReference(_period_g.glyphname, psMat.compose(
     psMat.scale(0.75),
@@ -1412,6 +1412,44 @@ _cdot.addReference(_period_g.glyphname, psMat.compose(
                     _MATH_AXIS - _period_cy * 0.75),
 ))
 _cdot.width = _CDOT_WIDTH
+
+
+# ---------------------------------------------------------------------------
+# ∘ U+2218 RING OPERATOR — reuses the ring contours extracted from Å (the
+# same shape used as a diacritic above å/ů).  The hand-drawn ring already
+# has the right pen weight and proportions for an operator-sized glyph,
+# so we just copy it and recentre on the math axis.
+# ---------------------------------------------------------------------------
+_CIRC_WIDTH = 440
+_circ_layer = fontforge.layer()
+for c in _ring_mark.foreground:
+    _circ_layer += c
+_circ = font.createChar(0x2218, 'uni2218')
+_circ.clear()
+_circ.foreground = _circ_layer
+_circ_bb = _circ.boundingBox()
+_circ.transform(psMat.translate(
+    _CIRC_WIDTH / 2 - (_circ_bb[0] + _circ_bb[2]) / 2,
+    _MATH_AXIS - (_circ_bb[1] + _circ_bb[3]) / 2,
+))
+_circ.width = _CIRC_WIDTH
+
+
+# ---------------------------------------------------------------------------
+# ∗ U+2217 ASTERISK OPERATOR — asterisk recentred on the math axis.
+# MathJax emits U+2217 for `*` in math mode (and for \ast); without this
+# glyph `*` falls back to .notdef.  We copy the asterisk outlines and
+# translate them so their vertical centre lands on _MATH_AXIS, matching
+# the height of +/−/⋅ rather than the higher-sitting text asterisk.
+# ---------------------------------------------------------------------------
+_AST_WIDTH = 475
+_ast_src = font[ord('*')]
+_ast_bb = _ast_src.boundingBox()
+_ast_cy = (_ast_bb[1] + _ast_bb[3]) / 2
+_ast = font.createChar(0x2217, 'uni2217')
+_ast.clear()
+_ast.addReference(_ast_src.glyphname, psMat.translate(0, _MATH_AXIS - _ast_cy))
+_ast.width = _AST_WIDTH
 
 
 # ---------------------------------------------------------------------------

@@ -178,3 +178,36 @@ maxwell-equations:
 ramanujan-identity:
   formulas:
     - tex: '$$\frac{1}{(\sqrt{\phi \sqrt{5}}-\phi) e^{\frac25 \pi}} = 1 + \frac{e^{-2\pi}}{1 + \frac{e^{-4\pi}}{1 + \frac{e^{-6\pi}}{1 + \frac{e^{-8\pi}}{1 + \cdots}}}}$$'
+
+# Exercises the AMS `align` environment with multi-column alignment
+# (`& = … &&`), \tag/\label/\eqref cross-references, and the new math
+# operators \circ (U+2218) and `*` / \ast (U+2217).
+align-eqref:
+  formulas:
+    - tex: |
+        $$\begin{align}
+        y_1 + y_2 &= z \tag{$\star$} \label{ref1} \\
+        y' \circ y^* &= w \tag{$\dagger$} \label{ref3}
+        \end{align}$$
+
+        $$\begin{align}
+        x & = y_1 - y_2 + y_3 - y_5 + y_8 - \dots && \text{by \eqref{ref1}} \\
+          & = y' \circ y^*                         && \text{(by \eqref{ref3})} \\
+          & = y(0)\, y'                            && \text{by Axiom 1.}
+        \end{align}$$
+
+# A reference grid of math operators, relations, arrows, delimiters,
+# logic, and miscellaneous symbols that realistically appear in TeX
+# equations.  Useful both as a visual reference for what xkcd-script
+# covers and as a gap-finder — any cell that renders as a fallback
+# (Times-style) glyph or a `.notdef` box points at a missing codepoint.
+math-symbols-zoo:
+  cellHeight: 64
+  cellWidth: 700
+  formulas:
+    - tex: 'Binary ops: $+\ -\ \pm\ \mp\ \times\ \div\ \cdot\ \ast\ \circ\ \bullet\ \oplus\ \ominus\ \otimes\ \odot\ \cap\ \cup$'
+    - tex: 'Relations: $=\ \neq\ <\ >\ \leq\ \geq\ \ll\ \gg\ \approx\ \equiv\ \sim\ \simeq\ \propto\ \in\ \notin\ \subset\ \subseteq$'
+    - tex: 'Arrows: $\to\ \gets\ \rightarrow\ \leftarrow\ \Rightarrow\ \Leftarrow\ \Leftrightarrow\ \mapsto\ \uparrow\ \downarrow$'
+    - tex: 'Delimiters: $(\ )\ [\ ]\ \{\ \}\ \langle\ \rangle\ |\ \|\ \lfloor\ \rfloor\ \lceil\ \rceil$'
+    - tex: 'Logic / set: $\land\ \lor\ \lnot\ \implies\ \iff\ \forall\ \exists\ \emptyset\ \in\ \subset\ \cup\ \cap$'
+    - tex: 'Misc: $\infty\ \nabla\ \partial\ \aleph\ \hbar\ \ell\ \Re\ \Im\ \wp\ \prime\ \dagger\ \ddagger\ \star\ \angle$'
