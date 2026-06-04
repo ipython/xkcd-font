@@ -176,7 +176,8 @@ EXTRAS = [
     ('right_half_arrow', '2343_mathematical_symbol_fight_2x__right_half_arrow'),      # ⇀ U+21C0 source
     ('right_lim_arrow', '2343_mathematical_symbol_fight_2x__right_lim_arrow'),        # → U+2192 source
     ('triangle', '2343_mathematical_symbol_fight_2x__triangle'),              # △ U+25B3 source
-    ('sqrt_vertical', 'sqrt_vertical'),                                       # √ vertical surd, PUA U+E000
+    ('circled_times', '2034_equations_2x__circled_times'),                    # ⊗ U+2297 source
+    ('sqrt_vertical', 'sqrt_vertical'),                                       # √ tall surd, unencoded glyph `radical.tall`
     ('braceleft_tall', '2435_geothmetic_meandian_2x__brace__shortened'),      # { tall brace for MathJax stretchy assembly
     ('parenleft_tall', '2059_modified_bayes_theorem_2x__lparen'),             # ( tall paren for MathJax stretchy assembly (\binom, \left(, pmatrix); right paren is mirrored in pt5
 ]

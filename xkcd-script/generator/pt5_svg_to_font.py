@@ -809,6 +809,7 @@ _import_math_centered('infinity', 0x221E, _xh, weight_delta=30)   # ∞
 _import_math_centered('right_lim_arrow', 0x2192, _xh, weight_delta=20)    # →
 _import_math_centered('right_double_arrow', 0x21D2, _xh, weight_delta=20) # ⇒
 _import_math_centered('right_half_arrow', 0x21C0, _xh, weight_delta=20)   # ⇀
+_import_math_centered('circled_times', 0x2297, _xh, weight_delta=10)      # ⊗
 
 # △ U+25B3 WHITE UP-POINTING TRIANGLE — baseline to cap height.
 _tri_svg = os.path.join(_COMIC_CHARS_DIR, 'triangle.svg')

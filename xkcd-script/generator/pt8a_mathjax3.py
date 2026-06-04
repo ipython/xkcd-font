@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Extracts extensible-glyph outline data (emdash, radical, uniE000) from
+Extracts extensible-glyph outline data (emdash, radical, radical.tall) from
 pt7's SFD and splices it into ../xkcd-mathjax3.js between the GENERATED
 markers.  The browser-side cut-and-extend renderer uses those outlines at
 runtime, so they have to travel with the font.

@@ -872,9 +872,10 @@
 
     // ── Hand-drawn sqrt surd ───────────────────────────────────────────────
     // Picks the natural radical (U+221A) for short stems and switches to the
-    // PUA stem-with-shallow-lean (U+E000) once the requested height grows
-    // past TALL_SURD_RATIO × the natural radical height — preserving xkcd
-    // character at normal size, avoiding the visual collapse at large size.
+    // unencoded `radical.tall` stem-with-shallow-lean once the requested
+    // height grows past TALL_SURD_RATIO × the natural radical height —
+    // preserving xkcd character at normal size, avoiding the visual
+    // collapse at large size.
     const TALL_SURD_RATIO = 1.6;
 
     // The "short" test keys off the VINCULUM height (the radicand box).
