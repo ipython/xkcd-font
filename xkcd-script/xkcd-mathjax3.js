@@ -575,6 +575,88 @@
                     ["Z"],
                 ],
             },
+            "arrowright": {
+                advance: 594,
+                bbox: {xmin: 10.0, ymin: 99.1, xmax: 574.0, ymax: 307.1},
+                config: {cutXPct: 39, cutYPct: 50, leanDeg: 0.0, unitsPerSeg: 120, amp: 4},
+                commands: [
+                    ["M", 188.0, 186.1],
+                    ["C", 187.0, 186.1, 171.0, 185.1, 106.0, 185.1],
+                    ["C", 103.0, 185.1, 101.0, 185.1, 98.0, 185.1],
+                    ["C", 74.0, 185.1, 53.0, 185.1, 47.0, 186.1],
+                    ["C", 45.0, 186.1, 41.0, 187.1, 40.0, 187.1],
+                    ["C", 26.0, 187.1, 18.0, 194.1, 15.0, 200.1],
+                    ["C", 15.0, 201.1, 13.0, 203.1, 13.0, 203.1],
+                    ["C", 11.0, 205.1, 10.0, 209.1, 10.0, 213.1],
+                    ["C", 10.0, 223.1, 18.0, 230.1, 25.0, 236.1],
+                    ["L", 98.0, 236.1],
+                    ["C", 166.0, 236.1, 167.0, 236.1, 172.0, 237.1],
+                    ["C", 178.0, 238.1, 189.0, 238.1, 201.0, 238.1],
+                    ["C", 205.0, 238.1, 214.0, 238.4, 222.6, 238.4],
+                    ["C", 231.2, 238.4, 239.5, 238.1, 242.0, 237.1],
+                    ["C", 243.0, 237.1, 250.0, 236.1, 269.0, 236.1],
+                    ["C", 296.0, 236.1, 296.0, 236.1, 298.0, 237.1],
+                    ["C", 303.0, 238.1, 312.0, 238.1, 324.0, 238.1],
+                    ["C", 327.0, 238.1, 330.0, 238.1, 334.0, 238.1],
+                    ["C", 361.0, 238.1, 387.0, 238.1, 391.0, 237.1],
+                    ["C", 391.0, 237.1, 398.0, 236.1, 420.0, 236.1],
+                    ["L", 425.0, 236.1],
+                    ["C", 417.0, 241.1, 419.0, 241.1, 417.0, 242.1],
+                    ["C", 409.0, 245.1, 410.0, 247.1, 405.0, 249.1],
+                    ["C", 399.0, 252.1, 399.0, 252.1, 394.0, 255.1],
+                    ["C", 392.0, 256.1, 389.0, 257.1, 386.0, 261.1],
+                    ["C", 386.0, 261.1, 385.0, 263.1, 384.0, 264.1],
+                    ["C", 379.0, 268.1, 378.0, 272.1, 372.0, 289.1],
+                    ["C", 378.0, 295.1, 384.0, 304.1, 390.0, 305.1],
+                    ["C", 394.0, 306.1, 397.0, 307.1, 401.0, 307.1],
+                    ["C", 416.0, 307.1, 418.0, 297.1, 426.0, 294.1],
+                    ["C", 432.0, 291.1, 433.0, 290.1, 437.0, 288.1],
+                    ["C", 443.0, 286.1, 446.0, 282.1, 448.0, 281.1],
+                    ["C", 453.0, 279.1, 453.0, 276.1, 457.0, 274.1],
+                    ["C", 460.0, 272.1, 463.0, 271.1, 465.0, 270.1],
+                    ["C", 468.0, 269.1, 471.0, 267.1, 474.0, 265.1],
+                    ["C", 476.0, 264.1, 478.0, 262.1, 478.0, 262.1],
+                    ["C", 481.0, 261.1, 494.0, 255.1, 498.0, 252.1],
+                    ["C", 499.0, 251.1, 506.0, 251.1, 515.0, 247.1],
+                    ["C", 521.0, 244.1, 527.0, 245.1, 537.0, 239.1],
+                    ["C", 538.0, 239.1, 539.0, 238.1, 542.0, 237.1],
+                    ["C", 558.0, 233.1, 574.0, 229.1, 574.0, 212.1],
+                    ["C", 574.0, 207.1, 572.0, 202.1, 569.0, 198.1],
+                    ["L", 568.0, 196.1],
+                    ["C", 567.0, 195.1, 564.0, 186.1, 556.0, 184.1],
+                    ["C", 555.0, 184.1, 553.0, 182.1, 547.0, 181.1],
+                    ["C", 538.0, 179.1, 534.0, 175.1, 525.0, 173.1],
+                    ["C", 518.0, 172.1, 516.0, 171.1, 515.0, 171.1],
+                    ["C", 512.0, 169.1, 509.0, 168.1, 506.0, 167.1],
+                    ["C", 495.0, 163.1, 505.0, 164.1, 490.0, 160.1],
+                    ["C", 487.0, 159.1, 480.0, 152.1, 472.0, 149.1],
+                    ["C", 470.0, 148.1, 467.0, 145.1, 461.0, 142.1],
+                    ["C", 457.0, 140.1, 458.0, 139.1, 453.0, 136.1],
+                    ["C", 451.0, 135.1, 443.0, 130.1, 442.0, 129.1],
+                    ["C", 438.0, 123.1, 421.0, 107.1, 415.0, 105.1],
+                    ["C", 412.0, 103.1, 410.0, 99.1, 404.0, 99.1],
+                    ["C", 399.0, 99.1, 389.0, 106.1, 386.0, 112.1],
+                    ["L", 385.0, 112.1],
+                    ["C", 376.0, 118.1, 376.0, 130.1, 376.0, 130.1],
+                    ["C", 376.0, 135.1, 378.0, 138.1, 384.0, 143.1],
+                    ["C", 392.0, 152.1, 396.0, 154.1, 400.0, 156.1],
+                    ["C", 406.0, 158.1, 404.0, 162.1, 412.0, 167.1],
+                    ["C", 416.0, 170.1, 424.0, 178.1, 430.0, 181.1],
+                    ["C", 431.0, 182.1, 433.0, 183.1, 436.0, 185.1],
+                    ["C", 434.0, 185.1, 431.0, 185.1, 429.0, 185.1],
+                    ["C", 425.0, 185.1, 420.0, 185.1, 416.0, 185.1],
+                    ["C", 410.0, 185.1, 404.0, 185.1, 398.0, 185.1],
+                    ["C", 355.0, 185.1, 388.0, 187.1, 346.0, 187.1],
+                    ["C", 344.0, 187.1, 342.0, 187.1, 339.0, 187.1],
+                    ["C", 314.0, 187.1, 309.0, 186.1, 309.0, 186.1],
+                    ["C", 306.0, 185.1, 295.5, 184.9, 284.6, 184.9],
+                    ["C", 273.8, 184.9, 262.5, 185.1, 258.0, 185.1],
+                    ["C", 243.0, 185.1, 230.0, 185.1, 224.0, 186.1],
+                    ["C", 221.0, 186.1, 210.0, 187.1, 201.0, 187.1],
+                    ["C", 192.0, 187.1, 190.0, 186.1, 189.0, 186.1],
+                    ["Z"],
+                ],
+            },
         };
     // ── END GENERATED GLYPH DATA ──
 
@@ -1496,6 +1578,182 @@
         }
     }
 
+    // ── Stretchy arrows (\xrightarrow, \overrightarrow, AMScd, etc.) ───────
+    // MathJax renders horizontal stretchy arrows over/under bases via
+    // <mjx-stretchy-h class="mjx-c<cp>"> (when wide) or a single <mjx-c>
+    // (when narrow) inside an mjx-mo.  Vertical arrows (AMScd column
+    // connectors) use <mjx-stretchy-v> the same way.  All four cardinal
+    // directions reuse the arrowright outline; rotation/mirroring is via
+    // CSS transform on the overlay div.
+    const STRETCHY_ARROW = {
+        glyph: 'arrowright',
+        seed:  7,
+        // Stroke weight as a fraction of fontSize.  Natural glyph height
+        // is scaled to fontSizePx * heightEm; same value drives the
+        // \xrightarrow operator and the \vec / \overrightarrow accent.
+        heightEm: 0.35,
+        // Vertical placement of the rendered arrow inside sourceRect, as
+        // a fraction of sourceRect.height from the top:
+        //   accent (inOver) — ink near the bottom, just above base letters.
+        //   operator (horizontal, not CD) — slightly below centre so the
+        //                                   label above has clearance.
+        //   default (CD horizontal, CD vertical) — centred.
+        yBiasFrac: { accent: 1.1, operator: 0.9, default: 0.5 },
+        // AMScd cells read best with a much thinner stroke — light,
+        // schematic — and the vertical column connectors need length and
+        // centre tweaks so they reach between the row labels.
+        cd: {
+            heightEm:       0.22,
+            vLengthExtraEm: 0.4,
+            vYShiftEm:      0.2,
+        },
+        // Narrow \vec bases (single letters) bypass the SVG path and use
+        // a text-rendered → at fontFrac×fontSize, which gives a more
+        // natural xkcd pen than any scaled stretchy arrow.  Threshold:
+        // use SVG when the natural arrow width fits within
+        //   max(baseRect.width*widthFrac, fontSizePx*minWidthFrac).
+        narrowVec: {
+            fontFrac:     0.85,
+            topLiftFrac:  0.55,
+            widthFrac:    0.75,
+            minWidthFrac: 0.30,
+        },
+    };
+    // codepoint-class → {axis, transform}.  'h' axis stretches along
+    // sourceRect.width; 'v' axis along sourceRect.height (the SVG is
+    // built horizontally and rotated 90°).
+    const ARROW_DIRS = {
+        'mjx-c2192': { axis: 'h', transform: '' },                // →
+        'mjx-c2190': { axis: 'h', transform: 'scaleX(-1)' },      // ←
+        'mjx-c2193': { axis: 'v', transform: 'rotate(90deg)' },   // ↓
+        'mjx-c2191': { axis: 'v', transform: 'rotate(-90deg)' },  // ↑
+    };
+
+    function _arrowDirForElement(el) {
+        for (const cls of el.classList || []) {
+            if (ARROW_DIRS[cls]) return { cls, ...ARROW_DIRS[cls] };
+        }
+        return null;
+    }
+
+    // Build the stretchy-arrow SVG given an X-extension `Nx` (in glyph
+    // units) and a uniform scale `Sx` (px per unit).  Returns the SVG
+    // markup string plus its rendered pixel dimensions so the caller can
+    // position the overlay wrapper.
+    function _buildArrowOverlaySvg(Nx, Sx) {
+        const segs = buildExtendedSegs(STRETCHY_ARROW.glyph, Nx, 0, STRETCHY_ARROW.seed);
+        const d    = _segsToPath(segs);
+        const eb   = _bboxOf(segs);
+        const margin = 20;
+        const vbX = eb.xmin - margin;
+        const vbY = -(eb.ymax + margin);
+        const vbW = (eb.xmax - eb.xmin) + 2 * margin;
+        const vbH = (eb.ymax - eb.ymin) + 2 * margin;
+        const widthPx  = vbW * Sx;
+        const heightPx = vbH * Sx;
+        const svg = `<svg class="xkcd-overlay" xmlns="http://www.w3.org/2000/svg"
+            width="${widthPx}px" height="${heightPx}px" viewBox="${vbX} ${vbY} ${vbW} ${vbH}"
+            style="display:block;overflow:visible;pointer-events:none;">
+          <g transform="scale(1,-1)" fill="currentColor" stroke="none">
+            <path d="${d}"/>
+          </g>
+        </svg>`;
+        return { svg, widthPx, heightPx };
+    }
+
+    function replaceStretchyArrows(root) {
+        const scope = root || document;
+        if (!EXTENSIBLE_GLYPHS[STRETCHY_ARROW.glyph]) return;
+        const targets = [];
+        scope.querySelectorAll('mjx-stretchy-h, mjx-stretchy-v').forEach(stretchy => {
+            const dir = _arrowDirForElement(stretchy);
+            if (!dir) return;
+            const mo = stretchy.closest('mjx-mo') || stretchy.parentElement;
+            if (mo) targets.push({ mo, hide: stretchy, sizeFrom: stretchy, dir });
+        });
+        scope.querySelectorAll('mjx-c').forEach(c => {
+            const dir = _arrowDirForElement(c);
+            if (!dir) return;
+            if (c.closest('mjx-stretchy-h, mjx-stretchy-v')) return;
+            const mo = c.closest('mjx-mo');
+            if (!mo) return;
+            // Distinguish stretchy-operator use (\xrightarrow{f},
+            // \overrightarrow{f}, where the arrow's wrapper contains only
+            // the arrow) from inline arrows that happen to land in an
+            // over/under slot (`h \to 0` under \lim, where mo sits in an
+            // mjx-mrow alongside `h` and `0`).  Walking outward from the
+            // arrow, the first ancestor with multiple children is the
+            // boundary: if it's the enclosing mjx-mover/munder/munderover,
+            // the arrow filled a whole slot on its own — accept.
+            let p = mo.parentElement;
+            while (p && p.children.length === 1) p = p.parentElement;
+            if (!p) return;
+            if (p.tagName !== 'MJX-MOVER' && p.tagName !== 'MJX-MUNDER' &&
+                p.tagName !== 'MJX-MUNDEROVER') return;
+            targets.push({ mo, hide: c, sizeFrom: mo, dir });
+        });
+
+        for (const { mo, hide, sizeFrom, dir } of targets) {
+            if (mo.dataset.arrowReplaced) continue;
+            mo.dataset.arrowReplaced = '1';
+
+            const moRect     = mo.getBoundingClientRect();
+            const sourceRect = sizeFrom.getBoundingClientRect();
+            // Stretch dimension = source rect's long axis; for vertical
+            // arrows that's height (the SVG runs horizontally before the
+            // CSS rotate(90deg) lays it onto the column).
+            const baseStretchPx = dir.axis === 'h' ? sourceRect.width : sourceRect.height;
+            if (baseStretchPx < 1) continue;
+
+            const fontSizePx = parseFloat(getComputedStyle(mo).fontSize);
+            const g    = EXTENSIBLE_GLYPHS[STRETCHY_ARROW.glyph];
+            const natW = g.bbox.xmax - g.bbox.xmin;
+            const natH = g.bbox.ymax - g.bbox.ymin;
+            const inCD   = !!mo.closest('mjx-mtd');
+            // mo sits in mjx-over for accents (\overrightarrow, \overleftarrow);
+            // in mjx-base for operators with labels (\xrightarrow, \xleftarrow).
+            const inOver = !!mo.closest('mjx-over, mjx-under');
+
+            // Length extension (CD-vertical only): MathJax sizes the source
+            // rect with substantial breathing room — pad so the tips reach
+            // closer to both row labels.
+            const stretchExtra = (inCD && dir.axis === 'v')
+                ? fontSizePx * STRETCHY_ARROW.cd.vLengthExtraEm : 0;
+            const stretchPx = baseStretchPx + stretchExtra;
+            const heightEm = inCD ? STRETCHY_ARROW.cd.heightEm
+                                  : STRETCHY_ARROW.heightEm;
+            const Sx = (fontSizePx * heightEm) / natH;
+            const Nx = Math.max(0, stretchPx / Sx - natW);
+
+            const { svg, widthPx, heightPx } = _buildArrowOverlaySvg(Nx, Sx);
+
+            // Centre horizontally; bias vertically by context (see
+            // STRETCHY_ARROW.yBiasFrac docs).  CD-vertical additionally
+            // shifts the centre down so it favours the lower row.
+            const yBiasFrac = inOver                          ? STRETCHY_ARROW.yBiasFrac.accent
+                            : (dir.axis === 'h' && !inCD)   ? STRETCHY_ARROW.yBiasFrac.operator
+                                                            : STRETCHY_ARROW.yBiasFrac.default;
+            const yShift = (inCD && dir.axis === 'v')
+                ? fontSizePx * STRETCHY_ARROW.cd.vYShiftEm : 0;
+            const cx = sourceRect.left + sourceRect.width  / 2 - moRect.left;
+            const cy = sourceRect.top  + sourceRect.height * yBiasFrac
+                     - moRect.top + yShift;
+            const left = cx - widthPx  / 2;
+            const top  = cy - heightPx / 2;
+
+            hide.dataset.xkcdHidden = '1';
+            hide.style.visibility = 'hidden';
+            if (getComputedStyle(mo).position === 'static') {
+                mo.dataset.xkcdPos = '1';
+                mo.style.position = 'relative';
+            }
+
+            const tr = dir.transform;
+            mo.insertAdjacentHTML('beforeend',
+                `<div class="xkcd-overlay" style="position:absolute;left:${left}px;top:${top}px;${tr ? `transform:${tr};` : ''}pointer-events:none;">${svg}</div>`);
+        }
+    }
+
     function resetOverlays(scope) {
         const root = scope || document;
         root.querySelectorAll('.xkcd-overlay').forEach(el => el.remove());
@@ -1527,6 +1785,9 @@
         });
         root.querySelectorAll('[data-bracket-replaced]').forEach(el => {
             delete el.dataset.bracketReplaced;
+        });
+        root.querySelectorAll('[data-arrow-replaced]').forEach(el => {
+            delete el.dataset.arrowReplaced;
         });
     }
 
@@ -1771,20 +2032,35 @@
             mover.dataset.xkcdWide = '1';
 
             if (isVec) {
-                // Use the font's own arrowright (U+2192) so the overlay is
-                // genuinely xkcd-script's pen.  Size it to fontSize and
-                // anchor over the base's horizontal centre.
+                const ag = EXTENSIBLE_GLYPHS[STRETCHY_ARROW.glyph];
+                const nv = STRETCHY_ARROW.narrowVec;
                 const cx = (baseRect.left + baseRect.right) / 2 - containerRect.left;
-                const arrowFontSize = fontSizePx * 0.85;
-                // Centre the rendered arrow horizontally above the base.
-                // top is just above the base; small lift so the arrow doesn't
-                // overlap the letter's ascender.
-                const arrowTop = baseRect.top - containerRect.top - arrowFontSize * 0.55;
-                // xkcd-script is single-weight; thicken the rendered arrow
-                // by painting an outline stroke in the same colour as the
-                // fill, so the visible stroke is roughly stroke + glyph.
-                container.insertAdjacentHTML('beforeend',
-                    `<div class="xkcd-overlay" style="position:absolute;left:${cx}px;top:${arrowTop}px;transform:translateX(-50%);font-family:'xkcd-script',sans-serif;font-size:${arrowFontSize}px;line-height:1;-webkit-text-stroke:0.025em currentColor;pointer-events:none;">→</div>`);
+                // Narrow (single letters) → the font's own U+2192 rendered
+                // as text with a stroke thickener.  Wide (\vec{ABC}) →
+                // stretchy SVG built from the arrowright outline.  Falls
+                // back to text rendering if the glyph data hasn't been
+                // baked in (pre-pipeline).
+                const Sx = ag && (fontSizePx * STRETCHY_ARROW.heightEm)
+                                   / (ag.bbox.ymax - ag.bbox.ymin);
+                const naturalWpx = ag && (ag.bbox.xmax - ag.bbox.xmin) * Sx;
+                const targetWpx  = Math.max(baseRect.width * nv.widthFrac,
+                                            fontSizePx * nv.minWidthFrac);
+                const isNarrow = !ag || naturalWpx > targetWpx;
+
+                if (isNarrow) {
+                    const arrowFontSize = fontSizePx * nv.fontFrac;
+                    const arrowTop = baseRect.top - containerRect.top
+                                   - arrowFontSize * nv.topLiftFrac;
+                    container.insertAdjacentHTML('beforeend',
+                        `<div class="xkcd-overlay" style="position:absolute;left:${cx}px;top:${arrowTop}px;transform:translateX(-50%);font-family:'xkcd-script',sans-serif;font-size:${arrowFontSize}px;line-height:1;-webkit-text-stroke:0.025em currentColor;pointer-events:none;">→</div>`);
+                } else {
+                    const natW = ag.bbox.xmax - ag.bbox.xmin;
+                    const Nx = targetWpx / Sx - natW;
+                    const { svg, heightPx } = _buildArrowOverlaySvg(Nx, Sx);
+                    const arrowTop = baseRect.top - containerRect.top - heightPx * 0.4;
+                    container.insertAdjacentHTML('beforeend',
+                        `<div class="xkcd-overlay" style="position:absolute;left:${cx}px;top:${arrowTop}px;transform:translateX(-50%);pointer-events:none;">${svg}</div>`);
+                }
             } else {
                 container.insertAdjacentHTML('beforeend',
                     `<div class="xkcd-overlay" style="position:absolute;left:${left}px;top:${top}px;pointer-events:none;">${mirrorBarHTML(width, barH)}</div>`);
@@ -1803,6 +2079,7 @@
         replaceStretchyBraces(root);
         replaceStretchyParens(root);
         replaceStretchyBrackets(root);
+        replaceStretchyArrows(root);
     }
 
     // ── Startup orchestration ──────────────────────────────────────────────
@@ -1856,14 +2133,15 @@
         wrapSubtree('typeset', false);
         // tex2chtml / mathml2chtml (+ Promise variants): return a detached
         // <mjx-container> the caller inserts somewhere.  We don't know
-        // where, so defer the refresh to a microtask after the return —
-        // by then the caller has typically appended it.  Refresh runs on
-        // document so newly inserted nodes get picked up.
+        // where, so defer the refresh until after the caller has appended
+        // it.  Must be a macrotask (setTimeout) — a microtask would drain
+        // before the caller's own .then handler that does the appending,
+        // so refresh would find nothing to overlay.
         const wrapNode = function (name, async) {
             const fn = mj[name];
             if (!fn || fn._xkcdWrapped) return;
             const orig = fn.bind(mj);
-            const schedule = () => Promise.resolve().then(() => refresh());
+            const schedule = () => setTimeout(refresh, 0);
             const wrapped = function (...args) {
                 if (async) return orig(...args).then(node => { schedule(); return node; });
                 const node = orig(...args); schedule(); return node;
