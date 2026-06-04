@@ -118,13 +118,46 @@ column-vector:
 # All simple cases (single-letter base) should ideally be shaped by the browser
 # via the font's GPOS mark anchors.  The final \widehat{xyz} row is the wide-base
 # case which legitimately needs MathJax's stretchy extender — it must keep working.
+# Exercises: digit '1' padding (many 1s in the body and totals); vertical
+# rules `|`; multiple `\hline`s separating header / body / totals; mixed
+# text + numeric cells; ragged column widths (1 vs 12 vs 225).
+# Note: MathJax 3 silently collapses `||` and `\hline\hline` to single
+# rules, so this sample sticks to single rules everywhere.
+multiplication-table:
+  formulas:
+    - tex: '$$\begin{array}{c|c|c|c|c|c|c} \times & 1 & 2 & 3 & 4 & 5 & \text{sum} \\ \hline 1 & 1 & 2 & 3 & 4 & 5 & 15 \\ 2 & 2 & 4 & 6 & 8 & 10 & 30 \\ 3 & 3 & 6 & 9 & 12 & 15 & 45 \\ 4 & 4 & 8 & 12 & 16 & 20 & 60 \\ 5 & 5 & 10 & 15 & 20 & 25 & 75 \\ \hline \text{sum} & 15 & 30 & 45 & 60 & 75 & 225 \\ \end{array}$$'
+
 accents-zoo:
   cellHeight: 80
   cellWidth: 280
   formulas:
     - tex: '$\hat{i},\ \hat{f},\ \hat{x},\ \hat{H},\ \hat{A},\ \hat{M}$'
-    - tex: '$\vec{v},\ \vec{x},\ \vec{b},\ \vec{F},\ \vec{A},\ \vec{p}$'
+    - tex: '$\vec{v},\ \vec{x},\ \vec{F},\ \vec{p},\ \vec{ABC},\ \overrightarrow{ABC}$'
+    - tex: '$\vec{\mathbf{0}},\ \vec{\mathbf{E}},\ \vec{\mathbf{B}},\ \vec{\mathbf{j}},\ \vec{\mathbf{r}},\ \vec{\mathbf{1}}$'
     - tex: '$\bar{x},\ \bar{y},\ \bar{f},\ \bar{H},\ \bar{A},\ \bar{M}$'
     - tex: '$\tilde{n},\ \tilde{x},\ \tilde{f},\ \tilde{H},\ \tilde{A},\ \tilde{M}$'
     - tex: '$\dot{x},\ \ddot{x},\ \check{c},\ \breve{u},\ \acute{e},\ \grave{e}$'
     - tex: '$\widehat{xyz} \qquad \widetilde{abc} \qquad \overline{a+b+c}$'
+
+sqrt-digit-radicand:
+  cellHeight: 80
+  cellWidth: 280
+  formulas:
+    - tex: '$\sqrt{5}$'
+    - tex: '$\sqrt{2}$'
+    - tex: '$\sqrt{1-x^2}$'
+    - tex: '$\sqrt{\phi \sqrt{5}}$'
+
+maxwell-equations:
+  formulas:
+    - tex: |
+        $$\begin{aligned}
+        \nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} & = \frac{4\pi}{c}\vec{\mathbf{j}} \\
+        \nabla \cdot \vec{\mathbf{E}} & = 4 \pi \rho \\
+        \nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t} & = \vec{\mathbf{0}} \\
+        \nabla \cdot \vec{\mathbf{B}} & = 0
+        \end{aligned}$$
+
+ramanujan-identity:
+  formulas:
+    - tex: '$$\frac{1}{(\sqrt{\phi \sqrt{5}}-\phi) e^{\frac25 \pi}} = 1 + \frac{e^{-2\pi}}{1 + \frac{e^{-4\pi}}{1 + \frac{e^{-6\pi}}{1 + \frac{e^{-8\pi}}{1 + \cdots}}}}$$'
