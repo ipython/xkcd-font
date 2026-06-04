@@ -793,16 +793,23 @@
     function injectFontOverride() {
         if (_fontOverrideInjected) return;
         _fontOverrideInjected = true;
-        // MJXZERO first matches MathJax's own .TEX-S1 rule: it's a zero-metric
-        // font that keeps the line-box clean, so only MathJax's explicit ::before
-        // padding governs vertical positioning of large operators.  xkcd-script
-        // still wins as the actual glyph source via cmap fallback.
-        const STACK = "MJXZERO, 'xkcd-script', MJXTEX, MJXTEX-I, MJXTEX-B, MJXTEX-BI, MJXTEX-S1, MJXTEX-S2, MJXTEX-S3, MJXTEX-S4, MJXTEX-A";
+        const STACK = "'xkcd-script', MJXTEX, MJXTEX-I, MJXTEX-B, MJXTEX-BI, MJXTEX-S1, MJXTEX-S2, MJXTEX-S3, MJXTEX-S4, MJXTEX-A";
+        // For large operators (∑ ∏ ∫) MathJax CHTML positions glyphs via
+        // explicit ::before padding and relies on a zero-metric font
+        // (MJXZERO) being first in the family so the line-box adds no
+        // ascent/descent of its own.  We replicate that just for .TEX-S1
+        // so the vertical placement matches; leaving xkcd-script first
+        // elsewhere keeps the surd/vinculum DOM measurements valid.
+        const STACK_S1 = "MJXZERO, 'xkcd-script', MJXTEX-S1, MJXTEX, MJXTEX-I, MJXTEX-B, MJXTEX-BI, MJXTEX-S2, MJXTEX-S3, MJXTEX-S4, MJXTEX-A";
         const s = document.createElement('style');
         s.textContent = `
             mjx-container[jax="CHTML"] *,
             mjx-container[jax="CHTML"] *::before {
                 font-family: ${STACK} !important;
+            }
+            mjx-container[jax="CHTML"] .TEX-S1,
+            mjx-container[jax="CHTML"] .TEX-S1::before {
+                font-family: ${STACK_S1} !important;
             }
             /* Display-mode large operators (∑ ∏ ∫): swap in the .disp
                stylistic alternates from xkcd-script via ss01.  Inline
@@ -821,10 +828,18 @@
             mjx-container[jax="CHTML"] mjx-mo * {
                 font-feature-settings: "ss01" on !important;
             }
-            /* Breathing room around inline math containers so they don't
-               crowd surrounding sentence text. */
-            mjx-container[jax="CHTML"]:not([display="true"]) {
-                margin: 0 0.2em !important;
+            /* Render \text{} content as a natural shaped run rather than
+               per-character mjx-c boxes — MathJax CHTML's pre-baked widths
+               are calibrated for MJXTEX and produce wrong gaps / fake
+               ligature-looking overlaps when the actual font is xkcd-script. */
+            mjx-container[jax="CHTML"] mjx-mtext mjx-c {
+                display: inline !important;
+                padding: 0 !important;
+            }
+            mjx-container[jax="CHTML"] mjx-mtext mjx-c::before {
+                display: inline !important;
+                width: auto !important;
+                padding: 0 !important;
             }
             /* Inline limits on ∑ ∏ ∫ need extra right margin — MathJax uses
                pre-baked metrics that ignore our wider .disp glyphs. */
