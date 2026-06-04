@@ -114,8 +114,9 @@ def create_char(font, chars, fname):
     return c
 
 
-baseline_chars = ['a' 'e', 'm', 'A', 'E', 'M', '&', '@', '.', u'≪', u'É']
+baseline_chars = ['a', 'e', 'm', 'A', 'E', 'M', '&', '@', '.', u'≪', u'É']
 caps_chars = ['S', 'T', 'J', 'k', 't', 'l', 'b', 'd', '1', '2', u'3', u'≪', '?', '!']
+exheight_chars = ['a', 'e', 'm']
 
 line_stats = {}
 for line, position, bbox, fname, chars in characters:
@@ -126,6 +127,8 @@ for line, position, bbox, fname, chars in characters:
             this_line.setdefault('baseline', []).append(bbox[3])
         if char in caps_chars:
             this_line.setdefault('cap-height', []).append(bbox[1])
+        if char in exheight_chars:
+            this_line.setdefault('x-height', []).append(bbox[1])
 
 
 import numpy as np
@@ -137,9 +140,31 @@ import psMat
 _spans = {line: np.mean(s['baseline']) - np.mean(s['cap-height'])
           for line, s in line_stats.items()
           if 'baseline' in s and 'cap-height' in s}
+_baselines = {line: np.mean(s['baseline'])
+          for line, s in line_stats.items()
+          if 'baseline' in s and 'cap-height' in s}
 _top_ratio = 600 / (600 + 256)
 _full_glyph_sizes = {line: span / _top_ratio for line, span in _spans.items()}
 _median_full_glyph_size = np.median(list(_full_glyph_sizes.values()))
+print(_spans)
+print({line: np.mean(s['baseline']) - np.mean(s['x-height'])
+          for line, s in line_stats.items()
+          if 'baseline' in s and 'x-height' in s})
+print(_baselines)
+
+# Adjust to be consistent with the subsequent per-line weight adjustment.
+# changeWeight() seems to enlarge the stroke to the right and downward.
+for line in line_stats.keys():
+    _line_fgs = _full_glyph_sizes.get(line)
+    if _line_fgs:
+        if _line_fgs > _median_full_glyph_size * 1.10:
+            _scale_correction = _line_fgs / _median_full_glyph_size
+            _estimated_stroke = 0.12 * 600
+            _delta = int(round(_estimated_stroke * (_scale_correction - 1)))
+            _delta *= _median_full_glyph_size / (600 + 256)
+            _spans[line] += _delta
+            _baselines[line] += _delta
+        # not yet for < 0.90 (pending)
 
 
 def scale_glyph(char, char_bbox, baseline, cap_height):
@@ -206,13 +231,71 @@ def translate_glyph(c, char_bbox, cap_height, baseline):
     t = psMat.translate(-glyph_bbox[0], -glyph_bbox[1] + ((baseline - char_bbox[3]) * c.font.em / full_glyph_size))
     c.transform(t)
 
+def pad_glyph(c):
     # Put horizontal padding around the glyph. I choose a number here that looks reasonable,
     # there are far more sophisticated means of doing this (like looking at the original image,
     # and calculating how much space there should be).
-    space = 20
-    scaled_width = glyph_bbox[2] - glyph_bbox[0]
-    c.width = int(round(scaled_width + 2 * space))
-    t = psMat.translate(space, 0)
+    space = 0
+    rspace = 20
+    c.font['_pad_space'].width = space + rspace
+    bbox = c.boundingBox()
+    if c.glyphname in list('gjpqy'):
+        # Recalculate the bounding box by excluding the tail of the glyph
+        # Do not remove the glyph's tail if it is too close to the baseline
+        capxrange = c.foreground.xBoundsAtY(-40, 600)
+        if c.glyphname == 'j':
+            bbox = tuple([(capxrange[0] + bbox[0])/2, bbox[1], capxrange[1], bbox[3]])
+        else:
+            bbox = tuple([capxrange[0], bbox[1], capxrange[1], bbox[3]])
+    if c.glyphname == 'f':
+        # Recalculate the bounding box by excluding the arm of the glyph
+        # Restrict the arm so that it does not pierce through the stem of the next glyph
+        xxrange = c.foreground.xBoundsAtY(0, 420)
+        bbox = tuple([xxrange[0], bbox[1], max(xxrange[1], bbox[2] - (rspace + space + 0.12 * 600)), bbox[3]])
+    lflatness = c.foreground.yBoundsAtX(bbox[0] - 1, bbox[0] + 20)
+    rflatness = c.foreground.yBoundsAtX(bbox[2] - 20, bbox[2] + 1)
+    roughness = []
+    for i in range(4):
+        roughness.append(c.foreground.xBoundsAtY(100 + 100 * i, 150 + 100 * i) or tuple([bbox[2], bbox[0]]))
+    lroughness = np.sqrt(np.median([(roughness[i][0] - bbox[0])**2 for i in range(4)]))
+    rroughness = np.sqrt(np.median([(bbox[2] - roughness[i][1])**2 for i in range(4)]))
+    add_left = 0
+    if lflatness[1] - lflatness[0] < 0.25 * 600:
+        add_left = 0
+    elif lroughness >= 35:
+        add_left = 0
+    elif lroughness >= 20:
+        add_left = 5
+    elif lroughness >= 10:
+        add_left = 10
+    elif lroughness >= 5:
+        add_left = 15
+    else:
+        add_left = 20
+    add_right = 0
+    if rflatness[1] - rflatness[0] < 0.25 * 600:
+        add_right = 0
+    elif rroughness >= 35:
+        add_right = 0
+    elif rroughness >= 20:
+        add_right = 5
+    elif rroughness >= 10:
+        add_right = 10
+    elif rroughness >= 5:
+        add_right = 15
+    else:
+        add_right = 20
+    if c.glyphname == 'i':
+        add_left += 10
+        add_right += 10
+    may_too_wide1 = list('aebdpr')
+    if c.glyphname in may_too_wide1:
+        if bbox[2] - bbox[0] > 370:
+            add_left -= 5
+            add_right -= 10
+    scaled_width = bbox[2]
+    c.width = round(scaled_width + rspace + space / 2 + add_right)
+    t = psMat.translate(round((-bbox[0]) + space / 2 + add_left), 0)
     c.transform(t)
 
 
@@ -238,11 +321,23 @@ font.hhea_ascent = 855; font.hhea_ascent_add = False
 font.hhea_descent = -270; font.hhea_descent_add = False
 font.hhea_linegap = 77
 
+# Information to be conveyed to the next stage.
+# I wanted to use font.persistent, but it causes an error. Instead, I use a dummy glyph.
+font.createChar(-1, '_pad_space')
+
 # Per-character size scaling applied after changeWeight, to fine-tune individual glyphs
 # that end up slightly too large despite correct stroke weight.
-_per_char_size = {
-    ('q',): 0.92,
-    ('x',): 0.83,
+_per_char_operation = {
+    ('q',): psMat.compose(psMat.scale(0.92), psMat.translate(0, 20)),
+    ('x',): psMat.translate(0, 20),
+}
+
+# Per-character weight nudge applied after the per-line scale correction.
+# Positive = thicker, negative = thinner.  Mirrors _GREEK_WEIGHT_NUDGE for the
+# main alphabet — used when an individual glyph's hand-drawn stroke is
+# noticeably heavier or lighter than its neighbours.
+_per_char_weight_nudge = {
+    ('z',): -15,  # z's diagonal strokes are heavier than the rest of the alphabet
 }
 
 # Pick out particular glyphs that are more pleasant than their latter alternatives.
@@ -263,18 +358,15 @@ for line, position, bbox, fname, chars in characters:
 
     c = create_char(font, chars, fname)
 
-    # Get the linestats for this character.
-    line_features = line_stats[line]
-
     scale_glyph(
         c, bbox,
-        baseline=np.mean(line_features['baseline']),
-        cap_height=np.mean(line_features['cap-height']))
+        baseline=_baselines[line],
+        cap_height=_baselines[line] - _spans[line])
 
     translate_glyph(
         c, bbox,
-        baseline=np.mean(line_features['baseline']),
-        cap_height=np.mean(line_features['cap-height']))
+        baseline=_baselines[line],
+        cap_height=_baselines[line] - _spans[line])
 
     # Correct for lines written at a significantly different scale than the median.
     # - Too large (fgs high): chars scaled down → thin strokes → fatten with changeWeight.
@@ -303,12 +395,23 @@ for line, position, bbox, fname, chars in characters:
                 c.transform(psMat.scale(_restore))
                 c.width = int(round(c.width * _restore))
 
+    # Per-character weight nudge: applied to source glyphs whose stroke weight
+    # is noticeably off from the rest of the alphabet.
+    _weight_nudge = _per_char_weight_nudge.get(chars)
+    if _weight_nudge:
+        c.correctDirection()
+        c.removeOverlap()
+        c.changeWeight(_weight_nudge)
+        c.simplify()
+
     # Per-character size adjustments: scale about the baseline (origin) to reduce
     # overall size while preserving stroke weight gained from changeWeight above.
-    _size_scale = _per_char_size.get(chars)
-    if _size_scale is not None:
-        c.transform(psMat.scale(_size_scale))
-        c.width = int(round(c.width * _size_scale))
+    _operation_matrix = _per_char_operation.get(chars)
+    if _operation_matrix is not None:
+        c.transform(_operation_matrix)
+
+    # Apply padding afterward so that it is not affected by scaling.
+    pad_glyph(c)
 
     # Simplify, then put the vertices on rounded coordinate positions.
     c.simplify()
@@ -445,6 +548,7 @@ _GREEK = [
     ('lambda',  0x03BB, 'b', True),
     ('tau', 0x03C4, 'a', True),
     ('varsigma', 0x03C2, 'a', True),
+    ('Lambda',  0x039B, 'A', True),
 ]
 
 # Letters with genuine descenders: fraction of the crop height that is the
@@ -629,6 +733,79 @@ _ch.clear()
 for _cont in _square_src.foreground:
     _ch.foreground += _cont
 _ch.width = _square_src.width
+
+
+# ∂ U+2202 PARTIAL DIFFERENTIAL — hand-drawn "rounded d" from xkcd #2520.
+# Sits on the baseline and reaches ascender height like 'b'.
+_rounded_d_svg = os.path.join(_COMIC_CHARS_DIR, 'rounded_d.svg')
+_rounded_d_src = _import_comic_glyph(font, 'rounded_d', _rounded_d_svg,
+                                     target_top=font['b'].boundingBox()[3], weight_delta=-35)
+_bb = _rounded_d_src.boundingBox()
+if _bb[1] != 0:
+    _rounded_d_src.transform(psMat.translate(0, -_bb[1]))
+    _bb = _rounded_d_src.boundingBox()
+    if _bb[3] > 0:
+        _rounded_d_src.transform(psMat.scale(font['b'].boundingBox()[3] / _bb[3]))
+        _rounded_d_src.width = int(round(_rounded_d_src.boundingBox()[2] + 20))
+_ch = font.createMappedChar(0x2202)
+_ch.clear()
+for _cont in _rounded_d_src.foreground:
+    _ch.foreground += _cont
+_ch.width = _rounded_d_src.width
+
+
+# ---------------------------------------------------------------------------
+# Math symbols from xkcd #2343 "Mathematical Symbol Fight"
+# Horizontally-oriented symbols (∞, arrows) are centred at the math axis
+# (x-height / 2).  The triangle sits on the baseline at cap height.
+# Arrow height fractions are initial estimates and may need tuning.
+# ---------------------------------------------------------------------------
+
+_xh = font['a'].boundingBox()[3]
+_cap_h = font['A'].boundingBox()[3]
+_math_axis = _xh / 2
+
+
+def _import_math_centered(name, cp, target_top, weight_delta=0):
+    """Import a math symbol SVG, then centre it at the math axis."""
+    svg = os.path.join(_COMIC_CHARS_DIR, f'{name}.svg')
+    g = _import_comic_glyph(font, name, svg, target_top=target_top, weight_delta=weight_delta)
+    bb = g.boundingBox()
+    g.transform(psMat.translate(0, _math_axis - (bb[1] + bb[3]) / 2))
+    ch = font.createMappedChar(cp)
+    ch.clear()
+    for cont in g.foreground:
+        ch.foreground += cont
+    ch.width = g.width
+    return ch
+
+
+_import_math_centered('infinity', 0x221E, _xh, weight_delta=30)   # ∞
+_import_math_centered('right_lim_arrow', 0x2192, _xh, weight_delta=20)    # →
+_import_math_centered('right_double_arrow', 0x21D2, _xh, weight_delta=20) # ⇒
+_import_math_centered('right_half_arrow', 0x21C0, _xh, weight_delta=20)   # ⇀
+
+# △ U+25B3 WHITE UP-POINTING TRIANGLE — baseline to cap height.
+_tri_svg = os.path.join(_COMIC_CHARS_DIR, 'triangle.svg')
+_tri_src = _import_comic_glyph(font, 'triangle', _tri_svg, target_top=_cap_h, weight_delta=30)
+_bb = _tri_src.boundingBox()
+if _bb[1] != 0:
+    _tri_src.transform(psMat.translate(0, -_bb[1]))
+    _bb = _tri_src.boundingBox()
+    if _bb[3] > 0:
+        _tri_src.transform(psMat.scale(_cap_h / _bb[3]))
+        _tri_src.width = int(round(_tri_src.boundingBox()[2] + 20))
+_ch = font.createMappedChar(0x25B3)
+_ch.clear()
+for _cont in _tri_src.foreground:
+    _ch.foreground += _cont
+_ch.width = _tri_src.width
+
+
+# Hand-drawn surd at PUA U+E000 with a near-vertical stem, for math
+# renderers to use on tall radicands where extending the natural √'s
+# (U+221A) diagonal would lean too far.
+_import_math_centered('sqrt_vertical', 0xE000, 1.12 * font.em, weight_delta=0)
 
 
 # ---------------------------------------------------------------------------

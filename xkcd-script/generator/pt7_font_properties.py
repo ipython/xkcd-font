@@ -2,8 +2,8 @@
 """
 Apply font-wide properties: kerning, spacing, and any other metric tweaks.
 
-Reads the SFD produced by pt6_derived_chars.py (which has all glyphs),
-applies properties, saves.
+Reads the SFD produced by pt6_derived_chars.py (which has all glyphs + the
+math cmap aliases), applies properties, saves.
 """
 import fontforge
 import unicodedata
@@ -98,37 +98,28 @@ def autokern(font):
             return expanded
         font.autoKern('kern', sep, expand(left, left_side=True), expand(right, left_side=False), **kwargs)
 
-    kern(150, ['/', '\\'], ['/', '\\'])
+    a = font['_pad_space'].width
+    a = max(a - 20, 0)
 
-    kern(175, ['r'], ['i'], minKern=35)
-    kern(180, ['r'], ['g', 'x'], minKern=35)
-    kern(100, ['r'], lower, minKern=50)
-    kern(60, ['s'], lower, minKern=50)
-    # f has a long right-arm; kern slightly tighter than default but don't overdo it.
-    kern(75, ['f'], lower, minKern=40)
-    # g has a round left side; nudge preceding glyphs in a little.
-    # Letters with open/diagonal right sides need a looser target before g.
-    kern(115, list('EKLPRYkz'), ['g'], minKern=30)
-    kern(75, lower, ['g'], minKern=30)
-    kern(75, caps, ['g'], minKern=30)
+    # autoKern looks at the outline, so even if you change the padding, it absorbs all of it.
+    # Use `+a` when you want to link the spacing after kerning to the padding.
+    kern(150, ['/', '\\'], ['/', '\\'])
+    kern(60+a, ['s'], set(lower) - {'j', 'f'}, minKern=50)
     # x has diagonal strokes that leave visual space on its left side.
-    kern(90, lower, ['x'], minKern=40)
-    # H has tall verticals that sit naturally close to j's descender.
-    kern(150, ['H'], ['j'], minKern=35)
-    # Raise separation so Jj doesn't get pulled too close.
-    kern(220, all_chars, ['j'], minKern=35)
+    kern(90+a, set(lower) - {'f'}, ['x'], minKern=40)
     # F/E are separated from T/J so they can use a tighter target gap.
-    kern(130, ['F'], all_chars)
+    kern(130, ['F'], set(all_chars) - {'f', 'j'})
     kern(140, ['E'], ['V', 'W', 'Y'])
-    kern(100, ['E'], all_chars)
+    kern(100, ['E'], set(all_chars) - {'f', 'j'})
     kern(120, ['T', 'J'], ['R'])
-    kern(150, ['T', 'J'], all_chars)
+    kern(150, ['T', 'J'], set(all_chars) - {'f', 'j'})
     # C: loosen from the default (was too tight for Ct/Cf/Cj).
-    kern(65, ['C'], all_chars)
-    kern(60, ['O'], all_chars)
+    kern(65, ['C'], set(all_chars) - {'f', 'j'})
+    kern(60, ['O'], set(all_chars) - {'f', 'j'})
 
 
 autokern(font)
+font.removeGlyph(font['_pad_space'])
 
 
 # ---------------------------------------------------------------------------
@@ -230,6 +221,28 @@ font.private['StemSnapV'] = (60, 70, 76, 80, 85)
 # Same issue — adding Greek glyphs shifts the auto-computed values.
 font.os2_xheight = 338
 font.os2_capheight = 592
+
+
+# ---------------------------------------------------------------------------
+# ss01 — Display large operators.
+# Swaps ∑ ∏ ∫ for their .disp variants (created in pt6).  Enabled in
+# MathJax via a font-feature-settings CSS rule scoped to display mode.
+# ---------------------------------------------------------------------------
+font.addLookup('ss01-display-operators',
+               'gsub_single', None,
+               (('ss01', (('latn', ('dflt',)),
+                          ('math', ('dflt',)))),))
+font.addLookupSubtable('ss01-display-operators', 'ss01-display-operators-1')
+try:
+    font.addLookup_setFeatureName('ss01-display-operators',
+                                  'Display large operators')
+except AttributeError:
+    pass
+
+for _base, _disp in (('summation', 'summation.disp'),
+                     ('product',   'product.disp'),
+                     ('integral',  'integral.disp')):
+    font[_base].addPosSub('ss01-display-operators-1', _disp)
 
 
 # ---------------------------------------------------------------------------

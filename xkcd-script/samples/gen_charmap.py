@@ -21,6 +21,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from matplotlib.font_manager import FontProperties
 from fontTools.ttLib import TTFont
+from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OTF  = os.path.join(HERE, '../font/xkcd-script.otf')
@@ -42,6 +43,7 @@ BLOCKS = [
     (0x00A0, 0x0100, "Latin-1 Supplement"),
     (0x0100, 0x0180, "Latin Extended-A"),
     (0x0180, 0x0250, "Latin Extended-B"),
+    (0x02B0, 0x0300, "Spacing Modifier Letters"),
     (0x0300, 0x0370, "Combining Diacritical Marks"),
     (0x0370, 0x0400, "Greek and Coptic"),
     (0x1E00, 0x1F00, "Latin Extended Additional"),
@@ -60,11 +62,27 @@ COMBINING_CATS = {'Mn', 'Mc', 'Me'}
 # Use None to reserve a slot (renders as a blank cell) so that removing a
 # character doesn't shift subsequent entries and cause a noisy table diff.
 EXTRAS_ORDER = [
-    0x025B,   # ɛ  LATIN SMALL LETTER OPEN E
+    0x025B,  # ɛ  LATIN SMALL LETTER OPEN E
     0x1F382,  # 🎂  BIRTHDAY CAKE
-    0x20DE,   # ⃞  COMBINING ENCLOSING SQUARE
-    0x25A1,   # □  WHITE SQUARE
+    0x20DE,  # ⃞  COMBINING ENCLOSING SQUARE
+    0x25A1,  # □  WHITE SQUARE
+    0x20E4,  #  b⃤ COMBINING ENCLOSING UPWARD POINTING TRIANGLE
+    0x25B3,  # △ WHITE UP-POINTING TRIANGLE
+    0x25BD,  # ▽ WHITE DOWN-POINTING TRIANGLE
+    0xE000,  #  PUA: hand-drawn vertical surd (√) for tall math renderings
 ]
+
+# Codepoints we deliberately omit from the charmap.  These exist in the font
+# as cmap aliases (added in pt6) pointing back to existing Latin/Greek glyphs,
+# so rendering them would just duplicate cells already shown elsewhere.
+IGNORE_RANGES = [
+    (0x1D400, 0x1D800),  # Mathematical Alphanumeric Symbols (math italic/bold Latin & Greek)
+    (0x210E, 0x2114),    # ℎ ℏ ℓ — TeX italic substitutes from Letterlike Symbols
+]
+
+
+def _ignored(cp):
+    return any(start <= cp < end for start, end in IGNORE_RANGES)
 
 block_covered = set()
 for start, end, _ in BLOCKS:
@@ -79,16 +97,20 @@ def _is_invisible(cp):
 
 extras_in_block = [cp for cp in EXTRAS_ORDER if cp is not None and cp in block_covered]
 if extras_in_block:
-    lines = [f"  U+{cp:04X}  {unicodedata.name(chr(cp), '(unknown)')}" for cp in extras_in_block]
+    lines = [f"  0x{cp:04X},  # chr(cp) {unicodedata.name(chr(cp), '(unknown)')}" for cp in extras_in_block]
     raise ValueError(
         "EXTRAS_ORDER contains codepoints already covered by a named block:\n"
         + "\n".join(lines)
     )
 
 extras_cps = set(cp for cp in EXTRAS_ORDER if cp is not None)
-uncovered = sorted(cp for cp in present if cp not in block_covered and cp not in extras_cps and not _is_invisible(cp))
+uncovered = sorted(cp for cp in present
+                   if cp not in block_covered
+                   and cp not in extras_cps
+                   and not _is_invisible(cp)
+                   and not _ignored(cp))
 if uncovered:
-    lines = [f"  U+{cp:04X}  {unicodedata.name(chr(cp), '(unknown)')}" for cp in uncovered]
+    lines = [f"  0x{cp:04X},  # {chr(cp)} {unicodedata.name(chr(cp), '(unknown)')}" for cp in uncovered]
     raise ValueError(
         "Font contains codepoints not in any named block or EXTRAS_ORDER.\n"
         "Add them to EXTRAS_ORDER in gen_charmap.py:\n" + "\n".join(lines)
@@ -245,5 +267,6 @@ for start, end, label in BLOCKS:
     fig = render_block(label, rows)
     out = os.path.join(OUTDIR, f'charmap_{slugify(label)}.png')
     fig.savefig(out, dpi=150, bbox_inches='tight', facecolor=fig.get_facecolor())
+    Image.open(out).save(out)
     plt.close(fig)
     print(f'charmap → {out}')

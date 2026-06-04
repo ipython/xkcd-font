@@ -195,6 +195,26 @@ def _make_ogonek(font, cp, base_name):
     c.addReference('comma', psMat.compose(psMat.scale(-1, -1), psMat.translate(dx, dy)))
 
 
+def _make_spacing_modifier(font, cp, mark_name, y_bottom=None, lsb=40, rsb=40):
+    """Spacing modifier letter: reference to mark glyph, repositioned and given advance width.
+
+    Translates the mark so its bottom sits at y_bottom and its left ink edge is
+    at lsb.  Default y_bottom is 20 units above the x-height of 'a', placing
+    the modifier at a natural reading height as if hovering over a lowercase letter.
+    lsb/rsb: left/right side bearings of the resulting glyph.
+    """
+    if y_bottom is None:
+        y_bottom = int(round(font['a'].boundingBox()[3] + 20))
+    g = font.createMappedChar(cp)
+    g.clear()
+    mark_bb = font[mark_name].boundingBox()
+    dx = lsb - mark_bb[0]
+    dy = y_bottom - mark_bb[1]
+    g.addReference(mark_name, psMat.translate(dx, dy))
+    g.width = int(round(mark_bb[2] + dx + rsb))
+    return g
+
+
 # Codepoints that already exist as hand-drawn glyphs; skip to avoid overwriting.
 _SKIP_CPS = frozenset({
     0x00DC,  # Ü — hand-drawn
@@ -212,23 +232,48 @@ def _accented(cp, base_name, mark_name, gap=20, x_adj=0):
 # Glyph aliases and re-uses
 # ---------------------------------------------------------------------------
 
-# U+20DE COMBINING ENCLOSING SQUARE — zero-width mark sized and positioned to
-# enclose '?' with a small margin.  GPOS would be needed for full generality.
+# U+20DE COMBINING ENCLOSING SQUARE / U+20E4 COMBINING ENCLOSING UPWARD
+# POINTING TRIANGLE — zero-width marks spanning the full font EM.
+# Centred over 'e' width ('e' renders correctly; narrower letters like 'f'
+# will be slightly off — unavoidable without GPOS anchors).
 _sq = font[0x25A1]
 _sq_bb = _sq.boundingBox()
 _sq_cx = (_sq_bb[0] + _sq_bb[2]) / 2
-_sq_h = _sq_bb[3] - _sq_bb[1]   # sq_bb[1] == 0 after baseline snap
-_q_bb = font[ord('?')].boundingBox()
-_q_adv = font[ord('?')].width
-_margin = 20
-_scale_y = (_q_bb[3] - _q_bb[1] + 2 * _margin) / _sq_h
-_x_offset = -_q_adv / 2 - _sq_cx
-_y_offset = _q_bb[1] - _margin
+_sq_h = _sq_bb[3] - _sq_bb[1]
+_e_adv = font['e'].width
+# Both combining marks share _comb_top so their tops are aligned.
+# 1.3× factor ensures they visually enclose tall capitals; the bottom
+# hangs 0.3 × _comb_top below the baseline on both marks.
+_comb_top = font.ascent + font.descent // 2
+
+_sq_s = 1.3 * _comb_top / _sq_h
+_sq_dy = _comb_top - _sq_h * _sq_s
 c = font.createMappedChar(0x20DE)
 c.addReference(_sq.glyphname, psMat.compose(
-    psMat.scale(1, _scale_y),
-    psMat.translate(_x_offset, _y_offset),
+    psMat.scale(_sq_s),
+    psMat.translate(-_e_adv / 2 - _sq_cx * _sq_s, _sq_dy),
 ))
+c.width = 0
+
+# Triangle: outlines copied (not a reference) so stroke weight can be
+# controlled independently of the regular △.  Top at _comb_top;
+# 1.3× _comb_top tall so bottom hangs below baseline.
+_tri_g = font[0x25B3]
+_tri_bb = _tri_g.boundingBox()
+_tri_cx = (_tri_bb[0] + _tri_bb[2]) / 2
+_tri_h = _tri_bb[3] - _tri_bb[1]
+_tri_comb_s = 1.3 * _comb_top / _tri_h
+_tri_dy = _comb_top - _tri_h * _tri_comb_s
+c = font.createMappedChar(0x20E4)
+c.clear()
+_layer = fontforge.layer()
+for _cont in _tri_g.foreground:
+    _layer += _cont
+c.foreground = _layer
+c.transform(psMat.scale(_tri_comb_s))
+c.transform(psMat.translate(-_e_adv / 2 - _tri_cx * _tri_comb_s, _tri_dy))
+c.changeWeight(-40)
+c.correctDirection()
 c.width = 0
 
 # Vertical pipe: re-use the I glyph (same stroke, same weight).
@@ -251,16 +296,42 @@ ref_aliases = [
     (0x2033, 'quotedbl'),     # doubleprime
     (0x2035, 'quoteleft'),    # backprime
     # Dash aliases
+    (0x2010, 'hyphen'),       # Unicode hyphen
     (0x2011, 'hyphen'),       # non-breaking hyphen
     (0x00AD, 'hyphen'),       # soft hyphen
     (0x2212, 'endash'),       # minus sign
     (0x2012, 'endash'),       # figure dash
     (0x2015, 'emdash'),       # horizontal bar
+    # Modifier letter apostrophes (Polynesian, transliteration)
+    (0x02BB, 'quoteleft'),    # modifier letter turned comma ʻ
+    (0x02BC, 'quoteright'),   # modifier letter apostrophe ʼ
 ]
 for codepoint, source_name in ref_aliases:
     c = font.createMappedChar(codepoint)
     c.addReference(source_name)
     c.width = font[source_name].width
+
+
+# ---------------------------------------------------------------------------
+# Inverted punctuation
+# ---------------------------------------------------------------------------
+
+# U+00A1 ¡ INVERTED EXCLAMATION MARK — ! flipped vertically.
+# U+00BF ¿ INVERTED QUESTION MARK — ? flipped vertically.
+# scale(1,-1) reflects about y=0; the translate re-maps [ymin,ymax] back to the
+# same vertical range so the glyph stays above the baseline.
+for _cp, _gname in [(0x00A1, 'exclam'), (0x00BF, 'question')]:
+    _src = font[_gname]
+    _src_bb = _src.boundingBox()
+    _g = font.createMappedChar(_cp)
+    _g.clear()
+    _layer = fontforge.layer()
+    for _c in _src.foreground:
+        _layer += _c
+    _g.foreground = _layer
+    _g.transform(psMat.compose(psMat.scale(1, -1), psMat.translate(0, _src_bb[1] + _src_bb[3])))
+    _g.correctDirection()
+    _g.width = _src.width
 
 
 # ---------------------------------------------------------------------------
@@ -440,6 +511,24 @@ _c0327 = font.createMappedChar(0x0327)
 _c0327.clear()
 _c0327.addReference('_hook_cedilla_mark', psMat.translate(0, _descender_bottom - _combining_gap - _hc_bb[3]))
 _c0327.width = 0
+
+
+# ---------------------------------------------------------------------------
+# Spacing modifier letters (U+00A8, U+00AF, U+02C6–U+02DD)
+# Each is a reference to the corresponding combining mark, repositioned so its
+# bottom sits just above the x-height and given an advance width.
+# ---------------------------------------------------------------------------
+
+_sm_y = int(round(font['a'].boundingBox()[3] + 20))
+
+_make_spacing_modifier(font, 0x00A8, '_diaeresis_mark', _sm_y)   # ¨ spacing diaeresis
+_make_spacing_modifier(font, 0x00AF, '_macron_mark', _sm_y)      # ¯ spacing macron
+_make_spacing_modifier(font, 0x02C6, '_circumflex_mark', _sm_y)  # ˆ modifier letter circumflex accent
+_make_spacing_modifier(font, 0x02C7, '_caron_mark', _sm_y)       # ˇ modifier letter caron
+_make_spacing_modifier(font, 0x02D8, '_breve_mark', _sm_y)       # ˘ modifier letter breve
+_make_spacing_modifier(font, 0x02D9, '_dot_above_mark', _sm_y)   # ˙ modifier letter dot above
+_make_spacing_modifier(font, 0x02DC, '_tilde_mark', _sm_y)       # ˜ modifier letter small tilde
+_make_spacing_modifier(font, 0x02DD, '_double_acute_mark', _sm_y)  # ˝ modifier letter double acute accent
 
 
 # ---------------------------------------------------------------------------
@@ -952,13 +1041,6 @@ _g.clear()
 _g.addReference('L', psMat.compose(psMat.scale(1, -1), psMat.translate(0, _L_bb[3])))
 _g.width = font['L'].width
 
-# Λ (U+039B): V flipped vertically — two diagonals meeting at the top.
-_V_bb = font['V'].boundingBox()
-_g = font.createMappedChar(0x039B)
-_g.clear()
-_g.addReference('V', psMat.compose(psMat.scale(1, -1), psMat.translate(0, _V_bb[3])))
-_g.width = font['V'].width
-
 # η (eta, U+03B7): n with a straight vertical descender on the right leg.
 # A rotated hyphen-bar gives a stroke of matching weight and shape.
 # x-scaled to 90% of original thickness so it reads slightly thinner than n's strokes.
@@ -1001,6 +1083,414 @@ _make_accented(font, 0x038A, 'I',     '_acute_mark')  # Ί
 _make_accented(font, 0x038C, 'O',     '_acute_mark')  # Ό
 _make_accented(font, 0x038E, 'Y',     '_acute_mark')  # Ύ
 _make_accented(font, 0x038F, font[0x03A9].glyphname, '_acute_mark')  # Ώ
+
+
+# ---------------------------------------------------------------------------
+# Arrow mirrors and rotations
+# ---------------------------------------------------------------------------
+
+# Left-pointing arrows: horizontal flip of right-pointing.
+for _src_cp, _dst_cp in [
+    (0x2192, 0x2190),  # → ←  LEFTWARDS ARROW
+    (0x21D2, 0x21D0),  # ⇒ ⇐  LEFTWARDS DOUBLE ARROW
+    (0x21C0, 0x21BC),  # ⇀ ↼  LEFTWARDS HARPOON WITH BARB UPWARDS
+]:
+    _src = font[_src_cp]
+    _g = font.createMappedChar(_dst_cp)
+    _g.clear()
+    _layer = fontforge.layer()
+    for _c in _src.foreground:
+        _layer += _c
+    _g.foreground = _layer
+    _g.transform(psMat.scale(-1, 1))
+    _g.correctDirection()
+    _bb = _g.boundingBox()
+    _g.transform(psMat.translate(-_bb[0] + 20, 0))
+    _g.width = _src.width
+
+# Up/down arrows: 90° CCW rotation of each right-pointing arrow family,
+# scaled to the ascent height; down is a vertical flip of up.
+#   → ↑ ↓   U+2192 U+2191 U+2193  RIGHTWARDS / UPWARDS / DOWNWARDS ARROW
+#   ⇒ ⇑ ⇓   U+21D2 U+21D1 U+21D3  RIGHTWARDS / UPWARDS / DOWNWARDS DOUBLE ARROW
+#   ⇀ ↿ ⇃   U+21C0 U+21BF U+21C3  RIGHTWARDS / UPWARDS / DOWNWARDS HARPOON
+for _src_cp, _up_cp, _dn_cp in [
+    (0x2192, 0x2191, 0x2193),
+    (0x21D2, 0x21D1, 0x21D3),
+    (0x21C0, 0x21BF, 0x21C3),
+]:
+    _g = font.createMappedChar(_up_cp)
+    _g.clear()
+    _layer = fontforge.layer()
+    for _c in font[_src_cp].foreground:
+        _layer += _c
+    _g.foreground = _layer
+    _g.transform(psMat.rotate(math.radians(90)))
+    _bb = _g.boundingBox()
+    _s = font.ascent / (_bb[3] - _bb[1])
+    _g.transform(psMat.scale(_s))
+    _bb = _g.boundingBox()
+    _g.transform(psMat.translate(-_bb[0] + 20, -_bb[1]))
+    _g.width = int(round(_g.boundingBox()[2] + 20))
+
+    _g = font.createMappedChar(_dn_cp)
+    _g.clear()
+    _layer = fontforge.layer()
+    for _c in font[_up_cp].foreground:
+        _layer += _c
+    _g.foreground = _layer
+    _up_bb = font[_up_cp].boundingBox()
+    _g.transform(psMat.compose(psMat.scale(1, -1), psMat.translate(0, _up_bb[1] + _up_bb[3])))
+    _g.correctDirection()
+    _g.width = font[_up_cp].width
+
+# ⇋ U+21CB LEFTWARDS HARPOON OVER RIGHTWARDS HARPOON
+# ⇌ U+21CC RIGHTWARDS HARPOON OVER LEFTWARDS HARPOON
+# Packed tightly: top harpoon shifted up, bottom harpoon flipped vertically and
+# shifted down so its barb faces outward (away from centre).
+_harp_bb = font[0x21C0].boundingBox()
+_harp_cy = (_harp_bb[1] + _harp_bb[3]) / 2
+_harp_sep = (_harp_bb[3] - _harp_bb[1]) // 2 + 20
+for _dst_cp, _top_cp, _bot_cp in [
+    (0x21CB, 0x21BC, 0x21C0),  # ⇋: ↼ over ⇀
+    (0x21CC, 0x21C0, 0x21BC),  # ⇌: ⇀ over ↼
+]:
+    c = font.createMappedChar(_dst_cp)
+    c.clear()
+    c.addReference(font[_top_cp].glyphname, psMat.translate(0, _harp_sep))
+    c.addReference(font[_bot_cp].glyphname, psMat.compose(
+        psMat.scale(1, -1),
+        psMat.translate(0, 2 * _harp_cy - _harp_sep),
+    ))
+    c.width = font[_top_cp].width
+
+# 45° diagonal arrows: each right-pointing source rotated to NE/NW/SW/SE and
+# scaled to the same ascent height as the 90° arrows.
+#   → ↗ ↖ ↙ ↘   U+2192 U+2197 U+2196 U+2199 U+2198
+#   ⇒ ⇗ ⇖ ⇙ ⇘   U+21D2 U+21D7 U+21D6 U+21D9 U+21D8
+for _src_cp, _diag_cps in [
+    (0x2192, [(0x2197, 45), (0x2196, 135), (0x2199, 225), (0x2198, -45)]),
+    (0x21D2, [(0x21D7, 45), (0x21D6, 135), (0x21D9, 225), (0x21D8, -45)]),
+]:
+    _src = font[_src_cp]
+    for _diag_cp, _angle in _diag_cps:
+        _g = font.createMappedChar(_diag_cp)
+        _g.clear()
+        _layer = fontforge.layer()
+        for _c in _src.foreground:
+            _layer += _c
+        _g.foreground = _layer
+        _g.transform(psMat.rotate(math.radians(_angle)))
+        _bb = _g.boundingBox()
+        _s = font.ascent / (_bb[3] - _bb[1])
+        _g.transform(psMat.scale(_s))
+        _bb = _g.boundingBox()
+        _g.transform(psMat.translate(-_bb[0] + 20, -_bb[1]))
+        _g.width = int(round(_g.boundingBox()[2] + 20))
+
+
+# ---------------------------------------------------------------------------
+# Triangles
+# ---------------------------------------------------------------------------
+
+# ▽ U+25BD WHITE DOWN-POINTING TRIANGLE — △ flipped vertically, point at baseline.
+_tri_up_bb = font[0x25B3].boundingBox()
+_g = font.createMappedChar(0x25BD)
+_g.clear()
+_layer = fontforge.layer()
+for _c in font[0x25B3].foreground:
+    _layer += _c
+_g.foreground = _layer
+_g.transform(psMat.compose(psMat.scale(1, -1), psMat.translate(0, _tri_up_bb[1] + _tri_up_bb[3])))
+_g.correctDirection()
+_g.width = font[0x25B3].width
+
+# ∇ U+2207 NABLA (del / gradient / curl operator) — same letterform as ▽.
+_g = font.createMappedChar(0x2207)
+_g.clear()
+_g.addReference(font[0x25BD].glyphname)
+_g.width = font[0x25BD].width
+
+
+# ---------------------------------------------------------------------------
+# Additional composites
+# ---------------------------------------------------------------------------
+
+# U with diaeresis + tone mark: Ǖ Ǘ Ǚ Ǜ / ǖ ǘ ǚ ǜ  (Pinyin)
+# Ü / ü are used as bases so the new mark floats above the existing dots.
+_Udi = font[0x00DC].glyphname  # Ü hand-drawn
+_udi = font[0x00FC].glyphname  # ü derived
+_accented(0x01D5, _Udi, '_macron_mark')        # Ǖ
+_accented(0x01D6, _udi, '_macron_mark', gap=8)  # ǖ
+_accented(0x01D7, _Udi, '_acute_mark')         # Ǘ
+_accented(0x01D8, _udi, '_acute_mark', gap=8)   # ǘ
+_accented(0x01D9, _Udi, '_caron_mark')         # Ǚ
+_accented(0x01DA, _udi, '_caron_mark', gap=8)   # ǚ
+_accented(0x01DB, _Udi, '_grave_mark')         # Ǜ
+_accented(0x01DC, _udi, '_grave_mark', gap=8)   # ǜ
+
+# A/a with diaeresis + macron: Ǟ ǟ  (Livonian, Skolt Sámi)
+# gap=30/20: the base's bb top already includes the diaeresis dots; extra
+# clearance prevents the macron from pressing against the dots.
+_Adi = font[0x00C4].glyphname  # Ä
+_adi = font[0x00E4].glyphname  # ä
+_accented(0x01DE, _Adi, '_macron_mark', gap=30)  # Ǟ
+_accented(0x01DF, _adi, '_macron_mark', gap=20)  # ǟ
+
+# AE/ae + macron: Ǣ ǣ  (Old Norse transliteration)
+# x_adj shifts the macron rightward: Æ/æ's geometric centre sits left of the
+# visual centre (E side is heavier than A side).
+_Ae_name = font[0x00C6].glyphname  # Æ
+_ae_name = font[0x00E6].glyphname  # æ
+_accented(0x01E2, _Ae_name, '_macron_mark', x_adj=100)        # Ǣ
+_accented(0x01E3, _ae_name, '_macron_mark', gap=25, x_adj=50)  # ǣ
+
+# G/g + caron: Ǧ ǧ  (Skolt Sámi, some transliteration systems)
+# x_adj for ǧ: g's full bounding box includes a wide descender that pulls
+# its geometric centre left of the bowl centre.
+_accented(0x01E6, 'G', '_caron_mark')               # Ǧ
+_accented(0x01E7, 'g', '_caron_mark', gap=8, x_adj=80)  # ǧ
+
+# K/k + caron: Ǩ ǩ  (Skolt Sámi)
+_accented(0x01E8, 'K', '_caron_mark')         # Ǩ
+_accented(0x01E9, 'k', '_caron_mark', gap=8)   # ǩ
+
+# G/g + acute: Ǵ ǵ  (Upper Sorbian)
+# x_adj for ǵ: same descender-bowl offset as ǧ.
+_accented(0x01F4, 'G', '_acute_mark')                    # Ǵ
+_accented(0x01F5, 'g', '_acute_mark', gap=20, x_adj=80)  # ǵ
+
+# A-ring + acute: Ǻ ǻ  (Northern Sámi)
+# The acute floats above the existing ring; base bb already includes the ring.
+_Aring_name = font[0x00C5].glyphname  # Å
+_aring_name = font[0x00E5].glyphname  # å
+_accented(0x01FA, _Aring_name, '_acute_mark')        # Ǻ
+_accented(0x01FB, _aring_name, '_acute_mark', gap=8)  # ǻ
+
+# AE/ae + acute: Ǽ ǽ  (Faroese, Danish orthography)
+_accented(0x01FC, _Ae_name, '_acute_mark')        # Ǽ
+_accented(0x01FD, _ae_name, '_acute_mark', gap=8)  # ǽ
+
+# O-stroke + acute: Ǿ ǿ  (Faroese, Danish orthography)
+# Ø/ø are derived earlier in this script; their bounding boxes include the stroke.
+_Ost_name = font[0x00D8].glyphname  # Ø
+_ost_name = font[0x00F8].glyphname  # ø
+_accented(0x01FE, _Ost_name, '_acute_mark')        # Ǿ
+_accented(0x01FF, _ost_name, '_acute_mark', gap=8)  # ǿ
+
+# DZ/dz digraph ligatures: Ǳ ǲ ǳ and DŽ/Dž/dž: Ǆ ǅ ǆ
+# Letters are placed ink-edge to ink-edge with a small gap, like IJ above.
+_Zcaron_name = font[0x017D].glyphname  # Ž
+_zcaron_name = font[0x017E].glyphname  # ž
+_dz_gap = 20
+for _cp, _left, _right in [
+    (0x01F1, 'D', 'Z'),             # Ǳ capital DZ
+    (0x01F2, 'D', 'z'),             # ǲ titlecase Dz
+    (0x01F3, 'd', 'z'),             # ǳ lowercase dz
+    (0x01C4, 'D', _Zcaron_name),    # Ǆ capital DŽ
+    (0x01C5, 'D', _zcaron_name),    # ǅ titlecase Dž
+    (0x01C6, 'd', _zcaron_name),    # ǆ lowercase dž
+]:
+    _g = font.createMappedChar(_cp)
+    _g.clear()
+    _g.addReference(_left)
+    _dx = int(round(font[_left].boundingBox()[2] + _dz_gap - font[_right].boundingBox()[0]))
+    _g.addReference(_right, psMat.translate(_dx, 0))
+    _g.width = _dx + font[_right].width
+
+
+# ---------------------------------------------------------------------------
+# Math cmap aliases (for MathJax / pasted Unicode math text)
+# ---------------------------------------------------------------------------
+# MathJax CHTML references math italic / bold / Greek codepoints directly
+# (U+1D400-block).  Rather than ship dedicated glyphs, we add cmap aliases so
+# each math codepoint resolves to the existing Latin/Greek letterform.  The
+# aliases attach via glyph.altuni so no extra glyph entries are created — the
+# size cost is only the additional cmap entries.
+
+def _add_altuni(glyph, codepoint):
+    cur = list(glyph.altuni) if glyph.altuni else []
+    cur.append((codepoint, -1, 0))
+    glyph.altuni = tuple(cur)
+
+
+# Greek codepoint sequences for the U+1D6A8.. and U+1D6E2.. math blocks.
+# Position 17 is the "capital theta symbol" slot, aliased back to plain Θ.
+# 0x03A2 is a Unicode hole in the Greek block; the math block uses Σ in that slot.
+_GREEK_UPPER = [
+    0x0391, 0x0392, 0x0393, 0x0394, 0x0395, 0x0396, 0x0397, 0x0398,
+    0x0399, 0x039A, 0x039B, 0x039C, 0x039D, 0x039E, 0x039F, 0x03A0,
+    0x03A1, 0x0398, 0x03A3, 0x03A4, 0x03A5, 0x03A6, 0x03A7, 0x03A8, 0x03A9,
+]
+_GREEK_LOWER = [
+    0x03B1, 0x03B2, 0x03B3, 0x03B4, 0x03B5, 0x03B6, 0x03B7, 0x03B8,
+    0x03B9, 0x03BA, 0x03BB, 0x03BC, 0x03BD, 0x03BE, 0x03BF, 0x03C0,
+    0x03C1, 0x03C2, 0x03C3, 0x03C4, 0x03C5, 0x03C6, 0x03C7, 0x03C8, 0x03C9,
+]
+
+_math_aliases = {}  # src_cp -> dst_cp
+
+# Math Italic Latin: U+1D434–U+1D467 (U+1D455 is a Unicode hole)
+for _i in range(26):
+    _math_aliases[0x1D434 + _i] = 0x0041 + _i
+for _i in range(26):
+    _src = 0x1D44E + _i
+    if _src != 0x1D455:
+        _math_aliases[_src] = 0x0061 + _i
+
+# TeX italic substitutes that fill the U+1D455 hole and similar
+_math_aliases[0x210E] = ord('h')   # ℎ PLANCK CONSTANT
+_math_aliases[0x210F] = ord('h')   # ℏ PLANCK CONSTANT OVER TWO PI (no ħ in math italic)
+_math_aliases[0x2113] = ord('l')   # ℓ SCRIPT SMALL L
+_math_aliases[0x03D5] = 0x03C6     # ϕ GREEK PHI SYMBOL → φ
+
+# Math Bold Latin: U+1D400–U+1D433
+for _i in range(26):
+    _math_aliases[0x1D400 + _i] = 0x0041 + _i
+for _i in range(26):
+    _math_aliases[0x1D41A + _i] = 0x0061 + _i
+
+# Math Bold Italic Latin: U+1D468–U+1D49B
+for _i in range(26):
+    _math_aliases[0x1D468 + _i] = 0x0041 + _i
+for _i in range(26):
+    _math_aliases[0x1D482 + _i] = 0x0061 + _i
+
+# Math Bold digits: U+1D7CE–U+1D7D7
+for _i in range(10):
+    _math_aliases[0x1D7CE + _i] = 0x0030 + _i
+
+# Math Italic Greek capitals: U+1D6E2–U+1D6FA, small: U+1D6FC–U+1D714
+for _i, _cp in enumerate(_GREEK_UPPER):
+    _math_aliases[0x1D6E2 + _i] = _cp
+for _i, _cp in enumerate(_GREEK_LOWER):
+    _math_aliases[0x1D6FC + _i] = _cp
+
+# Math Italic Greek variants
+_math_aliases[0x1D715] = 0x2202  # ∂ partial differential
+_math_aliases[0x1D716] = 0x03F5  # ϵ epsilon symbol
+_math_aliases[0x1D717] = 0x03B8  # θ theta symbol
+_math_aliases[0x1D718] = 0x03BA  # κ kappa symbol
+_math_aliases[0x1D719] = 0x03C6  # φ phi symbol
+_math_aliases[0x1D71A] = 0x03C1  # ρ rho symbol
+_math_aliases[0x1D71B] = 0x03C0  # π pi symbol
+
+# Math Bold Greek capitals: U+1D6A8–U+1D6C0, small: U+1D6C2–U+1D6DA
+for _i, _cp in enumerate(_GREEK_UPPER):
+    _math_aliases[0x1D6A8 + _i] = _cp
+for _i, _cp in enumerate(_GREEK_LOWER):
+    _math_aliases[0x1D6C2 + _i] = _cp
+
+_added = 0
+_skipped = 0
+for _src_cp, _dst_cp in sorted(_math_aliases.items()):
+    try:
+        _g = font[_dst_cp]
+    except TypeError:
+        _skipped += 1
+        continue
+    _add_altuni(_g, _src_cp)
+    _added += 1
+print(f"  math aliases: added {_added}, skipped {_skipped} (no source glyph)")
+
+
+# ---------------------------------------------------------------------------
+# ⋅ U+22C5 DOT OPERATOR — period scaled to 75%, centred on the math axis.
+# Used inline in math contexts (e.g. "5⋅3"); math-axis centring lines it up
+# with operators like +/− rather than the baseline-hugging period dot.
+# ---------------------------------------------------------------------------
+_MATH_AXIS = 260
+_CDOT_WIDTH = 220
+_period_g = font[ord('.')]
+_period_bb = _period_g.boundingBox()
+_period_cx = (_period_bb[0] + _period_bb[2]) / 2
+_period_cy = (_period_bb[1] + _period_bb[3]) / 2
+_cdot = font.createMappedChar(0x22C5)
+_cdot.clear()
+_cdot.addReference(_period_g.glyphname, psMat.compose(
+    psMat.scale(0.75),
+    psMat.translate(_CDOT_WIDTH / 2 - _period_cx * 0.75,
+                    _MATH_AXIS - _period_cy * 0.75),
+))
+_cdot.width = _CDOT_WIDTH
+
+
+# ---------------------------------------------------------------------------
+# ∑ U+2211 / ∏ U+220F — inline-sized large operators.
+# The base font carries the Greek capitals Σ/Π for letter use; we mint
+# separate `summation`/`product` glyphs at the math codepoints so the
+# ss01 substitution (wired up in pt7) doesn't also affect Greek text.
+# Outlines are copied (not referenced) so the .disp variants below can
+# scale and thin them independently of the source letters.
+# ---------------------------------------------------------------------------
+
+def _copy_glyph_at(font, src_name, cp, dst_name):
+    src = font[src_name]
+    layer = fontforge.layer()
+    for c in src.foreground:
+        layer += c
+    g = font.createChar(cp, dst_name)
+    g.clear()
+    g.foreground = layer
+    g.width = src.width
+    return g
+
+_copy_glyph_at(font, 'Sigma', 0x2211, 'summation')
+_copy_glyph_at(font, 'Pi',    0x220F, 'product')
+
+
+# ---------------------------------------------------------------------------
+# Display-sized large operators (∑ ∏ ∫) as stylistic alternates.
+#
+# Unencoded glyphs reached via the OpenType ss01 feature (wired up in pt7).
+# The base U+2211 / U+220F / U+222B forms stay at inline size; ss01 swaps
+# them for these enlarged variants in display contexts (MathJax uses a
+# font-feature-settings CSS rule scoped to display-mode <mjx-mo>).
+# ---------------------------------------------------------------------------
+
+def make_display_operator(font, src_name, dst_name, target_h, weight=0, rbear=0):
+    """Scale src to target_h, optionally thin strokes, centre on MATH_AXIS.
+
+    Creates an unencoded glyph named dst_name.  rbear sets the right
+    bearing in font units (advance = right glyph edge + rbear); MathJax
+    CHTML ignores font advances anyway, so the oversized rbears used for
+    ∏/∫ only matter for non-MathJax consumers.
+    """
+    src = font[src_name]
+    src_layer = fontforge.layer()
+    for c in src.foreground:
+        src_layer += c
+    src_width = src.width
+
+    g = font.createChar(-1, dst_name)
+    g.clear()
+    g.foreground = src_layer
+    g.width = src_width
+
+    bb = g.boundingBox()
+    scale = target_h / (bb[3] - bb[1])
+    g.transform(psMat.scale(scale))
+
+    if weight != 0:
+        g.correctDirection()
+        g.removeOverlap()
+        g.changeWeight(weight)
+        g.correctDirection()
+        g.addExtrema()
+
+    bb2 = g.boundingBox()
+    g.transform(psMat.translate(0, _MATH_AXIS - (bb2[3] + bb2[1]) / 2))
+
+    bb3 = g.boundingBox()
+    g.width = round(bb3[2] + rbear)
+
+    print(f"  {dst_name}: scale={scale:.3f} weight={weight} "
+          f"bounds={g.boundingBox()} advance={g.width}")
+
+
+_upem = font.em
+make_display_operator(font, 'Sigma',    'summation.disp', _upem,                 weight=-20, rbear=20)
+make_display_operator(font, 'Pi',       'product.disp',   _upem,                 weight=-20, rbear=5000)
+make_display_operator(font, 'integral', 'integral.disp',  round(1.4 * _upem),    weight=-15, rbear=5000)
 
 
 # ---------------------------------------------------------------------------

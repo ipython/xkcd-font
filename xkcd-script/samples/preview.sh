@@ -7,7 +7,7 @@ cat <<EOF > fonts.conf
 <?xml version="1.0"?>
 <!DOCTYPE fontconfig SYSTEM "fonts.dtd">
 <fontconfig>
-  <dir>../font/</dir>
+  <dir prefix="cwd">../font/</dir>
   <cachedir>../.font-cache</cachedir>
   <config></config>
 </fontconfig>
@@ -47,3 +47,5 @@ if [ "$?" == "141" ] ; then
 fi
 
 ${RUN_CTXT} python3 gen_charmap.py
+
+./math/run.sh
