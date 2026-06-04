@@ -82,6 +82,10 @@ sqrt-pi-short:
   formulas:
     - tex: '$\sqrt{\pi}$'
 
+piecewise-single:
+  formulas:
+    - tex: '$$y = \begin{cases} x & \text{if } x > 0 \end{cases}$$'
+
 piecewise-abs:
   formulas:
     - tex: '$$|x| = \begin{cases} x,  & \text{if } x \geq 0 \\ -x, & \text{if } x < 0 \end{cases}$$'
@@ -97,3 +101,15 @@ tall-integral-frac:
 tall-integral-sum:
   formulas:
     - tex: '$$\int_{-\infty}^{\infty} \sum_{n=1}^{\infty} \frac{f_n(x)}{n^2}\,dx = \sum_{n=1}^{\infty} \frac{1}{n^2} \int_{-\infty}^{\infty} f_n(x)\,dx$$'
+
+big-delim-frac:
+  formulas:
+    - tex: '$$\left( \dfrac{\frac{a}{b}}{\frac{c}{d}} \right)^{n} \qquad \left[ \dfrac{\frac{a}{b}}{\frac{c}{d}} \right]^{n}$$'
+
+matrix-3x3:
+  formulas:
+    - tex: '$$\begin{pmatrix} a_{11} & a_{12} & a_{13} \\ a_{21} & a_{22} & a_{23} \\ a_{31} & a_{32} & a_{33} \end{pmatrix} \qquad \begin{bmatrix} a_{11} & a_{12} & a_{13} \\ a_{21} & a_{22} & a_{23} \\ a_{31} & a_{32} & a_{33} \end{bmatrix}$$'
+
+column-vector:
+  formulas:
+    - tex: '$$\vec{v} = \begin{pmatrix} v_1 \\ v_2 \\ v_3 \\ v_4 \\ v_5 \end{pmatrix} \qquad \begin{bmatrix} v_1 \\ v_2 \\ v_3 \\ v_4 \\ v_5 \end{bmatrix}$$'

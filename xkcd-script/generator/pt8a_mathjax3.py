@@ -39,6 +39,22 @@ EXTENSIBLE_CONFIG = {
     'emdash':       {'cutXPct': 50, 'cutYPct': 50, 'leanDeg':  0.0, 'unitsPerSeg': 120, 'amp':  4},
     'radical':      {'cutXPct': 70, 'cutYPct': 50, 'leanDeg':  0.0, 'unitsPerSeg':  60, 'amp':  5},
     'radical.tall': {'cutXPct': 56, 'cutYPct': 45, 'leanDeg': -2.0, 'unitsPerSeg':  45, 'amp':  3},
+    # tall { — two Y cuts (above and below the central joint) so stretch is
+    # symmetric and the joint shape stays fixed.  Used for any \begin{cases}
+    # with 2+ rows; xkcd-mathjax3.js always overlays this glyph, never the
+    # basic braceleft.
+    'braceleft.tall': {'cutXPct': 50, 'cutYPct': [33, 67], 'leanDeg':  0.0, 'unitsPerSeg':  45, 'amp':  3},
+    # tall ( — single mid-height Y cut; no joint to preserve, so the stretch
+    # extends a uniform vertical mid-section.  parenright.tall is the X-mirror
+    # of this glyph and is produced at render time in xkcd-mathjax3.js, so it
+    # isn't listed here.
+    'parenleft.tall': {'cutXPct': 50, 'cutYPct': 50, 'leanDeg':  0.0, 'unitsPerSeg':  45, 'amp':  3},
+    # [ — the regular bracketleft (U+005B) extends fine on Y because its body
+    # is a near-straight vertical stroke; no dedicated .tall artwork needed.
+    # Single mid-Y cut leaves the top/bottom serifs intact and inserts uniform
+    # jittered stroke through the middle.  bracketright is X-mirrored at
+    # render time in xkcd-mathjax3.js, so it isn't listed here.
+    'bracketleft':   {'cutXPct': 50, 'cutYPct': 32, 'leanDeg':  0.0, 'unitsPerSeg':  45, 'amp':  3},
 }
 
 
