@@ -1486,11 +1486,6 @@
             mjx-container[jax="CHTML"][display="true"] mjx-munderover:has(.mjx-c2211) mjx-over {
                 margin-left: -0.15em !important;
             }
-            /* xkcd capitals are narrower than MJXTEX-I metrics so \\hat (U+02C6)
-               sits too far right; nudge it back. */
-            mjx-container[jax="CHTML"] mjx-mover mjx-over:has(.mjx-c2C6) {
-                margin-left: -0.10em !important;
-            }
             /* Drop the italic-correction padding on f-as-superscript-base so
                the prime lines up against our upright f. */
             mjx-container[jax="CHTML"] mjx-msup mjx-base mjx-mi:has(.mjx-c1D453) {
@@ -1503,9 +1498,82 @@
         document.head.appendChild(s);
     }
 
+    // ── Combining-accent shaping ────────────────────────────────────────────
+    // MathJax CHTML lays out \hat / \bar / \tilde / \dot / etc. as
+    // <mjx-mover> with pre-baked accent-x positioning that assumes MJXTEX-I
+    // letter widths.  xkcd-script's letters are different widths and the
+    // font carries its own GPOS mark anchors, so MathJax's baked position
+    // lands off-centre (typically too far right on capitals).
+    //
+    // For the common case — single-letter base + a spacing accent whose
+    // combining counterpart is in the font — replace the mover with a plain
+    // text run "<base char><combining char>".  HarfBuzz then shapes it
+    // through the font's mark feature, putting the accent exactly where the
+    // designer placed the anchor.  Wide-base accents (\widehat{xyz},
+    // \overline{a+b}) and accents we have no combining glyph for (\vec uses
+    // U+20D7 which isn't in xkcd-script) skip this path and fall through to
+    // MathJax's default rendering plus any existing CSS nudges.
+    // MathJax 3 TeX maps these accents to the codepoints on the left, not to
+    // the spacing-modifier-letter range you'd expect — \hat is ASCII ^,
+    // \tilde is ASCII ~, \grave is U+2035 (reversed prime).  Verified by DOM
+    // inspection of mjx-over contents.
+    const _ACCENT_SPACING_TO_COMBINING = {
+        '5E':   '̂',  // \hat       — ASCII ^ → combining circumflex
+        '7E':   '̃',  // \tilde     — ASCII ~ → combining tilde
+        'AF':   '̄',  // \bar       — macron
+        '2D9':  '̇',  // \dot
+        'A8':   '̈',  // \ddot      — diaeresis
+        '2C7':  '̌',  // \check     — caron
+        '2D8':  '̆',  // \breve
+        'B4':   '́',  // \acute
+        '2035': '̀',  // \grave     — reversed prime → combining grave
+    };
+
+    // Math italic / bold / Greek codepoints (U+1D400 block, U+210E, etc.)
+    // are aliased to their plain Latin / Greek glyph in the font's cmap
+    // via pt6's _math_aliases.  So injecting the codepoint directly into
+    // a text node is enough — the browser shapes it through the font's
+    // cmap alias and gets the correct glyph.  Returns null for inputs
+    // that don't parse so the caller can skip cases the font won't
+    // cover (e.g. fancy decorative codepoints we never aliased).
+    function _mathItalicCpToChar(hex) {
+        const cp = parseInt(hex, 16);
+        return Number.isFinite(cp) ? String.fromCodePoint(cp) : null;
+    }
+
+    function _glyphClassCp(el) {
+        const m = (el.className || '').match(/\bmjx-c([0-9A-F]+)\b/i);
+        return m ? m[1].toUpperCase() : null;
+    }
+
+    function replaceCombiningAccents(scope) {
+        const root = scope || document;
+        const movers = root.querySelectorAll('mjx-container[jax="CHTML"] mjx-mover');
+        for (const mover of movers) {
+            if (mover.dataset.xkcdAccent) continue;
+            const over = mover.querySelector(':scope > mjx-over');
+            const base = mover.querySelector(':scope > mjx-base');
+            if (!over || !base) continue;
+            const accentGlyphs = over.querySelectorAll('[class*="mjx-c"]');
+            const baseGlyphs   = base.querySelectorAll('[class*="mjx-c"]');
+            // Single accent over single letter only — leave \widehat{xyz},
+            // \overline{a+b}, \vec (U+20D7) etc. to the default path.
+            if (accentGlyphs.length !== 1 || baseGlyphs.length !== 1) continue;
+            const combining = _ACCENT_SPACING_TO_COMBINING[_glyphClassCp(accentGlyphs[0])];
+            if (!combining) continue;
+            const baseChar = _mathItalicCpToChar(_glyphClassCp(baseGlyphs[0]) || '');
+            if (!baseChar) continue;
+            const span = document.createElement('mjx-c-accent');
+            span.dataset.xkcdAccent = '1';
+            span.textContent = baseChar + combining;
+            mover.replaceWith(span);
+        }
+    }
+
     // ── Public refresh: idempotent overlay pass ─────────────────────────────
     function refresh(root) {
         injectFontOverride();
+        replaceCombiningAccents(root);
         replaceSqrtSymbols(root);
         replaceVinculums(root);
         replaceStretchyBraces(root);
