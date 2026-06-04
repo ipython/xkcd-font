@@ -131,6 +131,7 @@ def autokern(font):
     # including uppercase
     # Set *Y altogether first: CY, OY, etc. will have appropriate values set in the latter part.
     kern(105, roman, ['Y', 'T'], onlyCloser=True, damper=0.75)
+    kern(100, caps, ['f'], onlyCloser=True, damper=0.75)
     # F/E are separated from T/J so they can use a tighter target gap.
     kern(110, ['F'], set(roman) - {'j'}, onlyCloser=True, damper=0.75) # keep FO≈-60
     # Since F and z mesh together and the kerning becomes too large,
@@ -150,6 +151,7 @@ def autokern(font):
     kern(100, ['P'], set(roman) - {'j'}, onlyCloser=True, damper=0.75)
     diff_Po_Pe = getkern('P', 'o') - getkern('P', 'e')
     kern(100 + int(diff_Po_Pe / 0.75), ['P'], ['e'], onlyCloser=True, damper=0.75)
+    kern(35, ['L'], set(roman) - {'j'}, onlyCloser=True, touch=True)
 
 
 autokern(font)
