@@ -43,6 +43,7 @@ BLOCKS = [
     (0x00A0, 0x0100, "Latin-1 Supplement"),
     (0x0100, 0x0180, "Latin Extended-A"),
     (0x0180, 0x0250, "Latin Extended-B"),
+    (0x02B0, 0x0300, "Spacing Modifier Letters"),
     (0x0300, 0x0370, "Combining Diacritical Marks"),
     (0x0370, 0x0400, "Greek and Coptic"),
     (0x1E00, 0x1F00, "Latin Extended Additional"),

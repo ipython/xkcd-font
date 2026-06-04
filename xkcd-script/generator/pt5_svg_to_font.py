@@ -332,6 +332,14 @@ _per_char_operation = {
     ('x',): psMat.translate(0, 20),
 }
 
+# Per-character weight nudge applied after the per-line scale correction.
+# Positive = thicker, negative = thinner.  Mirrors _GREEK_WEIGHT_NUDGE for the
+# main alphabet — used when an individual glyph's hand-drawn stroke is
+# noticeably heavier or lighter than its neighbours.
+_per_char_weight_nudge = {
+    ('z',): -15,  # z's diagonal strokes are heavier than the rest of the alphabet
+}
+
 # Pick out particular glyphs that are more pleasant than their latter alternatives.
 special_choices = {('C', ): dict(line=4),
                    ('G',): dict(line=4),
@@ -386,6 +394,15 @@ for line, position, bbox, fname, chars in characters:
                 _restore = _h_before / _h_after
                 c.transform(psMat.scale(_restore))
                 c.width = int(round(c.width * _restore))
+
+    # Per-character weight nudge: applied to source glyphs whose stroke weight
+    # is noticeably off from the rest of the alphabet.
+    _weight_nudge = _per_char_weight_nudge.get(chars)
+    if _weight_nudge:
+        c.correctDirection()
+        c.removeOverlap()
+        c.changeWeight(_weight_nudge)
+        c.simplify()
 
     # Per-character size adjustments: scale about the baseline (origin) to reduce
     # overall size while preserving stroke weight gained from changeWeight above.
