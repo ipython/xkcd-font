@@ -70,7 +70,7 @@
 
     // ── BEGIN GENERATED GLYPH DATA ──
     const EXTENSIBLE_GLYPHS = {
-            emdash: {
+            "emdash": {
                 advance: 747,
                 bbox: {xmin: -4.0, ymin: 194.0, xmax: 727.0, ymax: 294.0},
                 config: {cutXPct: 50, cutYPct: 50, leanDeg: 0.0, unitsPerSeg: 120, amp: 4},
@@ -96,7 +96,7 @@
                     ["Z"],
                 ],
             },
-            radical: {
+            "radical": {
                 advance: 533,
                 bbox: {xmin: -3.0, ymin: -92.0, xmax: 517.0, ymax: 643.0},
                 config: {cutXPct: 70, cutYPct: 50, leanDeg: 0.0, unitsPerSeg: 60, amp: 5},
@@ -130,7 +130,7 @@
                     ["Z"],
                 ],
             },
-            uniE000: {
+            "radical.tall": {
                 advance: 824,
                 bbox: {xmin: 20.0, ymin: -458.7, xmax: 804.0, ymax: 865.3},
                 config: {cutXPct: 56, cutYPct: 45, leanDeg: -2.0, unitsPerSeg: 45, amp: 3},
@@ -538,7 +538,7 @@
             nudgeFrac: ({isShort}) => isShort ? 0.28 : 0.10,
             leadingPx: ({fontSizePx}) => fontSizePx * 0.16,
         },
-        uniE000: {
+        'radical.tall': {
             nudgeFrac: () => 0.10,
             // Taper leading DOWN as the surd grows: a moderately tall
             // radicand (quadratic formula) crowds with too little lead-in,
@@ -553,7 +553,7 @@
         const natH = EXTENSIBLE_GLYPHS.radical.bbox.ymax -
                      EXTENSIBLE_GLYPHS.radical.bbox.ymin;
         return targetH_units_at_naturalRadicalScale > natH * TALL_SURD_RATIO
-            ? 'uniE000' : 'radical';
+            ? 'radical.tall' : 'radical';
     }
 
     // Maximum-y anchor point — for a surd this is the top of the bar near
@@ -793,7 +793,11 @@
     function injectFontOverride() {
         if (_fontOverrideInjected) return;
         _fontOverrideInjected = true;
-        const STACK = "'xkcd-script', MJXTEX, MJXTEX-I, MJXTEX-B, MJXTEX-BI, MJXTEX-S1, MJXTEX-S2, MJXTEX-S3, MJXTEX-S4, MJXTEX-A";
+        // MJXZERO first matches MathJax's own .TEX-S1 rule: it's a zero-metric
+        // font that keeps the line-box clean, so only MathJax's explicit ::before
+        // padding governs vertical positioning of large operators.  xkcd-script
+        // still wins as the actual glyph source via cmap fallback.
+        const STACK = "MJXZERO, 'xkcd-script', MJXTEX, MJXTEX-I, MJXTEX-B, MJXTEX-BI, MJXTEX-S1, MJXTEX-S2, MJXTEX-S3, MJXTEX-S4, MJXTEX-A";
         const s = document.createElement('style');
         s.textContent = `
             mjx-container[jax="CHTML"] *,
@@ -806,11 +810,25 @@
                because the font-family override above is !important and a
                plain font-feature-settings would otherwise lose to MathJax's
                CHTML defaults. */
-            mjx-container[jax="CHTML"][display="true"] mjx-mo {
+            /* MathJax CHTML uses the Size1 metric (class TEX-S1) for both
+               inline and display ∑/∏/∫, just at different CSS font-sizes.
+               Apply ss01 to all of them so MathJax always sees the
+               display-sized .disp variant — its own font-size scaling
+               handles inline vs display sizing.  Non-MathJax users still
+               see the letter-sized base glyph because they don't trigger
+               this CSS rule. */
+            mjx-container[jax="CHTML"] mjx-mo,
+            mjx-container[jax="CHTML"] mjx-mo * {
                 font-feature-settings: "ss01" on !important;
             }
-            /* Inline limits on ∏ and ∫ need extra right margin — MathJax uses
-               pre-baked metrics that ignore our wider glyphs. */
+            /* Breathing room around inline math containers so they don't
+               crowd surrounding sentence text. */
+            mjx-container[jax="CHTML"]:not([display="true"]) {
+                margin: 0 0.2em !important;
+            }
+            /* Inline limits on ∑ ∏ ∫ need extra right margin — MathJax uses
+               pre-baked metrics that ignore our wider .disp glyphs. */
+            mjx-container[jax="CHTML"]:not([display="true"]) mjx-mo:has(.mjx-c2211),
             mjx-container[jax="CHTML"]:not([display="true"]) mjx-mo:has(.mjx-c220F),
             mjx-container[jax="CHTML"]:not([display="true"]) mjx-mo:has(.mjx-c222B) {
                 margin-right: 0.4em !important;
@@ -861,7 +879,9 @@
     }
 
     function _waitForFont() {
-        return document.fonts.load("1em 'xkcd-script-math'").catch(() => {});
+        // Pass a text including ∑/∏/∫ so the FontFaceSet wait covers the
+        // codepoints + their ss01 substitutions actually rendered by MathJax.
+        return document.fonts.load("1em 'xkcd-script'", "A∑∏∫").catch(() => {});
     }
 
     let _resolveReady;
@@ -869,6 +889,7 @@
 
     function _afterInitialTypeset() {
         return Promise.all([_waitForFont(), _waitForDom()])
+            .then(() => { injectFontOverride(); })  // before typeset so ss01 + STACK affect MathJax's box metrics
             .then(() => MathJax.typesetPromise())
             .then(() => { refresh(); _resolveReady(); });
     }
