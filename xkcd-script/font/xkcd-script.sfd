@@ -2883,7 +2883,7 @@ SplineSet
  116 52 74 173 74 192 c 0
  74 206 47 281 46 298 c 0
 EndSplineSet
-Kerns2: 21 -22 "kern"
+Kerns2: 599 -15 "kern" 595 -15 "kern" 499 -18 "kern" 496 -29 "kern" 488 -30 "kern" 481 -18 "kern" 479 -29 "kern" 465 -16 "kern" 457 -24 "kern" 444 -18 "kern" 441 -29 "kern" 432 -15 "kern" 430 -24 "kern" 420 -18 "kern" 418 -29 "kern" 403 -29 "kern" 387 -64 "kern" 386 -7 "kern" 385 -15 "kern" 384 -24 "kern" 382 -18 "kern" 379 -29 "kern" 361 -17 "kern" 342 -18 "kern" 340 -15 "kern" 338 -29 "kern" 322 -18 "kern" 321 -29 "kern" 314 -24 "kern" 300 -24 "kern" 291 -18 "kern" 289 -29 "kern" 81 -27 "kern" 80 -24 "kern" 75 -7 "kern" 72 -7 "kern" 69 -24 "kern" 68 -21 "kern" 67 -14 "kern" 65 -64 "kern" 63 -7 "kern" 62 -15 "kern" 61 -19 "kern" 58 -24 "kern" 57 -21 "kern" 46 -17 "kern" 44 -18 "kern" 39 -29 "kern" 35 -22 "kern" 29 -40 "kern" 28 -18 "kern" 21 -22 "kern"
 EndChar
 
 StartChar: W

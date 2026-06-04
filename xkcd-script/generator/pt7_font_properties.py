@@ -142,6 +142,7 @@ def autokern(font):
     kern(45, ['E'], ['V'], onlyCloser=True, touch=True)
     kern(115, ['T', 'J'], set(roman) - {'j'}, onlyCloser=True, damper=0.75) # keep Tr≈-105
     kern(105, ['Y'], set(roman) - {'j'}, onlyCloser=True, damper=0.75)
+    kern(85, ['V'], caps, onlyCloser=True, damper=0.75)
     # C: loosen from the default (was too tight for Cj).
     # Compared to E, the lower curve of C tends to come close to the next character,
     # but this is considered an intentional design.
