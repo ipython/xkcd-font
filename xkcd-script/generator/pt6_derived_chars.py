@@ -1299,6 +1299,239 @@ for _cp, _left, _right in [
 
 
 # ---------------------------------------------------------------------------
+# Math cmap aliases (for MathJax / pasted Unicode math text)
+# ---------------------------------------------------------------------------
+# MathJax CHTML references math italic / bold / Greek codepoints directly
+# (U+1D400-block).  Rather than ship dedicated glyphs, we add cmap aliases so
+# each math codepoint resolves to the existing Latin/Greek letterform.  The
+# aliases attach via glyph.altuni so no extra glyph entries are created — the
+# size cost is only the additional cmap entries.
+
+def _add_altuni(glyph, codepoint):
+    cur = list(glyph.altuni) if glyph.altuni else []
+    cur.append((codepoint, -1, 0))
+    glyph.altuni = tuple(cur)
+
+
+# Greek codepoint sequences for the U+1D6A8.. and U+1D6E2.. math blocks.
+# Position 17 is the "capital theta symbol" slot, aliased back to plain Θ.
+# 0x03A2 is a Unicode hole in the Greek block; the math block uses Σ in that slot.
+_GREEK_UPPER = [
+    0x0391, 0x0392, 0x0393, 0x0394, 0x0395, 0x0396, 0x0397, 0x0398,
+    0x0399, 0x039A, 0x039B, 0x039C, 0x039D, 0x039E, 0x039F, 0x03A0,
+    0x03A1, 0x0398, 0x03A3, 0x03A4, 0x03A5, 0x03A6, 0x03A7, 0x03A8, 0x03A9,
+]
+_GREEK_LOWER = [
+    0x03B1, 0x03B2, 0x03B3, 0x03B4, 0x03B5, 0x03B6, 0x03B7, 0x03B8,
+    0x03B9, 0x03BA, 0x03BB, 0x03BC, 0x03BD, 0x03BE, 0x03BF, 0x03C0,
+    0x03C1, 0x03C2, 0x03C3, 0x03C4, 0x03C5, 0x03C6, 0x03C7, 0x03C8, 0x03C9,
+]
+
+_math_aliases = {}  # src_cp -> dst_cp
+
+# Math Italic Latin: U+1D434–U+1D467 (U+1D455 is a Unicode hole)
+for _i in range(26):
+    _math_aliases[0x1D434 + _i] = 0x0041 + _i
+for _i in range(26):
+    _src = 0x1D44E + _i
+    if _src != 0x1D455:
+        _math_aliases[_src] = 0x0061 + _i
+
+# TeX italic substitutes that fill the U+1D455 hole and similar
+_math_aliases[0x210E] = ord('h')   # ℎ PLANCK CONSTANT
+_math_aliases[0x210F] = ord('h')   # ℏ PLANCK CONSTANT OVER TWO PI (no ħ in math italic)
+_math_aliases[0x2113] = ord('l')   # ℓ SCRIPT SMALL L
+_math_aliases[0x03D5] = 0x03C6     # ϕ GREEK PHI SYMBOL → φ
+
+# Math Bold Latin: U+1D400–U+1D433
+for _i in range(26):
+    _math_aliases[0x1D400 + _i] = 0x0041 + _i
+for _i in range(26):
+    _math_aliases[0x1D41A + _i] = 0x0061 + _i
+
+# Math Bold Italic Latin: U+1D468–U+1D49B
+for _i in range(26):
+    _math_aliases[0x1D468 + _i] = 0x0041 + _i
+for _i in range(26):
+    _math_aliases[0x1D482 + _i] = 0x0061 + _i
+
+# Math Bold digits: U+1D7CE–U+1D7D7
+for _i in range(10):
+    _math_aliases[0x1D7CE + _i] = 0x0030 + _i
+
+# Math Italic Greek capitals: U+1D6E2–U+1D6FA, small: U+1D6FC–U+1D714
+for _i, _cp in enumerate(_GREEK_UPPER):
+    _math_aliases[0x1D6E2 + _i] = _cp
+for _i, _cp in enumerate(_GREEK_LOWER):
+    _math_aliases[0x1D6FC + _i] = _cp
+
+# Math Italic Greek variants
+_math_aliases[0x1D715] = 0x2202  # ∂ partial differential
+_math_aliases[0x1D716] = 0x03F5  # ϵ epsilon symbol
+_math_aliases[0x1D717] = 0x03B8  # θ theta symbol
+_math_aliases[0x1D718] = 0x03BA  # κ kappa symbol
+_math_aliases[0x1D719] = 0x03C6  # φ phi symbol
+_math_aliases[0x1D71A] = 0x03C1  # ρ rho symbol
+_math_aliases[0x1D71B] = 0x03C0  # π pi symbol
+
+# Math Bold Greek capitals: U+1D6A8–U+1D6C0, small: U+1D6C2–U+1D6DA
+for _i, _cp in enumerate(_GREEK_UPPER):
+    _math_aliases[0x1D6A8 + _i] = _cp
+for _i, _cp in enumerate(_GREEK_LOWER):
+    _math_aliases[0x1D6C2 + _i] = _cp
+
+_added = 0
+_skipped = 0
+for _src_cp, _dst_cp in sorted(_math_aliases.items()):
+    try:
+        _g = font[_dst_cp]
+    except TypeError:
+        _skipped += 1
+        continue
+    _add_altuni(_g, _src_cp)
+    _added += 1
+print(f"  math aliases: added {_added}, skipped {_skipped} (no source glyph)")
+
+
+# ---------------------------------------------------------------------------
+# ⋅ U+22C5 DOT OPERATOR — period scaled to 75%, centred on the math axis.
+# Used inline in math contexts (e.g. "5⋅3"); math-axis centring lines it up
+# with operators like +/− rather than the baseline-hugging period dot.
+# ---------------------------------------------------------------------------
+_MATH_AXIS = 260
+_CDOT_WIDTH = 220
+_period_g = font[ord('.')]
+_period_bb = _period_g.boundingBox()
+_period_cx = (_period_bb[0] + _period_bb[2]) / 2
+_period_cy = (_period_bb[1] + _period_bb[3]) / 2
+_cdot = font.createChar(0x22C5, 'uni22C5')
+_cdot.clear()
+_cdot.addReference(_period_g.glyphname, psMat.compose(
+    psMat.scale(0.75),
+    psMat.translate(_CDOT_WIDTH / 2 - _period_cx * 0.75,
+                    _MATH_AXIS - _period_cy * 0.75),
+))
+_cdot.width = _CDOT_WIDTH
+
+
+# ---------------------------------------------------------------------------
+# ∘ U+2218 RING OPERATOR — reuses the ring contours extracted from Å (the
+# same shape used as a diacritic above å/ů).  The hand-drawn ring already
+# has the right pen weight and proportions for an operator-sized glyph,
+# so we just copy it and recentre on the math axis.
+# ---------------------------------------------------------------------------
+_CIRC_WIDTH = 440
+_circ_layer = fontforge.layer()
+for c in _ring_mark.foreground:
+    _circ_layer += c
+_circ = font.createChar(0x2218, 'uni2218')
+_circ.clear()
+_circ.foreground = _circ_layer
+_circ_bb = _circ.boundingBox()
+_circ.transform(psMat.translate(
+    _CIRC_WIDTH / 2 - (_circ_bb[0] + _circ_bb[2]) / 2,
+    _MATH_AXIS - (_circ_bb[1] + _circ_bb[3]) / 2,
+))
+_circ.width = _CIRC_WIDTH
+
+
+# ---------------------------------------------------------------------------
+# ∗ U+2217 ASTERISK OPERATOR — asterisk recentred on the math axis.
+# MathJax emits U+2217 for `*` in math mode (and for \ast); without this
+# glyph `*` falls back to .notdef.  We copy the asterisk outlines and
+# translate them so their vertical centre lands on _MATH_AXIS, matching
+# the height of +/−/⋅ rather than the higher-sitting text asterisk.
+# ---------------------------------------------------------------------------
+_AST_WIDTH = 475
+_ast_src = font[ord('*')]
+_ast_bb = _ast_src.boundingBox()
+_ast_cy = (_ast_bb[1] + _ast_bb[3]) / 2
+_ast = font.createChar(0x2217, 'uni2217')
+_ast.clear()
+_ast.addReference(_ast_src.glyphname, psMat.translate(0, _MATH_AXIS - _ast_cy))
+_ast.width = _AST_WIDTH
+
+
+# ---------------------------------------------------------------------------
+# ∑ U+2211 / ∏ U+220F — inline-sized large operators.
+# The base font carries the Greek capitals Σ/Π for letter use; we mint
+# separate `summation`/`product` glyphs at the math codepoints so the
+# ss01 substitution (wired up in pt7) doesn't also affect Greek text.
+# Outlines are copied (not referenced) so the .disp variants below can
+# scale and thin them independently of the source letters.
+# ---------------------------------------------------------------------------
+
+def _copy_glyph_at(font, src_name, cp, dst_name):
+    src = font[src_name]
+    layer = fontforge.layer()
+    for c in src.foreground:
+        layer += c
+    g = font.createChar(cp, dst_name)
+    g.clear()
+    g.foreground = layer
+    g.width = src.width
+    return g
+
+_copy_glyph_at(font, 'Sigma', 0x2211, 'summation')
+_copy_glyph_at(font, 'Pi',    0x220F, 'product')
+
+
+# ---------------------------------------------------------------------------
+# Display-sized large operators (∑ ∏ ∫) as stylistic alternates.
+#
+# Unencoded glyphs reached via the OpenType ss01 feature (wired up in pt7).
+# The base U+2211 / U+220F / U+222B forms stay at inline size; ss01 swaps
+# them for these enlarged variants in display contexts (MathJax uses a
+# font-feature-settings CSS rule scoped to display-mode <mjx-mo>).
+# ---------------------------------------------------------------------------
+
+def make_display_operator(font, src_name, dst_name, target_h, weight=0, rbear=0):
+    """Scale src to target_h, optionally thin strokes, centre on MATH_AXIS.
+
+    Creates an unencoded glyph named dst_name.  rbear sets the right
+    bearing in font units (advance = right glyph edge + rbear); MathJax
+    CHTML ignores font advances anyway, so the oversized rbears used for
+    ∏/∫ only matter for non-MathJax consumers.
+    """
+    src = font[src_name]
+    src_layer = fontforge.layer()
+    for c in src.foreground:
+        src_layer += c
+    src_width = src.width
+
+    g = font.createChar(-1, dst_name)
+    g.clear()
+    g.foreground = src_layer
+    g.width = src_width
+
+    bb = g.boundingBox()
+    scale = target_h / (bb[3] - bb[1])
+    g.transform(psMat.scale(scale))
+
+    if weight != 0:
+        g.correctDirection()
+        g.removeOverlap()
+        g.changeWeight(weight)
+        g.correctDirection()
+        g.addExtrema()
+
+    bb2 = g.boundingBox()
+    g.transform(psMat.translate(0, _MATH_AXIS - (bb2[3] + bb2[1]) / 2))
+
+    bb3 = g.boundingBox()
+    g.width = round(bb3[2] + rbear)
+
+    print(f"  {dst_name}: scale={scale:.3f} weight={weight} "
+          f"bounds={g.boundingBox()} advance={g.width}")
+
+
+_upem = font.em
+make_display_operator(font, 'Sigma',    'summation.disp', _upem,                 weight=-20, rbear=20)
+make_display_operator(font, 'Pi',       'product.disp',   _upem,                 weight=-20, rbear=5000)
+make_display_operator(font, 'integral', 'integral.disp',  round(1.4 * _upem),    weight=-15, rbear=5000)
+
+
+# ---------------------------------------------------------------------------
 # Save
 # ---------------------------------------------------------------------------
 

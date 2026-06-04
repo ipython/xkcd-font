@@ -71,6 +71,18 @@ EXTRAS_ORDER = [
     0x25BD,  # ▽ WHITE DOWN-POINTING TRIANGLE
 ]
 
+# Codepoints we deliberately omit from the charmap.  These exist in the font
+# as cmap aliases (added in pt6) pointing back to existing Latin/Greek glyphs,
+# so rendering them would just duplicate cells already shown elsewhere.
+IGNORE_RANGES = [
+    (0x1D400, 0x1D800),  # Mathematical Alphanumeric Symbols (math italic/bold Latin & Greek)
+    (0x210E, 0x2114),    # ℎ ℏ ℓ — TeX italic substitutes from Letterlike Symbols
+]
+
+
+def _ignored(cp):
+    return any(start <= cp < end for start, end in IGNORE_RANGES)
+
 block_covered = set()
 for start, end, _ in BLOCKS:
     block_covered.update(range(start, end))
@@ -91,7 +103,11 @@ if extras_in_block:
     )
 
 extras_cps = set(cp for cp in EXTRAS_ORDER if cp is not None)
-uncovered = sorted(cp for cp in present if cp not in block_covered and cp not in extras_cps and not _is_invisible(cp))
+uncovered = sorted(cp for cp in present
+                   if cp not in block_covered
+                   and cp not in extras_cps
+                   and not _is_invisible(cp)
+                   and not _ignored(cp))
 if uncovered:
     lines = [f"  0x{cp:04X},  # {chr(cp)} {unicodedata.name(chr(cp), '(unknown)')}" for cp in uncovered]
     raise ValueError(

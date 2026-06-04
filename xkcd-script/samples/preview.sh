@@ -47,3 +47,5 @@ if [ "$?" == "141" ] ; then
 fi
 
 ${RUN_CTXT} python3 gen_charmap.py
+
+./mathjax3/run.sh
