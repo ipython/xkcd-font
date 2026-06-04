@@ -274,7 +274,8 @@ font.os2_capheight = 592
 # ---------------------------------------------------------------------------
 font.addLookup('ss01-display-operators',
                'gsub_single', None,
-               (('ss01', (('latn', ('dflt',)),
+               (('ss01', (('DFLT', ('dflt',)),
+                          ('latn', ('dflt',)),
                           ('math', ('dflt',)))),))
 font.addLookupSubtable('ss01-display-operators', 'ss01-display-operators-1')
 try:

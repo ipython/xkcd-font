@@ -6,26 +6,17 @@
 #
 # Each formula's `tex` is the full text snippet — write the $…$ or $$…$$
 # delimiters yourself.  Plain sentences containing inline math also work.
-#
-# An optional `mathjax:` block on a group declares which TeX-input
-# packages to load and whether equation tagging should be enabled, e.g.
-#
-#     amscd-commutative-diagram:
-#       mathjax: { packages: [amscd] }
-#
-# Groups that omit `mathjax:` get the bare default (no extras, no tags).
 
-inline-sum:
+inline-ops:
+  cellHeight: 72
+  cellWidth: 560
   formulas:
     - tex: '$\sum_{k=1}^{n} k$'
-
-inline-int:
-  formulas:
-    - tex: '$\int_0^1 x^2\,dx$'
-
-inline-prod:
-  formulas:
     - tex: '$\prod_{k=1}^{n} k$'
+    - tex: '$\int_0^1 x^2\,dx$'
+    - tex: 'We sum as $\sum_{i=1}^{N} a_i$ over the index.'
+    - tex: 'The product $\prod_{k=1}^{n} (1-p_k)$ converges.'
+    - tex: 'Define $F(x) = \int_0^x f(t)\,dt$ as antiderivative.'
 
 display-sum-closed:
   formulas:

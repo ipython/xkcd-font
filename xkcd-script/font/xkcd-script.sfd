@@ -56,7 +56,7 @@ OS2StrikeYPos: 221
 OS2CapHeight: 592
 OS2XHeight: 338
 OS2Vendor: 'PfEd'
-Lookup: 1 0 0 "ss01-display-operators" { "ss01-display-operators-1"  } ['ss01' ('latn' <'dflt' > 'math' <'dflt' > ) ]
+Lookup: 1 0 0 "ss01-display-operators" { "ss01-display-operators-1"  } ['ss01' ('DFLT' <'dflt' > 'latn' <'dflt' > 'math' <'dflt' > ) ]
 Lookup: 4 0 1 "ligatures" { "liga"  } ['liga' ('latn' <'dflt' > ) ]
 Lookup: 260 0 0 "below" { "below_sub"  } ['mark' ('latn' <'dflt' > ) ]
 Lookup: 260 0 0 "above" { "above_sub"  } ['mark' ('latn' <'dflt' > ) ]
