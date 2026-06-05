@@ -18,6 +18,9 @@ import glob
 import parse
 import unicodedata
 
+SPACE = 0
+RSPACE = 20
+
 fnames = sorted(glob.glob('../generated/characters/char_*.svg'))
 
 characters = []
@@ -237,9 +240,8 @@ def pad_glyph(c):
     # Put horizontal padding around the glyph. I choose a number here that looks reasonable,
     # there are far more sophisticated means of doing this (like looking at the original image,
     # and calculating how much space there should be).
-    space = 0
-    rspace = 20
-    c.font['_pad_space'].width = space + rspace
+    space = SPACE
+    rspace = RSPACE
     bbox = c.boundingBox()
     if c.glyphname in list('gjpqy'):
         # Recalculate the bounding box by excluding the tail of the glyph
@@ -332,6 +334,7 @@ font.hhea_linegap = 77
 # Information to be conveyed to the next stage.
 # I wanted to use font.persistent, but it causes an error. Instead, I use a dummy glyph.
 font.createChar(-1, '_pad_space')
+font['_pad_space'].width = SPACE + RSPACE
 
 # Per-character size scaling applied after changeWeight, to fine-tune individual glyphs
 # that end up slightly too large despite correct stroke weight.

@@ -114,7 +114,7 @@ def autokern(font):
         return None
 
     a = font['_pad_space'].width
-    a = max(a - 20, 0)
+    a = a - 20
 
     # The same combination will be overwritten, so the one written last will take effect.
     # autoKern looks at the outline, so even if you change the padding, it absorbs all of it.
@@ -124,6 +124,8 @@ def autokern(font):
     kern(60+a, ['s'], set(lower) - {'i', 'j', 'f', 't', 'x'}, onlyCloser=True, damper=0.75) # loosen by damper
     # Overwrite sf and st. (From experience, it is often just right to adopt the larger of the two
     # separation required by the glyphs on the left and right.)
+    # The horizontal bars of 'r' and 'f' get caught between the dot and the stem of 'i', causing
+    # unexpected behavior, so 'i' and 'j' are excluded.
     kern(80+a, set(lower) - {'i', 'j'}, ['f', 't'], onlyCloser=True, damper=0.75)
     kern(90+a, set(lower) - {'i', 'j'}, ['x'], onlyCloser=True, damper=0.75) # kx is fine, fx is tight
     kern(80+a, ['x'], set(lower) - {'i', 'j'}, onlyCloser=True, damper=0.75)
@@ -135,29 +137,29 @@ def autokern(font):
     kern(100+a + diff_ro_re, ['r'], ['e'], onlyCloser=True, damper=0.75)
     # including uppercase
     # Set *Y altogether first: CY, OY, etc. will have appropriate values set in the latter part.
-    kern(105, roman, ['Y', 'T'], onlyCloser=True, damper=0.75)
-    kern(100, caps, ['f'], onlyCloser=True, damper=0.75)
+    kern(105+a, roman, ['Y', 'T'], onlyCloser=True, damper=0.75)
+    kern(100+a, caps, ['f'], onlyCloser=True, damper=0.75)
     # F/E are separated from T/J so they can use a tighter target gap.
-    kern(110, ['F'], set(roman) - {'j'}, onlyCloser=True, damper=0.75) # keep FO≈-60
+    kern(110+a, ['F'], set(roman) - {'j'}, onlyCloser=True, damper=0.75) # keep FO≈-60
     # Since F and z mesh together and the kerning becomes too large,
     # reuse the kerning value of one of the round letterforms.
     diff_Fo_Fz = getkern('F', 'o') - getkern('F', 'z')
-    kern(110 + int(diff_Fo_Fz / 0.75), ['F'], ['z'], onlyCloser=True, damper=0.75)
-    kern(90, ['E'], set(roman) - {'j'}, onlyCloser=True, damper=0.75) # keep ES≈-30
-    kern(45, ['E'], ['V'], onlyCloser=True, touch=True)
-    kern(115, ['T', 'J'], set(roman) - {'j'}, onlyCloser=True, damper=0.75) # keep Tr≈-105
-    kern(105, ['Y'], set(roman) - {'j'}, onlyCloser=True, damper=0.75)
-    kern(85, ['V'], caps, onlyCloser=True, damper=0.75)
+    kern(110+a + int(diff_Fo_Fz / 0.75), ['F'], ['z'], onlyCloser=True, damper=0.75)
+    kern(90+a, ['E'], set(roman) - {'j'}, onlyCloser=True, damper=0.75) # keep ES≈-30
+    kern(45+a, ['E'], ['V'], onlyCloser=True, touch=True)
+    kern(115+a, ['T', 'J'], set(roman) - {'j'}, onlyCloser=True, damper=0.75) # keep Tr≈-105
+    kern(105+a, ['Y'], set(roman) - {'j'}, onlyCloser=True, damper=0.75)
+    kern(85+a, ['V'], caps, onlyCloser=True, damper=0.75)
     # C: loosen from the default (was too tight for Cj).
     # Compared to E, the lower curve of C tends to come close to the next character,
     # but this is considered an intentional design.
-    kern(60, ['C'], set(roman) - {'j'}, onlyCloser=True, damper=0.75) # keep CK≈-15
-    kern(25, ['C'], ['V'], onlyCloser=True, touch=True)
-    kern(60, ['O'], set(roman) - {'j'}, onlyCloser=True, damper=0.75) # loosen
-    kern(100, ['P'], set(roman) - {'j'}, onlyCloser=True, damper=0.75)
+    kern(60+a, ['C'], set(roman) - {'j'}, onlyCloser=True, damper=0.75) # keep CK≈-15
+    kern(25+a, ['C'], ['V'], onlyCloser=True, touch=True)
+    kern(60+a, ['O'], set(roman) - {'j'}, onlyCloser=True, damper=0.75) # loosen
+    kern(100+a, ['P'], set(roman) - {'j'}, onlyCloser=True, damper=0.75)
     diff_Po_Pe = getkern('P', 'o') - getkern('P', 'e')
-    kern(100 + int(diff_Po_Pe / 0.75), ['P'], ['e'], onlyCloser=True, damper=0.75)
-    kern(35, ['L'], set(roman) - {'j'}, onlyCloser=True, touch=True)
+    kern(100+a + int(diff_Po_Pe / 0.75), ['P'], ['e'], onlyCloser=True, damper=0.75)
+    kern(35+a, ['L'], set(roman) - {'j'}, onlyCloser=True, touch=True)
 
 
 autokern(font)
