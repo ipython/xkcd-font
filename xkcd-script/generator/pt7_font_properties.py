@@ -128,6 +128,11 @@ def autokern(font):
     kern(90+a, set(lower) - {'i', 'j'}, ['x'], onlyCloser=True, damper=0.75) # kx is fine, fx is tight
     kern(80+a, ['x'], set(lower) - {'i', 'j'}, onlyCloser=True, damper=0.75)
     kern(100+a, ['f', 't'], set(lower) - {'i', 'j'}, onlyCloser=True, damper=0.75) # oveerwrite fx
+    # For some reason, autoKern malfunctions on the left side of 'e', so the kerning value of 'o' is reused.
+    kern(0, ['r'], ['e', 'o'])
+    diff_ro_re = getkern('r', 'o') - getkern('r', 'e')
+    kern(100+a, ['r'], set(lower) - {'i', 'j'}, onlyCloser=True, damper=0.75)
+    kern(100+a + diff_ro_re, ['r'], ['e'], onlyCloser=True, damper=0.75)
     # including uppercase
     # Set *Y altogether first: CY, OY, etc. will have appropriate values set in the latter part.
     kern(105, roman, ['Y', 'T'], onlyCloser=True, damper=0.75)
