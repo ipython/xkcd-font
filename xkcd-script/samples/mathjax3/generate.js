@@ -60,6 +60,7 @@ function head(group) {
     return `<!DOCTYPE html>
 <html><head><meta charset="utf-8">
 <style>
+    @font-face { font-family:'xkcd-script'; src:url('/xkcd-script/font/xkcd-script.woff') format('woff'); }
     html, body { margin:0; padding:0; background:#fff;
                  font-family:'xkcd-script', sans-serif;
                  font-size:22px; line-height:1.6; color:#111; }

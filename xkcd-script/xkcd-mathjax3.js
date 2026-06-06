@@ -1,79 +1,52 @@
 /**
- * xkcd-mathjax3 — render MathJax 3 CHTML output with xkcd-script fonts and
- * hand-drawn sqrt / fraction-bar overlays.
+ * xkcd-mathjax3 - render MathJax 3 CHTML output with xkcd-script fonts
+ * and hand-drawn sqrt / fraction-bar overlays.
  *
- * Drop this script on a page that already loads MathJax 3 (CHTML).  It loads
- * xkcd-script.woff from a URL resolved relative to its own src, injects the
- * font-override CSS, and hooks MathJax's startup so the initial typeset is
- * post-processed.  Works whether MathJax loads before or after this script.
+ * Requires: a page that loads MathJax 3 (CHTML) and has an @font-face rule for
+ * 'xkcd-script'.  This script must be loaded BEFORE MathJax so it can hook
+ * MathJax's startup.ready callback and suppress MathJax's own initial typeset
+ * (we re-run it ourselves after injecting font overrides).
  *
- * ── Usage (plain HTML) ──────────────────────────────────────────────────────
- *   <!-- 1. Optional MathJax config (tex delimiters, etc) — set FIRST -->
+ * If you cannot load before MathJax (e.g. MathJax is already running), call
+ * XkcdMathJax.refresh() manually after each MathJax.typesetPromise() resolves
+ * (i.e. after MathJax has finished converting TeX to rendered HTML elements).
+ * refresh() is idempotent and safe to call at any time.
+ *
+ * Usage (plain HTML):
+ *   <!-- 1. Load the xkcd-script font (page's responsibility) -->
+ *   <style>@font-face { font-family:'xkcd-script'; src:url('font/xkcd-script.woff') format('woff'); }</style>
+ *   <!-- 2. Any MathJax config (tex delimiters etc) - must precede MathJax -->
  *   <script>MathJax = { tex: { inlineMath: [['$','$']] } };</script>
- *   <!-- 2. Then this script: it merges its startup hook into MathJax config -->
+ *   <!-- 3. This script - must precede MathJax so it can hook startup.ready -->
  *   <script src="path/to/xkcd-mathjax3.js"></script>
- *   <!-- 3. Then MathJax itself, async -->
+ *   <!-- 4. MathJax itself -->
  *   <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
  *
- * ── Usage (Jupyter / JupyterLab, which ships its own MathJax 3) ─────────────
+ * Usage (Jupyter / JupyterLab, which ships its own MathJax 3):
  *   from IPython.display import HTML, display
  *   display(HTML('<script src="https://your-host/xkcd-mathjax3.js"></script>'))
  *   # Then any subsequent Markdown / Latex cells render with xkcd-script.
  *
- * ── Public API on window.XkcdMathJax ────────────────────────────────────────
- *   refresh(root?)       — re-run sqrt / vinculum overlay placement.  Call
- *                          after any MathJax.typesetPromise() of dynamic
- *                          content.  Idempotent.
- *   ready                — Promise that resolves once the initial typeset and
+ * Public API on window.XkcdMathJax:
+ *   refresh(root?)       - re-run sqrt / vinculum overlay placement after
+ *                          MathJax has finished rendering (i.e. after
+ *                          typesetPromise() resolves).  Idempotent.
+ *   ready                - Promise that resolves once the initial typeset and
  *                          first overlay pass have completed.
- *   resetOverlays(root?) — strip overlays + restore hidden elements (used
+ *   resetOverlays(root?) - strip overlays and restore hidden elements (used
  *                          internally on resize; exposed for advanced use).
- *
- * ── Configuration (optional) ────────────────────────────────────────────────
- *   Set BEFORE loading this script:
- *     window.XkcdMathJaxConfig = { fontBase: 'https://your-host/fonts/' };
- *   fontBase is prepended to the woff filenames.  If unset, fonts are loaded
- *   relative to this script's own src (assumes font/*.woff sits next to it).
  */
 (function () {
     'use strict';
 
-    // ── Locate our own URL so we can resolve sibling woff files ─────────────
     const cfg = window.XkcdMathJaxConfig || {};
-    function _scriptBase() {
-        if (cfg.fontBase) return cfg.fontBase;
-        const cur = document.currentScript;
-        if (cur && cur.src) {
-            return cur.src.replace(/[^/]*$/, '') + 'font/';
-        }
-        // Fallback: locate any <script> whose src ends in xkcd-mathjax3.js
-        for (const s of document.scripts) {
-            if (s.src && /xkcd-mathjax3(\.min)?\.js(\?|$)/.test(s.src)) {
-                return s.src.replace(/[^/]*$/, '') + 'font/';
-            }
-        }
-        return 'font/';
-    }
-    const FONT_BASE = _scriptBase();
-
-    // ── @font-face injection ────────────────────────────────────────────────
-    function _injectFontFaces() {
-        const s = document.createElement('style');
-        s.textContent = `
-            @font-face {
-                font-family: 'xkcd-script';
-                src: url('${FONT_BASE}xkcd-script.woff') format('woff');
-            }`;
-        document.head.appendChild(s);
-    }
-    _injectFontFaces();
 
     // ── BEGIN GENERATED GLYPH DATA ──
     const EXTENSIBLE_GLYPHS = {
             "emdash": {
                 advance: 747,
                 bbox: {xmin: -4.0, ymin: 194.0, xmax: 727.0, ymax: 293.0},
-                config: {cutXPct: 50, cutYPct: 50, leanDeg: 0.0, unitsPerSeg: 120, amp: 4},
+                config: {cuts: [{"axis": "x", "pct": 50}], unitsPerSeg: 120, amp: 4},
                 commands: [
                     ["M", 655.0, 282.0],
                     ["C", 660.0, 289.0, 664.0, 293.0, 683.0, 293.0],
@@ -99,7 +72,7 @@
             "radical": {
                 advance: 533,
                 bbox: {xmin: 0.0, ymin: -88.0, xmax: 517.0, ymax: 640.0},
-                config: {cutXPct: 70, cutYPct: 50, leanDeg: 0.0, unitsPerSeg: 60, amp: 5},
+                config: {cuts: [{"axis": "x", "pct": 70}, {"axis": "y", "pct": 50}], unitsPerSeg: 60, amp: 5},
                 commands: [
                     ["M", 36.0, 224.0],
                     ["C", 51.0, 224.0, 96.0, 181.0, 96.0, 174.0],
@@ -139,7 +112,7 @@
             "radical.tall": {
                 advance: 824,
                 bbox: {xmin: 20.0, ymin: -458.8, xmax: 804.0, ymax: 865.2},
-                config: {cutXPct: 56, cutYPct: 45, leanDeg: -2.0, unitsPerSeg: 45, amp: 3},
+                config: {cuts: [{"axis": "x", "pct": 56}, {"axis": "y", "pct": 45, "lean": -2.0}], unitsPerSeg: 45, amp: 3},
                 commands: [
                     ["M", 281.0, 864.2],
                     ["C", 283.0, 865.2, 288.0, 865.2, 294.0, 863.2],
@@ -319,7 +292,7 @@
             "braceleft.tall": {
                 advance: 135,
                 bbox: {xmin: 10.0, ymin: -214.5, xmax: 115.0, ymax: 620.5},
-                config: {cutXPct: 50, cutYPct: [33, 67], leanDeg: 0.0, unitsPerSeg: 45, amp: 3},
+                config: {cuts: [{"axis": "y", "pct": 67}, {"axis": "y", "pct": 33}], unitsPerSeg: 45, amp: 3},
                 commands: [
                     ["M", 69.0, 156.5],
                     ["C", 73.0, 146.5, 76.0, 105.5, 76.0, 65.5],
@@ -424,7 +397,7 @@
             "parenleft.tall": {
                 advance: 208,
                 bbox: {xmin: 20.2, ymin: -243.1, xmax: 188.0, ymax: 648.9},
-                config: {cutXPct: 50, cutYPct: 50, leanDeg: 0.0, unitsPerSeg: 45, amp: 3},
+                config: {cuts: [{"axis": "y", "pct": 50}], unitsPerSeg: 45, amp: 3},
                 commands: [
                     ["M", 118.0, 644.9],
                     ["C", 124.0, 647.9, 125.0, 648.9, 132.0, 645.9],
@@ -542,7 +515,7 @@
             "bracketleft": {
                 advance: 301,
                 bbox: {xmin: 15.0, ymin: -94.0, xmax: 282.0, ymax: 637.0},
-                config: {cutXPct: 50, cutYPct: 32, leanDeg: 0.0, unitsPerSeg: 45, amp: 3},
+                config: {cuts: [{"axis": "y", "pct": 32}], unitsPerSeg: 45, amp: 3},
                 commands: [
                     ["M", 18.0, 407.0],
                     ["C", 18.0, 436.0, 20.0, 490.0, 20.0, 530.0],
@@ -593,7 +566,7 @@
             "arrowright": {
                 advance: 594,
                 bbox: {xmin: 10.0, ymin: 99.0, xmax: 574.0, ymax: 307.0},
-                config: {cutXPct: 39, cutYPct: 50, leanDeg: 0.0, unitsPerSeg: 120, amp: 4},
+                config: {cuts: [{"axis": "x", "pct": 39}], unitsPerSeg: 120, amp: 4},
                 commands: [
                     ["M", 188.0, 186.0],
                     ["C", 187.0, 186.0, 171.0, 185.0, 106.0, 185.0],
@@ -676,11 +649,10 @@
     // ── END GENERATED GLYPH DATA ──
 
     // ── Cut-and-extend algorithm ───────────────────────────────────────────
-    // Self-contained, font-driven: takes a glyph's outline (from
-    // EXTENSIBLE_GLYPHS above), shifts every coordinate past a threshold by
-    // Nx font units, and stitches jittered cubic sub-segments across the
-    // inserted gap.  Run twice (rotating between passes) for 2D extension on
-    // the surd.  Algorithm and parameters mirror line-extend-demo.html.
+    // Takes a glyph outline, shifts every coordinate past a threshold by N
+    // font units, and stitches jittered cubic sub-segments across the gap.
+    // Cuts are applied in order from the glyph config; Y cuts rotate the
+    // coordinate frame so the same X-extend logic handles any lean angle.
 
     function _segmentize(commands) {
         const segs = [];
@@ -743,6 +715,8 @@
         return out;
     }
 
+    // Apply fn to every coordinate point in a segment list — used to
+    // enter and exit the rotated frame for Y-axis extension.
     function _mapSegs(segs, fn) {
         return segs.map(s => {
             const r = { type:s.type, from:fn(s.from), to:fn(s.to) };
@@ -769,6 +743,7 @@
             const crosses = (s.from[0] <= cut && s.to[0] > cut)
                          || (s.from[0] >  cut && s.to[0] <= cut);
             if (!crosses) {
+                // Segment lies entirely on one side of the cut: just shift.
                 const seg = { type:s.type,
                               from:[shift(s.from[0]), s.from[1]],
                               to:  [shift(s.to[0]),   s.to[1]] };
@@ -803,46 +778,56 @@
         return out;
     }
 
-    // Apply per-glyph X then leaning-Y extension and return the extended
-    // segments (still in font units, baseline-up).  The Y pass is the same
-    // X-extend, run in a frame rotated so the (tilted) extension axis aligns
-    // with +x.
-    function buildExtendedSegs(glyphName, Nx, Ny, seed) {
-        const g = EXTENSIBLE_GLYPHS[glyphName];
-        if (!g) throw new Error('unknown extensible glyph: ' + glyphName);
+    // Apply the cuts listed in g.config.cuts in order, returning the extended
+    // segments (font units, baseline-up).  Nx / Ny are the total extensions;
+    // they are divided evenly across all x / y cuts respectively.  Each cut's
+    // optional `lean` (deg) tilts that cut's extension axis: the frame is
+    // rotated so _extend always works along a single axis.  List y cuts from
+    // highest pct to lowest so each successive cut's threshold is not shifted
+    // by an earlier pass (and likewise rightmost-first for x cuts).
+    function buildExtendedSegs(g, Nx, Ny, seed) {
         const cfg = g.config;
         const segs0 = _segmentize(g.commands);
         const bb = g.bbox;
         const w = bb.xmax - bb.xmin, h = bb.ymax - bb.ymin;
-        const cutX = bb.xmin + w * (cfg.cutXPct / 100);
-        // cutYPct may be a scalar (single cut) or an array (multi-cut, e.g.
-        // [33, 67] for a brace that should stretch both above and below a
-        // central joint).  Total Ny is divided evenly between the cuts.
-        const cutYPcts = Array.isArray(cfg.cutYPct) ? cfg.cutYPct : [cfg.cutYPct];
-        const subNx = Math.max(2, Math.round(Nx / cfg.unitsPerSeg));
 
-        let out = segs0;
-        if (Nx > 0) out = _extend(out, cutX, Nx, subNx, cfg.amp, seed);
-        if (Ny > 0) {
-            const lr = cfg.leanDeg * Math.PI / 180;
-            const sL = Math.sin(lr), cL = Math.cos(lr);
-            const fwd = p => [-sL * p[0] + cL * p[1], -cL * p[0] - sL * p[1]];
-            const inv = p => [-sL * p[0] - cL * p[1],  cL * p[0] - sL * p[1]];
-            const refX = (bb.xmin + bb.xmax) / 2;
-            // Apply cuts from highest Y (lowest rotated-x) to lowest, so each
-            // subsequent cut's threshold isn't shifted by an earlier pass.
-            // After fwd (lean=0): (x,y) → (y,-x), so larger y → larger rot-x.
-            // Sort descending in original Y so we extend the top first.
-            const sortedPcts = [...cutYPcts].sort((a, b) => b - a);
-            const Nper = Ny / sortedPcts.length;
-            const subNper = Math.max(2, Math.round(Nper / cfg.unitsPerSeg));
-            out = _mapSegs(out, fwd);
-            sortedPcts.forEach((pct, i) => {
-                const cutY = bb.ymin + h * (pct / 100);
-                const cutRot = fwd([refX, cutY])[0];
-                out = _extend(out, cutRot, Nper, subNper, cfg.amp, seed + 19 + i * 7);
-            });
-            out = _mapSegs(out, inv);
+        const xCuts = cfg.cuts.filter(c => c.axis === 'x');
+        const yCuts = cfg.cuts.filter(c => c.axis === 'y');
+        const Nperx = xCuts.length ? Nx / xCuts.length : 0;
+        const Npery = yCuts.length ? Ny / yCuts.length : 0;
+        const subNx = Nperx > 0 ? Math.max(2, Math.round(Nperx / cfg.unitsPerSeg)) : 0;
+        const subNy = Npery > 0 ? Math.max(2, Math.round(Npery / cfg.unitsPerSeg)) : 0;
+        const refX = (bb.xmin + bb.xmax) / 2;
+        const refY = (bb.ymin + bb.ymax) / 2;
+
+        let xIdx = 0, yIdx = 0, out = segs0;
+        for (const cut of cfg.cuts) {
+            const isY = cut.axis === 'y';
+            const Nper = isY ? Npery : Nperx;
+            const subN = isY ? subNy : subNx;
+            if (Nper <= 0) { isY ? yIdx++ : xIdx++; continue; }
+
+            // Y cuts start from a -90° base (mapping y→x in the rotated
+            // frame); x cuts start from 0°.  `lean` further tilts the cut.
+            const phi = ((isY ? -90 : 0) - (cut.lean || 0)) * Math.PI / 180;
+            const s = Math.sin(phi), c = Math.cos(phi);
+            const rotate = phi !== 0;
+            const fwd = p => [c * p[0] - s * p[1], s * p[0] + c * p[1]];
+            const inv = p => [c * p[0] + s * p[1], -s * p[0] + c * p[1]];
+
+            // Pick a point on the un-rotated cut line; its rotated x becomes
+            // the threshold _extend uses.
+            const cutCoord = isY ? bb.ymin + h * (cut.pct / 100)
+                                 : bb.xmin + w * (cut.pct / 100);
+            const refPt = isY ? [refX, cutCoord] : [cutCoord, refY];
+            const thresh = rotate ? fwd(refPt)[0] : cutCoord;
+            const seedOff = isY ? (19 + yIdx * 7) : xIdx;
+
+            if (rotate) out = _mapSegs(out, fwd);
+            out = _extend(out, thresh, Nper, subN, cfg.amp, seed + seedOff);
+            if (rotate) out = _mapSegs(out, inv);
+
+            isY ? yIdx++ : xIdx++;
         }
         return out;
     }
@@ -865,7 +850,7 @@
     // per-pixel scale from pixelHeight, compute the X extension needed to
     // reach pixelWidth, then bake the path.  No y stretching — the emdash's
     // natural stroke shape is preserved.
-    function mirrorBarHTML(pixelWidth, pixelHeight) {
+    function vinculumHTML(pixelWidth, pixelHeight) {
         const g = EXTENSIBLE_GLYPHS.emdash;
         const bb = g.bbox;
         const natH = bb.ymax - bb.ymin;
@@ -873,7 +858,7 @@
         const Sx = pixelHeight / natH;
         const targetW = pixelWidth / Sx;
         const Nx = Math.max(0, targetW - natW);
-        const segs = buildExtendedSegs('emdash', Nx, 0, 5);
+        const segs = buildExtendedSegs(g, Nx, 0, 5);
         const d = _segsToPath(segs);
         const totalW = natW + Nx;
         // viewBox covers (xmin, -ymax, totalW, natH) so SVG y-down matches
@@ -976,7 +961,7 @@
         const Nx = Math.max(0, targetBarW - naturalBarW);
         const Ny = Math.max(0, targetH_units - natH);
 
-        const segs = buildExtendedSegs(name, Nx, Ny, 5);
+        const segs = buildExtendedSegs(g, Nx, Ny, 5);
         const d = _segsToPath(segs);
         const eb = _bboxOf(segs);
         const jct = _surdJunctionFromSegs(segs);
@@ -1147,12 +1132,10 @@
         const flag = 'xkcdRule' + side;
         container.querySelectorAll('*').forEach(el => {
             if (el.dataset[flag]) return;
-            // xkcdHidden is set by replaceSqrtSymbols on the sqrt's
-            // vinculum (top edge) and by replaceVinculums on \hline cells —
-            // both are top-edge-only, so skip only when grouping Top rules.
-            // The Left/Right passes still see these cells (\hline cells
-            // also carry vertical column borders that need replacing).
-            if (side === 'Top' && el.dataset.xkcdHidden) return;
+            // Skip elements whose top border we already own: sqrt vinculums
+            // (xkcdHidden) and \hline cells (xkcdRuleTop).  Left/Right passes
+            // still see these — \hline cells also carry vertical borders.
+            if (side === 'Top' && (el.dataset.xkcdHidden || el.dataset.xkcdRuleTop)) return;
             if (el.closest('mjx-surd') || el.closest('mjx-stretchy-v')) return;
             const cs = getComputedStyle(el);
             if (cs['border' + side + 'Style'] !== 'solid') return;
@@ -1204,7 +1187,6 @@
                 for (const c of g.cells) {
                     c.style.borderTopColor = 'transparent';
                     c.dataset.xkcdRuleTop = '1';
-                    c.dataset.xkcdHidden = '1';  // legacy flag for resetOverlays
                 }
                 const barH = Math.max(g.w, 1);
                 const renderedH = barH * BAR_PIXEL_MULT;
@@ -1212,7 +1194,7 @@
                 const top  = (bb.top - containerRect.top) + (barH / 2) - (renderedH / 2);
                 const width = bb.right - bb.left;
                 container.insertAdjacentHTML('beforeend',
-                    `<div class="xkcd-overlay" style="position:absolute;left:${left}px;top:${top}px;pointer-events:none;">${mirrorBarHTML(width, renderedH)}</div>`);
+                    `<div class="xkcd-overlay" style="position:absolute;left:${left}px;top:${top}px;pointer-events:none;">${vinculumHTML(width, renderedH)}</div>`);
             }
         });
     }
@@ -1245,7 +1227,7 @@
                     // page x∈[anchorX-w, anchorX], y∈[anchorY, anchorY+h], so
                     // we anchor at (x + renderedW, y).
                     container.insertAdjacentHTML('beforeend',
-                        `<div class="xkcd-overlay" style="position:absolute;left:${x + renderedW}px;top:${y}px;transform:rotate(90deg);transform-origin:0 0;pointer-events:none;">${mirrorBarHTML(lineH, renderedW)}</div>`);
+                        `<div class="xkcd-overlay" style="position:absolute;left:${x + renderedW}px;top:${y}px;transform:rotate(90deg);transform-origin:0 0;pointer-events:none;">${vinculumHTML(lineH, renderedW)}</div>`);
                 }
             }
         });
@@ -1318,7 +1300,7 @@
             const targetH_units = (sourceRect.height + BRACE_EXTRA_EM * fontSizePx) / Sx;
             const Ny = Math.max(0, targetH_units - natH);
 
-            const segs = buildExtendedSegs(BRACE_GLYPH, 0, Ny, 11);
+            const segs = buildExtendedSegs(g, 0, Ny, 11);
             const d    = _segsToPath(segs);
             const eb   = _bboxOf(segs);
             const margin = 20;
@@ -1479,7 +1461,7 @@
             const Sx = ts * SxFull;
             const Ny = Math.max(0, (targetH_px - natH * Sx) / Sx);
 
-            const segs = buildExtendedSegs(PAREN_GLYPH, 0, Ny, 13);
+            const segs = buildExtendedSegs(g, 0, Ny, 13);
             const d    = _segsToPath(segs);
             const eb   = _bboxOf(segs);
             const margin = 20;
@@ -1559,7 +1541,7 @@
             const targetH_units = (sourceRect.height + STRETCHY_BRACKET.extraEm * fontSizePx) / Sx;
             const Ny = Math.max(0, targetH_units - natH);
 
-            const segs = buildExtendedSegs(BRACKET_GLYPH, 0, Ny, 17);
+            const segs = buildExtendedSegs(g, 0, Ny, 17);
             const d    = _segsToPath(segs);
             const eb   = _bboxOf(segs);
             const margin = 20;
@@ -1657,7 +1639,8 @@
     // markup string plus its rendered pixel dimensions so the caller can
     // position the overlay wrapper.
     function _buildArrowOverlaySvg(Nx, Sx) {
-        const segs = buildExtendedSegs(STRETCHY_ARROW.glyph, Nx, 0, STRETCHY_ARROW.seed);
+        const g = EXTENSIBLE_GLYPHS[STRETCHY_ARROW.glyph];
+        const segs = buildExtendedSegs(g, Nx, 0, STRETCHY_ARROW.seed);
         const d    = _segsToPath(segs);
         const eb   = _bboxOf(segs);
         const margin = 20;
@@ -1770,13 +1753,19 @@
         }
     }
 
+    // Remove all overlay elements and undo all style/dataset mutations made
+    // during a refresh pass, restoring the MathJax-rendered elements to their
+    // original appearance.  Safe to call before a re-typeset or re-refresh.
     function resetOverlays(scope) {
         const root = scope || document;
         root.querySelectorAll('.xkcd-overlay').forEach(el => el.remove());
         root.querySelectorAll('[data-xkcd-hidden]').forEach(el => {
             el.style.visibility = '';
-            el.style.borderTopColor = '';
             delete el.dataset.xkcdHidden;
+        });
+        root.querySelectorAll('[data-xkcd-rule-top]').forEach(el => {
+            el.style.borderTopColor = '';
+            delete el.dataset.xkcdRuleTop;
         });
         root.querySelectorAll('[data-xkcd-vrule-left]').forEach(el => {
             el.style.borderLeftColor = '';
@@ -2079,7 +2068,7 @@
                 }
             } else {
                 container.insertAdjacentHTML('beforeend',
-                    `<div class="xkcd-overlay" style="position:absolute;left:${left}px;top:${top}px;pointer-events:none;">${mirrorBarHTML(width, barH)}</div>`);
+                    `<div class="xkcd-overlay" style="position:absolute;left:${left}px;top:${top}px;pointer-events:none;">${vinculumHTML(width, barH)}</div>`);
             }
         }
     }
@@ -2205,6 +2194,7 @@
     }
 
     // ── Resize: BCR coordinates change, so re-place overlays ────────────────
+    // Debounced at 150 ms so rapid resize events don't trigger repeated reflows.
     let _resizeTimer;
     window.addEventListener('resize', () => {
         clearTimeout(_resizeTimer);

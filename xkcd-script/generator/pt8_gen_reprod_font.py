@@ -2,6 +2,11 @@
 Produce reproducible binary fonts (OTF / TTF / WOFF) for xkcd-script from
 the pt7 SFD.
 
+NOTE: this step runs *after* pt8_derivatives.py (which now also lives in
+the pt8 slot).  Keeping the original pt8_ name here intentionally to
+minimise diff noise during the MathJax PR; a follow-up should renumber
+this to pt9_ and reserve pt8_ for the derivatives orchestrator.
+
   1. Scrub timestamps + XUID from the input SFD so FontForge can't bake
      build-time metadata into the output.
   2. Save the scrubbed SFD as the canonical committed copy.

@@ -1314,8 +1314,8 @@ def _add_altuni(glyph, codepoint):
 
 
 # Greek codepoint sequences for the U+1D6A8.. and U+1D6E2.. math blocks.
-# Position 17 is the "capital theta symbol" slot, aliased back to plain Θ.
-# 0x03A2 is a Unicode hole in the Greek block; the math block uses Σ in that slot.
+# Not a simple 0x0391+i offset: position 17 is the "capital theta symbol" (maps to
+# plain Θ), and U+03A2 is an unassigned hole so position 18 jumps straight to Σ (U+03A3).
 _GREEK_UPPER = [
     0x0391, 0x0392, 0x0393, 0x0394, 0x0395, 0x0396, 0x0397, 0x0398,
     0x0399, 0x039A, 0x039B, 0x039C, 0x039D, 0x039E, 0x039F, 0x03A0,
@@ -1337,10 +1337,11 @@ for _i in range(26):
     if _src != 0x1D455:
         _math_aliases[_src] = 0x0061 + _i
 
-# TeX italic substitutes that fill the U+1D455 hole and similar
-_math_aliases[0x210E] = ord('h')   # ℎ PLANCK CONSTANT
-_math_aliases[0x210F] = ord('h')   # ℏ PLANCK CONSTANT OVER TWO PI (no ħ in math italic)
-_math_aliases[0x2113] = ord('l')   # ℓ SCRIPT SMALL L
+# Canonical math symbols defined by Unicode to look like a specific letter glyph.
+# U+1D455 is unassigned because U+210E already exists for math-italic h.
+_math_aliases[0x210E] = ord('h')   # ℎ PLANCK CONSTANT (math italic h by definition)
+_math_aliases[0x210F] = ord('h')   # ℏ PLANCK CONSTANT OVER TWO PI
+_math_aliases[0x2113] = ord('l')   # ℓ SCRIPT SMALL L (math italic l by definition)
 _math_aliases[0x03D5] = 0x03C6     # ϕ GREEK PHI SYMBOL → φ
 
 # Math Bold Latin: U+1D400–U+1D433
@@ -1380,17 +1381,8 @@ for _i, _cp in enumerate(_GREEK_UPPER):
 for _i, _cp in enumerate(_GREEK_LOWER):
     _math_aliases[0x1D6C2 + _i] = _cp
 
-_added = 0
-_skipped = 0
 for _src_cp, _dst_cp in sorted(_math_aliases.items()):
-    try:
-        _g = font[_dst_cp]
-    except TypeError:
-        _skipped += 1
-        continue
-    _add_altuni(_g, _src_cp)
-    _added += 1
-print(f"  math aliases: added {_added}, skipped {_skipped} (no source glyph)")
+    _add_altuni(font[_dst_cp], _src_cp)
 
 
 # ---------------------------------------------------------------------------

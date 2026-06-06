@@ -278,11 +278,6 @@ font.addLookup('ss01-display-operators',
                           ('latn', ('dflt',)),
                           ('math', ('dflt',)))),))
 font.addLookupSubtable('ss01-display-operators', 'ss01-display-operators-1')
-try:
-    font.addLookup_setFeatureName('ss01-display-operators',
-                                  'Display large operators')
-except AttributeError:
-    pass
 
 for _base, _disp in (('summation', 'summation.disp'),
                      ('product',   'product.disp'),

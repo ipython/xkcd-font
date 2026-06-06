@@ -20,10 +20,10 @@ BASE_SFD = '../generated/xkcd-script-pt7.sfd'
 # ---------------------------------------------------------------------------
 #
 # The runtime renderer in xkcd-mathjax3.js takes each glyph's outline, applies
-# a coordinate-threshold extension (shift points past cutX by Nx, splice
-# jittered cubic sub-segments across the gap; same for cutY along an axis
-# optionally tilted by leanDeg), and produces an SVG path sized to the
-# requested overlay.  Per-glyph parameters live here so they travel with
+# a coordinate-threshold extension (shift points past each cut by N, splice
+# jittered cubic sub-segments across the gap; each cut may optionally lean
+# its extension axis), and produces an SVG path sized to the requested
+# overlay.  Per-glyph parameters live here so they travel with
 # the font: when the font is rebuilt this step regenerates the embedded
 # data and the renderer picks up the new shapes without code changes.
 
@@ -31,34 +31,36 @@ EXTENSIBLE_MARKER_BEGIN = '// ── BEGIN GENERATED GLYPH DATA ──'
 EXTENSIBLE_MARKER_END   = '// ── END GENERATED GLYPH DATA ──'
 MATHJAX_JS = '../xkcd-mathjax3.js'
 
-# cutXPct / cutYPct : cut threshold as % of bbox along that axis
-# leanDeg           : Y-extension axis lean from vertical (deg)
-# unitsPerSeg       : sub-segment density along the inserted gap
-# amp               : jitter amplitude in font units
+# cuts        : ordered list of {axis: 'x'|'y', pct: %, lean?: deg}.  pct is
+#               the cut threshold along axis as % of bbox; optional lean
+#               rotates the extension axis from vertical (Y-cuts only).
+# unitsPerSeg : sub-segment density along the inserted gap
+# amp         : jitter amplitude in font units
 EXTENSIBLE_CONFIG = {
-    'emdash':       {'cutXPct': 50, 'cutYPct': 50, 'leanDeg':  0.0, 'unitsPerSeg': 120, 'amp':  4},
-    'radical':      {'cutXPct': 70, 'cutYPct': 50, 'leanDeg':  0.0, 'unitsPerSeg':  60, 'amp':  5},
-    'radical.tall': {'cutXPct': 56, 'cutYPct': 45, 'leanDeg': -2.0, 'unitsPerSeg':  45, 'amp':  3},
+    'emdash':       {'cuts': [{'axis': 'x', 'pct': 50}],                        'unitsPerSeg': 120, 'amp':  4},
+    'radical':      {'cuts': [{'axis': 'x', 'pct': 70}, {'axis': 'y', 'pct': 50}], 'unitsPerSeg':  60, 'amp':  5},
+    'radical.tall': {'cuts': [{'axis': 'x', 'pct': 56}, {'axis': 'y', 'pct': 45, 'lean': -2.0}], 'unitsPerSeg':  45, 'amp':  3},
     # tall { — two Y cuts (above and below the central joint) so stretch is
     # symmetric and the joint shape stays fixed.  Used for any \begin{cases}
     # with 2+ rows; xkcd-mathjax3.js always overlays this glyph, never the
-    # basic braceleft.
-    'braceleft.tall': {'cutXPct': 50, 'cutYPct': [33, 67], 'leanDeg':  0.0, 'unitsPerSeg':  45, 'amp':  3},
+    # basic braceleft.  Highest pct first so each successive cut's threshold
+    # stays in the already-extended region.
+    'braceleft.tall': {'cuts': [{'axis': 'y', 'pct': 67}, {'axis': 'y', 'pct': 33}], 'unitsPerSeg':  45, 'amp':  3},
     # tall ( — single mid-height Y cut; no joint to preserve, so the stretch
     # extends a uniform vertical mid-section.  parenright.tall is the X-mirror
     # of this glyph and is produced at render time in xkcd-mathjax3.js, so it
     # isn't listed here.
-    'parenleft.tall': {'cutXPct': 50, 'cutYPct': 50, 'leanDeg':  0.0, 'unitsPerSeg':  45, 'amp':  3},
+    'parenleft.tall': {'cuts': [{'axis': 'y', 'pct': 50}], 'unitsPerSeg':  45, 'amp':  3},
     # [ — the regular bracketleft (U+005B) extends fine on Y because its body
     # is a near-straight vertical stroke; no dedicated .tall artwork needed.
     # Single mid-Y cut leaves the top/bottom serifs intact and inserts uniform
     # jittered stroke through the middle.  bracketright is X-mirrored at
     # render time in xkcd-mathjax3.js, so it isn't listed here.
-    'bracketleft':   {'cutXPct': 50, 'cutYPct': 32, 'leanDeg':  0.0, 'unitsPerSeg':  45, 'amp':  3},
+    'bracketleft':   {'cuts': [{'axis': 'y', 'pct': 32}], 'unitsPerSeg':  45, 'amp':  3},
     # → (U+2192).  Cut early in the X axis (in the tail, before the head) so
     # extension lengthens the shaft and the arrowhead shape is preserved.
-    # Y cut not used — \overrightarrow / \vec only ever stretches in X.
-    'arrowright':    {'cutXPct': 39, 'cutYPct': 50, 'leanDeg':  0.0, 'unitsPerSeg': 120, 'amp':  4},
+    # Stretches only in X — \overrightarrow / \vec never need vertical growth.
+    'arrowright':    {'cuts': [{'axis': 'x', 'pct': 39}], 'unitsPerSeg': 120, 'amp':  4},
 }
 
 
@@ -120,8 +122,9 @@ def _as_js(data):
         lines.append('            advance: %s,' % g['advance'])
         lines.append('            bbox: {xmin: %s, ymin: %s, xmax: %s, ymax: %s},'
                      % (bb['xmin'], bb['ymin'], bb['xmax'], bb['ymax']))
-        lines.append('            config: {cutXPct: %s, cutYPct: %s, leanDeg: %s, unitsPerSeg: %s, amp: %s},'
-                     % (cfg['cutXPct'], cfg['cutYPct'], cfg['leanDeg'], cfg['unitsPerSeg'], cfg['amp']))
+        cuts_js = ', '.join(json.dumps(c, separators=(', ', ': ')) for c in cfg['cuts'])
+        lines.append('            config: {cuts: [%s], unitsPerSeg: %s, amp: %s},'
+                     % (cuts_js, cfg['unitsPerSeg'], cfg['amp']))
         lines.append('            commands: [')
         for cmd in g['commands']:
             lines.append('                ' + json.dumps(cmd) + ',')

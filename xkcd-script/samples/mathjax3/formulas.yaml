@@ -115,13 +115,13 @@ column-vector:
 # via the font's GPOS mark anchors.  The final \widehat{xyz} row is the wide-base
 # case which legitimately needs MathJax's stretchy extender — it must keep working.
 # Exercises: digit '1' padding (many 1s in the body and totals); vertical
-# rules `|`; multiple `\hline`s separating header / body / totals; mixed
-# text + numeric cells; ragged column widths (1 vs 12 vs 225).
-# Note: MathJax 3 silently collapses `||` and `\hline\hline` to single
-# rules, so this sample sticks to single rules everywhere.
+# rules `|` and `||`; `\hline` and `\hline\hline`; mixed text + numeric
+# cells; ragged column widths (1 vs 12 vs 225).
+# The `||` column separator and `\hline\hline` are intentionally included so
+# any change in how MathJax renders double rules shows up as a sample diff.
 multiplication-table:
   formulas:
-    - tex: '$$\begin{array}{c|c|c|c|c|c|c} \times & 1 & 2 & 3 & 4 & 5 & \text{sum} \\ \hline 1 & 1 & 2 & 3 & 4 & 5 & 15 \\ 2 & 2 & 4 & 6 & 8 & 10 & 30 \\ 3 & 3 & 6 & 9 & 12 & 15 & 45 \\ 4 & 4 & 8 & 12 & 16 & 20 & 60 \\ 5 & 5 & 10 & 15 & 20 & 25 & 75 \\ \hline \text{sum} & 15 & 30 & 45 & 60 & 75 & 225 \\ \end{array}$$'
+    - tex: '$$\begin{array}{c||c|c|c|c|c|c} \times & 1 & 2 & 3 & 4 & 5 & \text{sum} \\ \hline\hline 1 & 1 & 2 & 3 & 4 & 5 & 15 \\ 2 & 2 & 4 & 6 & 8 & 10 & 30 \\ 3 & 3 & 6 & 9 & 12 & 15 & 45 \\ 4 & 4 & 8 & 12 & 16 & 20 & 60 \\ 5 & 5 & 10 & 15 & 20 & 25 & 75 \\ \hline \text{sum} & 15 & 30 & 45 & 60 & 75 & 225 \\ \end{array}$$'
 
 accents-zoo:
   cellHeight: 80
