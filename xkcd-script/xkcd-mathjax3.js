@@ -1915,16 +1915,22 @@
         '2035': '̀',  // \grave     — reversed prime → combining grave
     };
 
-    // Math italic / bold / Greek codepoints (U+1D400 block, U+210E, etc.)
-    // are aliased to their plain Latin / Greek glyph in the font's cmap
-    // via pt6's _math_aliases.  So injecting the codepoint directly into
-    // a text node is enough — the browser shapes it through the font's
-    // cmap alias and gets the correct glyph.  Returns null for inputs
-    // that don't parse so the caller can skip cases the font won't
-    // cover (e.g. fancy decorative codepoints we never aliased).
+    // Map a hex glyph-class codepoint to a plain text character we can feed
+    // into a Unicode text node.  Math-italic letters (U+1D400 block) and
+    // the U+210E (italic h) outlier are folded back to ASCII A-Z / a-z so
+    // the browser shapes them via the font's plain-letter glyphs — the
+    // mark-anchor rules for combining diacritics attach to those, not to
+    // the math-italic codepoints, so going through pt6's cmap alias path
+    // produced mis-placed accents in practice.
     function _mathItalicCpToChar(hex) {
         const cp = parseInt(hex, 16);
-        return Number.isFinite(cp) ? String.fromCodePoint(cp) : null;
+        if (!Number.isFinite(cp)) return null;
+        if (cp >= 0x1D434 && cp <= 0x1D44D) return String.fromCharCode(0x41 + (cp - 0x1D434));   // A-Z italic
+        if (cp >= 0x1D44E && cp <= 0x1D454) return String.fromCharCode(0x61 + (cp - 0x1D44E));   // a-g italic
+        if (cp >= 0x1D456 && cp <= 0x1D467) return String.fromCharCode(0x61 + (cp - 0x1D44E));   // i-z italic (hole at U+1D455; h lives at U+210E)
+        if (cp === 0x210E) return 'h';
+        if (cp >= 0x20 && cp < 0x7F) return String.fromCharCode(cp);
+        return null;
     }
 
     function _glyphClassCp(el) {
@@ -2029,9 +2035,11 @@
             // letters it's covering, not the fallback over glyph.
             const left = baseRect.left - containerRect.left;
             const width = Math.max(baseRect.width, fontSizePx * 0.4);
-            // Vertical: just above the base's top; nudge so the bar/tip sits
-            // where the font's natural overline would.
-            const top = overRect.top - containerRect.top - barH * 0.5;
+            // Vertical: anchor to the base's top with a small gap so the bar
+            // sits where the font's natural overline / macron would.
+            // overRect.top is unreliable here — MathJax allocates extra
+            // vertical space above the en-dash ink in the over's bbox.
+            const top = baseRect.top - containerRect.top - barH - fontSizePx * 0.05;
 
             _hideOver(over);
             mover.dataset.xkcdWide = '1';
