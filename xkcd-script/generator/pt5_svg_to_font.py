@@ -18,6 +18,9 @@ import glob
 import parse
 import unicodedata
 
+SPACE = 0
+RSPACE = 20
+
 fnames = sorted(glob.glob('../generated/characters/char_*.svg'))
 
 characters = []
@@ -110,6 +113,8 @@ def create_char(font, chars, fname):
     with tmp_symlink(fname) as tmp_fname:
         # At last, bring in the SVG image as an outline for this glyph.
         c.importOutlines(tmp_fname)
+        # Call addExtrema() first to ensure the proper operation of boundingBox().
+        c.addExtrema()
 
     return c
 
@@ -235,16 +240,15 @@ def pad_glyph(c):
     # Put horizontal padding around the glyph. I choose a number here that looks reasonable,
     # there are far more sophisticated means of doing this (like looking at the original image,
     # and calculating how much space there should be).
-    space = 0
-    rspace = 20
-    c.font['_pad_space'].width = space + rspace
+    space = SPACE
+    rspace = RSPACE
     bbox = c.boundingBox()
     if c.glyphname in list('gjpqy'):
         # Recalculate the bounding box by excluding the tail of the glyph
         # Do not remove the glyph's tail if it is too close to the baseline
         capxrange = c.foreground.xBoundsAtY(-40, 600)
         if c.glyphname == 'j':
-            bbox = tuple([(capxrange[0] + bbox[0])/2, bbox[1], capxrange[1], bbox[3]])
+            bbox = tuple([(capxrange[0]*2 + bbox[0])/3, bbox[1], capxrange[1], bbox[3]])
         else:
             bbox = tuple([capxrange[0], bbox[1], capxrange[1], bbox[3]])
     if c.glyphname == 'f':
@@ -252,34 +256,37 @@ def pad_glyph(c):
         # Restrict the arm so that it does not pierce through the stem of the next glyph
         xxrange = c.foreground.xBoundsAtY(0, 420)
         bbox = tuple([xxrange[0], bbox[1], max(xxrange[1], bbox[2] - (rspace + space + 0.12 * 600)), bbox[3]])
-    lflatness = c.foreground.yBoundsAtX(bbox[0] - 1, bbox[0] + 20)
-    rflatness = c.foreground.yBoundsAtX(bbox[2] - 20, bbox[2] + 1)
+    # Measure the smoothness of a peak when there is one extremum.
+    lflatness = c.foreground.yBoundsAtX(bbox[0] - 20, bbox[0] + 20)
+    rflatness = c.foreground.yBoundsAtX(bbox[2] - 20, bbox[2] + 20)
+    # In the case of a complex shape, the average depth is calculated from measurements taken at four points.
+    # However, for a parabola, this is an algorithm that can accurately determine the coefficient of the quadratic term.
     roughness = []
     for i in range(4):
         roughness.append(c.foreground.xBoundsAtY(100 + 100 * i, 150 + 100 * i) or tuple([bbox[2], bbox[0]]))
-    lroughness = np.sqrt(np.median([(roughness[i][0] - bbox[0])**2 for i in range(4)]))
-    rroughness = np.sqrt(np.median([(bbox[2] - roughness[i][1])**2 for i in range(4)]))
+    lroughness = np.median([np.sqrt(max(roughness[i][0] - bbox[0], 0)) for i in range(4)])**2
+    rroughness = np.median([np.sqrt(max(bbox[2] - roughness[i][1], 0)) for i in range(4)])**2
     add_left = 0
-    if lflatness[1] - lflatness[0] < 0.25 * 600:
+    if lflatness[1] - lflatness[0] < 0.2 * 600:
         add_left = 0
     elif lroughness >= 35:
         add_left = 0
     elif lroughness >= 20:
         add_left = 5
-    elif lroughness >= 10:
+    elif lroughness >= 11:
         add_left = 10
     elif lroughness >= 5:
         add_left = 15
     else:
         add_left = 20
     add_right = 0
-    if rflatness[1] - rflatness[0] < 0.25 * 600:
+    if rflatness[1] - rflatness[0] < 0.2 * 600:
         add_right = 0
     elif rroughness >= 35:
         add_right = 0
     elif rroughness >= 20:
         add_right = 5
-    elif rroughness >= 10:
+    elif rroughness >= 11:
         add_right = 10
     elif rroughness >= 5:
         add_right = 15
@@ -290,9 +297,12 @@ def pad_glyph(c):
         add_right += 10
     may_too_wide1 = list('aebdpr')
     if c.glyphname in may_too_wide1:
-        if bbox[2] - bbox[0] > 370:
-            add_left -= 5
+        if bbox[2] - bbox[0] + add_left + add_right >= 398:
+            add_left -= 10
             add_right -= 10
+        elif bbox[2] - bbox[0] + add_left + add_right >= 378:
+            add_left -= 5
+            add_right -= 5
     scaled_width = bbox[2]
     c.width = round(scaled_width + rspace + space / 2 + add_right)
     t = psMat.translate(round((-bbox[0]) + space / 2 + add_left), 0)
@@ -324,12 +334,16 @@ font.hhea_linegap = 77
 # Information to be conveyed to the next stage.
 # I wanted to use font.persistent, but it causes an error. Instead, I use a dummy glyph.
 font.createChar(-1, '_pad_space')
+font['_pad_space'].width = SPACE + RSPACE
 
 # Per-character size scaling applied after changeWeight, to fine-tune individual glyphs
 # that end up slightly too large despite correct stroke weight.
 _per_char_operation = {
     ('q',): psMat.compose(psMat.scale(0.92), psMat.translate(0, 20)),
     ('x',): psMat.translate(0, 20),
+    ('j',): psMat.translate(0, -20),
+    ('A',): psMat.translate(0, -10),
+    ('N',): psMat.translate(0, -10),
 }
 
 # Per-character weight nudge applied after the per-line scale correction.
@@ -407,7 +421,11 @@ for line, position, bbox, fname, chars in characters:
     # Per-character size adjustments: scale about the baseline (origin) to reduce
     # overall size while preserving stroke weight gained from changeWeight above.
     _operation_matrix = _per_char_operation.get(chars)
-    if _operation_matrix is not None:
+    if chars == ('A',) and c.boundingBox()[1] < 25:
+        pass
+    elif chars == ('N',) and c.boundingBox()[1] < 25:
+        pass
+    elif _operation_matrix is not None:
         c.transform(_operation_matrix)
 
     # Apply padding afterward so that it is not affected by scaling.

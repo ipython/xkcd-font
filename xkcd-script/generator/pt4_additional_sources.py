@@ -17,6 +17,10 @@ os.makedirs(OUT_DIR, exist_ok=True)
 UPSAMPLE = 12   # upscale factor before potrace; higher = more curve detail
 THRESHOLD = 160  # pixel value below which a pixel is considered ink
 
+SPECIALUPSAMPLE = {
+    'gamma':    8,
+}
+
 
 def _clean_potrace_svg(raw_svg_path, clean_svg_path):
     """Remove potrace artefacts from raw_svg_path and write clean_svg_path.
@@ -79,8 +83,9 @@ def extract_symbol(arr, y0, y1, x0, x1, name, exclude=None):
     if exclude:
         for ey0, ey1, ex0, ex1 in exclude:
             crop[ey0 - y0:ey1 - y0, ex0 - x0:ex1 - x0] = 255
+    upsample = SPECIALUPSAMPLE.get(name, UPSAMPLE)
     big = Image.fromarray(crop).resize(
-        (crop.shape[1] * UPSAMPLE, crop.shape[0] * UPSAMPLE),
+        (crop.shape[1] * upsample, crop.shape[0] * upsample),
         Image.BILINEAR)
     binary = (np.array(big) >= THRESHOLD).astype(np.uint8) * 255
 

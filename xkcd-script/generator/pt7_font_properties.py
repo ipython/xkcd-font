@@ -66,27 +66,25 @@ def _expand_with_variants(font, chars):
 def autokern(font):
     all_glyphs = [glyph.glyphname for glyph in font.glyphs()
                   if not glyph.glyphname.startswith(' ')]
-    ligatures = [name for name in all_glyphs if '_' in name]
+    ligatures = [name for name in all_glyphs if name[0] != '_' and '_' in name]
     upper_ligatures = [ligature for ligature in ligatures if ligature.upper() == ligature]
     lower_ligatures = [ligature for ligature in ligatures if ligature.lower() == ligature]
 
-    # Expand the broad letter lists to include accented variants from the outset,
-    # so every rule that references `caps`, `lower`, or `all_chars` covers them too.
-    caps = _expand_with_variants(font, list('ABCDEFGHIJKLMNOPQRSTUVWXYZ') + upper_ligatures)
-    lower = _expand_with_variants(font, list('abcdefghijklmnopqrstuvwxyz') + lower_ligatures)
-    all_chars = caps + lower
+    caps = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+    lower = list('abcdefghijklmnopqrstuvwxyz')
+    roman = caps + lower
 
     font.addLookup('kerning', 'gpos_pair', (), [['kern', [['latn', ['dflt']]]]])
     font.addLookupSubtable('kerning', 'kern')
 
-    def kern(sep, left, right, **kwargs):
+    def kern(sep, left, right, damper=None, **kwargs):
         """Wraps font.autoKern: expands accented variants and leading/trailing ligatures."""
         def expand(chars, left_side):
             expanded = _expand_with_variants(font, chars)
             seen = set(expanded)
             for glyph in font.glyphs():
                 name = glyph.glyphname
-                if '_' not in name:
+                if name[0] == '_' or '_' not in name:
                     continue
                 parts = name.split('_')
                 # Left side: ligature's right edge (last component) determines spacing.
@@ -96,26 +94,72 @@ def autokern(font):
                     expanded.append(name)
                     seen.add(name)
             return expanded
-        font.autoKern('kern', sep, expand(left, left_side=True), expand(right, left_side=False), **kwargs)
+        lefts = expand(left, left_side=True)
+        rights = expand(right, left_side=False)
+        font.autoKern('kern', sep, lefts, rights, **kwargs)
+        if damper and damper != 1.0:
+            for l in lefts:
+                tuples = font[l].getPosSub('kern')
+                new_table = []
+                for tup in tuples:
+                    if tup[1] == 'Pair' and tup[2] in rights:
+                        font[l].addPosSub('kern', *(tup[2:5] + (int(tup[5] * damper),) + tup[6:]))
+
+    def getkern(left, right):
+        c = font[left]
+        tuples = c.getPosSub('kern')
+        for tup in tuples:
+            if tup[1] == 'Pair' and tup[2] == right:
+                return tup[5]
+        return None
 
     a = font['_pad_space'].width
-    a = max(a - 20, 0)
+    a = a - 20
 
+    # The same combination will be overwritten, so the one written last will take effect.
     # autoKern looks at the outline, so even if you change the padding, it absorbs all of it.
     # Use `+a` when you want to link the spacing after kerning to the padding.
     kern(150, ['/', '\\'], ['/', '\\'])
-    kern(60+a, ['s'], set(lower) - {'j', 'f'}, minKern=50)
-    # x has diagonal strokes that leave visual space on its left side.
-    kern(90+a, set(lower) - {'f'}, ['x'], minKern=40)
+    # lowercase-lowercase
+    kern(60+a, ['s'], set(lower) - {'i', 'j', 'f', 't', 'x'}, onlyCloser=True, damper=0.75) # loosen by damper
+    # Overwrite sf and st. (From experience, it is often just right to adopt the larger of the two
+    # separation required by the glyphs on the left and right.)
+    # The horizontal bars of 'r' and 'f' get caught between the dot and the stem of 'i', causing
+    # unexpected behavior, so 'i' and 'j' are excluded.
+    kern(80+a, set(lower) - {'i', 'j'}, ['f', 't'], onlyCloser=True, damper=0.75)
+    kern(90+a, set(lower) - {'i', 'j'}, ['x'], onlyCloser=True, damper=0.75) # kx is fine, fx is tight
+    kern(80+a, ['x'], set(lower) - {'i', 'j'}, onlyCloser=True, damper=0.75)
+    kern(100+a, ['f', 't'], set(lower) - {'i', 'j'}, onlyCloser=True, damper=0.75) # oveerwrite fx
+    # For some reason, autoKern malfunctions on the left side of 'e', so the kerning value of 'o' is reused.
+    kern(0, ['r'], ['e', 'o'])
+    diff_ro_re = getkern('r', 'o') - getkern('r', 'e')
+    kern(100+a, ['r'], set(lower) - {'i', 'j'}, onlyCloser=True, damper=0.75)
+    kern(100+a + diff_ro_re, ['r'], ['e'], onlyCloser=True, damper=0.75)
+    # including uppercase
+    # Set *Y altogether first: CY, OY, etc. will have appropriate values set in the latter part.
+    kern(105+a, roman, ['Y', 'T'], onlyCloser=True, damper=0.75)
+    kern(100+a, caps, ['f'], onlyCloser=True, damper=0.75)
     # F/E are separated from T/J so they can use a tighter target gap.
-    kern(130, ['F'], set(all_chars) - {'f', 'j'})
-    kern(140, ['E'], ['V', 'W', 'Y'])
-    kern(100, ['E'], set(all_chars) - {'f', 'j'})
-    kern(120, ['T', 'J'], ['R'])
-    kern(150, ['T', 'J'], set(all_chars) - {'f', 'j'})
-    # C: loosen from the default (was too tight for Ct/Cf/Cj).
-    kern(65, ['C'], set(all_chars) - {'f', 'j'})
-    kern(60, ['O'], set(all_chars) - {'f', 'j'})
+    kern(110+a, ['F'], set(roman) - {'j'}, onlyCloser=True, damper=0.75) # keep FO≈-60
+    # Since F and z mesh together and the kerning becomes too large,
+    # reuse the kerning value of one of the round letterforms.
+    diff_Fo_Fz = getkern('F', 'o') - getkern('F', 'z')
+    kern(110+a + int(diff_Fo_Fz / 0.75), ['F'], ['z'], onlyCloser=True, damper=0.75)
+    kern(90+a, ['E'], set(roman) - {'j'}, onlyCloser=True, damper=0.75) # keep ES≈-30
+    kern(45+a, ['E'], ['V'], onlyCloser=True, touch=True)
+    kern(115+a, ['T', 'J'], set(roman) - {'j'}, onlyCloser=True, damper=0.75) # keep Tr≈-105
+    kern(105+a, ['Y'], set(roman) - {'j'}, onlyCloser=True, damper=0.75)
+    kern(85+a, ['V'], caps, onlyCloser=True, damper=0.75)
+    # C: loosen from the default (was too tight for Cj).
+    # Compared to E, the lower curve of C tends to come close to the next character,
+    # but this is considered an intentional design.
+    kern(60+a, ['C'], set(roman) - {'j'}, onlyCloser=True, damper=0.75) # keep CK≈-15
+    kern(25+a, ['C'], ['V'], onlyCloser=True, touch=True)
+    kern(60+a, ['O'], set(roman) - {'j'}, onlyCloser=True, damper=0.75) # loosen
+    kern(100+a, ['P'], set(roman) - {'j'}, onlyCloser=True, damper=0.75)
+    diff_Po_Pe = getkern('P', 'o') - getkern('P', 'e')
+    kern(100+a + int(diff_Po_Pe / 0.75), ['P'], ['e'], onlyCloser=True, damper=0.75)
+    kern(35+a, ['L'], set(roman) - {'j'}, onlyCloser=True, touch=True)
 
 
 autokern(font)
@@ -208,7 +252,7 @@ for glyph in font.glyphs():
 # hinting, which alters the rendered pixel positions of Latin letters.  Pin
 # all values here (derived from the Latin+diacritic glyph set) so the
 # hinting is stable regardless of how many non-Latin glyphs are added.
-font.private['BlueValues'] = (-20, 20, 411, 450, 573, 613)
+font.private['BlueValues'] = (-10, 20, 411, 441, 573, 603)
 font.private['OtherBlues'] = (-241, -190)
 font.private['BlueScale'] = 0.0208333
 font.private['BlueShift'] = 16
