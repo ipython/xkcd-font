@@ -2,8 +2,8 @@
 """
 Apply font-wide properties: kerning, spacing, and any other metric tweaks.
 
-Reads the SFD produced by pt6_derived_chars.py (which has all glyphs),
-applies properties, saves.
+Reads the SFD produced by pt6_derived_chars.py (which has all glyphs + the
+math cmap aliases), applies properties, saves.
 """
 import fontforge
 import unicodedata
@@ -265,6 +265,24 @@ font.private['StemSnapV'] = (60, 70, 76, 80, 85)
 # Same issue — adding Greek glyphs shifts the auto-computed values.
 font.os2_xheight = 338
 font.os2_capheight = 592
+
+
+# ---------------------------------------------------------------------------
+# ss01 — Display large operators.
+# Swaps ∑ ∏ ∫ for their .disp variants (created in pt6).  Enabled in
+# MathJax via a font-feature-settings CSS rule scoped to display mode.
+# ---------------------------------------------------------------------------
+font.addLookup('ss01-display-operators',
+               'gsub_single', None,
+               (('ss01', (('DFLT', ('dflt',)),
+                          ('latn', ('dflt',)),
+                          ('math', ('dflt',)))),))
+font.addLookupSubtable('ss01-display-operators', 'ss01-display-operators-1')
+
+for _base, _disp in (('summation', 'summation.disp'),
+                     ('product',   'product.disp'),
+                     ('integral',  'integral.disp')):
+    font[_base].addPosSub('ss01-display-operators-1', _disp)
 
 
 # ---------------------------------------------------------------------------

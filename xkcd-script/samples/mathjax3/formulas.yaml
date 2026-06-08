@@ -1,0 +1,212 @@
+# Each top-level key is the output PNG name.  `formulas` is always a list;
+# a single-formula group renders with a tight bbox.  A multi-formula
+# group renders as a fixed-size CSS grid of cellHeight x cellWidth cells
+# so that editing one formula's tex does not shift the rendered position
+# of the others in the same PNG.
+#
+# Each formula's `tex` is the full text snippet — write the $…$ or $$…$$
+# delimiters yourself.  Plain sentences containing inline math also work.
+
+inline-ops:
+  cellHeight: 72
+  cellWidth: 560
+  formulas:
+    - tex: '$\sum_{k=1}^{n} k$'
+    - tex: '$\prod_{k=1}^{n} k$'
+    - tex: '$\int_0^1 x^2\,dx$'
+    - tex: 'We sum as $\sum_{i=1}^{N} a_i$ over the index.'
+    - tex: 'The product $\prod_{k=1}^{n} (1-p_k)$ converges.'
+    - tex: 'Define $F(x) = \int_0^x f(t)\,dt$ as antiderivative.'
+
+display-sum-closed:
+  formulas:
+    - tex: '$$\sum_{k=1}^{n} k = \frac{n(n+1)}{2}$$'
+
+display-int-exp:
+  formulas:
+    - tex: '$$\int_0^\infty e^{-x}\,dx = 1$$'
+
+display-euler-product:
+  formulas:
+    - tex: '$$\prod_{p\;\text{prime}} \frac{1}{1-p^{-s}} = \sum_{n=1}^{\infty} \frac{1}{n^s}$$'
+
+quadratic-formula:
+  formulas:
+    - tex: '$$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$'
+
+pythagoras:
+  formulas:
+    - tex: '$a^2 + b^2 = c^2$'
+
+binomial-theorem:
+  formulas:
+    - tex: '$$\sum_{k=0}^{n} \binom{n}{k} x^k y^{n-k} = (x + y)^n$$'
+
+derivative-definition:
+  formulas:
+    - tex: '$$f''(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}$$'
+
+gaussian-integral:
+  formulas:
+    - tex: '$$\int_{-\infty}^{\infty} e^{-x^2}\,dx = \sqrt{\pi}$$'
+
+product-rule:
+  formulas:
+    - tex: '$\dfrac{d}{dx}\bigl[f(x)\,g(x)\bigr] = f''(x)\,g(x) + f(x)\,g''(x)$'
+
+eulers-identity:
+  formulas:
+    - tex: '$e^{i\pi} + 1 = 0$'
+
+greek-letters:
+  formulas:
+    - tex: '$\alpha,\ \beta,\ \gamma,\ \delta,\ \varepsilon,\ \zeta,\ \eta,\ \theta,\ \iota,\ \kappa,\ \lambda,\ \mu,\ \nu,\ \xi,\ \pi,\ \rho,\ \sigma,\ \tau,\ \upsilon,\ \phi,\ \chi,\ \psi,\ \omega$'
+
+fourier-transform:
+  formulas:
+    - tex: '$$\hat{f}(\xi) = \int_{-\infty}^{\infty} f(x)\,e^{-2\pi i x \xi}\,dx$$'
+
+schrodinger:
+  formulas:
+    - tex: '$$i\hbar\frac{\partial\psi}{\partial t} = \hat{H}\psi$$'
+
+maxwell-free-space:
+  formulas:
+    - tex: '$$\nabla \cdot \mathbf{E} = 0 \qquad \nabla \times \mathbf{E} = -\frac{\partial \mathbf{B}}{\partial t}$$'
+
+deeply-nested-sqrt:
+  formulas:
+    - tex: '$$\sqrt{\frac{b^2}{\frac{b^2}{\frac{b^2}{\frac{b^2}{4ac}}}}}$$'
+
+piecewise-single:
+  formulas:
+    - tex: '$$y = \begin{cases} x & \text{if } x > 0 \end{cases}$$'
+
+piecewise-abs:
+  formulas:
+    - tex: '$$|x| = \begin{cases} x,  & \text{if } x \geq 0 \\ -x, & \text{if } x < 0 \end{cases}$$'
+
+piecewise-big:
+  formulas:
+    - tex: '$$f(x) = \begin{cases} \dfrac{\sin x}{x},                              & \text{if } x > 0 \\[6pt] \displaystyle\sum_{k=0}^{\infty} \frac{(-1)^k x^{2k}}{(2k+1)!}, & \text{if } x = 0 \\[6pt] -\sqrt{|x|},                                   & \text{if } -1 \leq x < 0 \\[4pt] \infty,                                        & \text{otherwise} \end{cases}$$'
+
+tall-integral-frac:
+  formulas:
+    - tex: '$$\int_0^1 \frac{\frac{a^2 + b^2}{c^2 + d^2}}{\frac{x^2 + y^2}{u^2 + v^2}}\,dx$$'
+
+tall-integral-sum:
+  formulas:
+    - tex: '$$\int_{-\infty}^{\infty} \sum_{n=1}^{\infty} \frac{f_n(x)}{n^2}\,dx = \sum_{n=1}^{\infty} \frac{1}{n^2} \int_{-\infty}^{\infty} f_n(x)\,dx$$'
+
+big-delim-frac:
+  formulas:
+    - tex: '$$\left( \dfrac{\frac{a}{b}}{\frac{c}{d}} \right)^{n} \qquad \left[ \dfrac{\frac{a}{b}}{\frac{c}{d}} \right]^{n}$$'
+
+matrix-3x3:
+  formulas:
+    - tex: '$$\begin{pmatrix} a_{11} & a_{12} & a_{13} \\ a_{21} & a_{22} & a_{23} \\ a_{31} & a_{32} & a_{33} \end{pmatrix} \qquad \begin{bmatrix} a_{11} & a_{12} & a_{13} \\ a_{21} & a_{22} & a_{23} \\ a_{31} & a_{32} & a_{33} \end{bmatrix}$$'
+
+column-vector:
+  formulas:
+    - tex: '$$\vec{v} = \begin{pmatrix} v_1 \\ v_2 \\ v_3 \\ v_4 \\ v_5 \end{pmatrix} \qquad \begin{bmatrix} v_1 \\ v_2 \\ v_3 \\ v_4 \\ v_5 \end{bmatrix}$$'
+
+# Tracks combining-accent placement across base-letter widths and accent kinds.
+# All simple cases (single-letter base) should ideally be shaped by the browser
+# via the font's GPOS mark anchors.  The final \widehat{xyz} row is the wide-base
+# case which legitimately needs MathJax's stretchy extender — it must keep working.
+# Exercises: digit '1' padding (many 1s in the body and totals); vertical
+# rules `|` and `||`; `\hline` and `\hline\hline`; mixed text + numeric
+# cells; ragged column widths (1 vs 12 vs 225).
+# The `||` column separator and `\hline\hline` are intentionally included so
+# any change in how MathJax renders double rules shows up as a sample diff.
+multiplication-table:
+  formulas:
+    - tex: '$$\begin{array}{c||c|c|c|c|c|c} \times & 1 & 2 & 3 & 4 & 5 & \text{sum} \\ \hline\hline 1 & 1 & 2 & 3 & 4 & 5 & 15 \\ 2 & 2 & 4 & 6 & 8 & 10 & 30 \\ 3 & 3 & 6 & 9 & 12 & 15 & 45 \\ 4 & 4 & 8 & 12 & 16 & 20 & 60 \\ 5 & 5 & 10 & 15 & 20 & 25 & 75 \\ \hline \text{sum} & 15 & 30 & 45 & 60 & 75 & 225 \\ \end{array}$$'
+
+accents-zoo:
+  cellHeight: 80
+  cellWidth: 280
+  formulas:
+    - tex: '$\hat{i},\ \hat{f},\ \hat{x},\ \hat{H},\ \hat{A},\ \hat{M}$'
+    - tex: '$\vec{v},\ \vec{x},\ \vec{F},\ \vec{p},\ \vec{ABC},\ \overrightarrow{ABC}$'
+    - tex: '$\vec{\mathbf{0}},\ \vec{\mathbf{E}},\ \vec{\mathbf{B}},\ \vec{\mathbf{j}},\ \vec{\mathbf{r}},\ \vec{\mathbf{1}}$'
+    - tex: '$\bar{x},\ \bar{y},\ \bar{f},\ \bar{H},\ \bar{A},\ \bar{M}$'
+    - tex: '$\tilde{n},\ \tilde{x},\ \tilde{f},\ \tilde{H},\ \tilde{A},\ \tilde{M}$'
+    - tex: '$\dot{x},\ \ddot{x},\ \check{c},\ \breve{u},\ \acute{e},\ \grave{e}$'
+    - tex: '$\widehat{xyz} \qquad \widetilde{abc} \qquad \overline{a+b+c}$'
+
+stretchy-arrows:
+  cellHeight: 76
+  cellWidth: 360
+  formulas:
+    - tex: '$A \xrightarrow{f} B$'
+    - tex: '$A \xrightarrow{n+\mu-1} B$'
+    - tex: '$A \xleftarrow{g} B$'
+    - tex: '$\overrightarrow{ABC} \qquad \overleftarrow{ABC}$'
+    - tex: '$\vec{v},\ \vec{ABC},\ \vec{xyzw}$'
+
+amscd-commutative-diagram:
+  mathjax: { packages: [amscd] }
+  cellHeight: 180
+  cellWidth: 220
+  formulas:
+    - tex: '$$\begin{CD} A @>f>> B \\ @VgVV @VVhV \\ C @>>k> D \end{CD}$$'
+    - tex: '$$\begin{CD} A @>f>> B \\ @AAA @VVV \\ C @<<< D \end{CD}$$'
+
+sqrt-digit-radicand:
+  cellHeight: 80
+  cellWidth: 280
+  formulas:
+    - tex: '$\sqrt{\pi}$'
+    - tex: '$\sqrt{5}$'
+    - tex: '$\sqrt{2}$'
+    - tex: '$\sqrt{1-x^2}$'
+    - tex: '$\sqrt{\phi \sqrt{5}}$'
+
+maxwell-equations:
+  formulas:
+    - tex: |
+        $$\begin{aligned}
+        \nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} & = \frac{4\pi}{c}\vec{\mathbf{j}} \\
+        \nabla \cdot \vec{\mathbf{E}} & = 4 \pi \rho \\
+        \nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t} & = \vec{\mathbf{0}} \\
+        \nabla \cdot \vec{\mathbf{B}} & = 0
+        \end{aligned}$$
+
+ramanujan-identity:
+  formulas:
+    - tex: '$$\frac{1}{(\sqrt{\phi \sqrt{5}}-\phi) e^{\frac25 \pi}} = 1 + \frac{e^{-2\pi}}{1 + \frac{e^{-4\pi}}{1 + \frac{e^{-6\pi}}{1 + \frac{e^{-8\pi}}{1 + \cdots}}}}$$'
+
+# Exercises the AMS `align` environment with multi-column alignment
+# (`& = … &&`), \tag/\label/\eqref cross-references, and the new math
+# operators \circ (U+2218) and `*` / \ast (U+2217).
+align-eqref:
+  mathjax: { packages: [ams], tags: ams }
+  formulas:
+    - tex: |
+        $$\begin{align}
+        y_1 + y_2 &= z \tag{$\star$} \label{ref1} \\
+        y' \circ y^* &= w \tag{$\dagger$} \label{ref3}
+        \end{align}$$
+
+        $$\begin{align}
+        x & = y_1 - y_2 + y_3 - y_5 + y_8 - \dots && \text{by \eqref{ref1}} \\
+          & = y' \circ y^*                         && \text{(by \eqref{ref3})} \\
+          & = y(0)\, y'                            && \text{by Axiom 1.}
+        \end{align}$$
+
+# A reference grid of math operators, relations, arrows, delimiters,
+# logic, and miscellaneous symbols that realistically appear in TeX
+# equations.  Useful both as a visual reference for what xkcd-script
+# covers and as a gap-finder — any cell that renders as a fallback
+# (Times-style) glyph or a `.notdef` box points at a missing codepoint.
+math-symbols-zoo:
+  cellHeight: 64
+  cellWidth: 700
+  formulas:
+    - tex: 'Binary ops: $+\ -\ \pm\ \mp\ \times\ \div\ \cdot\ \ast\ \circ\ \bullet\ \oplus\ \ominus\ \otimes\ \odot\ \cap\ \cup$'
+    - tex: 'Relations: $=\ \neq\ <\ >\ \leq\ \geq\ \ll\ \gg\ \approx\ \equiv\ \sim\ \simeq\ \propto\ \in\ \notin\ \subset\ \subseteq$'
+    - tex: 'Arrows: $\to\ \gets\ \rightarrow\ \leftarrow\ \Rightarrow\ \Leftarrow\ \Leftrightarrow\ \mapsto\ \uparrow\ \downarrow$'
+    - tex: 'Delimiters: $(\ )\ [\ ]\ \{\ \}\ \langle\ \rangle\ |\ \|\ \lfloor\ \rfloor\ \lceil\ \rceil$'
+    - tex: 'Logic / set: $\land\ \lor\ \lnot\ \implies\ \iff\ \forall\ \exists\ \emptyset\ \in\ \subset\ \cup\ \cap$'
+    - tex: 'Misc: $\infty\ \nabla\ \partial\ \aleph\ \hbar\ \ell\ \Re\ \Im\ \wp\ \prime\ \dagger\ \ddagger\ \star\ \angle$'

@@ -784,13 +784,38 @@ _cap_h = font['A'].boundingBox()[3]
 _math_axis = _xh / 2
 
 
-def _import_math_centered(name, cp, target_top, weight_delta=0):
-    """Import a math symbol SVG, then centre it at the math axis."""
+def _mirror_glyph_x(src, dst_name):
+    """Create an unencoded glyph `dst_name` that is `src` flipped on X.
+
+    psMat.scale(-1, 1) puts the glyph in negative-x territory; we shift it
+    back so the leftmost contour sits at x=20 (matching _import_comic_glyph's
+    side-bearing) and set advance width to enclose it.
+    """
+    dst = font.createChar(-1, dst_name)
+    dst.clear()
+    for cont in src.foreground:
+        dst.foreground += cont
+    dst.transform(psMat.scale(-1, 1))
+    bb = dst.boundingBox()
+    dst.transform(psMat.translate(-bb[0] + 20, 0))
+    dst.width = int(round(dst.boundingBox()[2] + 20))
+    return dst
+
+
+def _import_math_centered(name, cp, target_top, weight_delta=0, dst_name=None):
+    """Import a math symbol SVG, then centre it at the math axis.
+
+    cp=None creates an unencoded glyph at dst_name (defaults to name);
+    otherwise the centred copy is mapped to cp.
+    """
     svg = os.path.join(_COMIC_CHARS_DIR, f'{name}.svg')
     g = _import_comic_glyph(font, name, svg, target_top=target_top, weight_delta=weight_delta)
     bb = g.boundingBox()
     g.transform(psMat.translate(0, _math_axis - (bb[1] + bb[3]) / 2))
-    ch = font.createMappedChar(cp)
+    if cp is None:
+        ch = font.createChar(-1, dst_name or name)
+    else:
+        ch = font.createMappedChar(cp)
     ch.clear()
     for cont in g.foreground:
         ch.foreground += cont
@@ -802,6 +827,7 @@ _import_math_centered('infinity', 0x221E, _xh, weight_delta=30)   # ∞
 _import_math_centered('right_lim_arrow', 0x2192, _xh, weight_delta=20)    # →
 _import_math_centered('right_double_arrow', 0x21D2, _xh, weight_delta=20) # ⇒
 _import_math_centered('right_half_arrow', 0x21C0, _xh, weight_delta=20)   # ⇀
+_import_math_centered('circled_times', 0x2297, _xh, weight_delta=10)      # ⊗
 
 # △ U+25B3 WHITE UP-POINTING TRIANGLE — baseline to cap height.
 _tri_svg = os.path.join(_COMIC_CHARS_DIR, 'triangle.svg')
@@ -818,6 +844,40 @@ _ch.clear()
 for _cont in _tri_src.foreground:
     _ch.foreground += _cont
 _ch.width = _tri_src.width
+
+
+# Hand-drawn near-vertical surd as the unencoded glyph `radical.tall`,
+# for math renderers to use on tall radicands where extending the natural
+# √'s (U+221A) diagonal would lean too far.  Reached via the runtime
+# cut-and-extend renderer in xkcd-mathjax3.js, not via a cmap entry.
+_import_math_centered('sqrt_vertical', None, 1.12 * font.em, weight_delta=0,
+                      dst_name='radical.tall')
+
+
+# Hand-drawn tall left brace as the unencoded glyph `braceleft.tall`, used
+# by xkcd-mathjax3.js's overlay pass for \begin{cases} and other stretchy
+# braces that MathJax CHTML would otherwise assemble from missing U+23A7-AA
+# pieces.  Reached via the runtime cut-and-extend renderer, not via cmap.
+# Target_top is sized to keep the imported pen-weight close to the source's
+# natural stroke: shortened source is 276 px tall, so ≈0.7×em scales the
+# strokes at ~2.5×, similar to other math glyphs from this comic.
+_import_math_centered('braceleft_tall', None, 0.7 * font.em, weight_delta=20,
+                      dst_name='braceleft.tall')
+
+
+# Hand-drawn tall left parenthesis as the unencoded glyph `parenleft.tall`,
+# used by xkcd-mathjax3.js's overlay pass for \binom, \left(...\right) around
+# fractions, and \begin{pmatrix} where MathJax would otherwise draw a
+# letter-height ( inside a tall reserved box.  Reached via the runtime
+# cut-and-extend renderer, not via cmap.
+_paren_l = _import_math_centered('parenleft_tall', None, 0.8 * font.em,
+                                 weight_delta=0, dst_name='parenleft.tall')
+
+# `parenright.tall` — mirror of parenleft.tall on the X axis.  Kept as a
+# separate glyph so font-level uses see a proper closing paren; the JS
+# renderer mirrors from parenleft.tall on its own and never reads this one,
+# so we don't export it to EXTENSIBLE_GLYPHS.
+_mirror_glyph_x(_paren_l, 'parenright.tall')
 
 
 # ---------------------------------------------------------------------------

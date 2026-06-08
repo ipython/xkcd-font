@@ -47,3 +47,6 @@ if [ "$?" == "141" ] ; then
 fi
 
 ${RUN_CTXT} python3 gen_charmap.py
+
+# Uses a separate Playwright image — different tool, different base image.
+./mathjax3/generate_math_samples.sh
