@@ -2,3 +2,6 @@ scikit-image
 scipy
 matplotlib
 parse
+fonttools
+brotli
+pytest
