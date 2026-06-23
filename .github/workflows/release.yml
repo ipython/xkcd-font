@@ -1,0 +1,33 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build-and-upload:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      - uses: ./.github/actions/build-font
+        with:
+          version: ${{ github.event.release.tag_name }}
+          push-image: 'true'
+
+      - name: Upload assets to the release
+        run: |
+          gh release upload "${{ github.event.release.tag_name }}" \
+            dist/xkcd-script-${{ github.event.release.tag_name }}.otf \
+            dist/xkcd-script-${{ github.event.release.tag_name }}.ttf \
+            dist/xkcd-script-${{ github.event.release.tag_name }}.woff \
+            dist/xkcd-script-${{ github.event.release.tag_name }}.woff2 \
+            dist/xkcd-mathjax3-${{ github.event.release.tag_name }}.js \
+            --clobber

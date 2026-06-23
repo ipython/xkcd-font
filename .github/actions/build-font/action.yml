@@ -1,0 +1,83 @@
+name: Build xkcd-script font
+description: Build the unversioned font, run the diff check, generate versioned release artifacts, and upload dist/ as a workflow artifact.
+
+inputs:
+  version:
+    description: 'Version to bake into release artifacts (e.g. 2026.0, or 0.0-dev for non-release CI).'
+    required: true
+  push-image:
+    description: 'Whether to push the fontbuilder Docker image to GHCR.'
+    required: false
+    default: 'false'
+
+runs:
+  using: composite
+  steps:
+    - name: Log in to GitHub Container Registry
+      if: inputs.push-image == 'true'
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ env.GITHUB_TOKEN }}
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build (and optionally push) Docker image
+      uses: docker/build-push-action@v6
+      with:
+        context: xkcd-script/generator
+        load: true
+        push: ${{ inputs.push-image }}
+        tags: ghcr.io/ipython/xkcd-font:fontbuilder
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+    - name: Generate font
+      shell: bash
+      run: FONTBUILDER_IMAGE=ghcr.io/ipython/xkcd-font:fontbuilder xkcd-script/generator/run.sh
+
+    - name: Generate samples
+      shell: bash
+      run: xkcd-script/samples/preview.sh
+
+    - name: Check generated files match committed files
+      shell: bash
+      run: |
+        git diff --exit-code xkcd-script/font/ xkcd-script/samples/ || {
+          echo ""
+          echo "Generated files differ from committed files."
+          echo "Download the 'xkcd-script-font-${{ inputs.version }}' artifact from this run and commit the updated unversioned files (xkcd-script.{otf,ttf,woff,sfd} and the sample PNGs)."
+          exit 1
+        }
+
+    - name: Run pytest
+      shell: bash
+      run: |
+        docker run --rm -v "$PWD":/repo -w /repo ghcr.io/ipython/xkcd-font:fontbuilder \
+          python3 -m pytest xkcd-script/generator/tests/ -v
+
+    - name: Generate release artifacts
+      shell: bash
+      run: |
+        rm -rf dist
+        docker run --rm -v "$PWD":/repo -w /repo ghcr.io/ipython/xkcd-font:fontbuilder \
+          python3 xkcd-script/generator/generate_release_artifacts.py \
+            --version "${{ inputs.version }}" \
+            --font-dir xkcd-script/font \
+            --js xkcd-script/xkcd-mathjax3.js \
+            --out-dir dist
+
+    - name: Upload unversioned + release artifacts
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: xkcd-script-font-${{ inputs.version }}
+        path: |
+          xkcd-script/font/xkcd-script.otf
+          xkcd-script/font/xkcd-script.ttf
+          xkcd-script/font/xkcd-script.woff
+          xkcd-script/font/xkcd-script.sfd
+          xkcd-script/samples/**/*.png
+          dist/**
