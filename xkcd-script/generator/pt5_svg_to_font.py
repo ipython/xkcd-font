@@ -331,11 +331,6 @@ font.hhea_ascent = 855; font.hhea_ascent_add = False
 font.hhea_descent = -270; font.hhea_descent_add = False
 font.hhea_linegap = 77
 
-# Information to be conveyed to the next stage.
-# I wanted to use font.persistent, but it causes an error. Instead, I use a dummy glyph.
-font.createChar(-1, '_pad_space')
-font['_pad_space'].width = SPACE + RSPACE
-
 # Per-character size scaling applied after changeWeight, to fine-tune individual glyphs
 # that end up slightly too large despite correct stroke weight.
 _per_char_operation = {
@@ -442,6 +437,20 @@ c = font.createChar(0x0000, '.null')   # U+0000: null, zero-width; required by O
 c.width = 256
 c = font.createChar(0x000D, 'nonmarkingreturn')  # U+000D: carriage return, zero-width; required by OpenType
 c.width = 256
+
+# Information to be conveyed to the next stage.
+font.createChar(-1, '_pad_space')
+font['_pad_space'].width = SPACE + RSPACE
+TYPICAL_BOUNDINGWIDTH = 200
+font.createChar(-1, '_typical_bbox')
+c = fontforge.contour()
+l = SPACE // 2 + 20
+r = SPACE // 2 + TYPICAL_BOUNDINGWIDTH - 20
+_ascender_top = font['l'].boundingBox()[3]
+_descender_bottom = font['p'].boundingBox()[1]
+c.moveTo(l, _descender_bottom).lineTo(l, _ascender_top).lineTo(r, _ascender_top).lineTo(r, _descender_bottom).lineTo(l, _descender_bottom)
+font['_typical_bbox'].foreground += c
+font['_typical_bbox'].width = TYPICAL_BOUNDINGWIDTH + SPACE + RSPACE
 
 
 # ---------------------------------------------------------------------------

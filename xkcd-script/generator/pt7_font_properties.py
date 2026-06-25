@@ -173,6 +173,9 @@ font.removeGlyph(font['_pad_space'])
 font.addLookup('above', 'gpos_mark2base', (), [['mark', [['latn', ['dflt']]]]])
 font.addLookupSubtable('above', 'above_sub')
 font.addAnchorClass('above_sub', 'above')
+font.addLookup('mkmk', 'gpos_mark2mark', (), [['mkmk', [['latn', ['dflt']]]]], 'above')
+font.addLookupSubtable('mkmk', 'abovechain_sub')
+font.addAnchorClass('abovechain_sub', 'abovechain')
 
 # Combining mark codepoints registered in pt6, paired with their private glyph names.
 # The anchor sits at the bottom-centre of each combining mark glyph, adjusted by
@@ -180,23 +183,29 @@ font.addAnchorClass('above_sub', 'above')
 _COMBINING = [
     (0x0300, '_grave_mark', 0),
     (0x0301, '_acute_mark', 0),
-    (0x0302, '_circumflex_mark', 300),  # was too high
-    (0x0303, '_tilde_mark', 270),  # was too high
-    (0x0304, '_macron_mark', -90),  # was too low
-    (0x0307, '_dot_above_mark', -30),  # too low → raise
+    (0x0302, '_circumflex_mark', 0),
+    (0x0303, '_tilde_mark', 0),
+    (0x0304, '_macron_mark', 0),
+    (0x0307, '_dot_above_mark', 0),
     (0x0308, '_diaeresis_mark', 0),
-    (0x030A, '_ring_above_mark', 45),  # could be a little closer
+    (0x030A, '_ring_above_mark', 0),
     (0x030B, '_double_acute_mark', 0),
-    (0x030C, '_caron_mark', 280),  # was too high
+    (0x030C, '_caron_mark', 0),
+    (0x0306, '_breve_mark', 0),
 ]
 
+# Inter-stage contract: all above combining marks sit on top-center of _typical_bbox.
+# "Sit on" doesn't necessarily mean centering the bounding box. That design decision was
+# made in Stage 6, and here we just make sure not to mess up the results in the x direction.
+_typical_bbox = font['_typical_bbox'].boundingBox()
+cx = (_typical_bbox[0] + _typical_bbox[2]) / 2 - font['_typical_bbox'].width
+_MKMK_GAP = 20
 for cp, private_name, y_offset in _COMBINING:
     mark_glyph = font[cp]
-    # Use the private mark glyph's bbox (the encoded glyph is a composite whose
-    # bbox FontForge may not resolve; the private mark is a plain outline).
-    bb = font[private_name].boundingBox()
-    cx = (bb[0] + bb[2]) / 2
+    bb = font[cp].boundingBox()
     mark_glyph.addAnchorPoint('above', 'mark', cx, bb[1] + y_offset)
+    mark_glyph.addAnchorPoint('abovechain', 'mark', cx, bb[1] + y_offset)
+    mark_glyph.addAnchorPoint('abovechain', 'basemark', cx, bb[3] + _MKMK_GAP)
 
 # j's dot is to the right of the body centre; combining marks should sit above the dot.
 _j_layer = font['j'].foreground

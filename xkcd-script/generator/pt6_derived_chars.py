@@ -398,7 +398,6 @@ _breve_mark.transform(psMat.rotate(math.radians(90)))
 _bb = _breve_mark.boundingBox()
 _breve_mark.transform(psMat.translate(-(_bb[0] + _bb[2]) / 2, 0))
 _breve_mark.transform(psMat.scale(0.5, 1))
-_breve_mark.transform(psMat.translate(-220, 0))
 
 # --- Marks composed from existing mark glyphs ---
 
@@ -460,8 +459,11 @@ _double_acute_mark.width = 0
 # Without GPOS anchors the renderer places marks at their native coordinates,
 # so we translate here to ensure they appear above even tall letters like l/L/b/h.
 # (Pre-composed glyphs are unaffected — _place_above computes its own dy.)
-_ascender_top = font['l'].boundingBox()[3]
+# Inter-stage contract: all above combining marks sit on top-center of _typical_bbox
+_typical_bbox = font['_typical_bbox'].boundingBox()
+_ascender_top = _typical_bbox[3]
 _combining_gap = 20
+_center_top = (_typical_bbox[0] + _typical_bbox[2]) / 2 - font['_typical_bbox'].width
 
 for cp, mark in [
     (0x0300, _grave_mark),
@@ -480,36 +482,37 @@ for cp, mark in [
     c.clear()
     mark_bb = font[mark.glyphname].boundingBox()
     dy = _ascender_top + _combining_gap - mark_bb[1]
-    c.addReference(mark.glyphname, psMat.translate(0, dy))
+    c.addReference(mark.glyphname, psMat.translate(_center_top, dy))
     c.width = 0
 
 # Below combining marks share the macron-below shape at different vertical positions.
-_descender_bottom = font['p'].boundingBox()[1]
+_descender_bottom = font['_typical_bbox'].boundingBox()[1]
 _mb_bb = font['_macron_below_mark'].boundingBox()
+_center_bottom = (_typical_bbox[0] + _typical_bbox[2]) / 2 - font['_typical_bbox'].width
 
 # U+0331 ◌̱  COMBINING MACRON BELOW — below the descender.
 _c0331 = font.createMappedChar(0x0331)
 _c0331.clear()
-_c0331.addReference('_macron_below_mark', psMat.translate(0, _descender_bottom - _combining_gap - _mb_bb[3]))
+_c0331.addReference('_macron_below_mark', psMat.translate(_center_bottom, _descender_bottom - _combining_gap - _mb_bb[3]))
 _c0331.width = 0
 
 # U+0332 ◌̲  COMBINING LOW LINE — just below the baseline (underline position).
 _c0332 = font.createMappedChar(0x0332)
 _c0332.clear()
-_c0332.addReference('_macron_below_mark', psMat.translate(0, -_combining_gap - _mb_bb[3]))
+_c0332.addReference('_macron_below_mark', psMat.translate(_center_bottom, -_combining_gap - _mb_bb[3]))
 _c0332.width = 0
 
 # U+0320 ◌̠  COMBINING MINUS SIGN BELOW — halfway between baseline and descender.
 _c0320 = font.createMappedChar(0x0320)
 _c0320.clear()
-_c0320.addReference('_macron_below_mark', psMat.translate(0, _descender_bottom // 2 - _combining_gap - _mb_bb[3]))
+_c0320.addReference('_macron_below_mark', psMat.translate(_center_bottom, _descender_bottom // 2 - _combining_gap - _mb_bb[3]))
 _c0320.width = 0
 
 # U+0327 ◌̧  COMBINING CEDILLA — hook cedilla shape, positioned below descender.
 _hc_bb = font['_hook_cedilla_mark'].boundingBox()
 _c0327 = font.createMappedChar(0x0327)
 _c0327.clear()
-_c0327.addReference('_hook_cedilla_mark', psMat.translate(0, _descender_bottom - _combining_gap - _hc_bb[3]))
+_c0327.addReference('_hook_cedilla_mark', psMat.translate(_center_bottom, _descender_bottom - _combining_gap - _hc_bb[3]))
 _c0327.width = 0
 
 
