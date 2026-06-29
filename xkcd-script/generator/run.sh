@@ -17,6 +17,7 @@ set -ex
 [ "$FROM" -le 4 ] && $RUN_CTXT python3 pt4_additional_sources.py
 [ "$FROM" -le 5 ] && $RUN_CTXT python3 pt5_svg_to_font.py
 [ "$FROM" -le 6 ] && $RUN_CTXT python3 pt6_derived_chars.py
+[ "$FROM" -le 6 ] && $RUN_CTXT python3 pt6_derived_chars.py xkcd-script-mono
 [ "$FROM" -le 7 ] && $RUN_CTXT python3 pt7_font_properties.py
 # TODO: pt8_gen_reprod_font.py should logically be pt9 since it runs after
 # pt8_derivatives.py; left as pt8_ to minimise diff noise for the MathJax PR.

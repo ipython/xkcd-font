@@ -6,11 +6,36 @@ accented Latin letters, and Greek aliases and derived glyphs.
 Reads the base SFD produced by pt5_svg_to_font.py, adds derived glyphs, saves.
 """
 import math
+import sys
 import fontforge
 import psMat
 
-font_fname = '../generated/xkcd-script-pt6.sfd'
-font = fontforge.open('../generated/xkcd-script-pt5.sfd')
+if len(sys.argv) >= 2:
+    bodyname = sys.argv[1]
+else:
+    bodyname = 'xkcd-script'
+
+font_fname = f'../generated/{bodyname}-pt6.sfd'
+font = fontforge.open(f'../generated/{bodyname}-pt5.sfd')
+
+def fix_width(c, width):
+    space1 = (width - c.width) // 2
+    space2 = width - c.width - space1
+    if c.width == 0: # combination chars
+        space1 = 0 #width - c.width
+        space2 = 0
+    c.width = c.width + space1
+    t = psMat.translate(space2, 0)
+    c.transform(t)
+
+_pad_space = font['_pad_space'].width
+
+if '_monospace_width' in font:
+    _monospace_width = font['_monospace_width'].width
+
+    font.selection.all()
+    for c in font.selection.byGlyphs:
+        fix_width(c, _monospace_width)
 
 
 # ---------------------------------------------------------------------------
@@ -277,9 +302,10 @@ c.correctDirection()
 c.width = 0
 
 # Vertical pipe: re-use the I glyph (same stroke, same weight).
-c = font.createChar(-1, 'I.sansserif')
-c.addReference('I')
-c.width = font['I'].width
+if 'I.sansserif' not in font:
+    c = font.createChar(-1, 'I.sansserif')
+    c.addReference('I')
+    c.width = font['I'].width
 pipe = font.createMappedChar(ord('|'))
 pipe.clear()
 pipe.addReference('I.sansserif', psMat.compose(psMat.scale(1, 1.3), psMat.translate(0, -0.2 * font.ascent)))
@@ -398,6 +424,7 @@ _breve_mark.transform(psMat.rotate(math.radians(90)))
 _bb = _breve_mark.boundingBox()
 _breve_mark.transform(psMat.translate(-(_bb[0] + _bb[2]) / 2, 0))
 _breve_mark.transform(psMat.scale(0.5, 1))
+_breve_mark.width = 0
 
 # --- Marks composed from existing mark glyphs ---
 
@@ -636,7 +663,7 @@ def _make_lslash(font, cp, base_name, crossbar_name, y_frac, x_center):
     c.width = font[base_name].width
     base_bb = font[base_name].boundingBox()
     target_y = base_bb[1] + (base_bb[3] - base_bb[1]) * y_frac
-    c.addReference(crossbar_name, psMat.translate(x_center, target_y))
+    c.addReference(crossbar_name, psMat.translate(round(base_bb[0]) - 20 + x_center, target_y))
     return c
 
 
@@ -901,7 +928,7 @@ _make_macron_below(font, 0x1E5F, 'r', y_adj=45)  # ṟ — r sits low, needs ext
 
 # ĳ U+0133 / Ĳ U+0132: Dutch IJ digraph ligatures.
 # Position so the ink edges have the same gap as adjacent letters would after kerning (~40 units).
-for cp, left, right in [(0x0133, 'i', 'j'), (0x0132, 'I', 'J')]:
+for cp, left, right in [(0x0133, 'i', 'j'), (0x0132, 'I.sansserif', 'J')]:
     _ij = font.createMappedChar(cp)
     _ij.clear()
     _ij.addReference(left)
@@ -1529,5 +1556,10 @@ make_display_operator(font, 'integral', 'integral.disp',  round(1.4 * _upem),   
 # ---------------------------------------------------------------------------
 # Save
 # ---------------------------------------------------------------------------
+
+if '_monospace_width' in font:
+    font.selection.all()
+    for c in font.selection.byGlyphs:
+        fix_width(c, _monospace_width)
 
 font.save(font_fname)
