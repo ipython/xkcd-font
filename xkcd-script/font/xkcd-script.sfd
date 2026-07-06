@@ -57,6 +57,7 @@ OS2CapHeight: 592
 OS2XHeight: 338
 OS2Vendor: 'PfEd'
 Lookup: 1 0 0 "ss01-display-operators" { "ss01-display-operators-1"  } ['ss01' ('DFLT' <'dflt' > 'latn' <'dflt' > 'math' <'dflt' > ) ]
+Lookup: 4 0 0 "above_subst" { "ccmp"  } ['ccmp' ('latn' <'dflt' > ) ]
 Lookup: 4 0 1 "ligatures" { "liga"  } ['liga' ('latn' <'dflt' > ) ]
 Lookup: 260 0 0 "below" { "below_sub"  } ['mark' ('latn' <'dflt' > ) ]
 Lookup: 260 0 0 "above" { "above_sub"  } ['mark' ('latn' <'dflt' > ) ]
@@ -19696,6 +19697,7 @@ Fore
 Refer: 259 -1 N 1 0 0 1 88 -343 2
 Refer: 272 305 N 1 0 0 1 0 0 2
 Kerns2: 522 -45 "kern" 487 -45 "kern" 471 -45 "kern" 382 -42 "kern" 361 -45 "kern" 73 -11 "kern" 70 -27 "kern" 49 -45 "kern"
+Ligature2: "ccmp" i acutecomb
 EndChar
 
 StartChar: oacute
@@ -20136,6 +20138,7 @@ LayerCount: 2
 Fore
 Refer: 268 -1 N 1 0 0 1 88.0005 163.602 2
 Refer: 272 305 N 1 0 0 1 0 0 2
+Ligature2: "ccmp" i uni030C
 EndChar
 
 StartChar: uni01F0
@@ -20147,6 +20150,7 @@ LayerCount: 2
 Fore
 Refer: 268 -1 N 1 0 0 1 125 190.602 2
 Refer: 273 567 N 1 0 0 1 0 0 2
+Ligature2: "ccmp" j uni030C
 EndChar
 
 StartChar: aring
@@ -20326,6 +20330,7 @@ LayerCount: 2
 Fore
 Refer: 271 -1 N 1 0 0 1 88 449.619 2
 Refer: 272 305 N 1 0 0 1 0 0 2
+Ligature2: "ccmp" i uni0306
 EndChar
 
 StartChar: Dcaron
@@ -20938,6 +20943,7 @@ Fore
 Refer: 269 -1 N 1 0 0 1 88.0005 143.6 2
 Refer: 272 305 N 1 0 0 1 0 0 2
 Kerns2: 522 -33 "kern" 487 -33 "kern" 471 -34 "kern" 382 -32 "kern" 361 -33 "kern" 77 -18 "kern" 73 -25 "kern" 70 -23 "kern" 49 -33 "kern"
+Ligature2: "ccmp" i uni0302
 EndChar
 
 StartChar: ocircumflex
@@ -21046,6 +21052,7 @@ Fore
 Refer: 269 -1 N 1 0 0 1 125 170.6 2
 Refer: 273 567 N 1 0 0 1 0 0 2
 Kerns2: 487 -16 "kern" 471 -9 "kern"
+Ligature2: "ccmp" j uni0302
 EndChar
 
 StartChar: Agrave
@@ -21142,6 +21149,7 @@ Fore
 Refer: 260 -1 N 1 0 0 1 88 -343 2
 Refer: 272 305 N 1 0 0 1 0 0 2
 Kerns2: 522 -78 "kern" 511 -45 "kern" 487 -79 "kern" 471 -78 "kern" 455 -45 "kern" 417 -45 "kern" 400 -45 "kern" 382 -72 "kern" 361 -78 "kern" 303 -45 "kern" 83 -54 "kern" 77 -57 "kern" 73 -68 "kern" 71 -60 "kern" 70 -60 "kern" 55 -45 "kern" 49 -78 "kern"
+Ligature2: "ccmp" i gravecomb
 EndChar
 
 StartChar: ograve
@@ -21319,6 +21327,7 @@ Fore
 Refer: 270 -1 N 1 0 0 1 88 187.8 2
 Refer: 272 305 N 1 0 0 1 0 0 2
 Kerns2: 522 -21 "kern" 487 -22 "kern" 471 -22 "kern" 382 -20 "kern" 361 -21 "kern" 49 -21 "kern"
+Ligature2: "ccmp" i tildecomb
 EndChar
 
 StartChar: Utilde
@@ -21592,6 +21601,7 @@ Fore
 Refer: 262 -1 N 1 0 0 1 88 -309.96 2
 Refer: 272 305 N 1 0 0 1 0 0 2
 Kerns2: 522 -48 "kern" 487 -48 "kern" 471 -48 "kern" 382 -44 "kern" 361 -48 "kern" 83 -18 "kern" 77 -38 "kern" 73 -43 "kern" 71 -42 "kern" 70 -30 "kern" 49 -48 "kern"
+Ligature2: "ccmp" i uni0308
 EndChar
 
 StartChar: odieresis
@@ -22022,6 +22032,7 @@ Fore
 Refer: 267 -1 N 1 0 0 1 88.2963 -366 2
 Refer: 272 305 N 1 0 0 1 0 0 2
 Kerns2: 522 -52 "kern" 511 -18 "kern" 487 -53 "kern" 471 -53 "kern" 455 -18 "kern" 417 -18 "kern" 400 -18 "kern" 382 -48 "kern" 361 -52 "kern" 303 -18 "kern" 83 -48 "kern" 77 -39 "kern" 73 -46 "kern" 71 -48 "kern" 70 -33 "kern" 55 -18 "kern" 49 -52 "kern"
+Ligature2: "ccmp" i uni0304
 EndChar
 
 StartChar: omacron

@@ -229,6 +229,35 @@ for glyph in font.glyphs():
 
 
 # ---------------------------------------------------------------------------
+# ccmp GSUB: replacement rules that take priority over mark2base for dotlessi and dotleesj
+# ---------------------------------------------------------------------------
+
+font.addLookup('above_subst', 'gsub_ligature', (), [['ccmp', [['latn', ['dflt']]]]])
+font.addLookupSubtable('above_subst', 'ccmp')
+
+composition_tuple = tuple(['i', 'acutecomb'])
+font[0x00ED].addPosSub('ccmp', composition_tuple) # í
+composition_tuple = tuple(['i', 'uni030C'])
+font[0x01D0].addPosSub('ccmp', composition_tuple) # ǐ
+composition_tuple = tuple(['j', 'uni030C'])
+font[0x01F0].addPosSub('ccmp', composition_tuple) # ǰ
+composition_tuple = tuple(['i', 'uni0306'])
+font[0x012D].addPosSub('ccmp', composition_tuple) # ĭ
+composition_tuple = tuple(['i', 'uni0302'])
+font[0x00EE].addPosSub('ccmp', composition_tuple) # î
+composition_tuple = tuple(['j', 'uni0302'])
+font[0x0135].addPosSub('ccmp', composition_tuple) # ĵ
+composition_tuple = tuple(['i', 'gravecomb'])
+font[0x00EC].addPosSub('ccmp', composition_tuple) # ì
+composition_tuple = tuple(['i', 'tildecomb'])
+font[0x0129].addPosSub('ccmp', composition_tuple) # ĩ
+composition_tuple = tuple(['i', 'uni0308'])
+font[0x00EF].addPosSub('ccmp', composition_tuple) # ï
+composition_tuple = tuple(['i', 'uni0304'])
+font[0x012B].addPosSub('ccmp', composition_tuple) # ī
+
+
+# ---------------------------------------------------------------------------
 # Mark-to-base GPOS: position combining cedilla below base glyphs
 # ---------------------------------------------------------------------------
 
