@@ -41,6 +41,22 @@ ${RUN_CTXT} convert -strip ${NAME}.pgm ${NAME}.png
 ${RUN_CTXT} rm ${NAME}.pgm
 
 
+SIMPLE_CTXT="${RUN_CTXT} pango-view --backend=ft2 --font \"xkcdMono\" --dpi 150"
+
+NAME=ipsum
+CONTENT=$(cat ${NAME}.txt)
+${SIMPLE_CTXT} -o ${NAME}-mono.pgm --text "${CONTENT}"
+${RUN_CTXT} convert -strip ${NAME}-mono.pgm ${NAME}-mono.png
+${RUN_CTXT} rm ${NAME}-mono.pgm
+
+
+NAME=handwriting
+CONTENT=$(cat ${NAME}.txt)
+${SIMPLE_CTXT} -o ${NAME}-mono.pgm --text "${CONTENT}"
+${RUN_CTXT} convert -strip ${NAME}-mono.pgm ${NAME}-mono.png
+${RUN_CTXT} rm ${NAME}-mono.pgm
+
+
 if [ "$?" == "141" ] ; then
     # Unexplained exit code from the handwriting sample.
     exit 0
