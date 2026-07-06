@@ -17,6 +17,7 @@ this to pt9_ and reserve pt8_ for the derivatives orchestrator.
 """
 import datetime
 import os
+import sys
 import calendar
 from pathlib import Path
 
@@ -32,9 +33,12 @@ _then_str  = 'Sat Jan 1 00:00:00 2000'
 _then_unix = calendar.timegm(datetime.datetime(2000, 1, 1, 0, 0).timetuple())
 
 
-NAME    = 'xkcd-script'
-SFD_IN  = GENERATED + 'xkcd-script-pt7.sfd'
-SFD_OUT = FONT_DIR  + 'xkcd-script.sfd'   # canonical, committed
+if len(sys.argv) >= 2:
+    NAME = sys.argv[1]
+else:
+    NAME    = 'xkcd-script'
+SFD_IN  = GENERATED + NAME + '-pt7.sfd'
+SFD_OUT = FONT_DIR  + NAME + '.sfd'   # canonical, committed
 
 
 # ---------------------------------------------------------------------------

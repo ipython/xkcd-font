@@ -5,11 +5,17 @@ Apply font-wide properties: kerning, spacing, and any other metric tweaks.
 Reads the SFD produced by pt6_derived_chars.py (which has all glyphs + the
 math cmap aliases), applies properties, saves.
 """
+import sys
 import fontforge
 import unicodedata
 
-font_fname = '../generated/xkcd-script-pt7.sfd'
-font = fontforge.open('../generated/xkcd-script-pt6.sfd')
+if len(sys.argv) >= 2:
+    bodyname = sys.argv[1]
+else:
+    bodyname = 'xkcd-script'
+
+font_fname = f'../generated/{bodyname}-pt7.sfd'
+font = fontforge.open(f'../generated/{bodyname}-pt6.sfd')
 
 
 # ---------------------------------------------------------------------------
@@ -162,7 +168,8 @@ def autokern(font):
     kern(35+a, ['L'], set(roman) - {'j'}, onlyCloser=True, touch=True)
 
 
-autokern(font)
+if '_monospace_width' not in font:
+    autokern(font)
 font.removeGlyph(font['_pad_space'])
 
 

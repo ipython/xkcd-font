@@ -988,7 +988,8 @@ if MONO:
     font_fname = '../generated/xkcd-script-mono-pt5.sfd'
 
     font.fontname = 'xkcdScriptMono'
-    font.fullname = 'xkcd-Script-Monospace'
+    font.familyname = 'xkcd Script Monospace'
+    font.fullname = 'xkcd-Script-Monospace-Regular'
 
     c = font.createChar(-1, '_monospace_width')
     c.width = int(round(0.6 * font.em))
