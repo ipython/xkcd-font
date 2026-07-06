@@ -16,10 +16,12 @@ import fontforge
 import os
 import glob
 import parse
+import string
 import unicodedata
 
 SPACE = 0
 RSPACE = 20
+MONO = True
 
 fnames = sorted(glob.glob('../generated/characters/char_*.svg'))
 
@@ -94,6 +96,11 @@ def create_char(font, chars, fname):
             c = font.createMappedChar(chars[0])
         else:
             c = font.createMappedChar(ord(chars[0]))
+    elif len(chars) >= 3 and chars[1] == '.':
+        # variant glyph.
+        variant_name = ''.join(chars)
+
+        c = font.createChar(-1, variant_name)
     else:
         # Multiple characters - this is a ligature. We need to register this in the
         # ligature lookup table we created. Not all font-handling libraries will do anything
@@ -105,6 +112,7 @@ def create_char(font, chars, fname):
 
         c = font.createChar(-1, ligature_name)
 
+        c.removePosSub('liga')
         c.addPosSub('liga', ligature_tuple)
 
     c.clear()
@@ -243,15 +251,16 @@ def pad_glyph(c):
     space = SPACE
     rspace = RSPACE
     bbox = c.boundingBox()
-    if c.glyphname in list('gjpqy'):
+    glyphname = c.glyphname.split('.')[0]
+    if glyphname in list('gjpqy'):
         # Recalculate the bounding box by excluding the tail of the glyph
         # Do not remove the glyph's tail if it is too close to the baseline
         capxrange = c.foreground.xBoundsAtY(-40, 600)
-        if c.glyphname == 'j':
+        if glyphname == 'j':
             bbox = tuple([(capxrange[0]*2 + bbox[0])/3, bbox[1], capxrange[1], bbox[3]])
         else:
             bbox = tuple([capxrange[0], bbox[1], capxrange[1], bbox[3]])
-    if c.glyphname == 'f':
+    if glyphname == 'f':
         # Recalculate the bounding box by excluding the arm of the glyph
         # Restrict the arm so that it does not pierce through the stem of the next glyph
         xxrange = c.foreground.xBoundsAtY(0, 420)
@@ -292,11 +301,11 @@ def pad_glyph(c):
         add_right = 15
     else:
         add_right = 20
-    if c.glyphname == 'i':
+    if glyphname == 'i':
         add_left += 10
         add_right += 10
     may_too_wide1 = list('aebdpr')
-    if c.glyphname in may_too_wide1:
+    if glyphname in may_too_wide1:
         if bbox[2] - bbox[0] + add_left + add_right >= 398:
             add_left -= 10
             add_right -= 10
@@ -331,16 +340,12 @@ font.hhea_ascent = 855; font.hhea_ascent_add = False
 font.hhea_descent = -270; font.hhea_descent_add = False
 font.hhea_linegap = 77
 
-# Information to be conveyed to the next stage.
-# I wanted to use font.persistent, but it causes an error. Instead, I use a dummy glyph.
-font.createChar(-1, '_pad_space')
-font['_pad_space'].width = SPACE + RSPACE
-
 # Per-character size scaling applied after changeWeight, to fine-tune individual glyphs
 # that end up slightly too large despite correct stroke weight.
 _per_char_operation = {
     ('q',): psMat.compose(psMat.scale(0.92), psMat.translate(0, 20)),
     ('x',): psMat.translate(0, 20),
+    ('i', '.', 'm', 'o', 'n', 'o'): psMat.translate(0, -20),
     ('j',): psMat.translate(0, -20),
     ('A',): psMat.translate(0, -10),
     ('N',): psMat.translate(0, -10),
@@ -363,15 +368,8 @@ special_choices = {('C', ): dict(line=4),
                    ('I', ): dict(line=4),
                    }
 
-for line, position, bbox, fname, chars in characters:
-    if chars in special_choices:
-        spec = special_choices[chars]
-        spec_line = spec.get('line', any)
-        if spec_line is not any and spec_line != line:
-            continue
 
-    c = create_char(font, chars, fname)
-
+def fit_glyph(c, line, position, bbox, fname, chars):
     scale_glyph(
         c, bbox,
         baseline=_baselines[line],
@@ -435,6 +433,81 @@ for line, position, bbox, fname, chars in characters:
     c.simplify()
     c.round()
 
+
+# ---------------------------------------------------------------------------
+# Pass 1: Import the glyphs and check out their features.
+# ---------------------------------------------------------------------------
+chosen_by_fname = {}
+small_caps = {}
+left_small = {}
+most_monospace = {}
+ADDITIONAL_FOR_WEIGHTING = 40
+# courier-like monospacing: 0.6em (em=856 internal units ∴0.6em=514)
+_monowidth = 856 * 0.6
+for line, position, bbox, fname, chars in characters:
+    if chars in special_choices:
+        spec = special_choices[chars]
+        spec_line = spec.get('line', any)
+        if spec_line is not any and spec_line is None:
+            continue
+        if spec_line is not any and spec_line == line:
+            chosen_by_fname[chars] = fname
+    else:
+        chosen_by_fname[chars] = fname
+    # The 'V' in L7P29 corresponds to left_small, but just like in the 2017 version,
+    # we'll process the fname order at the top so that it's adopted based on fname order.
+
+    c = create_char(font, chars, fname)
+    fit_glyph(c, line, position, bbox, fname, chars)
+    _bb_after = c.boundingBox()
+    if len(chars) == 1 and chars[0] in string.ascii_uppercase:
+        leftyrange = c.foreground.yBoundsAtX(0, c.width / 2)
+        if _bb_after[3] <= 600 * 0.85:
+            small_caps[chars] = fname
+            continue # exclude from other features
+        elif leftyrange[1] <= 600 * 0.85:
+            left_small[chars] = fname
+            continue # exclude from other features
+    defending = most_monospace.get(chars, [10.0, ''])
+    _width = (c.width + ADDITIONAL_FOR_WEIGHTING) / _monowidth
+    if _bb_after[3] > 660:
+        pass
+    elif _width <= 1:
+        if defending[0] > 1 or defending[0] < _width:
+            most_monospace[chars] = [_width, fname]
+    elif defending[0] > _width:
+        most_monospace[chars] = [_width, fname]
+
+# ---------------------------------------------------------------------------
+# Pass 2: Import the glyphs with the proper names.
+# ---------------------------------------------------------------------------
+for line, position, bbox, fname, chars in characters:
+    if chars in special_choices:
+        spec = special_choices[chars]
+        spec_line = spec.get('line', any)
+        if spec_line is not any and spec_line is None:
+            continue
+
+    addr = None
+    if small_caps.get(chars, '') == fname:
+        addr = '.sc'
+    if left_small.get(chars, '') == fname:
+        addr = '.Tx'
+    if most_monospace.get(chars, [10.0, ''])[1] == fname:
+        addr = '.mono'
+    if chosen_by_fname[chars] == fname:
+        addr = ''
+    if addr is None:
+        continue
+    if addr != '':
+        if len(chars) == 1:
+            c = create_char(font, tuple(chars[0] + addr), fname)
+            fit_glyph(c, line, position, bbox, fname, tuple(chars[0] + addr))
+    else:
+        c = create_char(font, chars, fname)
+        fit_glyph(c, line, position, bbox, fname, chars)
+
+
 c = font.createMappedChar(32)
 c.width = 256
 
@@ -442,6 +515,20 @@ c = font.createChar(0x0000, '.null')   # U+0000: null, zero-width; required by O
 c.width = 256
 c = font.createChar(0x000D, 'nonmarkingreturn')  # U+000D: carriage return, zero-width; required by OpenType
 c.width = 256
+
+# Information to be conveyed to the next stage.
+font.createChar(-1, '_pad_space')
+font['_pad_space'].width = SPACE + RSPACE
+TYPICAL_BOUNDINGWIDTH = 200
+font.createChar(-1, '_typical_bbox')
+c = fontforge.contour()
+l = SPACE // 2 + 20
+r = SPACE // 2 + TYPICAL_BOUNDINGWIDTH - 20
+_ascender_top = font['l'].boundingBox()[3]
+_descender_bottom = font['p'].boundingBox()[1]
+c.moveTo(l, _descender_bottom).lineTo(l, _ascender_top).lineTo(r, _ascender_top).lineTo(r, _descender_bottom).lineTo(l, _descender_bottom)
+font['_typical_bbox'].foreground += c
+font['_typical_bbox'].width = TYPICAL_BOUNDINGWIDTH + SPACE + RSPACE
 
 
 # ---------------------------------------------------------------------------
@@ -891,3 +978,47 @@ if not os.path.exists(os.path.dirname(font_fname)):
 if os.path.exists(font_fname):
     os.remove(font_fname)
 font.save(font_fname)
+
+
+# ---------------------------------------------------------------------------
+# Select mono glyphs as base set, and save
+# ---------------------------------------------------------------------------
+
+if MONO:
+    font_fname = '../generated/xkcd-mono-pt5.sfd'
+
+    font.fontname = 'xkcdMono'
+    font.familyname = 'xkcd Monospace'
+    font.fullname = 'xkcd-Monospace-Regular'
+
+    c = font.createChar(-1, '_monospace_width')
+    c.width = int(round(0.6 * font.em))
+
+    _need_backup = list('Ii')
+    for gname in (string.ascii_uppercase + string.ascii_lowercase):
+        fromname = None
+        if gname == 'I':
+            fromname = 'I_hyphen_p_r_o_n_o_u_n'
+        elif gname + '.mono' in font:
+            if gname in list('il') or abs(font[gname + '.mono'].width - font[gname].width) >= 15:
+                fromname = gname + '.mono'
+        if fromname:
+            if gname in _need_backup:
+                font.createChar(-1, gname + '.sansserif')
+                font.selection.select(gname)
+                font.copy()
+                font.selection.select(gname + '.sansserif')
+                font.paste()
+            font.selection.select(fromname)
+            font.cut()
+            font.selection.select(gname)
+            font.paste()
+
+    font.removeLookup('ligatures')
+    panosetuple = font.os2_panose
+    panosetuple = tuple([2]) + panosetuple[1:3] + tuple([9]) + panosetuple[4::]
+    font.os2_panose = panosetuple
+
+    if os.path.exists(font_fname):
+        os.remove(font_fname)
+    font.save(font_fname)
