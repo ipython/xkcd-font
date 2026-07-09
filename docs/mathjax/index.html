@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>xkcd-script + MathJax</title>
+<link rel="stylesheet" href="../site.css">
+<style>
+.content {
+	font-family: 'xkcd-script', sans-serif;
+	font-size: 1.25em;
+	max-width: 920px;
+	margin: 2em auto;
+	padding: 0 1.5em;
+	line-height: 1.7;
+	color: #111;
+}
+.content h2 { font-size: 1.5em; margin-top: 2em; border-bottom: 1px solid #ccc; padding-bottom: 0.2em; }
+.content p  { margin: 0.8em 0; }
+
+.editor-wrap {
+	display: flex;
+	gap: 1em;
+	align-items: flex-start;
+	margin-top: 0.5em;
+}
+#latex-input {
+	flex: 1;
+	min-height: 220px;
+	font-family: monospace;
+	font-size: 0.78em;
+	padding: 0.6em;
+	border: 1px solid #999;
+	resize: vertical;
+	background: #fffff0;
+	box-sizing: border-box;
+}
+#latex-preview {
+	flex: 1;
+	min-height: 220px;
+	padding: 0.6em 1em;
+	border: 1px solid #ccc;
+	background: #fff;
+	box-sizing: border-box;
+	overflow-wrap: break-word;
+}
+</style>
+
+<script>
+MathJax = {
+	loader: { load: ['[tex]/amscd'] },
+	tex: {
+		inlineMath:  [['$', '$'], ['\\(', '\\)']],
+		displayMath: [['$$', '$$'], ['\\[', '\\]']],
+		packages:    {'[+]': ['amscd']},
+	},
+};
+</script>
+<script src="../assets/xkcd-mathjax3.js"></script>
+<script id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+	<h1>xkcd-script + MathJax</h1>
+	<p class="summary">MathJax CHTML with xkcd-script substituted for letter and Greek glyphs</p>
+	<p class="nav-links"><a href="../xkcd-script/">← font preview</a></p>
+</header>
+
+<div class="content">
+
+<div class="editor-wrap">
+	<textarea id="latex-input" spellcheck="false">Inline vs display large operators:
+
+$\sum_{k=1}^{n} k$ and $\int_0^1 x^2\,dx$
+
+$$\sum_{k=1}^{n} k = \frac{n(n+1)}{2}$$
+
+$$\int_0^\infty e^{-x}\,dx = 1$$
+
+$$\prod_{p\;\text{prime}} \frac{1}{1-p^{-s}} = \sum_{n=1}^{\infty} \frac{1}{n^s}$$</textarea>
+	<div id="latex-preview"></div>
+</div>
+
+<div class="share-row">
+	<label for="share-url-input"><a href="#">Share URL:</a></label>
+	<input type="text" id="share-url-input" readonly>
+</div>
+
+<script src="../site.js"></script>
+<script>
+const input   = document.getElementById('latex-input');
+const preview = document.getElementById('latex-preview');
+let renderTimer;
+
+function renderPreview() {
+	if (typeof MathJax === 'undefined' || !MathJax.typesetPromise) return;
+	MathJax.typesetClear([preview]);
+	preview.textContent = input.value;
+	MathJax.typesetPromise([preview]).then(() => XkcdMathJax.refresh(preview));
+}
+
+input.addEventListener('input', () => {
+	clearTimeout(renderTimer);
+	renderTimer = setTimeout(renderPreview, 350);
+});
+
+XkcdSite.onShareUrlReady(function () {
+	XkcdSite.bindTextarea(input, 'text');
+});
+
+XkcdMathJax.ready.then(renderPreview);
+
+let resizeTimer;
+window.addEventListener('resize', () => {
+	clearTimeout(resizeTimer);
+	resizeTimer = setTimeout(renderPreview, 150);
+});
+</script>
+
+<h2>Large operators: inline vs display</h2>
+
+<p>Inline: $\sum_{k=1}^{n} k$ and $\int_0^1 x^2\,dx$ and $\prod_{k=1}^{n} k$</p>
+
+<p>Display:
+$$\sum_{k=1}^{n} k = \frac{n(n+1)}{2}$$
+$$\int_0^\infty e^{-x}\,dx = 1 \qquad \int_{-\infty}^{\infty} e^{-x^2}\,dx = \sqrt{\pi}$$
+$$\prod_{p\;\text{prime}} \frac{1}{1-p^{-s}} = \sum_{n=1}^{\infty} \frac{1}{n^s}$$
+</p>
+
+<h2>Algebra</h2>
+
+<p>Quadratic formula:
+$$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$</p>
+
+<p>Pythagorean theorem: $a^2 + b^2 = c^2$</p>
+
+<p>Binomial theorem:
+$$\sum_{k=0}^{n} \binom{n}{k} x^k y^{n-k} = (x + y)^n$$</p>
+
+<h2>Calculus</h2>
+
+<p>Definition of derivative:
+$$f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}$$</p>
+
+<p>Gaussian integral:
+$$\int_{-\infty}^{\infty} e^{-x^2}\,dx = \sqrt{\pi}$$</p>
+
+<p>Product rule: $\dfrac{d}{dx}\bigl[f(x)\,g(x)\bigr] = f'(x)\,g(x) + f(x)\,g'(x)$</p>
+
+<h2>Greek letters</h2>
+
+<p>Euler's identity: $e^{i\pi} + 1 = 0$</p>
+
+<p>$\alpha,\ \beta,\ \gamma,\ \delta,\ \varepsilon,\ \zeta,\ \eta,\
+   \theta,\ \iota,\ \kappa,\ \lambda,\ \mu,\ \nu,\ \xi,\ \pi,\
+   \rho,\ \sigma,\ \tau,\ \upsilon,\ \phi,\ \chi,\ \psi,\ \omega$</p>
+
+<p>Fourier transform:
+$$\hat{f}(\xi) = \int_{-\infty}^{\infty} f(x)\,e^{-2\pi i x \xi}\,dx$$</p>
+
+<h2>Physics</h2>
+
+<p>Einstein: $E = mc^2$</p>
+
+<p>Schrödinger equation:
+$$i\hbar\frac{\partial\psi}{\partial t} = \hat{H}\psi$$</p>
+
+<p>Maxwell in free space:
+$$\nabla \cdot \mathbf{E} = 0 \qquad \nabla \times \mathbf{E} = -\frac{\partial \mathbf{B}}{\partial t}$$</p>
+
+<h2>Piecewise definitions (stretchy <code>{</code>)</h2>
+
+<p>Two rows (short brace):
+$$|x| = \begin{cases} x,  & \text{if } x \geq 0 \\ -x, & \text{if } x < 0 \end{cases}$$</p>
+
+<p>Four rows (tall brace):
+$$f(x) = \begin{cases}
+	\dfrac{\sin x}{x},                                              & \text{if } x > 0 \\[6pt]
+	\displaystyle\sum_{k=0}^{\infty} \frac{(-1)^k x^{2k}}{(2k+1)!}, & \text{if } x = 0 \\[6pt]
+	-\sqrt{|x|},                                                    & \text{if } -1 \leq x < 0 \\[4pt]
+	\infty,                                                         & \text{otherwise}
+\end{cases}$$</p>
+
+<h2>Stretchy delimiters</h2>
+
+<p>Two-high (<code>\binom</code>):
+$$\binom{n}{k}$$</p>
+
+<p>Around a fraction:
+$$\left( \dfrac{\frac{a}{b}}{\frac{c}{d}} \right)^{n} \qquad
+   \left[ \dfrac{\frac{a}{b}}{\frac{c}{d}} \right]^{n}$$</p>
+
+<p>3×3 matrix:
+$$\begin{pmatrix}
+	a_{11} & a_{12} & a_{13} \\
+	a_{21} & a_{22} & a_{23} \\
+	a_{31} & a_{32} & a_{33}
+\end{pmatrix} \qquad
+\begin{bmatrix}
+	a_{11} & a_{12} & a_{13} \\
+	a_{21} & a_{22} & a_{23} \\
+	a_{31} & a_{32} & a_{33}
+\end{bmatrix}$$</p>
+
+<h2>Stretchy arrows</h2>
+
+<p>Vector accents: $\vec{v},\ \vec{F},\ \vec{p},\ \vec{\mathbf{0}},\ \vec{\mathbf{B}},\ \vec{ABC},\ \overrightarrow{ABC},\ \overleftarrow{ABC}$</p>
+
+<p>Stretchy operators with labels:
+$A \xrightarrow{f} B \xrightarrow{n+\mu-1} C \qquad X \xleftarrow{g} Y$</p>
+
+<p>AMScd commutative diagram:
+$$\begin{CD} A @>f>> B \\ @VgVV @VVhV \\ C @>>k> D \end{CD}$$</p>
+
+</div>
+</body>
+</html>

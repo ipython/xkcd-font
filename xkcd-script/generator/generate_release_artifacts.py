@@ -168,13 +168,12 @@ def main(argv: list[str] | None = None) -> int:
     validate_version(args.version)
     args.out_dir.mkdir(parents=True, exist_ok=True)
 
-    stem = f"xkcd-script-{args.version}"
     otf_in = args.font_dir / "xkcd-script.otf"
     ttf_in = args.font_dir / "xkcd-script.ttf"
-    otf_out = args.out_dir / f"{stem}.otf"
-    ttf_out = args.out_dir / f"{stem}.ttf"
-    woff_out = args.out_dir / f"{stem}.woff"
-    woff2_out = args.out_dir / f"{stem}.woff2"
+    otf_out = args.out_dir / "xkcd-script.otf"
+    ttf_out = args.out_dir / "xkcd-script.ttf"
+    woff_out = args.out_dir / "xkcd-script.woff"
+    woff2_out = args.out_dir / "xkcd-script.woff2"
 
     if not otf_in.exists():
         raise FileNotFoundError(otf_in)
@@ -191,7 +190,7 @@ def main(argv: list[str] | None = None) -> int:
     regenerate_woff2(otf_out, woff2_out)
 
     js_source = args.js.read_text(encoding="utf-8")
-    js_out = args.out_dir / f"xkcd-mathjax3-{args.version}.js"
+    js_out = args.out_dir / "xkcd-mathjax3.js"
     js_out.write_text(
         inject_js_version(js_source, version=args.version, build_date=args.build_date),
         encoding="utf-8",
