@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>xkcd-font preview</title>
+<link rel="stylesheet" href="../site.css">
+<style>
+.font-input-container {
+	text-align: center;
+	background-color: yellow;
+}
+#font-input {
+	resize: none;
+	white-space: pre;
+	font-size: 1.25em;
+	min-height: 65vh;
+	padding: 15px;
+	width: 100%;
+	box-sizing: border-box;
+	border: 0;
+	font-family: xkcd-script;
+	color: black;
+	line-height: 150%;
+}
+
+.font-url-row { display: none; }
+.font-url-row.visible { display: flex; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+	<h1>The xkcd font</h1>
+	<p class="summary">brought to you by the <a href="https://github.com/ipython/xkcd-font">ipython/xkcd-font</a> team</p>
+	<p class="nav-links"><a href="../mathjax/">MathJax demo →</a></p>
+</header>
+
+<div class="font-input-container">
+	<textarea id="font-input" spellcheck="false" autofocus>a b c d e f g h i j k l m n o p q r s t u v w x y z
+unauthoritativeness leatherbark intracolic microcheilia offsider
+glassweed rottolo albertite hermatorrhachis organometallic
+segregationist unevangelic campstool
+A B C D E F G H I J K L M N O P Q R S T U V W X Y Z I-pronoun
+UNAUTHORITATIVENESS LEATHERBARK INTRACOLIC MICROCHELIA
+OFFSIDER GLASSWEED ROTTOLO ALBERTITE HERMATORRHACHIS
+ORGANOMETALLIC SEGREGATIONIST UNEVANGELIC CAMPSTOOL
++ - x * ! ? # @ $ % ¦ &amp; ^ _ — – - ( ) [ ] { } / \ &lt; &gt; ÷ ± √ Σ
+1 2 3 4 5 6 7 8 9 0 ∫ = ≈ ≠ ~ ≤ ≥ |&gt; &lt;| 🎂 . , ; : “HI” ’ ‘ CAN'T ' "
+É Ò Å Ü ≪ ≫ ‽ Ē Ő “ ”
+
+
+
+This is a live preview of xkcd-script - type whatever you like!</textarea>
+</div>
+
+<div class="share-row">
+	<label for="share-url-input"><a href="#">Share URL:</a></label>
+	<input type="text" id="share-url-input" readonly>
+</div>
+
+<div class="share-row font-url-row" id="font-url-row">
+	<label for="font-url-input">Font URL:</label>
+	<input type="text" id="font-url-input" placeholder="https://…/xkcd-script.woff">
+</div>
+
+<script src="../site.js"></script>
+<script>
+XkcdSite.onShareUrlReady(function () {
+	XkcdSite.bindTextarea(document.getElementById('font-input'), 'text');
+});
+
+// Optional ?font=… override — load a custom font URL over CORS-permitting hosts.
+var loadedFontUrl = null;
+
+function mimeForUrl(url) {
+	if (url.endsWith('.woff2')) return 'font/woff2';
+	if (url.endsWith('.ttf'))   return 'font/ttf';
+	if (url.endsWith('.otf'))   return 'font/otf';
+	return 'font/woff';
+}
+
+function normalizeGithubUrl(url) {
+	var m = url.match(/^https?:\/\/github\.com\/([^/]+\/[^/]+)\/raw\/(.+)$/);
+	if (m) return 'https://raw.githubusercontent.com/' + m[1] + '/' + m[2];
+	return url;
+}
+
+async function loadFontFromUrl(url) {
+	if (!url || url === loadedFontUrl) return;
+	try {
+		var resp = await fetch(normalizeGithubUrl(url));
+		if (!resp.ok) throw new Error('HTTP ' + resp.status);
+		var buf = await resp.arrayBuffer();
+		var blobUrl = URL.createObjectURL(new Blob([buf], {type: mimeForUrl(url)}));
+		var face = new FontFace('xkcd-script', 'url(' + blobUrl + ')');
+		await face.load();
+		document.fonts.add(face);
+		loadedFontUrl = url;
+	} catch (e) {
+		console.error('Failed to load font from URL:', url, e);
+	}
+}
+
+document.getElementById('font-url-input').addEventListener('change', function () {
+	var url = this.value.trim();
+	loadFontFromUrl(url);
+	XkcdSite.setParam('font', url || null);
+});
+
+(function initFontUrl() {
+	var fontUrl = XkcdSite.getParams()['font'];
+	if (fontUrl) {
+		document.getElementById('font-url-row').classList.add('visible');
+		document.getElementById('font-url-input').value = fontUrl;
+		loadFontFromUrl(fontUrl);
+	}
+})();
+</script>
+</body>
+</html>

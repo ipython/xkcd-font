@@ -31,12 +31,11 @@ jobs:
       - name: Upload assets to the release
         env:
           TAG: ${{ github.event.release.tag_name }}
-          VERSION: ${{ steps.version.outputs.value }}
         run: |
           gh release upload "$TAG" \
-            "dist/xkcd-script-${VERSION}.otf" \
-            "dist/xkcd-script-${VERSION}.ttf" \
-            "dist/xkcd-script-${VERSION}.woff" \
-            "dist/xkcd-script-${VERSION}.woff2" \
-            "dist/xkcd-mathjax3-${VERSION}.js" \
+            "dist/xkcd-script.otf" \
+            "dist/xkcd-script.ttf" \
+            "dist/xkcd-script.woff" \
+            "dist/xkcd-script.woff2" \
+            "dist/xkcd-mathjax3.js" \
             --clobber

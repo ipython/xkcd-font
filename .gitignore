@@ -2,6 +2,7 @@
 .DS_store
 .font-cache
 xkcd-script/generated
+/build
 *.afm
 fonts.conf
 

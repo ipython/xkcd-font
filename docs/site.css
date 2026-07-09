@@ -1,0 +1,60 @@
+@font-face {
+	font-family: xkcd-script;
+	src: url('assets/xkcd-script.woff2') format('woff2'),
+	     url('assets/xkcd-script.woff') format('woff');
+}
+
+body {
+	margin: 0;
+	background: #fff;
+}
+
+.xkcd-script {
+	font-family: xkcd-script;
+	color: black;
+	line-height: 150%;
+}
+
+.site-header {
+	background-color: #96A8C8;
+	padding: 15px 15px 1em 15px;
+	overflow: hidden;
+}
+.site-header h1 {
+	font-family: xkcd-script;
+	margin: 0;
+	font-size: 2em;
+	font-weight: bold;
+}
+.site-header .summary {
+	font-family: xkcd-script;
+	font-size: 1.5em;
+	max-width: calc(100% - 150px);
+	margin: 0;
+}
+.site-header .nav-links {
+	font-family: xkcd-script;
+	font-size: 1em;
+	margin: 0.3em 0 0 0;
+}
+.site-header a {
+	color: #003366;
+}
+
+.share-row {
+	padding: 1em 15px;
+	display: flex;
+	align-items: center;
+	gap: 0.5em;
+}
+.share-row label {
+	font-weight: bold;
+	min-width: 6em;
+}
+.share-row input {
+	flex: 1;
+	padding: 0.4em 0.6em;
+	border: 1px solid #999;
+	background: #fff;
+	font-size: 0.9em;
+}
