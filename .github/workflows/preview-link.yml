@@ -19,6 +19,6 @@ jobs:
           encoded=$(python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.argv[1], safe=''))" "$font_url")
           gh api "repos/${{ github.repository }}/statuses/${sha}" \
             -f state=success \
-            -f target_url="https://ipython.org/xkcd-font/preview.html?font=${encoded}" \
+            -f target_url="https://ipython.org/xkcd-font/xkcd-script/?font=${encoded}" \
             -f description="Click to preview the font from this PR" \
             -f context="Font preview"
