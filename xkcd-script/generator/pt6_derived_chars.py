@@ -22,7 +22,7 @@ def fix_width(c, width):
     space1 = (width - c.width) // 2
     space2 = width - c.width - space1
     if c.width == 0: # combination chars
-        space1 = 0 #width - c.width
+        space1 = width - c.width
         space2 = 0
     c.width = c.width + space1
     t = psMat.translate(space2, 0)
@@ -1561,5 +1561,13 @@ if '_monospace_width' in font:
     font.selection.all()
     for c in font.selection.byGlyphs:
         fix_width(c, _monospace_width)
+
+    # Microsoft's suggestion
+    font.addLookup('fixcomb', 'gpos_single', (), [['mark', [['latn', ['dflt']]]], ['mkmk', [['latn', ['dflt']]]]])
+    font.addLookupSubtable('fixcomb', 'fixcombinigchars_sub')
+    font.selection.select(('ranges', None), 0x0300, 0x0332)
+    for c in font.selection.byGlyphs:
+        c.addPosSub('fixcombinigchars_sub', 0, 0, -_monospace_width, 0)
+
 
 font.save(font_fname)

@@ -60,6 +60,7 @@ Lookup: 1 0 0 "ss01-display-operators" { "ss01-display-operators-1"  } ['ss01' (
 Lookup: 260 0 0 "below" { "below_sub"  } ['mark' ('latn' <'dflt' > ) ]
 Lookup: 260 0 0 "above" { "above_sub"  } ['mark' ('latn' <'dflt' > ) ]
 Lookup: 262 0 0 "mkmk" { "abovechain_sub"  } ['mkmk' ('latn' <'dflt' > ) ]
+Lookup: 257 0 0 "fixcomb" { "fixcombinigchars_sub"  } ['mark' ('latn' <'dflt' > ) 'mkmk' ('latn' <'dflt' > ) ]
 DEI: 91125
 Encoding: Custom
 UnicodeInterp: none
@@ -18912,7 +18913,7 @@ EndChar
 
 StartChar: uni20DE
 Encoding: 8414 8414 253
-Width: 0
+Width: 514
 Flags: HW
 LayerCount: 2
 Fore
@@ -18921,7 +18922,7 @@ EndChar
 
 StartChar: uni20E4
 Encoding: 8420 8420 254
-Width: 0
+Width: 514
 VWidth: 1156
 Flags: HW
 LayerCount: 2
@@ -19331,7 +19332,7 @@ EndChar
 
 StartChar: _acute_mark
 Encoding: 1114225 -1 273
-Width: 0
+Width: 514
 VWidth: 0
 Flags: HW
 LayerCount: 2
@@ -19354,7 +19355,7 @@ EndChar
 
 StartChar: _grave_mark
 Encoding: 1114226 -1 274
-Width: 0
+Width: 514
 VWidth: 0
 Flags: HW
 LayerCount: 2
@@ -19377,7 +19378,7 @@ EndChar
 
 StartChar: _ring_above_mark
 Encoding: 1114227 -1 275
-Width: 0
+Width: 514
 VWidth: 0
 Flags: HW
 LayerCount: 2
@@ -19415,7 +19416,7 @@ EndChar
 
 StartChar: _diaeresis_mark
 Encoding: 1114228 -1 276
-Width: 0
+Width: 514
 VWidth: 0
 Flags: HW
 LayerCount: 2
@@ -19446,7 +19447,7 @@ EndChar
 
 StartChar: _dot_above_mark
 Encoding: 1114229 -1 277
-Width: 0
+Width: 514
 VWidth: 0
 Flags: HW
 LayerCount: 2
@@ -19467,7 +19468,7 @@ EndChar
 
 StartChar: _dot_below_mark
 Encoding: 1114230 -1 278
-Width: 0
+Width: 514
 VWidth: 0
 Flags: HW
 LayerCount: 2
@@ -19488,7 +19489,7 @@ EndChar
 
 StartChar: _macron_below_mark
 Encoding: 1114231 -1 279
-Width: 0
+Width: 514
 VWidth: 0
 Flags: HW
 LayerCount: 2
@@ -19516,7 +19517,7 @@ EndChar
 
 StartChar: _hook_cedilla_mark
 Encoding: 1114232 -1 280
-Width: 0
+Width: 514
 VWidth: 0
 Flags: HW
 LayerCount: 2
@@ -19556,7 +19557,7 @@ EndChar
 
 StartChar: _macron_mark
 Encoding: 1114233 -1 281
-Width: 0
+Width: 514
 VWidth: 0
 Flags: HW
 LayerCount: 2
@@ -19584,7 +19585,7 @@ EndChar
 
 StartChar: _caron_mark
 Encoding: 1114234 -1 282
-Width: 0
+Width: 514
 VWidth: 609
 Flags: HW
 LayerCount: 2
@@ -19617,7 +19618,7 @@ EndChar
 
 StartChar: _circumflex_mark
 Encoding: 1114235 -1 283
-Width: 0
+Width: 514
 VWidth: 0
 Flags: HW
 LayerCount: 2
@@ -19648,7 +19649,7 @@ EndChar
 
 StartChar: _tilde_mark
 Encoding: 1114236 -1 284
-Width: 0
+Width: 514
 VWidth: 0
 Flags: HW
 LayerCount: 2
@@ -19678,7 +19679,7 @@ EndChar
 
 StartChar: _breve_mark
 Encoding: 1114237 -1 285
-Width: 0
+Width: 514
 VWidth: 0
 Flags: HW
 LayerCount: 2
@@ -19851,7 +19852,7 @@ EndChar
 
 StartChar: _double_acute_mark
 Encoding: 1114238 -1 289
-Width: 0
+Width: 514
 VWidth: 0
 Flags: HW
 LayerCount: 2
@@ -19862,7 +19863,7 @@ EndChar
 
 StartChar: gravecomb
 Encoding: 768 768 290
-Width: 0
+Width: 514
 Flags: HW
 AnchorPoint: "abovechain" -267 831 basemark 0
 AnchorPoint: "abovechain" -267 639 mark 0
@@ -19870,11 +19871,12 @@ AnchorPoint: "above" -267 639 mark 0
 LayerCount: 2
 Fore
 Refer: 274 -1 N 1 0 0 1 -267 -42 2
+Position2: "fixcombinigchars_sub" dx=0 dy=0 dh=-514 dv=0
 EndChar
 
 StartChar: acutecomb
 Encoding: 769 769 291
-Width: 0
+Width: 514
 Flags: HW
 AnchorPoint: "abovechain" -267 831 basemark 0
 AnchorPoint: "abovechain" -267 639 mark 0
@@ -19882,11 +19884,12 @@ AnchorPoint: "above" -267 639 mark 0
 LayerCount: 2
 Fore
 Refer: 273 -1 N 1 0 0 1 -267 -42 2
+Position2: "fixcombinigchars_sub" dx=0 dy=0 dh=-514 dv=0
 EndChar
 
 StartChar: uni0302
 Encoding: 770 770 292
-Width: 0
+Width: 514
 Flags: HW
 AnchorPoint: "abovechain" -267 879.251 basemark 0
 AnchorPoint: "abovechain" -267 639 mark 0
@@ -19894,11 +19897,12 @@ AnchorPoint: "above" -267 639 mark 0
 LayerCount: 2
 Fore
 Refer: 283 -1 N 1 0 0 1 -267 444.6 2
+Position2: "fixcombinigchars_sub" dx=0 dy=0 dh=-514 dv=0
 EndChar
 
 StartChar: tildecomb
 Encoding: 771 771 293
-Width: 0
+Width: 514
 Flags: HW
 AnchorPoint: "abovechain" -267 810.35 basemark 0
 AnchorPoint: "abovechain" -267 639 mark 0
@@ -19906,11 +19910,12 @@ AnchorPoint: "above" -267 639 mark 0
 LayerCount: 2
 Fore
 Refer: 284 -1 N 1 0 0 1 -267 488.8 2
+Position2: "fixcombinigchars_sub" dx=0 dy=0 dh=-514 dv=0
 EndChar
 
 StartChar: uni0304
 Encoding: 772 772 294
-Width: 0
+Width: 514
 Flags: HW
 AnchorPoint: "abovechain" -267 728.681 basemark 0
 AnchorPoint: "abovechain" -267 639 mark 0
@@ -19918,11 +19923,12 @@ AnchorPoint: "above" -267 639 mark 0
 LayerCount: 2
 Fore
 Refer: 281 -1 N 1 0 0 1 -267 -65 2
+Position2: "fixcombinigchars_sub" dx=0 dy=0 dh=-514 dv=0
 EndChar
 
 StartChar: uni0307
 Encoding: 775 775 295
-Width: 0
+Width: 514
 Flags: HW
 AnchorPoint: "abovechain" -267 763 basemark 0
 AnchorPoint: "abovechain" -267 639 mark 0
@@ -19930,11 +19936,12 @@ AnchorPoint: "above" -267 639 mark 0
 LayerCount: 2
 Fore
 Refer: 277 -1 N 1 0 0 1 -267 -21 2
+Position2: "fixcombinigchars_sub" dx=0 dy=0 dh=-514 dv=0
 EndChar
 
 StartChar: uni0308
 Encoding: 776 776 296
-Width: 0
+Width: 514
 Flags: HW
 AnchorPoint: "abovechain" -267 776.04 basemark 0
 AnchorPoint: "abovechain" -267 639 mark 0
@@ -19942,11 +19949,12 @@ AnchorPoint: "above" -267 639 mark 0
 LayerCount: 2
 Fore
 Refer: 276 -1 N 1 0 0 1 -267 -8.96 2
+Position2: "fixcombinigchars_sub" dx=0 dy=0 dh=-514 dv=0
 EndChar
 
 StartChar: uni030A
 Encoding: 778 778 297
-Width: 0
+Width: 514
 Flags: HW
 AnchorPoint: "abovechain" -267 910 basemark 0
 AnchorPoint: "abovechain" -267 639 mark 0
@@ -19954,11 +19962,12 @@ AnchorPoint: "above" -267 639 mark 0
 LayerCount: 2
 Fore
 Refer: 275 -1 N 1 0 0 1 -267 51 2
+Position2: "fixcombinigchars_sub" dx=0 dy=0 dh=-514 dv=0
 EndChar
 
 StartChar: uni030B
 Encoding: 779 779 298
-Width: 0
+Width: 514
 Flags: HW
 AnchorPoint: "abovechain" -267 831 basemark 0
 AnchorPoint: "abovechain" -267 639 mark 0
@@ -19966,11 +19975,12 @@ AnchorPoint: "above" -267 639 mark 0
 LayerCount: 2
 Fore
 Refer: 289 -1 N 1 0 0 1 -267 -42 2
+Position2: "fixcombinigchars_sub" dx=0 dy=0 dh=-514 dv=0
 EndChar
 
 StartChar: uni030C
 Encoding: 780 780 299
-Width: 0
+Width: 514
 Flags: HW
 AnchorPoint: "abovechain" -267 879.251 basemark 0
 AnchorPoint: "abovechain" -267 639 mark 0
@@ -19978,11 +19988,12 @@ AnchorPoint: "above" -267 639 mark 0
 LayerCount: 2
 Fore
 Refer: 282 -1 N 1 0 0 1 -267 444.602 2
+Position2: "fixcombinigchars_sub" dx=0 dy=0 dh=-514 dv=0
 EndChar
 
 StartChar: uni0306
 Encoding: 774 774 300
-Width: 0
+Width: 514
 Flags: HW
 AnchorPoint: "abovechain" -267 843.615 basemark 0
 AnchorPoint: "abovechain" -267 639 mark 0
@@ -19990,43 +20001,48 @@ AnchorPoint: "above" -267 639 mark 0
 LayerCount: 2
 Fore
 Refer: 285 -1 N 1 0 0 1 -267 730.619 2
+Position2: "fixcombinigchars_sub" dx=0 dy=0 dh=-514 dv=0
 EndChar
 
 StartChar: uni0331
 Encoding: 817 817 301
-Width: 0
+Width: 514
 Flags: HW
 LayerCount: 2
 Fore
 Refer: 279 -1 N 1 0 0 1 -267 -1007.2 2
+Position2: "fixcombinigchars_sub" dx=0 dy=0 dh=-514 dv=0
 EndChar
 
 StartChar: uni0332
 Encoding: 818 818 302
-Width: 0
+Width: 514
 Flags: HW
 LayerCount: 2
 Fore
 Refer: 279 -1 N 1 0 0 1 -267 -793.68 2
+Position2: "fixcombinigchars_sub" dx=0 dy=0 dh=-514 dv=0
 EndChar
 
 StartChar: uni0320
 Encoding: 800 800 303
-Width: 0
+Width: 514
 Flags: HW
 LayerCount: 2
 Fore
 Refer: 279 -1 N 1 0 0 1 -267 -900.68 2
+Position2: "fixcombinigchars_sub" dx=0 dy=0 dh=-514 dv=0
 EndChar
 
 StartChar: uni0327
 Encoding: 807 807 304
-Width: 0
+Width: 514
 Flags: HW
 AnchorPoint: "below" -267.016 -233.517 mark 0
 LayerCount: 2
 Fore
 Refer: 280 -1 N 1 0 0 1 -267 -364.017 2
+Position2: "fixcombinigchars_sub" dx=0 dy=0 dh=-514 dv=0
 EndChar
 
 StartChar: dieresis
@@ -20842,7 +20858,7 @@ EndChar
 
 StartChar: _l_crossbar
 Encoding: 1114239 -1 380
-Width: 0
+Width: 514
 VWidth: -273
 Flags: HW
 LayerCount: 2
@@ -20887,7 +20903,7 @@ EndChar
 
 StartChar: _cap_o_crossbar
 Encoding: 1114240 -1 383
-Width: 0
+Width: 514
 VWidth: -275
 Flags: HW
 LayerCount: 2
@@ -20910,7 +20926,7 @@ EndChar
 
 StartChar: _lc_o_crossbar
 Encoding: 1114241 -1 384
-Width: 0
+Width: 514
 VWidth: -275
 Flags: HW
 LayerCount: 2
@@ -20977,7 +20993,7 @@ EndChar
 
 StartChar: _bar_300
 Encoding: 1114242 -1 389
-Width: 0
+Width: 514
 VWidth: -272
 Flags: HW
 LayerCount: 2
@@ -21000,7 +21016,7 @@ EndChar
 
 StartChar: _bar_220
 Encoding: 1114243 -1 390
-Width: 0
+Width: 514
 VWidth: -272
 Flags: HW
 LayerCount: 2
@@ -21023,7 +21039,7 @@ EndChar
 
 StartChar: _bar_480
 Encoding: 1114244 -1 391
-Width: 0
+Width: 514
 VWidth: -272
 Flags: HW
 LayerCount: 2
@@ -21123,7 +21139,7 @@ EndChar
 
 StartChar: _eng_comma_uc
 Encoding: 1114245 -1 399
-Width: 0
+Width: 514
 VWidth: 84
 Flags: HW
 LayerCount: 2
@@ -21148,7 +21164,7 @@ EndChar
 
 StartChar: _eng_comma_lc
 Encoding: 1114246 -1 400
-Width: 0
+Width: 514
 VWidth: 50
 Flags: HW
 LayerCount: 2
@@ -23480,7 +23496,7 @@ EndChar
 
 StartChar: _eta_bar
 Encoding: 1114247 -1 570
-Width: 0
+Width: 514
 VWidth: -272
 Flags: HW
 LayerCount: 2
