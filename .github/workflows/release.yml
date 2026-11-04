@@ -13,9 +13,10 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           ref: ${{ github.event.release.tag_name }}
+          persist-credentials: false
 
       - name: Derive version from release tag
         id: version
@@ -23,7 +24,7 @@ jobs:
         env:
           TAG: ${{ github.event.release.tag_name }}
 
-      - uses: ./.github/actions/build-font
+      - uses: $/.github/actions/build-font
         with:
           version: ${{ steps.version.outputs.value }}
           push-image: 'true'
